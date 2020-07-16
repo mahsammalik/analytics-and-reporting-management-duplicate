@@ -1,1 +1,1 @@
-# Analyrtics-And-Reporting-Management
+# Analytics-And-Reporting-Management
