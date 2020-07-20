@@ -1,0 +1,93 @@
+apiVersion: appsody.dev/v1beta1
+kind: AppsodyApplication
+metadata:
+  annotations:
+    architecture: x86_64
+    authoritative-source-url: registry.access.redhat.com
+    build-date: 2020-01-30T08:17:04.175507
+    commit.image.appsody.dev/date: Thu Jun 18 19:42:41 2020 +0500
+    commit.image.appsody.dev/message: added subscriber service for consuming topics
+    commit.stack.appsody.dev/date: Mon Jun 8 00:35:32 2020 +0500
+    commit.stack.appsody.dev/message: adding missing .env file
+    description: This image contains the Kabanero development stack for the Nodejs
+      Express collection
+    distribution-scope: public
+    help: For more information visit https://github.com/sclorg/s2i-nodejs-container
+    image.opencontainers.org/created: "2020-06-27T21:11:34+05:00"
+    image.opencontainers.org/documentation: https://github.ibm.com/JazzCash/jazzcash-microservice
+    image.opencontainers.org/revision: 53c6fa6dbbdfc98e5f59f36519bead302c00b43f-modified
+    image.opencontainers.org/source: https://github.ibm.com/JazzCash/jazzcash-microservice/tree/master
+    image.opencontainers.org/url: https://github.ibm.com/JazzCash/jazzcash-microservice
+    k8s.io/description: Node.js 12 available as container is a base platform for building
+      and running various Node.js 12 applications and frameworks. Node.js is a platform
+      built on Chrome's JavaScript runtime for easily building fast, scalable network
+      applications. Node.js uses an event-driven, non-blocking I/O model that makes
+      it lightweight and efficient, perfect for data-intensive real-time applications
+      that run across distributed devices.
+    k8s.io/display-name: Node.js 12
+    maintainer: SoftwareCollections.org <sclorg@redhat.com>
+    name: kabanero/nodejs-express
+    openshift.io/expose-services: 8080:http
+    openshift.io/tags: builder,nodejs,nodejs12
+    redhat.com/build-host: cpt-1001.osbs.prod.upshift.rdu2.redhat.com
+    redhat.com/component: nodejs-12-container
+    redhat.com/deployments-dir: /opt/app-root/src
+    redhat.com/dev-mode: DEV_MODE:false
+    redhat.com/dev-mode.port: DEBUG_PORT:5858
+    redhat.com/license_terms: https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI
+    release: "27"
+    s2i.io/scripts-url: image:///usr/libexec/s2i
+    s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
+    stack.appsody.dev/authors: Jahangir Khalid <jahangir.khalid1@pk.ibm.com>
+    stack.appsody.dev/configured: dev.local/appsody/jazzcash-stack:0.2
+    stack.appsody.dev/created: "2020-06-14T22:11:19+05:00"
+    stack.appsody.dev/description: Express web framework for Node.js
+    stack.appsody.dev/documentation: https://github.ibm.com/JazzCash/jazzcash-stack/tree/master/README.md
+    stack.appsody.dev/licenses: Apache-2.0
+    stack.appsody.dev/revision: a96324749fb5bc80914efabb3838ec3448cc8629-modified
+    stack.appsody.dev/source: https://github.ibm.com/JazzCash/jazzcash-stack/tree/master/image
+    stack.appsody.dev/tag: dev.local/appsody/jazzcash-stack:0.2.10
+    stack.appsody.dev/title: Node.js Express
+    stack.appsody.dev/url: https://github.ibm.com/JazzCash/jazzcash-stack
+    summary: Image for Kabanero Node.js Express development
+    url: https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/nodejs-12/images/1-27
+    usage: s2i build <SOURCE-REPOSITORY> ubi8/nodejs-12:latest <APP-NAME>
+    vcs-ref: 9a85b86edcc6c765692f15311abe259b0f9997b2
+    vcs-type: git
+    vendor: Kabanero
+    version: 0.2.10
+  creationTimestamp: null
+  labels:
+    image.opencontainers.org/title: jazzcash-project
+    stack.appsody.dev/id: jazzcash-stack
+    stack.appsody.dev/version: 0.2.10
+  name: jazzcash-project
+spec:
+  applicationImage: dev.local/jazzcash-project
+  createKnativeService: false
+  expose: true
+  livenessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /live
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+  monitoring:
+    labels:
+      k8s-app: jazzcash-project
+  readinessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    timeoutSeconds: 1
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+    port: 3000
+    type: NodePort
+  stack: jazzcash-stack
+  version: 1.0.0

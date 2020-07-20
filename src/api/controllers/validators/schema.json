@@ -1,0 +1,33 @@
+{
+    "EMAIL_SCHEMA": {
+        "title": "email",
+        "description": "email schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["emailFrom", "emailTo", "emailCc", "emailBcc", "emailSubject", "emailBody"],
+        "properties": {
+            "emailFrom": {
+                "format": "email"
+            },
+            "emailTo": {
+                "format": "email"
+            },
+            "emailCc": {
+                "format": "email"
+            },
+            "emailBcc": {
+                "format": "email"
+            },
+            "emailSubject": {
+                "type": "string"
+            },
+            "emailBody": {
+                "type": "string"
+            },
+            "save": {
+                "type": ["string", "integer", "boolean"],
+                "enum": [true, false, 1, 0, "Y", "N", "y", "n"]
+            }
+        }
+    }
+}

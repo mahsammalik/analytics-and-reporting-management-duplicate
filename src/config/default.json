@@ -1,0 +1,74 @@
+{
+    "config": {
+        "App": {
+            "webServer": {
+                "host": "127.0.0.1",
+                "port": 3000
+            },
+            "restApiEndpoints": {
+                "v1": "/v1/api"
+            }
+        },
+        "externalServices": {
+            "masterDataAPI": {
+                "responseCodeURL": "http://host.docker.internal:3000/rest/api/v1/masterdata/responseCodes"
+            }
+        },
+        "mongodb": {
+            "host": "mongodb",
+            "port": 27017,
+            "database": "sampledb"
+        },
+        "IBMDB2": {
+            "username": "something",
+            "password": "thatthing",
+            "address": ""
+        },
+        "winston": {
+            "file": {
+                "level": "info",
+                "filename": "./logs/app.log",
+                "handleExceptions": "true",
+                "json": true,
+                "maxsize": 5242880,
+                "maxFiles": 5,
+                "colorize": "false"
+            },
+            "console": {
+                "level": "debug",
+                "handleExceptions": true,
+                "json": false,
+                "colorize": true
+            }
+
+        },
+        "kafkaBroker": {
+            "brokers": "kafka:9092",
+            "topicName": "jazz-topic",
+            "pollInterval": 100,
+            "consumerGroupID": "test-consumer",
+            "commit-msgs-after": 1,
+            "numMessages": 1,
+            "consumerAutoCommit": true,
+            "init_topic": "initTopic",
+            "confirm_topic": "confirmTopic"
+        },
+        "cache": {
+            "server": "datagrid",
+            "port": 11222,
+            "cacheName": "jazzcash",
+            "responseCodeCache": "ResponseCodeCache"
+
+        },
+        "responseCode": {
+            "default": {
+                "code": "G-01",
+                "message": "Internal Server Error"
+            }
+        }
+
+
+
+
+    }
+}
