@@ -32,7 +32,7 @@ const subscriber = new Subscriber();
 subscriber.setConsumer();
 const db2 = new DatabaseConn();
 app.get('/', async (req, res) => {
-
+  
   res.send(' Applicatoin Listening on host 3000');
 
 });
