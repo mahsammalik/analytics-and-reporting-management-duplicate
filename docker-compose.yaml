@@ -4,12 +4,11 @@ services:
     image: ibmcom/db2
     privileged: true
     ports:
-      - 50000:50000
+      - 50000:50000/tcp
     environment:
       DB2INST1_PASSWORD: apassword
       LICENSE: accept
       DBNAME: testdb
-    command: db2start
     volumes:
       - ./database:/database
   mongodb:

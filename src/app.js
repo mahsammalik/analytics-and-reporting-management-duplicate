@@ -10,7 +10,8 @@ import Cache from './util/cache';
 import Subscriber from './services/subscriberService';
 import path from 'path';
 import responseCodeHdler from './util/responseCodeHandler';
-
+import DatabaseConn from './util/responseCodeHandler';
+import DB2_Connection from './util/DB2_Connection';
 console.log('printing webserver value' + config.mongodb.host);
 logger.info('Trace message, Winston!');
 
@@ -29,7 +30,7 @@ app.use(express.static(imagePath));
 // ********* SAMPLE CODE TESTING
 const subscriber = new Subscriber();
 subscriber.setConsumer();
-
+const db2 = new DatabaseConn();
 app.get('/', async (req, res) => {
 
   res.send(' Applicatoin Listening on host 3000');
