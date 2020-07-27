@@ -1,0 +1,11 @@
+MSISDN	Trx DateTime	Trx ID	Transaction Type	Channel	Description	Amount debited	Amount credited	Running balance
+03015091633	26-04-2020 22:47:20	010303231299	Money Transfer - Bank	Mobile App	Bank Transfer 	500		496.19
+03015091633	26-04-2020 22:47:21	010251945119	Mobile Transfer - Mobile Account	USSD	Beneficiary Details: 923079770309	1		996.19
+03015091633	26-04-2020 22:47:22	010099506870	Mobile Transfer - Mobile Account	Mobile App	Beneficiary Details: 923125796890	1		997.19
+03015091633	26-04-2020 22:47:23	010066562541	Mobile Transfer - Mobile Account	Mobile App	Beneficiary Details: 923455108911		500	998.19
+03015091633	26-04-2020 22:47:24	009949357058	Money Transfer - Bank	Mobile App	Bank Transfer 	500		498.19
+03015091633	26-04-2020 22:47:25	009949336950	Money Transfer - Bank	Mobile App	Bank Transfer 	500		998.19
+03015091633	26-04-2020 22:47:26	009853747703	Mobile Transfer - CNIC	Mobile App	Beneficiary Details: 923465470362, 6110187390055	2500		1498.19
+03015091633	26-04-2020 22:47:27	009853729041	Money Transfer - Bank	ATM	Beneficiary Details: 923015091633		3000	4058.19
+03015091633	26-04-2020 22:47:28	009706631603	Mobile Transfer - Mobile Account	Mobile App	Beneficiary Details: 923012009814		5	1058.19
+03015091633	26-04-2020 22:47:29	009660266611	Online Payment	Payment Gateway	Online Payment	751		1053.19

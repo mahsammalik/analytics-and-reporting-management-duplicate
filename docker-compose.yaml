@@ -1,14 +1,16 @@
 version: '3.5'
 services:
-  db2:
+  ibmdb2:
     image: ibmcom/db2
+    container_name: ibmdb2
     privileged: true
     ports:
-      - 50000:50000/tcp
+      - "50000:50000/tcp"
     environment:
       DB2INST1_PASSWORD: apassword
       LICENSE: accept
-      DBNAME: testdb
+      DBNAME: TESTDB
+      SAMPLEDB: 1
     volumes:
       - ./database:/database
   mongodb:
