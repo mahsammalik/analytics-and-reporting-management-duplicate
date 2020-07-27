@@ -8,7 +8,7 @@ class DatabaseConn {
     }
     createPDF(){
       const doc = new PDFDocument();
- 
+      fs.
 // Pipe its output somewhere, like to a file or HTTP response
 // See below for browser usage
 doc.pipe(fs.createWriteStream('/Users/mohabnazmy/jazz/output.pdf'));
