@@ -30,9 +30,8 @@ app.use(express.static(imagePath));
 // ********* SAMPLE CODE TESTING
 const subscriber = new Subscriber();
 subscriber.setConsumer();
-const db2 = new DatabaseConn();
 app.get('/', async (req, res) => {
-  
+  const dump = DB2_Connection.createPDF
   res.send(' Applicatoin Listening on host 3000');
 
 });
