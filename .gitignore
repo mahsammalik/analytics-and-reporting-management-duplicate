@@ -89,5 +89,6 @@ typings/
 
 #.vscode
 dist/
+/database
 database/
 .DS_Store
