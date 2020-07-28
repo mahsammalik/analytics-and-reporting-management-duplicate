@@ -33,7 +33,6 @@ app.use(express.static(imagePath));
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 app.get('/', async (req, res) => {
-  DB2_Connection.create();
   var dump =  DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
   console.log(dump);
   res.send(' Applicatoin Listening on host 3000');
