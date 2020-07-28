@@ -11,7 +11,9 @@ import Subscriber from './services/subscriberService';
 import path from 'path';
 import responseCodeHdler from './util/responseCodeHandler';
 import DatabaseConn from './util/responseCodeHandler';
-import DB2_Connection from './util/DB2_Connection';
+import DB2_Connection from './util/DB2Connection';
+import PDFHandler from './util/PDFHandler';
+
 console.log('printing webserver value' + config.mongodb.host);
 logger.info('Trace message, Winston!');
 
@@ -21,7 +23,7 @@ app.use(bodyParser.json());
 
 
 // Temporary Image Repsoitory for storing images : Need to change on test/prod env
-const imagePath = path.join(__dirname, '../public/images/registrations/');
+const imagePath = path.join(__dirname, '../public/pdf/');
 global.imageDIR = imagePath;
 app.use(express.static(imagePath));
 
@@ -31,7 +33,9 @@ app.use(express.static(imagePath));
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 app.get('/', async (req, res) => {
-  const dump = DB2_Connection.createPDF
+  DB2_Connection.create();
+  var dump =  DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+  console.log(dump);
   res.send(' Applicatoin Listening on host 3000');
 
 });

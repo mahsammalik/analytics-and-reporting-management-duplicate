@@ -92,3 +92,4 @@ dist/
 /database
 database/
 .DS_Store
+public/
