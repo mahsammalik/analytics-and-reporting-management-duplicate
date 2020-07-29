@@ -1,5 +1,7 @@
 import logger from './util/logger';
 global.logger = logger;
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -12,7 +14,8 @@ import path from 'path';
 import responseCodeHdler from './util/responseCodeHandler';
 import DatabaseConn from './util/responseCodeHandler';
 import DB2_Connection from './util/DB2Connection';
-import PDFHandler from './util/PDFHandler';
+import EmailHandler from './util/EmailHandler';
+const { Base64Encode } = require('base64-stream');
 
 console.log('printing webserver value' + config.mongodb.host);
 logger.info('Trace message, Winston!');
@@ -33,16 +36,61 @@ app.use(express.static(imagePath));
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 app.get('/', async (req, res) => {
-  var dump =  DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
-  console.log(dump);
-  res.send(' Applicatoin Listening on host 3000');
+  const dump = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+  console.log("return " + dump);
+  res.send(dump);
 
 });
 
+app.get('/generatePDF', async function (req, res) {
+  var myDoc = new PDFDocument({ bufferPages: true });
+  var finalString = ''; // contains the base64 string
+    let buffers = [];
+    const data = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+    if (req.query.request == 'Download') {
+      var myDoc = new PDFDocument({ bufferPages: true });
+
+    myDoc.on('data', buffers.push.bind(buffers));
+    myDoc.on('end', () => {
+       let pdfData = Buffer.concat(buffers);
+       res.writeHead(200, {
+        'Content-Length': Buffer.byteLength(pdfData),
+        'Content-Type': 'application/pdf',
+        'Content-disposition': 'attachment;filename=output.pdf',
+      })
+        .end(pdfData);
+    });
+  }else if (req.query.request == 'Email'){
+    myDoc.pipe(new Base64Encode());
+    myDoc.on('data', function(chunk) {
+      finalString += chunk;
+  });
+  
+  myDoc.on('end', function() {
+      // the stream is at its end, so push the resulting base64 string to the response
+      EmailHandler.sendEmail("","", '', finalString);
+      res.json("the mail send succesful");
+  });
+  }
+ 
+    myDoc.font('Times-Roman')
+      .fontSize(12)
+      .text(data);
+    myDoc.end();
+  
+});
+
+
+
 app.get('/getResponse', async (req, res) => {
-  logger.info(req.logRequestTime);
-  responseCodeHdler.getResponseCode("ab-T12");
-  res.send('Response Code Handler Called');
+  res.sendFile( path.resolve(imageDIR+ 'output12.pdf'), {
+    'Content-Length': Buffer.byteLength(pdfData),
+    'Content-Type': 'application/pdf',
+    'Content-disposition': 'attachment;filename='+imageDIR + 'output'+ 12 + '.pdf',
+  });
+  // logger.info(req.logRequestTime);
+  // responseCodeHdler.getResponseCode("ab-T12");
+  // res.send('Response Code Handler Called');
 
 });
 

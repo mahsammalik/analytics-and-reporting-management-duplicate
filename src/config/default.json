@@ -60,6 +60,11 @@
             "responseCodeCache": "ResponseCodeCache"
 
         },
+        "NotificationService": {
+            "smsNotificationUrl": "http://localhost:3000/api/notification/sms",
+            "emailNotificationUrl": "http://localhost:3000/api/notification/email",
+            "pushNotificationUrl": "http://localhost:3000/api/notification/pushNotification"
+          },
         "responseCode": {
             "default": {
                 "code": "G-01",
