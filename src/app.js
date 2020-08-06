@@ -31,14 +31,14 @@ app.use(express.static(imagePath));
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-app.get('/api/v1/reports/statement', async function (req, res) {
+app.get('/api/v1/reports/statement/account', async function (req, res) {
 
-  // if(req.query.start_date == undefined) res.status(404).json('Missing Start Date');
-  // if(req.query.end_date == undefined) res.status(404).json('Missing End Date');
-  // if(req.query.msisdn == undefined) res.status(404).json('Missing user\'s mobile number');
-  // if(req.query.request !== 'Email' || req.query.request !== 'Download' ) res.status(404)
-  // .send('Please send the request with either Download or Email requirement');
-  // if(req.query.request == undefined) res.status(404).json('Missing request requirement');
+  if(req.query.start_date == undefined) res.status(404).json('Missing Start Date');
+  if(req.query.end_date == undefined) res.status(404).json('Missing End Date');
+  if(req.query.msisdn == undefined) res.status(404).json('Missing user\'s mobile number');
+  if(req.query.request !== 'Email' || req.query.request !== 'Download' ) res.status(404)
+  .send('Please send the request with either Download or Email requirement');
+  if(req.query.request == undefined) res.status(404).json('Missing request requirement');
 
   var myDoc = new PDFDocument({ bufferPages: true });
   var finalString = ''; // contains the base64 string
@@ -70,7 +70,7 @@ app.get('/put', async (req, res) => {
   logger.info(req.logRequestTime);
   await Cache.putValue('jk', 'final count', config.cache.cacheName);
   res.send('value inserted in the data cache');
-
+ 
 });
 
 app.get('/get', async (req, res) => {
