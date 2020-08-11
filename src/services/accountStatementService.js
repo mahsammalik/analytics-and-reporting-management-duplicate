@@ -3,16 +3,19 @@ import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
 
-class AccountStatement {
+class accountStatementService {
 	constructor() {
     }
 
 
-	async creation(req, myDoc, buffers, res, finalString) {
-		console.log("enter creation");
-		const data = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+	async accountStatementCall(payLoad, res) {
+		console.log("call teh account sstatement service");
+		var myDoc = new PDFDocument({ bufferPages: true });
+		var finalString = ''; // contains the base64 string
+		let buffers = [];
+		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.start_date, payLoad.end_date);
 		let pdfData;
-
+	
 		if (req.query.request == 'Download') {
 			({ myDoc, pdfData } = downloadProcess(myDoc, buffers, pdfData, res));
 		}
@@ -21,18 +24,17 @@ class AccountStatement {
 			myDoc.on('data', function (chunk) {
 				finalString += chunk;
 			});
-
+	
 			myDoc.on('end', function () {
 				// the stream is at its end, so push the resulting base64 string to the response
-				EmailHandler.sendEmail("", "", '', finalString);
+				EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
 				res.json("the mail send to push ");
 			});
 		}
-		myDoc.font('Times-Roman')
-			.fontSize(12)
+		myDoc.font('Times-Roman');
+		s.fontSize(12)
 			.text(data);
 		myDoc.end();
-		return finalString;
 	}
 
 	downloadProcess(myDoc, buffers, pdfData, res) {
@@ -51,4 +53,4 @@ class AccountStatement {
 	}
 }
 
-export default AccountStatement;
+export default accountStatementService;
