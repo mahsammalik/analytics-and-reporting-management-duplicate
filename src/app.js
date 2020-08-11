@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 const imagePath = path.join(__dirname, '../public/pdf/');
 global.imageDIR = imagePath;
 app.use(express.static(imagePath));
-app.use('/', routes);
+// app.use('/', routes);
 
 // ********* SAMPLE CODE TESTING
 const subscriber = new Subscriber();

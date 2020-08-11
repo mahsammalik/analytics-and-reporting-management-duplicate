@@ -8,6 +8,7 @@ class accountStatementController extends Controller {
     }
 
     async calculateAccountStatement(req, res) {
+      console.log("Hi");
         if (req.query.start_date == undefined)
           res.status(404).json('Missing Start Date');
         if (req.query.end_date == undefined)
