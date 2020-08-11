@@ -4,8 +4,6 @@ import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
 
 class accountStatementService {
-	constructor() {
-    }
 
 
 	async accountStatementCall(payLoad, res) {
@@ -53,4 +51,4 @@ class accountStatementService {
 	}
 }
 
-export default accountStatementService;
+export default new accountStatementService();

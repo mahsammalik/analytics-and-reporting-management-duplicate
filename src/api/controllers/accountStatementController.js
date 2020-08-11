@@ -1,37 +1,36 @@
-import Controller from './controller';
-import accountStatementService from '../../services/accountStatementService.js';
+import accountStatementService from '../../services/accountStatementService';
 
-class accountStatementController extends Controller {
+class accountStatementController {
     
     constructor(service) {
-        super(service);
+        this.accountStatementService = service;
     }
 
     async calculateAccountStatement(req, res) {
-      console.log("Hi");
         if (req.query.start_date == undefined)
-          res.status(404).json('Missing Start Date');
+          res.status(422).json('Missing Start Date');
         if (req.query.end_date == undefined)
-          res.status(404).json('Missing End Date');
-        if (req.query.msisdn == undefined)
-          res.status(404).json('Missing user\'s mobile number');
-        if (req.query.request !== 'Email' || req.query.request !== 'Download')
-          res.status(404)
-            .send('Please send the request with either Download or Email requirement');
+          res.status(422).json('Missing End Date');
         if (req.query.request == undefined)
-          res.status(404).json('Missing request requirement');
+          res.status(422).json('Missing request requirement');
+        console.log(req.headers);
+        if (req.headers['x-msisdn'] == undefined)
+          res.status(422).json('Missing user\'s mobile number');
+        if (req.headers['x-meta-data'] == '')
+          res.status(422).json('Missing user\'s email');
         let payload = { 
-          msisdn: req.query.msisdn,
+          msisdn: req.headers['X-MSISDN'],
           start_date: req.query.start_date,
           end_date: req.query.end_date,
-          email: req.qyuer.email,
-          subject: req.query.subject,
-          html: req.query.html
+          email: req.headers['X-META-DATA'],
+          subject: 'Hello',
+          html: '<html></html>'
       }
-      accountStatementService.accountStatementCall(payload, res);
+      console.log("payload" + payload)
+      console.log("service" + this.accountStatementService)
+      await this.accountStatementService.accountStatementCall(payload, res);
     }
   }
-       
 export default new accountStatementController(accountStatementService);
 
 
