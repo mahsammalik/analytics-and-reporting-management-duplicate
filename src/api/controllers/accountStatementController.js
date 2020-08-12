@@ -1,9 +1,11 @@
 import accountStatementService from '../../services/accountStatementService';
+import Controller from './controller';
 
 class accountStatementController {
     
     constructor(service) {
         this.accountStatementService = service;
+        this.calculateAccountStatement = this.calculateAccountStatement.bind(this);
     }
 
     async calculateAccountStatement(req, res) {
@@ -14,10 +16,10 @@ class accountStatementController {
         if (req.query.request == undefined)
           res.status(422).json('Missing request requirement');
         console.log(req.headers);
-        if (req.headers['x-msisdn'] == undefined)
-          res.status(422).json('Missing user\'s mobile number');
-        if (req.headers['x-meta-data'] == '')
-          res.status(422).json('Missing user\'s email');
+        // if (req.headers['x-msisdn'] == undefined)
+        //   res.status(422).json('Missing user\'s mobile number');
+        // if (req.headers['x-meta-data'] == '')
+        //   res.status(422).json('Missing user\'s email');
         let payload = { 
           msisdn: req.headers['X-MSISDN'],
           start_date: req.query.start_date,

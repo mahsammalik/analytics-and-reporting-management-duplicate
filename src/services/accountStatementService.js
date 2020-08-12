@@ -4,6 +4,9 @@ import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
 
 class accountStatementService {
+	constructor(){
+		this.accountStatementCall = this.accountStatementCall.bind(this);
+	}
 
 
 	async accountStatementCall(payLoad, res) {
@@ -11,13 +14,15 @@ class accountStatementService {
 		var myDoc = new PDFDocument({ bufferPages: true });
 		var finalString = ''; // contains the base64 string
 		let buffers = [];
-		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.start_date, payLoad.end_date);
+		console.log("payload msisdn" + payLoad.start_date)
+		const data = await DB2_Connection.getValue('1030',payLoad.end_date, payLoad.start_date);
+		console.log("the account statement"+ data);
 		let pdfData;
 	
-		if (req.query.request == 'Download') {
+		if (payLoad.request == 'Download') {
 			({ myDoc, pdfData } = downloadProcess(myDoc, buffers, pdfData, res));
 		}
-		else if (req.query.request == 'Email') {
+		else if (payLoad.request == 'Email') {
 			myDoc.pipe(new Base64Encode());
 			myDoc.on('data', function (chunk) {
 				finalString += chunk;
@@ -30,7 +35,7 @@ class accountStatementService {
 			});
 		}
 		myDoc.font('Times-Roman');
-		s.fontSize(12)
+		myDoc.fontSize(12)
 			.text(data);
 		myDoc.end();
 	}
