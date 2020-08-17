@@ -13,13 +13,16 @@ class accountStatementService {
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 	}
 	async sendEmailCSV_Format() {
+
 		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 		let buff = new Buffer.from(data);
 		let base64data = buff.toString('base64');
 		return base64data;
+
 }
 
 	async sendEmailPDF_Format(payLoad, res) {
+		
 		console.log("call teh account sstatement service");
 		var myDoc = new PDFDocument({ bufferPages: true });
 		var finalString = ''; // contains the base64 string
@@ -51,7 +54,7 @@ class accountStatementService {
 			myDoc.on('end', function () {
 				// the stream is at its end, so push the resulting base64 string to the response
 				const emailResponse = EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
-				if(emailResponse === flase) return "Error in sending email" 
+				if(emailResponse === false) return "Error in sending email" 
 			});
 		try{
 			myDoc.font('Times-Roman');
