@@ -1,4 +1,6 @@
 import { open } from 'ibm_db';
+import responseCodeHandler from './responseCodeHandler';
+
 
 const cn = process.env.DB2_CONNECTION || config.IBMDB2.connectionString;
 
@@ -23,7 +25,7 @@ class DatabaseConn {
     }
     catch(err){
       logger.error('Database connection error'+ err);
-      return "DB2 error" + err;
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
     }
   }
 }
