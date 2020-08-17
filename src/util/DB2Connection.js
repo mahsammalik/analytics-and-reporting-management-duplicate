@@ -1,13 +1,13 @@
 import { open } from 'ibm_db';
 
-const connectionString = process.env.DB2_CONNECTION || config.db2.connectionString;
+const cn = process.env.DB2_CONNECTION || config.IBMDB2.connectionString;
 
 class DatabaseConn {
 
   async getValue(customerMobileNumer, endDate, startDate) {
 
     try{
-      var cn = "DATABASE=TESTDB;HOSTNAME=ibmdb2;UID=db2inst1;PWD=apassword;PORT=50000;PROTOCOL=TCPIP";
+      
       let concatenatResult;
       let conn = await open(cn);
       const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNT where TRX_ID = ? And TRX_DATETIME BETWEEN ? AND ?;");

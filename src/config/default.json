@@ -22,7 +22,8 @@
         "IBMDB2": {
             "username": "something",
             "password": "thatthing",
-            "address": ""
+            "address": "",
+            "connectionString": "DATABASE=TESTDB;HOSTNAME=ibmdb2;UID=db2inst1;PWD=apassword;PORT=50000;PROTOCOL=TCPIP"
         },
         "winston": {
             "file": {
