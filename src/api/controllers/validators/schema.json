@@ -1,4 +1,25 @@
 {
+
+
+    "Account_Statement_SCHEMA": {
+        "title": "Account Statement",
+        "description": "account statement schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start_date", "end_date", "request"],
+        "properties": {
+            "start_date": {
+                "format": "string"
+            },
+            "end_date": {
+                "format": "string"
+            },
+            "request": {
+                "format": "string",
+                "enum": ["Download", "Email"]
+            }
+        }
+    },
     "EMAIL_SCHEMA": {
         "title": "email",
         "description": "email schema",
@@ -29,5 +50,27 @@
                 "enum": [true, false, 1, 0, "Y", "N", "y", "n"]
             }
         }
-    }
-}
+    },
+        "REQUEST_HEADER_SCHEMA": {
+            "title": "request headers",
+            "description": "request headers schema",
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["x-app-type", "x-msisdn", "x-channel", "x-device-id", "x-meta-data"],
+            "properties": {
+              "x-app-type": {
+                "type": "string"
+              },
+              "x-msisdn": {
+                "type": "string"
+              },
+              "x-channel": {
+                "type": "string"
+              },
+              "x-device-id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+    

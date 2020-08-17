@@ -69,7 +69,83 @@
             "default": {
                 "code": "G-01",
                 "message": "Internal Server Error"
-            }
+              },
+              "useCases": {
+                "accountStatement": {
+                    "success": "AR-AS-T03",
+                    "invalid": "AR-AS-T01",
+                    "missing_required_parameters": "AR-AS-T02",
+                    "date_invalid": "AR-AS-T04"
+                  },
+                "contactIntegration": {
+                  "success": "AM-CI-T01",
+                  "invalid": "AM-CI-T02"
+                },
+                "changeMPIN": {
+                  "success": "AM-CMP-T01",
+                  "invalid": "AM-CMP-T02",
+                  "data_not_found": "AM-CMP-T04",
+                  "device_unauthentic": "AM-CMP-T03",
+                  "cps": "AM-CMP-CPS-"
+                },
+                "generateOTPForMPIN": {
+                  "success": "AM-RMP-T02",
+                  "invalid": "AM-RMP-T07",
+                  "data_not_found": "AM-RMP-T09",
+                  "device_unauthentic": "AM-RMP-T08"
+                },
+                "verifyOTPForMPIN": {
+                  "success": "AM-RMP-T01",
+                  "invalid": "AM-RMP-T06",
+                  "data_not_found": "AM-RMP-T09",
+                  "device_unauthentic": "AM-RMP-T08"
+                },
+                "resetMPIN": {
+                  "success": "AM-RMP-T04",
+                  "invalid": "AM-RMP-T05",
+                  "data_not_found": "AM-RMP-T09",
+                  "device_unauthentic": "AM-RMP-T08",
+                  "cps": "AM-RMP-CPS-"
+                },
+                "profile": {
+                  "cps": "AM-PR-CPS-",
+                  "success_profile": "AM-PR-T36",
+                  "success_email": "AM-PR-T37",
+                  "success_image_upload": "AM-PR-T38",
+                  "fail_profile": "AM-PR-T35",
+                  "invalid": "AM-PR-T34",
+                  "esb": "AM-PR-T02",
+                  "internal": "AM-PR-T01"
+                },
+                "limits": {
+                  "cps": "AM-AL-CPS-",
+                  "success": "AM-AL-T35",
+                  "invalid": "AM-AL-T34",
+                  "esb": "AM-AL-T02",
+                  "internal": "AM-AL-T01"
+                },
+                "favouritList": {
+                  "cps": "AM-FL-CPS-",
+                  "success": "AM-FL-T35",
+                  "invalid": "AM-FL-T34",
+                  "esb": "AM-FL-T02",
+                  "internal": "AM-FL-T01",
+                  "error": "AM-FL-T39",
+                  "notFound": "AM-FL-T38"
+                },
+                "balance": {
+                  "cps": "AM-AB-CPS-",
+                  "success": "AM-AB-T35",
+                  "invalid": "AM-AB-T34",
+                  "esb": "AM-AB-T02",
+                  "internal": "AM-AB-T01"
+                }
+              },
+              "transactionType": {
+                "c2C": "C2C",
+                "bank": "BA",
+                "CNIC": "CNIC"
+              }
         }
 
 
