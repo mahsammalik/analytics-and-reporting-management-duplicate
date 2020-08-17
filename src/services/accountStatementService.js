@@ -13,12 +13,10 @@ class accountStatementService {
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 	}
 	async sendEmailCSV_Format() {
-		const data = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 		let buff = new Buffer.from(data);
 		let base64data = buff.toString('base64');
-		console.log("csv "+ base64data)
-
-
+		return base64data;
 }
 
 	async sendEmailPDF_Format(payLoad, res) {
