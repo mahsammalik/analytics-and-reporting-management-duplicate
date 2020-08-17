@@ -22,8 +22,7 @@ class DatabaseConn {
 
     }
     catch(err){
-      logger.error(err);
-      logger.error('Database connection error');
+      logger.error('Database connection error'+ err);
       return "DB2 error" + err;
     }
   }

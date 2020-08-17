@@ -5,11 +5,11 @@ const { Base64Encode } = require('base64-stream');
 
 class accountStatementService {
 	constructor(){
-		this.accountStatementCall = this.accountStatementCall.bind(this);
+		this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
 	}
 
 
-	async accountStatementCall(payLoad, res) {
+	async sendEmailPDF_Format(payLoad, res) {
 		console.log("call teh account sstatement service");
 		var myDoc = new PDFDocument({ bufferPages: true });
 		var finalString = ''; // contains the base64 string
@@ -35,20 +35,23 @@ class accountStatementService {
 		// }
 		// else if (payLoad.request == 'Email') {
 			myDoc.pipe(new Base64Encode());
-			myDoc.on('data', function (chunk) {
-				finalString += chunk;
-			});
-	
+				myDoc.on('data', function (chunk) {
+					finalString += chunk;
+				});
 			myDoc.on('end', function () {
 				// the stream is at its end, so push the resulting base64 string to the response
-				EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
-				res.json("the mail send to push ");
+				const emailResponse = EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
+				if(emailResponse === flase) return "Error in sending email" 
 			});
 		
-		myDoc.font('Times-Roman');
+		try{
+			myDoc.font('Times-Roman');
 		myDoc.fontSize(12)
 			.text(data);
 		myDoc.end();
+	}catch(err){
+		logger.error('Error in pdf '+ err);
+		return "DB2 error" + err;
 	}
 }
 
