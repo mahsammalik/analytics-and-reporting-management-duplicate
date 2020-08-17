@@ -25,7 +25,7 @@ class DatabaseConn {
     }
     catch(err){
       logger.error('Database connection error'+ err);
-      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
     }
   }
 }
