@@ -3,6 +3,8 @@ import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
 const { convertArrayToCSV } = require('convert-array-to-csv');
+var base64 = require('file-base64');
+const CSV = require('csv-string');
 
 
 class accountStatementService {
@@ -10,12 +12,11 @@ class accountStatementService {
 		this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 	}
-	async sendEmailCSV_Format(payLoad, res) {
-		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-		const csvFromArrayOfObjects = convertArrayToCSV(data);
-		return base64.encode(csvFromArrayOfObjects, function(err, base64String) {
-			console.log(base64String);
-		  });
+	async sendEmailCSV_Format() {
+		const data = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+		let buff = new Buffer.from(data);
+		let base64data = buff.toString('base64');
+		console.log("csv "+ base64data)
 
 
 }

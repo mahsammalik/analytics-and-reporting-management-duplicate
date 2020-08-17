@@ -39,7 +39,7 @@ app.get('/put', async (req, res) => {
 app.get('/get', async (req, res) => {
   //  let value = await Cache.getValue('jk', config.cache.cacheName);
   // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
-  res.json(accountStatementService.sendEmailCSV_Format)
+  res.json(accountStatementService.sendEmailCSV_Format())
 
 
 });
