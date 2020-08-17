@@ -2,12 +2,23 @@ const PDFDocument = require('pdfkit');
 import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
+const { convertArrayToCSV } = require('convert-array-to-csv');
+
 
 class accountStatementService {
 	constructor(){
 		this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
+		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 	}
+	async sendEmailCSV_Format(payLoad, res) {
+		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+		const csvFromArrayOfObjects = convertArrayToCSV(data);
+		return base64.encode(csvFromArrayOfObjects, function(err, base64String) {
+			console.log(base64String);
+		  });
 
+
+}
 
 	async sendEmailPDF_Format(payLoad, res) {
 		console.log("call teh account sstatement service");
@@ -43,7 +54,6 @@ class accountStatementService {
 				const emailResponse = EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
 				if(emailResponse === flase) return "Error in sending email" 
 			});
-		
 		try{
 			myDoc.font('Times-Roman');
 		myDoc.fontSize(12)
@@ -53,6 +63,7 @@ class accountStatementService {
 		logger.error('Error in pdf '+ err);
 		return "DB2 error" + err;
 	}
+}
 }
 
 export default new accountStatementService();

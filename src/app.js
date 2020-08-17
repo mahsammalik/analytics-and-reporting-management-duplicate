@@ -9,6 +9,7 @@ import Cache from './util/cache';
 import Subscriber from './services/subscriberService';
 import path from 'path';
 import { extract } from './extract';
+import accountStatementService from './services/accountStatementService';
 
 console.log('printing webserver value' + config.mongodb.host);
 logger.info('Trace message, Winston!');
@@ -36,9 +37,10 @@ app.get('/put', async (req, res) => {
 });
 
 app.get('/get', async (req, res) => {
-  logger.info(req.logRequestTime);
-  let value = await Cache.getValue('jk', config.cache.cacheName);
-  res.send('value fetched from value' + value);
+  //  let value = await Cache.getValue('jk', config.cache.cacheName);
+  // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
+  res.json(accountStatementService.sendEmailCSV_Format)
+
 
 });
 
