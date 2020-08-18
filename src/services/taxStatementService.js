@@ -6,7 +6,6 @@ const { convertArrayToCSV } = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
-// const PDFDocument = require('./pdfkit-tables');
 
 class taxStatementService {
 	constructor(){

@@ -16,10 +16,6 @@
             "request": {
                 "type": "string",
                 "enum": ["Download", "Email"]
-            },
-            "format": {
-                "type": "string",
-                "enum": ["csv", "pdf"]
             }
         }
     },
