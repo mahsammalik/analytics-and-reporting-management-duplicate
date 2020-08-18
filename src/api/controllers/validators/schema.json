@@ -1,11 +1,11 @@
 {
 
     "Tax_Statement_SCHEMA": {
-        "title": "Account Statement",
-        "description": "account statement schema",
+        "title": "Tax Statement",
+        "description": "tax statement schema",
         "type": "object",
         "additionalProperties": false,
-        "required": ["start_date", "end_date", "request"],
+        "required": ["start_date", "end_date", "requestType"],
         "properties": {
             "start_date": {
                 "format": "date"
@@ -13,7 +13,7 @@
             "end_date": {
                 "format": "date"
             },
-            "request": {
+            "requestType": {
                 "type": "string",
                 "enum": ["Download", "Email"]
             }
@@ -24,7 +24,7 @@
         "description": "account statement schema",
         "type": "object",
         "additionalProperties": false,
-        "required": ["start_date", "end_date", "request"],
+        "required": ["start_date", "end_date", "requestType"],
         "properties": {
             "start_date": {
                 "format": "date"
@@ -32,7 +32,7 @@
             "end_date": {
                 "format": "date"
             },
-            "request": {
+            "requestType": {
                 "type": "string",
                 "enum": ["Download", "Email"]
             },
