@@ -1,6 +1,28 @@
 {
 
-
+    "Tax_Statement_SCHEMA": {
+        "title": "Account Statement",
+        "description": "account statement schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start_date", "end_date", "request"],
+        "properties": {
+            "start_date": {
+                "format": "date"
+            },
+            "end_date": {
+                "format": "date"
+            },
+            "request": {
+                "type": "string",
+                "enum": ["Download", "Email"]
+            },
+            "format": {
+                "type": "string",
+                "enum": ["csv", "pdf"]
+            }
+        }
+    },
     "Account_Statement_SCHEMA": {
         "title": "Account Statement",
         "description": "account statement schema",
