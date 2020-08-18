@@ -76,7 +76,8 @@
                     "success": "AR-AS-T03",
                     "invalid": "AR-AS-T01",
                     "missing_required_parameters": "AR-AS-T02",
-                    "date_invalid": "AR-AS-T04"
+                    "date_invalid": "AR-AS-T04",
+                    "database_connection": "AR-AS-T05"
                   },
                 "contactIntegration": {
                   "success": "AM-CI-T01",

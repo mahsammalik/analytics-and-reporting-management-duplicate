@@ -5,12 +5,14 @@ const { Base64Encode } = require('base64-stream');
 const { convertArrayToCSV } = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
-
+const fs = require('fs');
+// const PDFDocument = require('./pdfkit-tables');
 
 class accountStatementService {
 	constructor(){
 		this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
+		this.test = this.test.bind(this);
 	}
 	async sendEmailCSV_Format() {
 
@@ -66,6 +68,52 @@ class accountStatementService {
 		return "DB2 error" + err;
 	}
 }
+async populateDataBase(){
+
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-04-26', '010251945119', 'Money Transfer - Mobile Account', 'USSD', 'Beneficiary Details: 923079770309', 1, 0, 996.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-05-26', '010099506870', 'Money Transfer - Mobile Account', 'Mobile App', 'Beneficiary Details: 923125796890', 1, 0, 997.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-06-26', '010066562541', 'Money Transfer - Mobile Account', 'Mobile App', 'Beneficiary Details: 923455108911', 0, 500, 998.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-07-26', '009949357058', 'Money Transfer - Bank', 'Mobile App', 'Bank Transfer', 500, 0, 498.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-08-26', '009949336950', 'Money Transfer - Bank', 'Mobile App', 'Bank Transfer', 500, 0, 998.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-09-26', '009853747703', 'Money Transfer - CNIC', 'Mobile App', 'Beneficiary Details: 923465470362, 6110187390055', 2500, 0, 1498.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-10-26', '009853729041', 'Money Transfer - Bank', 'ATM', 'Beneficiary Details: 923015091633', 0, 3000, 4058.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-11-26', '009706631603', 'Money Transfer - Mobile Account', 'Mobile App', 'Beneficiary Details: 923012009814', 0, 5, 1058.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-12-26', '009660266611', 'Online Payment', 'Payment Gateway', 'Online Payment', 751, 0, 1053.13);
+}
+async test() {
+const PDFDocument = require('../util/PDFDocumentWithTables');
+const doc = new PDFDocument();
+doc.pipe(fs.createWriteStream(imageDIR + 'output2.pdf'));
+const data = await DB2_Connection.getValueArray('1030', '2020-10-01', '2020-02-01');
+const data2 = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+
+console.log("Array Format statement"+ data);
+console.log("String Format statement"+ data2);
+const table0 = {
+    headers: ['Word', 'Comment', 'Summary'],
+    rows: data
+};
+
+doc.table(table0, {
+    prepareHeader: () => doc.font('Helvetica-Bold'),
+    prepareRow: (row, i) => doc.font('Helvetica').fontSize(12)
+});
+
+const table1 = {
+    headers: ['Country', 'Conversion rate', 'Trend'],
+    rows: [
+        ['Switzerland', '12%', '+1.12%'],
+        ['France', '67%', '-0.98%'],
+        ['England', '33%', '+4.44%']
+    ]
+};
+
+doc.moveDown().table(table1, 100, 350, { width: 300 });
+
+doc.end();
+
+}
+
 }
 
 export default new accountStatementService();
