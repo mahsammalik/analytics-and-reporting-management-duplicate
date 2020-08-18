@@ -77,7 +77,9 @@
                     "invalid": "AR-AS-T01",
                     "missing_required_parameters": "AR-AS-T02",
                     "date_invalid": "AR-AS-T04",
-                    "database_connection": "AR-AS-T05"
+                    "database_connection": "AR-AS-T05",
+                    "email_problem": "AR-AS-T06",
+                    "pdf_internal_error": "AR-AS-T07"
                   },
                 "contactIntegration": {
                   "success": "AM-CI-T01",

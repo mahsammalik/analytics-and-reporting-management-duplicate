@@ -28,18 +28,6 @@ class accountStatementController {
         console.log(queryValidationResponse)
         return res.status(422).send(responseCodeForAccountStatementQuery);
       }
-
-        // if (req.query.start_date == undefined)
-        //   res.status(422).json('Missing Start Date');
-        // if (req.query.end_date == undefined)
-        //   res.status(422).json('Missing End Date');
-        // if (req.query.request == undefined)
-        //   res.status(422).json('Missing request requirement');
-        // console.log(req.headers);
-        // if (req.headers['x-msisdn'] == undefined)
-        //   res.status(422).json('Missing user\'s mobile number');
-        // if (req.headers['x-meta-data'] == '')
-        //   res.status(422).json('Missing user\'s email');
         let payload = { 
           msisdn: req.headers['x-msisdn'],
           start_date: req.query.start_date,
@@ -47,15 +35,32 @@ class accountStatementController {
           request: req.query.request,
           email: req.headers['x-meta-data'],
           subject: 'Hello',
-          html: '<html></html>'
+          html: '<html></html>',
+          format: req.query.format
+          
       }
       console.log("payload" + payload)
-      console.log("service" + this.accountStatementService)
-      if (payload.request == 'pdf')
-        await this.accountStatementService.sendEmailPDF_Format(payload);
-      else if (payload.request == 'csv') 
-        await this.accountStatementService.sendEmailCSV_Format(payload);
+      let response = '';
+      let responseCodeForAccountStatementQuery;
+      if (payload.format == 'pdf')
+         response = await this.accountStatementService.sendEmailPDF_Format(payload);
+      else if (payload.format == 'csv') 
+        response = await this.accountStatementService.sendEmailCSV_Format(payload);
 
+        if(response == 'Database Error'){
+           responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
+           res.status(500).send(responseCodeForAccountStatementQuery);
+        }else if (response == 'Error in sending email'){
+          console.log("enter the correct conditiion")
+          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
+          res.status(422).send(responseCodeForAccountStatementQuery);
+        }  else if (response == 'Email send Succefull'){
+          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");
+          res.status(200).send(responseCodeForAccountStatementQuery);
+        }else if (response == 'PDF creation error'){
+          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.pdf_internal_error, "Internal error");
+          res.status(500).send(responseCodeForAccountStatementQuery);
+        }
 
     }
   }

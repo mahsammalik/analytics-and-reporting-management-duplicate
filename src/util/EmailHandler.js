@@ -29,7 +29,7 @@ class EmailHandler {
           return true;
         })
         .catch((error) => {
-          console.log(error);
+          console.log("Catched error"+ error);
           return false;
         });
       return true;

@@ -32,9 +32,7 @@ class DatabaseConn {
   async getValueArray(customerMobileNumer, endDate, startDate) {
 
     try{
-      
-      let concatenatResult;
-      let conn = await open(cn);
+      const conn = await open(cn);
       const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
       const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
       const arrayResult =  result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
@@ -47,7 +45,7 @@ class DatabaseConn {
     }
     catch(err){
       logger.error('Database connection error'+ err);
-      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+      return "Database Error"
     }
   }
 

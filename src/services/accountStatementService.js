@@ -23,29 +23,32 @@ class accountStatementService {
 
 }
 
-	async sendEmailPDF_Format(payLoad) {
-		
-		console.log("call teh account sstatement service");
-		var myDoc = new PDFDocument({ bufferPages: true });
-		myDoc.pipe(fs.createWriteStream(imageDIR + 'output2.pdf'));
-		var finalString = ''; // contains the base64 string
-		let buffers = [];
-		console.log("payload msisdn" + payLoad.msisdn + "endatae"+ payLoad.end_date + "start date"+ payLoad.start_date)
-		const data = await DB2_Connection.getValueArray( '03015091633', payLoad.end_date, payLoad.start_date);
-		console.log("the account statement"+ data);
-		let pdfData;
+	async sendEmailPDF_Format(payload) {
+		console.log("email pdf")
+		const myDoc = new PDFDocument({ bufferPages: true });
+		myDoc.pipe(fs.createWriteStream(imageDIR + 'test.pdf'));
+		let finalString = ''; // contains the base64 string
+		const data = await DB2_Connection.getValueArray( payload.msisdn, payload.end_date, payload.start_date);
+		console.log("the output of changing database"+ data)
+		if(data === 'Database Error') return "Database Error"
 			myDoc.pipe(new Base64Encode());
 				myDoc.on('data', function (chunk) {
 					finalString += chunk;
 				});
 			myDoc.on('end', function () {
 				// the stream is at its end, so push the resulting base64 string to the response
-				const emailResponse = EmailHandler.sendEmail("", payLoad.email, payLoad.subject, payLoad.html, finalString);
-				if(emailResponse === false) return "Error in sending email" 
+				 const emailResponse =  EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, finalString)
+				if(emailResponse === true){
+					console.log("Email send ")
+					return "Error in sending email"
+				}	
+				else {
+					console.log("Email send probllem")
+					return "Email send Succefull"
+
+				}
 			});
 		try{
-			// const data = await DB2_Connection.getValueArray('03015091633', '2021-10-01', '2001-02-01');
-			// const data2 = await DB2_Connection.getValue('03015091633', '2021-10-01', '2001-02-01');
 			
 			console.log("Array Format statement"+ data);
 			const table0 = {
@@ -59,10 +62,13 @@ class accountStatementService {
 			});
 		myDoc.end();
 	}catch(err){
-		logger.error('Error in pdf '+ err);
-		return "DB2 error" + err;
+		logger.error('Error in pdf Creation'+ err);
+		return "PDF creation error";
 	}
 }
+
+
+
 async populateDataBase(){
 
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-04-26', '010251945119', 'Money Transfer - Mobile Account', 'USSD', 'Beneficiary Details: 923079770309', 1, 0, 996.19);
