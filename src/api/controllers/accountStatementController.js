@@ -32,7 +32,7 @@ class accountStatementController {
           msisdn: req.headers['x-msisdn'],
           start_date: req.query.start_date,
           end_date: req.query.end_date,
-          request: req.query.request,
+          request: req.query.requestType,
           email: req.headers['x-meta-data'],
           subject: 'Hello',
           html: '<html></html>',
