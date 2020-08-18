@@ -30,8 +30,8 @@ class accountStatementService {
 		myDoc.pipe(fs.createWriteStream(imageDIR + 'output2.pdf'));
 		var finalString = ''; // contains the base64 string
 		let buffers = [];
-		console.log("payload msisdn" + payLoad.msisdn)
-		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+		console.log("payload msisdn" + payLoad.msisdn + "endatae"+ payLoad.end_date + "start date"+ payLoad.start_date)
+		const data = await DB2_Connection.getValueArray( '03015091633', payLoad.end_date, payLoad.start_date);
 		console.log("the account statement"+ data);
 		let pdfData;
 			myDoc.pipe(new Base64Encode());
@@ -44,11 +44,10 @@ class accountStatementService {
 				if(emailResponse === false) return "Error in sending email" 
 			});
 		try{
-			const data = await DB2_Connection.getValueArray('03015091633', '2021-10-01', '2001-02-01');
-			const data2 = await DB2_Connection.getValue('03015091633', '2021-10-01', '2001-02-01');
+			// const data = await DB2_Connection.getValueArray('03015091633', '2021-10-01', '2001-02-01');
+			// const data2 = await DB2_Connection.getValue('03015091633', '2021-10-01', '2001-02-01');
 			
 			console.log("Array Format statement"+ data);
-			console.log("String Format statement"+ data2);
 			const table0 = {
 				headers: ['Trx ID', 'Trx DateTime', 'MSISDN', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
 				rows: data

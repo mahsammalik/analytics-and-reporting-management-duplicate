@@ -4,6 +4,7 @@ import validations from './validators/validations';
 import schema from './validators/schema.json';
 import responseCodeHandler from '../../util/responseCodeHandler';
 
+
 class accountStatementController {
     
     constructor(service) {
@@ -12,19 +13,22 @@ class accountStatementController {
     }
 
     async calculateAccountStatement(req, res) {
-      // const headersValidationResponse = validations.verifySchema(
-      //   schema.REQUEST_HEADER_SCHEMA,
-      //   req.headers
-      // );
-      // const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
-      // if (!headersValidationResponse.success) {
-      //   balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
-      //   return res.status(422).send(balanceResponse);
-      // }
-      // if (!queryValidationResponse.success) {
-      //   balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
-      //   return res.status(422).send(balanceResponse);
-      // }
+      const headersValidationResponse = validations.verifySchema(
+        schema.REQUEST_HEADER_SCHEMA,
+        req.headers
+      );
+      const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
+
+      if (!headersValidationResponse.success) {
+        const responseCodeForAccountStatementHeader = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
+        return res.status(422).send(responseCodeForAccountStatementHeader);
+      }
+      if (!queryValidationResponse.success) {
+        const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
+        console.log(queryValidationResponse)
+        return res.status(422).send(responseCodeForAccountStatementQuery);
+      }
+
         // if (req.query.start_date == undefined)
         //   res.status(422).json('Missing Start Date');
         // if (req.query.end_date == undefined)
@@ -48,7 +52,7 @@ class accountStatementController {
       console.log("payload" + payload)
       console.log("service" + this.accountStatementService)
       if (payload.request == 'pdf')
-        await this.accountStatementService.sendEmailPDF_Format(payload, res);
+        await this.accountStatementService.sendEmailPDF_Format(payload);
       else if (payload.request == 'csv') 
         await this.accountStatementService.sendEmailCSV_Format(payload);
 

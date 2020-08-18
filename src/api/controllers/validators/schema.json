@@ -9,14 +9,18 @@
         "required": ["start_date", "end_date", "request"],
         "properties": {
             "start_date": {
-                "format": "string"
+                "format": "date"
             },
             "end_date": {
-                "format": "string"
+                "format": "date"
             },
             "request": {
-                "format": "string",
+                "type": "string",
                 "enum": ["Download", "Email"]
+            },
+            "format": {
+                "type": "string",
+                "enum": ["csv", "pdf"]
             }
         }
     },
