@@ -23,7 +23,7 @@ class accountStatementService {
 
 }
 
-	async sendEmailPDF_Format(payload) {
+	async sendEmailPDF_Format(payload, res) {
 		console.log("email pdf")
 		const myDoc = new PDFDocument({ bufferPages: true });
 		myDoc.pipe(fs.createWriteStream(imageDIR + 'test.pdf'));
@@ -37,16 +37,7 @@ class accountStatementService {
 				});
 			myDoc.on('end', function () {
 				// the stream is at its end, so push the resulting base64 string to the response
-				 const emailResponse =  EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, finalString)
-				if(emailResponse === true){
-					console.log("Email send ")
-					return "Error in sending email"
-				}	
-				else {
-					console.log("Email send probllem")
-					return "Email send Succefull"
-
-				}
+				 EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, finalString, res)
 			});
 		try{
 			

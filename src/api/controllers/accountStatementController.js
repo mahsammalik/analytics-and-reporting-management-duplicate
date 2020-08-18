@@ -43,10 +43,10 @@ class accountStatementController {
       let response = '';
       let responseCodeForAccountStatementQuery;
       if (payload.format == 'pdf')
-         response = await this.accountStatementService.sendEmailPDF_Format(payload);
+         response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
       else if (payload.format == 'csv') 
         response = await this.accountStatementService.sendEmailCSV_Format(payload);
-
+       console.log("base64" + response)
         if(response == 'Database Error'){
            responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
            res.status(500).send(responseCodeForAccountStatementQuery);
