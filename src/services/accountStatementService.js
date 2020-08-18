@@ -1,4 +1,4 @@
-const PDFDocument = require('pdfkit');
+const PDFDocument = require('../util/PDFDocumentWithTables');
 import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
@@ -27,6 +27,7 @@ class accountStatementService {
 		
 		console.log("call teh account sstatement service");
 		var myDoc = new PDFDocument({ bufferPages: true });
+		myDoc.pipe(fs.createWriteStream(imageDIR + 'output2.pdf'));
 		var finalString = ''; // contains the base64 string
 		let buffers = [];
 		console.log("payload msisdn" + payLoad.msisdn)
@@ -59,9 +60,20 @@ class accountStatementService {
 				if(emailResponse === false) return "Error in sending email" 
 			});
 		try{
-			myDoc.font('Times-Roman');
-		myDoc.fontSize(12)
-			.text(data);
+			const data = await DB2_Connection.getValueArray('03015091633', '2021-10-01', '2001-02-01');
+			const data2 = await DB2_Connection.getValue('03015091633', '2021-10-01', '2001-02-01');
+			
+			console.log("Array Format statement"+ data);
+			console.log("String Format statement"+ data2);
+			const table0 = {
+				headers: ['MSISDN', 'Trx DateTime', 'Trx ID', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
+				rows: data
+			};
+			
+			myDoc.table(table0, {
+				prepareHeader: () => doc.font('Helvetica-Bold').fontSize(5),
+				prepareRow: (row, i) => doc.font('Helvetica').fontSize(5)
+			});
 		myDoc.end();
 	}catch(err){
 		logger.error('Error in pdf '+ err);
@@ -84,34 +96,30 @@ async test() {
 const PDFDocument = require('../util/PDFDocumentWithTables');
 const doc = new PDFDocument();
 doc.pipe(fs.createWriteStream(imageDIR + 'output2.pdf'));
-const data = await DB2_Connection.getValueArray('1030', '2020-10-01', '2020-02-01');
-const data2 = await DB2_Connection.getValue('1030', '2020-10-01', '2020-02-01');
+const data = await DB2_Connection.getValueArray('03015091633', '2021-10-01', '2001-02-01');
+const data2 = await DB2_Connection.getValue('03015091633', '2021-10-01', '2001-02-01');
 
 console.log("Array Format statement"+ data);
 console.log("String Format statement"+ data2);
 const table0 = {
-    headers: ['Word', 'Comment', 'Summary'],
+    headers: ['MSISDN', 'Trx DateTime', 'Trx ID', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
     rows: data
 };
 
 doc.table(table0, {
-    prepareHeader: () => doc.font('Helvetica-Bold'),
-    prepareRow: (row, i) => doc.font('Helvetica').fontSize(12)
+    prepareHeader: () => doc.font('Helvetica-Bold').fontSize(5),
+    prepareRow: (row, i) => doc.font('Helvetica').fontSize(5)
 });
 
-const table1 = {
-    headers: ['Country', 'Conversion rate', 'Trend'],
-    rows: [
-        ['Switzerland', '12%', '+1.12%'],
-        ['France', '67%', '-0.98%'],
-        ['England', '33%', '+4.44%']
-    ]
-};
+// const table1 = {
+//     headers: ['MSISDN', 'Trx DateTime', 'Trx ID', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
+//     rows: data
+// };
 
-doc.moveDown().table(table1, 100, 350, { width: 300 });
+// doc.moveDown().table(table1, 100, 350, { width: 300 });
 
 doc.end();
-
+return ;
 }
 
 }

@@ -16,15 +16,15 @@ class accountStatementController {
         schema.REQUEST_HEADER_SCHEMA,
         req.headers
       );
-      const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
-      if (!headersValidationResponse.success) {
-        balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
-        return res.status(422).send(balanceResponse);
-      }
-      if (!queryValidationResponse.success) {
-        balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
-        return res.status(422).send(balanceResponse);
-      }
+      // const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
+      // if (!headersValidationResponse.success) {
+      //   balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
+      //   return res.status(422).send(balanceResponse);
+      // }
+      // if (!queryValidationResponse.success) {
+      //   balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
+      //   return res.status(422).send(balanceResponse);
+      // }
         // if (req.query.start_date == undefined)
         //   res.status(422).json('Missing Start Date');
         // if (req.query.end_date == undefined)
@@ -41,7 +41,7 @@ class accountStatementController {
           start_date: req.query.start_date,
           end_date: req.query.end_date,
           request: req.query.request,
-          email: req.headers['x-meta-data']['email'],
+          email: req.headers['x-meta-data'],
           subject: 'Hello',
           html: '<html></html>'
       }

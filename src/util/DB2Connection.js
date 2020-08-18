@@ -35,13 +35,14 @@ class DatabaseConn {
       
       let concatenatResult;
       let conn = await open(cn);
-      const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNT where TRX_ID = ? And TRX_DATETIME BETWEEN ? AND ?;");
-      let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
-      return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
+      const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
+      const arrayResult =  result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       result.closeSync();
       stmt.closeSync();
       conn.close(function (err) { });
-      return concatenatResult;
+      console.log('the resulted array '+ arrayResult)
+      return arrayResult;
 
     }
     catch(err){

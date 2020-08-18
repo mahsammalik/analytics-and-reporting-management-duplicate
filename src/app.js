@@ -36,10 +36,18 @@ app.get('/put', async (req, res) => {
  
 });
 
-app.get('/get', async (req, res) => {
+app.get('/populate_database', async (req, res) => {
   //  let value = await Cache.getValue('jk', config.cache.cacheName);
   // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
-  accountStatementService.populateDataBase();
+  await accountStatementService.populateDataBase();
+  res.json("done")
+
+});
+
+app.get('/test_pdf', async (req, res) => {
+  //  let value = await Cache.getValue('jk', config.cache.cacheName);
+  // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
+  accountStatementService.test();
 
 
 });
