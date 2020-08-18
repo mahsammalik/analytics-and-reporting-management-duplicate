@@ -1,4 +1,5 @@
 import accountStatementController from '../controllers/AccountStatementController';
+import taxStatementController from '../controllers/taxStatementController';
 
 export default (app) => {
 

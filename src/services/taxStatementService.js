@@ -9,7 +9,7 @@ const fs = require('fs');
 
 class taxStatementService {
 	constructor(){
-		this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
+		this.sendEmailPDF_Format = this.sendTaxStatement.bind(this);
 	}
 
 
