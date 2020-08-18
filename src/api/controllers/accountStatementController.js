@@ -12,10 +12,10 @@ class accountStatementController {
     }
 
     async calculateAccountStatement(req, res) {
-      const headersValidationResponse = validations.verifySchema(
-        schema.REQUEST_HEADER_SCHEMA,
-        req.headers
-      );
+      // const headersValidationResponse = validations.verifySchema(
+      //   schema.REQUEST_HEADER_SCHEMA,
+      //   req.headers
+      // );
       // const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
       // if (!headersValidationResponse.success) {
       //   balanceResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
@@ -47,7 +47,7 @@ class accountStatementController {
       }
       console.log("payload" + payload)
       console.log("service" + this.accountStatementService)
-      await this.accountStatementService.accountStatementCall(payload, res);
+      await this.accountStatementService.sendEmailPDF_Format(payload, res);
     }
   }
 export default new accountStatementController(accountStatementService);

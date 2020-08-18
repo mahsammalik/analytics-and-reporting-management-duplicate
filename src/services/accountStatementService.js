@@ -71,8 +71,8 @@ class accountStatementService {
 			};
 			
 			myDoc.table(table0, {
-				prepareHeader: () => doc.font('Helvetica-Bold').fontSize(5),
-				prepareRow: (row, i) => doc.font('Helvetica').fontSize(5)
+				prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
+				prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
 			});
 		myDoc.end();
 	}catch(err){
