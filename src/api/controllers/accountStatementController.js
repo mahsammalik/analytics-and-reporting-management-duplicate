@@ -47,7 +47,12 @@ class accountStatementController {
       }
       console.log("payload" + payload)
       console.log("service" + this.accountStatementService)
-      await this.accountStatementService.sendEmailPDF_Format(payload, res);
+      if (payload.request == 'pdf')
+        await this.accountStatementService.sendEmailPDF_Format(payload, res);
+      else if (payload.request == 'csv') 
+        await this.accountStatementService.sendEmailCSV_Format(payload);
+
+
     }
   }
 export default new accountStatementController(accountStatementService);

@@ -14,7 +14,7 @@ class accountStatementService {
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 		this.test = this.test.bind(this);
 	}
-	async sendEmailCSV_Format() {
+	async sendEmailCSV_Format(payLoad) {
 
 		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 		let buff = new Buffer.from(data);
@@ -23,7 +23,7 @@ class accountStatementService {
 
 }
 
-	async sendEmailPDF_Format(payLoad, res) {
+	async sendEmailPDF_Format(payLoad) {
 		
 		console.log("call teh account sstatement service");
 		var myDoc = new PDFDocument({ bufferPages: true });
@@ -34,22 +34,6 @@ class accountStatementService {
 		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 		console.log("the account statement"+ data);
 		let pdfData;
-		// console.log("the payload request"+ payLoad.request)
-		// if (payLoad.request == 'Download') {
-		// 	console.log("Start Download Process");
-		// 	myDoc = new PDFDocument({ bufferPages: true });
-		// myDoc.on('data', buffers.push.bind(buffers));
-		// myDoc.on('end', () => {
-		// 	pdfData = Buffer.concat(buffers);
-		// 	res.writeHead(200, {
-		// 		'Content-Length': Buffer.byteLength(pdfData),
-		// 		'Content-Type': 'application/pdf',
-		// 		'Content-disposition': 'attachment;filename=Account.pdf',
-		// 	})
-		// 		.end(pdfData);
-		// });
-		// }
-		// else if (payLoad.request == 'Email') {
 			myDoc.pipe(new Base64Encode());
 				myDoc.on('data', function (chunk) {
 					finalString += chunk;
@@ -66,7 +50,7 @@ class accountStatementService {
 			console.log("Array Format statement"+ data);
 			console.log("String Format statement"+ data2);
 			const table0 = {
-				headers: ['MSISDN', 'Trx DateTime', 'Trx ID', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
+				headers: ['Trx ID', 'Trx DateTime', 'MSISDN', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
 				rows: data
 			};
 			
