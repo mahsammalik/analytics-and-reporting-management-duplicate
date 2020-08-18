@@ -50,7 +50,7 @@ class DatabaseConn {
     }
   }
 
-  async addAccountStatement(trxId, trxDateTime, msisdn, transactionType, channel, description, amountDebited, amountCredited, runningBalance) {
+  async addAccountStatement(msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance) {
 
     try{
       
@@ -58,7 +58,7 @@ class DatabaseConn {
       const stmt = conn.prepareSync("INSERT INTO DB2INST1.ACCOUNTSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TRANSACTION_TYPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE) VALUES(?,?,?,?,?,?,?,?,?);");
       stmt.executeSync([ msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance]);
       // return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-      result.closeSync();
+      // result.closeSync();
       stmt.closeSync();
       conn.close(function (err) { });
       console.log("insert done");
