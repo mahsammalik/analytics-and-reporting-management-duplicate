@@ -6,7 +6,10 @@ const { convertArrayToCSV } = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
-// const PDFDocument = require('./pdfkit-tables');
+const generate = require('csv-generate')
+const parse = require('csv-parser')
+
+
 
 class accountStatementService {
 	constructor(){
@@ -15,8 +18,43 @@ class accountStatementService {
 		this.test = this.test.bind(this);
 	}
 	async sendEmailCSV_Format(payLoad) {
+		console.log("enter the csv method")
+		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);	
+		console.log("the IBM DB2 data "+ data)
+		const parser = parse({
+			delimiter: "\n",
+			separator: "\n"
+		  }).pipe(fs.createWriteStream(imageDIR + 'test.csv'));
+		  // Use the readable stream api
+		  parser.on('readable', function(){
+			let record
+			while (record = parser.read()) {
+			  output.push(record)
+			}
+		  })
+		  // Catch any error
+		  parser.on('error', function(err){
+			console.error(err.message)
+		  })
+		  // When we are done, test that the parsed output matched what expected
+		  parser.on('end', function(){
+			assert.deepEqual(
+			  output,
+			  [
+				[ 'root','x','0','0','root','/root','/bin/bash' ],
+				[ 'someone','x','1022','1022','','/home/someone','/bin/bash' ]
+			  ]
+			)
+		  })
+		  // Write data to the stream
+		//   parser.write("root:x:0:0:root:/root:/bin/bash\n")
+		  parser.write(data	)
+		  // Close the readable stream
+		  parser.end()
 
-		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+
+		// generate(data)
+		//   .pipe(fs.createWriteStream(imageDIR + 'test.csv'))
 		let buff = new Buffer.from(data);
 		let base64data = buff.toString('base64');
 		return base64data;

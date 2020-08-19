@@ -43,20 +43,31 @@ class taxStatementController {
       let responseCodeForAccountStatementQuery;
         response = await this.taxStatementService.sendTaxStatement(payload, res)
        console.log("base64" + response)
-        if(response == 'Database Error'){
-           responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
-           res.status(500).send(responseCodeForAccountStatementQuery);
-        }else if (response == 'Error in sending email'){
-          console.log("enter the correct conditiion")
-          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
-          res.status(422).send(responseCodeForAccountStatementQuery);
-        }  else if (response == 'Email send Succefull'){
-          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");
-          res.status(200).send(responseCodeForAccountStatementQuery);
-        }else if (response == 'PDF creation error'){
-          responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.pdf_internal_error, "Internal error");
-          res.status(500).send(responseCodeForAccountStatementQuery);
-        }
+       let responseCodeForTaxStatementQuery  = 
+       {
+        "success": true,
+        "responseCode": "AR-TS-T01",
+        "responseMessage_en": "The Email send succefully.",
+        "responseMessage_ur": "The Email send succefully."
+      }
+      // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
+      res.status(200).json(responseCodeForTaxStatementQuery);
+
+      
+        // if(response == 'Database Error'){
+        //    responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
+        //    res.status(500).send(responseCodeForAccountStatementQuery);
+        // }else if (response == 'Error in sending email'){
+        //   console.log("enter the correct conditiion")
+        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
+        //   res.status(422).send(responseCodeForAccountStatementQuery);
+        // }  else if (response == 'Email send Succefull'){
+        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");
+        //   res.status(200).send(responseCodeForAccountStatementQuery);
+        // }else if (response == 'PDF creation error'){
+        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.pdf_internal_error, "Internal error");
+        //   res.status(500).send(responseCodeForAccountStatementQuery);
+        // }
 
     }
   }

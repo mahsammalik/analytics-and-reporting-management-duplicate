@@ -12,12 +12,12 @@ class DatabaseConn {
       
       let concatenatResult;
       let conn = await open(cn);
-      const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNT where TRX_ID = ? And TRX_DATETIME BETWEEN ? AND ?;");
+      const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
       let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
       const resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-      concatenatResult = resultArrayFormat.join('/n');
+      concatenatResult = resultArrayFormat.join('\n');
       console.log("the result of database" +concatenatResult);
-      result.closeSync();
+      result.closeSync(); 
       stmt.closeSync();
       conn.close(function (err) { });
       return concatenatResult;
@@ -89,6 +89,29 @@ class DatabaseConn {
       return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
     }
   }
+
+
+
+async addTaxStatement(msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance) {
+
+  try{
+    
+    let conn = await open(cn);
+    const stmt = conn.prepareSync("INSERT INTO DB2INST1.TAXSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TRANSACTION_TYPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE) VALUES(?,?,?,?,?,?,?,?,?);");
+    stmt.executeSync([ msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance]);
+    // return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+    // result.closeSync();
+    stmt.closeSync();
+    conn.close(function (err) { });
+    console.log("insert done");
+    return;
+
+  }
+  catch(err){
+    logger.error('Database connection error'+ err);
+    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+  }
+}
 }
 
 export default new DatabaseConn();
