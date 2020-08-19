@@ -21,6 +21,7 @@ class accountStatementService {
 		console.log("enter the csv method")
 		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);	
 		console.log("the IBM DB2 data "+ data)
+		let output = []
 		const parser = parse({
 			delimiter: "\n",
 			separator: "\n"
@@ -38,16 +39,12 @@ class accountStatementService {
 		  })
 		  // When we are done, test that the parsed output matched what expected
 		  parser.on('end', function(){
-			assert.deepEqual(
-			  output,
-			  [
-				[ 'root','x','0','0','root','/root','/bin/bash' ],
-				[ 'someone','x','1022','1022','','/home/someone','/bin/bash' ]
-			  ]
-			)
-		  })
+			let buff = new Buffer.from(output);
+			let base64data = buff.toString('base64');
+			EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res)
+			  })
 		  // Write data to the stream
-		//   parser.write("root:x:0:0:root:/root:/bin/bash\n")
+		  parser.write("Trx ID, Trx DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n")
 		  parser.write(data	)
 		  // Close the readable stream
 		  parser.end()
@@ -55,9 +52,6 @@ class accountStatementService {
 
 		// generate(data)
 		//   .pipe(fs.createWriteStream(imageDIR + 'test.csv'))
-		let buff = new Buffer.from(data);
-		let base64data = buff.toString('base64');
-		return base64data;
 
 }
 
@@ -105,7 +99,7 @@ async populateDataBase(){
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-06-26', '010066562541', 'Money Transfer - Mobile Account', 'Mobile App', 'Beneficiary Details: 923455108911', 0, 500, 998.19);
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-07-26', '009949357058', 'Money Transfer - Bank', 'Mobile App', 'Bank Transfer', 500, 0, 498.19);
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-08-26', '009949336950', 'Money Transfer - Bank', 'Mobile App', 'Bank Transfer', 500, 0, 998.19);
-	await DB2_Connection.addAccountStatement( '03015091633', '2020-09-26', '009853747703', 'Money Transfer - CNIC', 'Mobile App', 'Beneficiary Details: 923465470362, 6110187390055', 2500, 0, 1498.19);
+	await DB2_Connection.addAccountStatement( '03015091633', '2020-09-26', '009853747703', 'Money Transfer - CNIC', 'Mobile App', 'Beneficiary Details: 923465470362', 2500, 0, 1498.19);
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-10-26', '009853729041', 'Money Transfer - Bank', 'ATM', 'Beneficiary Details: 923015091633', 0, 3000, 4058.19);
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-11-26', '009706631603', 'Money Transfer - Mobile Account', 'Mobile App', 'Beneficiary Details: 923012009814', 0, 5, 1058.19);
 	await DB2_Connection.addAccountStatement( '03015091633', '2020-12-26', '009660266611', 'Online Payment', 'Payment Gateway', 'Online Payment', 751, 0, 1053.13);
