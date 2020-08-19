@@ -15,6 +15,18 @@ class DatabaseConn {
       const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
       let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
       const resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      let sumBalance = 0
+      let sumCredit =  0
+      let sumDebit= 0
+      console.log("--------------------------------------")
+      console.log(resultArrayFormat.forEach((row) =>
+      { 
+        sumDebit += row[6];
+        sumCredit += row[7];
+        sumBalance += row[8];
+      }))
+      console.log("--------------------------------------")
+      resultArrayFormat.push(["",'',"","","","",sumDebit,sumCredit,sumBalance])
       concatenatResult = resultArrayFormat.join('\n');
       console.log("the result of database" +concatenatResult);
       result.closeSync(); 
