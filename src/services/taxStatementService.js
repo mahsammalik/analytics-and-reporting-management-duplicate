@@ -1,15 +1,17 @@
 const PDFDocument = require('../util/PDFDocumentWithTables');
-import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const { Base64Encode } = require('base64-stream');
 const { convertArrayToCSV } = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
+import DB2_Connection from '../util/DB2Connection';
+
 
 class taxStatementService {
 	constructor(){
-		this.sendEmailPDF_Format = this.sendTaxStatement.bind(this);
+		this.sendTaxStatement = this.sendTaxStatement.bind(this);
+		this.populateDataBase = this.populateDataBase.bind(this);
 	}
 
 
@@ -48,7 +50,9 @@ class taxStatementService {
 	}
 }
 
-
+async populateDataBase(){
+	await DB2_Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0')
+}
 }
 
 export default new taxStatementService();

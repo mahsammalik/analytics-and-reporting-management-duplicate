@@ -102,13 +102,13 @@ class DatabaseConn {
 
 
 
-async addTaxStatement(msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance) {
+async addTaxStatement(msisdn, trxDateTime, trxId, taxDeducted, salesTax, incomeTax, withHoldigTax, fee, comission) {
 
   try{
     
     let conn = await open(cn);
-    const stmt = conn.prepareSync("INSERT INTO DB2INST1.TAXSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TRANSACTION_TYPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE) VALUES(?,?,?,?,?,?,?,?,?);");
-    stmt.executeSync([ msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance]);
+    const stmt = conn.prepareSync("INSERT INTO DB2INST1.TAXSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TAX_DEDUCTED, SALES_TAX, INCOME_TAX, WITHHOLDING_TAX, FEE, COMMISSION) VALUES('', '', '', '', '', '', '', '', '');");
+    stmt.executeSync([ msisdn, trxDateTime, trxId, taxDeducted, salesTax, incomeTax, withHoldigTax, fee, comission]);
     // return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
     // result.closeSync();
     stmt.closeSync();

@@ -10,6 +10,7 @@ import Subscriber from './services/subscriberService';
 import path from 'path';
 import { extract } from './extract';
 import accountStatementService from './services/accountStatementService';
+import taxStatementService from './services/taxStatementService';
 
 console.log('printing webserver value' + config.mongodb.host);
 logger.info('Trace message, Winston!');
@@ -48,6 +49,14 @@ app.get('/test_pdf', async (req, res) => {
   //  let value = await Cache.getValue('jk', config.cache.cacheName);
   // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
   accountStatementService.test();
+
+
+});
+app.get('/populate/tax', async (req, res) => {
+  //  let value = await Cache.getValue('jk', config.cache.cacheName);
+  // res.send('value fetched from value' + value); logger.info(req.logRequestTime);
+  await accountStatementService.populateDataBase();
+  res.json("done")
 
 
 });
