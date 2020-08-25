@@ -50,7 +50,7 @@ class accountStatementController {
       const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
 
       // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
-      if (payload.format == 'pdf')
+      if (payload.format == 'pdf' )
       res.status(200).json(responseCodeForAccountStatementQuery);
         //  response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
       else if (payload.format == 'csv') 
