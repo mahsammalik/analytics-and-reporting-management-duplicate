@@ -21,12 +21,17 @@ class accountStatementController {
 
       if (!headersValidationResponse.success) {
         const responseCodeForAccountStatementHeader = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
-        return res.status(422).send(responseCodeForAccountStatementHeader);
+        res.status(422).send(responseCodeForAccountStatementHeader);
       }
       if (!queryValidationResponse.success) {
         const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
         console.log(queryValidationResponse)
-        return res.status(422).send(responseCodeForAccountStatementQuery);
+        res.status(422).send(responseCodeForAccountStatementQuery);
+      }
+      if(req.start_date >= req.end_date ){
+        const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "Start Date should be before the End Date");
+        console.log(queryValidationResponse)
+        res.status(422).send(responseCodeForAccountStatementQuery);
       }
         let payload = { 
           msisdn: req.headers['x-msisdn'],
@@ -42,20 +47,15 @@ class accountStatementController {
       
       console.log("payload" + payload)
    
-      let responseCodeForAccountStatementQuery  = 
-       {
-        "success": true,
-        "responseCode": "AR-AS-T03",
-        "responseMessage_en": "The Email send succefully.",
-        "responseMessage_ur": "The Email send succefully."
-      }
+      const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
+
       // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
       if (payload.format == 'pdf')
-      // res.status(200).json(responseCodeForAccountStatementQuery);
-         response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
+      res.status(200).json(responseCodeForAccountStatementQuery);
+        //  response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
       else if (payload.format == 'csv') 
-        // res.status(200).send(responseCodeForAccountStatementQuery);
-        response = await this.accountStatementService.sendEmailCSV_Format(payload);
+        res.status(200).send(responseCodeForAccountStatementQuery);
+        // response = await this.accountStatementService.sendEmailCSV_Format(payload);
 
        
         // if(response == 'Database Error'){
