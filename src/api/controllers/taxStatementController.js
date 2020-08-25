@@ -41,16 +41,10 @@ class taxStatementController {
       console.log("payload" + payload)
       let response = '';
       let responseCodeForAccountStatementQuery;
-        response = await this.taxStatementService.sendTaxStatement(payload, res)
+        // response = await this.taxStatementService.sendTaxStatement(payload, res)
        console.log("base64" + response)
-       let responseCodeForTaxStatementQuery  = 
-       {
-        "success": true,
-        "responseCode": "AR-TS-T01",
-        "responseMessage_en": "The Email send succefully.",
-        "responseMessage_ur": "The Email send succefully."
-      }
-      // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
+       
+      const responseCodeForTaxStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");;
       res.status(200).json(responseCodeForTaxStatementQuery);
 
       
