@@ -39,6 +39,7 @@ class accountStatementController {
           format: req.query.format
           
       }
+      
       console.log("payload" + payload)
    
       let responseCodeForAccountStatementQuery  = 

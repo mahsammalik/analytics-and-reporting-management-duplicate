@@ -8,6 +8,9 @@ const CSV = require('csv-string');
 const fs = require('fs');
 const generate = require('csv-generate')
 const parse = require('csv-parser')
+const HummusRecipe = require('hummus-recipe');
+let ejs = require("ejs");
+let pdf = require("html-pdf");
 
 
 
@@ -17,6 +20,59 @@ class accountStatementService {
 		this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
 		this.test = this.test.bind(this);
 	}
+
+	
+	async testPackage(){
+	const pdfDoc = new HummusRecipe(imageDIR+'test.pdf', imageDIR+'output.pdf',{
+    version: 1.6,
+    author: 'John Doe',
+    title: 'Hummus Recipe',
+    subject: 'A brand new PDF'
+	});
+
+	pdfDoc
+	.editPage(1)
+    .text('Add some texts to an existing pdf file', 150, 300)
+    .endPage()
+	.endPDF();
+}
+
+	async test_purpose(payload, accountSatatemet){
+	
+		let headerInfo = {
+			date: accountSatatemet.date,
+			accNum: accountSatatemet.msisdn,
+			accTitle: "Nishat Linen",
+			period: payload.start_date + " _ "+ end_date,
+			accType: accountSatatemet.transactionType,
+		};
+		let summary = {
+			obalance: numeral(1900.00).format('0,0.00'),
+			cramount: numeral(11110.92).format('0,0.00'),
+			crtrx: numeral(12).format('0,0'),
+			avgcrtrx: numeral(925.91).format('0,0.00'),
+			dbamount: numeral(-9900.92).format('0,0.00'),
+			dbtrx: numeral(99).format('0,0'),
+			avgdbtrx: numeral(100.00).format('0,0.00'),
+			cbalance: numeral(90.91).format('0,0.00'),
+		}
+		let customers = [];
+		for (let index = 0; index < 55; index++) {
+			customers.push({
+				msisdn: accountSatatemet.msisdn,
+				date: accountSatatemet.Date,
+				trxid: accountSatatemet.trxId,
+				trxtype: accountSatatemet.trxType,
+				channel: accountSatatemet.channel,
+				description: accountSatatemet.description,
+				debit: accountSatatemet.debit,
+				credit: accountSatatemet.credit,
+				balance: accountSatatemet.balance
+			});
+		}
+	}
+
+	
 	async sendEmailCSV_Format(payLoad) {
 		console.log("enter the csv method")
 		const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);	
@@ -54,11 +110,35 @@ class accountStatementService {
 		//   .pipe(fs.createWriteStream(imageDIR + 'test.csv'))
 
 }
+generateHeader(doc) {
+	doc
+	  .image(pdfDIR+"jazzcash.png", 50, 45, { width: 50 })
+	  .fillColor("red")
+	  .fontSize(15)
+	  ;
+
+	  doc.text("Statement OF Account", 110, 70,  { align: "left" })
+	  .fillColor("#444444")
+	  .fontSize(10)
+	  .moveDown();
+
+	  doc.text("from", 110, 90, { align: "left" })
+	  .fontSize(10)
+	  .text("to")
+	  .fontSize(10)
+	  .text("123 Main Street", 200, 65, { align: "right" })
+	  .text("New York, NY, 10025", 200, 80, { align: "right" })
+	  .moveDown();
+  }
 
 	async sendEmailPDF_Format(payload, res) {
 		console.log("email pdf")
 		const myDoc = new PDFDocument({ bufferPages: true });
 		myDoc.pipe(fs.createWriteStream(imageDIR + 'test.pdf'));
+		this.generateHeader(myDoc);
+		// generateCustomerInformation(myDoc, invoice);
+		// generateInvoiceTable(doc, invoice);
+		// generateFooter(doc);
 		let finalString = ''; // contains the base64 string
 		const data = await DB2_Connection.getValueArray( payload.msisdn, payload.end_date, payload.start_date);
 		console.log("the output of changing database"+ data)
@@ -86,7 +166,7 @@ class accountStatementService {
 		myDoc.end();
 	}catch(err){
 		logger.error('Error in pdf Creation'+ err);
-		return "PDF creation error";
+		return new Error("PDF creation error");
 	}
 }
 

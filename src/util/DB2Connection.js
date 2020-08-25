@@ -55,7 +55,7 @@ class DatabaseConn {
     }
     catch(err){
       logger.error('Database connection error'+ err);
-      return "Database Error"
+      return new Error("Database Error")
     }
   }
 
