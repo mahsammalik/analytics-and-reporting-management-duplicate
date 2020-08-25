@@ -79,7 +79,7 @@
                     "date_invalid": "AR-AS-T04",
                     "database_connection": "AR-AS-T05",
                     "email_problem": "AR-AS-T08",
-                    "pdf_internal_error": "AR-AS-T06",
+                    "pdf_internal_error": "AR-AS-T06"
                   },
                 "contactIntegration": {
                   "success": "AM-CI-T01",
