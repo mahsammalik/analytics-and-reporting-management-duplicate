@@ -8,7 +8,6 @@ const RESPCODE_SERVICE_URL = process.env.MASTER_DATA_API_GET_RESPCODE_URL || con
 
 class ResponseCodeHandler {
   constructor() {}
-
   /**
    * 
    * 
@@ -19,7 +18,7 @@ class ResponseCodeHandler {
    * Data that needs to be part of response
    */
   async getResponseCode(code, data) {
-
+    console.log(code);
     let responseCodeObj;
 
     //Default Response message in case no ResponseCode
@@ -30,12 +29,14 @@ class ResponseCodeHandler {
       message_ur: config.responseCode.default.message,
       data: {}
     };
+    if (!code || _.isEmpty(code)) {
+      return response;
+    }
 
     try {
       //Get Response Code Object From Cache
-      responseCodeObj = await cache.getValue(code, config.cache.responseCodeCache);
-
-      if (!responseCodeObj) { //If not found in cache get Response Code from Master Data Microservice
+      let cacheresponseObj = await cache.getValue(code, config.cache.responseCodeCache);
+      if (!cacheresponseObj) { //If not found in cache get Response Code from Master Data Microservice
         logger.info("Getting response code from Master Data Microservice");
         const url = RESPCODE_SERVICE_URL;
         let axiosResp = await axios.get(url);
@@ -43,7 +44,7 @@ class ResponseCodeHandler {
           let resp = axiosResp.data;
           if (resp && resp.success) {
             let index = _.findIndex(resp.data, function (o) {
-              return o.code == code;
+              return o.key == code;
             });
             logger.info(" Object found at " + index);
             if (index && index != -1) {
@@ -57,7 +58,8 @@ class ResponseCodeHandler {
           }
         }
       }
-      if (responseCodeObj) {
+      if (cacheresponseObj) {
+        responseCodeObj = JSON.parse(cacheresponseObj);
         response.success = responseCodeObj.success;
         response.responseCode = responseCodeObj.code;
         response.message_en = responseCodeObj.message_en;
@@ -65,7 +67,18 @@ class ResponseCodeHandler {
         if (data) {
           response.data = data;
         }
+      } else if (responseCodeObj) {
+
+        response.success = responseCodeObj.success;
+        response.responseCode = responseCodeObj.code;
+        response.message_en = responseCodeObj.message_en;
+        response.message_ur = responseCodeObj.message_ur;
       }
+
+
+
+
+      console.log("response" + response);
     } catch (err) {
       logger.error("Error getting response code " + err);
     }
