@@ -24,7 +24,7 @@
         "description": "account statement schema",
         "type": "object",
         "additionalProperties": false,
-        "required": ["start_date", "end_date", "requestType"],
+        "required": ["start_date", "end_date", "format"],
         "properties": {
             "start_date": {
                 "format": "date"
