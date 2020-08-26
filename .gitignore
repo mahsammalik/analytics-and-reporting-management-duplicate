@@ -93,3 +93,4 @@ dist/
 database/
 .DS_Store
 public/
+.history
