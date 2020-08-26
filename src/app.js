@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import routes from './api/routes/routes';
 import middleware from './api/middlewares/testMiddleware';
 import Cache from './util/cache';
-import Subscriber from './services/subscriberService';
+//import Subscriber from './services/subscriberService';
 import path from 'path';
 import { extract } from './extract';
 import accountStatementService from './services/accountStatementService';
@@ -33,8 +33,8 @@ app.use(express.static(pdfPath));
 // app.use('/', routes);
 
 // ********* SAMPLE CODE TESTING
-const subscriber = new Subscriber();
-subscriber.setConsumer();
+// const subscriber = new Subscriber();
+// subscriber.setConsumer();
 let ejs = require("ejs");
 let pdf = require("html-pdf");
 let students = [
@@ -114,19 +114,19 @@ app.get('/testEndPoint', async (req, res) => {
 });
 
 
-app.get('/produceinit', async (req, res) => {
-  logger.info(req.logRequestTime);
-  await subscriber.event.produceMessage("hello init", "initTopic");
-  res.send('messages produced to Init Topic Kafka');
+// app.get('/produceinit', async (req, res) => {
+//   logger.info(req.logRequestTime);
+//   await subscriber.event.produceMessage("hello init", "initTopic");
+//   res.send('messages produced to Init Topic Kafka');
 
-});
+// });
 
-app.get('/produceconfirm', async (req, res) => {
-  logger.info(req.logRequestTime);
-  await subscriber.event.produceMessage("hello confirm", "confirmTopic");
-  res.send('messages produced to Confirm Topic Kafka');
+// app.get('/produceconfirm', async (req, res) => {
+//   logger.info(req.logRequestTime);
+//   await subscriber.event.produceMessage("hello confirm", "confirmTopic");
+//   res.send('messages produced to Confirm Topic Kafka');
 
-});
+// });
 
 // ********* SAMPLE CODE TESTING
 
