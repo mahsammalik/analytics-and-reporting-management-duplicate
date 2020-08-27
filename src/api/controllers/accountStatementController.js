@@ -37,7 +37,7 @@ class accountStatementController {
           msisdn: req.headers['x-msisdn'],
           start_date: req.query.start_date,
           end_date: req.query.end_date,
-          request: req.query.requestType ?req.query.requestType:"Email",
+          request: req.query.requestType?req.query.requestType:"Email",
           email: req.headers['x-meta-data'],
           subject: 'Hello',
           html: '<html></html>',
@@ -47,7 +47,7 @@ class accountStatementController {
       
       console.log("payload" + payload.request)
    
-      const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
+      const responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
 
       // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
       if (payload.format == 'pdf' )

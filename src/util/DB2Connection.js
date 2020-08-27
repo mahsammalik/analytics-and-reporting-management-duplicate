@@ -3,6 +3,7 @@ import responseCodeHandler from './responseCodeHandler';
 
 
 const cn = process.env.DB2_CONNECTION || config.IBMDB2.connectionString;
+const schema = config.IBMDB2.schema;
 
 class DatabaseConn {
 
@@ -43,7 +44,7 @@ class DatabaseConn {
 
     try{
       const conn = await open(cn);
-      const stmt = conn.prepareSync("select * from DB2INST1.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
+      const stmt = conn.prepareSync("select * from "+schema+" where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
       const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
       const arrayResult =  result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       result.closeSync();

@@ -22,8 +22,8 @@
         "IBMDB2": {
             "username": "something",
             "password": "thatthing",
-            "address": "",
-            "connectionString": "DATABASE=TESTDB;HOSTNAME=ibmdb2;UID=db2inst1;PWD=apassword;PORT=50000;PROTOCOL=TCPIP"
+            "schema": "JazzCash",
+            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MmZmZGQ1YmJlM2E1"
         },
         "winston": {
             "file": {
