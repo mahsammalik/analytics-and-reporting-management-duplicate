@@ -1,6 +1,8 @@
 import logger from './logger';
 import axios from 'axios';
-import { isNull } from 'lodash';
+import {
+    isNull
+} from 'lodash';
 
 class Notification {
     constructor() {}
@@ -67,10 +69,12 @@ class Notification {
             /*if template is already defined then HTML would be overwritten with this template
               Data: is an array of key value , which replace the keys in template, formate of Data should be , data: [{key: "customeName",value: "kashif"}]
             */
-            if (!isNull(template) && template != "") {
+            if (!isNull(Template) && Template != "") {
                 emailReqBody.template = Template;
                 emailReqBody.data = Data;
             }
+            console.log('printing email');
+            console.log(emailReqBody);
             let Response = await axios
                 .post(config.NotificationService.emailNotificationUrl, emailReqBody)
                 .then((response) => {

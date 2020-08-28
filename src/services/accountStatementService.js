@@ -1,8 +1,12 @@
 const PDFDocument = require('../util/PDFDocumentWithTables');
 import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
-const { Base64Encode } = require('base64-stream');
-const { convertArrayToCSV } = require('convert-array-to-csv');
+const {
+    Base64Encode
+} = require('base64-stream');
+const {
+    convertArrayToCSV
+} = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
@@ -11,7 +15,10 @@ const parse = require('csv-parser');
 const HummusRecipe = require('hummus-recipe');
 let ejs = require("ejs");
 let pdf = require("html-pdf");
-import { createPDF, accountStatementTemplate } from '../util/';
+import {
+    createPDF,
+    accountStatementTemplate
+} from '../util/';
 import Notification from '../util/Notification';
 
 
@@ -95,7 +102,7 @@ class accountStatementService {
             console.error(err.message);
         });
         // When we are done, test that the parsed output matched what expected
-        parser.on('end', function() {
+        parser.on('end', function () {
             let buff = new Buffer.from(output);
             let base64data = buff.toString('base64');
             EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res);
@@ -113,21 +120,31 @@ class accountStatementService {
     }
     generateHeader(doc) {
         doc
-            .image(pdfDIR + "jazzcash.png", 50, 45, { width: 50 })
+            .image(pdfDIR + "jazzcash.png", 50, 45, {
+                width: 50
+            })
             .fillColor("red")
             .fontSize(15);
 
-        doc.text("Statement OF Account", 110, 70, { align: "left" })
+        doc.text("Statement OF Account", 110, 70, {
+                align: "left"
+            })
             .fillColor("#444444")
             .fontSize(10)
             .moveDown();
 
-        doc.text("from", 110, 90, { align: "left" })
+        doc.text("from", 110, 90, {
+                align: "left"
+            })
             .fontSize(10)
             .text("to")
             .fontSize(10)
-            .text("123 Main Street", 200, 65, { align: "right" })
-            .text("New York, NY, 10025", 200, 80, { align: "right" })
+            .text("123 Main Street", 200, 65, {
+                align: "right"
+            })
+            .text("New York, NY, 10025", 200, 80, {
+                align: "right"
+            })
             .moveDown();
     }
 
@@ -163,7 +180,10 @@ class accountStatementService {
             // console.log(accountData);
             const htmlTemplate = accountStatementTemplate(accountData);
             // console.log(htmlTemplate);
-            let pdfFile = await createPDF({ template: htmlTemplate, fileName: `Account Statement` });
+            let pdfFile = await createPDF({
+                template: htmlTemplate,
+                fileName: `Account Statement`
+            });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                     'key': 'customerName',
@@ -178,7 +198,12 @@ class accountStatementService {
                     'value': payload.start_date
                 }
             ];
-            const attachment = { fileName: 'Account Statement.pdf', content: pdfFile, type: 'base64', embedImage: false };
+            const attachment = [{
+                fileName: 'AccountStatement.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
 
             const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
             if (email) {

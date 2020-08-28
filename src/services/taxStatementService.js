@@ -1,12 +1,20 @@
 const PDFDocument = require('../util/PDFDocumentWithTables');
 import EmailHandler from '../util/EmailHandler';
-const { Base64Encode } = require('base64-stream');
-const { convertArrayToCSV } = require('convert-array-to-csv');
+const {
+    Base64Encode
+} = require('base64-stream');
+const {
+    convertArrayToCSV
+} = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
 import DB2_Connection from '../util/DB2Connection';
-import { createPDF, taxStatementTemplate } from '../util/';
+import {
+    createPDF,
+    taxStatementTemplate
+} from '../util/';
+import Notification from '../util/Notification';
 
 class taxStatementService {
     constructor() {
@@ -41,7 +49,10 @@ class taxStatementService {
             };
             const htmlTemplate = taxStatementTemplate(accountData);
             // console.log(htmlTemplate);
-            let pdfFile = await createPDF({ template: htmlTemplate, fileName: `Tax Statement` });
+            let pdfFile = await createPDF({
+                template: htmlTemplate,
+                fileName: `Tax Statement`
+            });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                     'key': 'customerName',
@@ -56,7 +67,12 @@ class taxStatementService {
                     'value': payload.start_date
                 }
             ];
-            const attachment = { fileName: 'Tax Certificate.pdf', content: pdfFile, type: 'base64', embedImage: false };
+            const attachment = [{
+                fileName: 'Tax Certificate.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
 
             const email = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
             if (email) {
