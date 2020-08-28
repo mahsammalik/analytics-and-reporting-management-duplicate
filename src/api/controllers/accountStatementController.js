@@ -29,7 +29,7 @@ class accountStatementController {
             res.status(422).send(responseCodeForAccountStatementQuery);
         }
         if (req.start_date >= req.end_date) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "Start Date should be before the End Date");
+            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "");
             console.log(queryValidationResponse);
             res.status(422).send(responseCodeForAccountStatementQuery);
         }
@@ -47,22 +47,27 @@ class accountStatementController {
 
         console.log(`payload ${JSON.stringify(payload)}`);
 
-        const responseCodeForAccountStatementQuerySuccess = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
-        const responseCodeForAccountStatementQueryFailure = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
+
         // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
         if (payload.format == 'pdf') {
             const response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
             if (response) {
-                res.status(200).json(responseCodeForAccountStatementQuerySuccess);
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
+
+                res.status(200).json(responseCodeForAccountStatementQuery);
             } else {
-                res.status(422).send(responseCodeForAccountStatementQueryFailure);
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
+                res.status(422).send(responseCodeForAccountStatementQuery);
             }
         } else if (payload.format == 'csv') {
             const response = await this.accountStatementService.sendEmailCSV_Format(payload);
             if (response) {
-                res.status(200).send(responseCodeForAccountStatementQuerySuccess);
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
+
+                res.status(200).json(responseCodeForAccountStatementQuery);
             } else {
-                res.status(422).send(responseCodeForAccountStatementQueryFailure);
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
+                res.status(422).send(responseCodeForAccountStatementQuery);
             }
         }
 
