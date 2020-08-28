@@ -1,25 +1,25 @@
+import ejs from 'ejs';
+import pdf from 'html-pdf';
+import path from 'path';
+
 const PDFDocument = require('../util/PDFDocumentWithTables');
 import DB2_Connection from '../util/DB2Connection';
 import EmailHandler from '../util/EmailHandler';
 const {
     Base64Encode
 } = require('base64-stream');
-const {
-    convertArrayToCSV
-} = require('convert-array-to-csv');
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
 const generate = require('csv-generate');
 const parse = require('csv-parser');
 const HummusRecipe = require('hummus-recipe');
-let ejs = require("ejs");
-let pdf = require("html-pdf");
+
 import {
     createPDF,
     accountStatementTemplate
 } from '../util/';
-import Notification from '../util/Notification';
+import Notification from '../util/notification';
 
 
 class accountStatementService {
@@ -82,40 +82,84 @@ class accountStatementService {
 
 
     async sendEmailCSV_Format(payLoad) {
-        console.log("enter the csv method");
-        const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-        console.log("the IBM DB2 data " + data);
-        let output = [];
-        const parser = parse({
-            delimiter: "\n",
-            separator: "\n"
-        }).pipe(fs.createWriteStream(imageDIR + 'test.csv'));
-        // Use the readable stream api
-        parser.on('readable', () => {
-            let record;
-            while (record = parser.read()) {
-                output.push(record);
+        try {
+            console.log("enter the csv method");
+            const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+
+            let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+            header = header.join(',');
+            const csvData = new Buffer.from(header + data).toString('base64');
+            // console.log(`csvData ${csvData}`);
+
+            const emailData = [{
+                    'key': 'customerName',
+                    'value': `Nishat Linen`
+                },
+                {
+                    'key': 'accountNumber',
+                    'value': `03015091633`
+                },
+                {
+                    'key': 'statementPeriod',
+                    'value': `20-03-2020`
+                }
+            ];
+            const attachment = [{
+                filename: 'AccountStatement.csv',
+                content: csvData,
+                type: 'base64',
+                embedImage: false
+            }];
+            // EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res);
+            const email = await new Notification.sendEmail('nabbasi@pk.ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+            if (email) {
+                return true;
+            } else {
+                return false;
             }
-        });
-        // Catch any error
-        parser.on('error', (err) => {
-            console.error(err.message);
-        });
-        // When we are done, test that the parsed output matched what expected
-        parser.on('end', function() {
-            let buff = new Buffer.from(output);
-            let base64data = buff.toString('base64');
-            EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res);
-        });
-        // Write data to the stream
-        parser.write("Trx ID, Trx DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n");
-        parser.write(data);
-        // Close the readable stream
-        parser.end();
+            // let output = [];
+            // console.log(`pdf path ${pdfPath}`);
+
+            // const parser = parse({
+            //     delimiter: "\n",
+            //     separator: "\n"
+            // }).pipe(fs.createWriteStream(`${pdfPath}test.csv`));
+            // // Use the readable stream api
+            // parser.on('readable', () => {
+            //     let record;
+            //     while (record = parser.read()) {
+            //         output.push(record);
+            //     }
+            // });
+            // // Catch any error
+            // parser.on('error', (err) => {
+            //     console.error(err.message);
+            // });
+            // // When we are done, test that the parsed output matched what expected
+            // const response = await parser.on('end', async function() {
+            //     let buff = new Buffer.from(output);
+            //     let base64data = buff.toString('base64');
 
 
-        // generate(data)
-        //   .pipe(fs.createWriteStream(imageDIR + 'test.csv'))
+            // });
+            // // Write data to the stream
+            // parser.write("Trx ID, Trx DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n");
+            // parser.write(data);
+            // // Close the readable stream
+            // parser.end();
+            // console.info(response.bufferedRequest.chunk);
+            // let buff = new Buffer.from(response.bufferedRequest.chunk);
+            // let base64data = buff.toString('base64');
+            // console.log(base64data);
+
+
+            // generate(data)
+            //   .pipe(fs.createWriteStream(imageDIR + 'test.csv'))
+        } catch (error) {
+            logger.error(error);
+            return new Error(`Error mailing csv:${error}`);
+        }
+
 
     }
     generateHeader(doc) {
@@ -218,7 +262,7 @@ class accountStatementService {
             // });
             // myDoc.end();
 
-        } catch (err) {
+        } catch (error) {
             logger.error(`Error fetching data for account statement:${error}`);
             return new Error(`Error fetching data for account statement:${error}`);
         }

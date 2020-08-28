@@ -3,9 +3,7 @@ import EmailHandler from '../util/EmailHandler';
 const {
     Base64Encode
 } = require('base64-stream');
-const {
-    convertArrayToCSV
-} = require('convert-array-to-csv');
+
 var base64 = require('file-base64');
 const CSV = require('csv-string');
 const fs = require('fs');
@@ -14,7 +12,7 @@ import {
     createPDF,
     taxStatementTemplate
 } from '../util/';
-import Notification from '../util/Notification';
+import Notification from '../util/notification';
 
 class taxStatementService {
     constructor() {
@@ -48,7 +46,6 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = taxStatementTemplate(accountData);
-            console.log(htmlTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`

@@ -42,7 +42,6 @@
     "ajv": "^6.12.2",
     "axios": "^0.19.2",
     "base64-stream": "^1.0.0",
-    "convert-array-to-csv": "^2.0.0",
     "csv-generate": "^3.2.4",
     "csv-parser": "^2.3.3",
     "csv-string": "^4.0.1",

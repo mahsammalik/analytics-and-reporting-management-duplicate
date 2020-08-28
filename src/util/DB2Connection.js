@@ -13,18 +13,20 @@ class DatabaseConn {
 
             let concatenatResult;
             let conn = await open(cn);
-            const stmt = conn.prepareSync("select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;");
+            const stmt = conn.prepareSync(`select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
             let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            let sumBalance = 0;
-            let sumCredit = 0;
-            let sumDebit = 0;
-            console.log(resultArrayFormat.forEach((row) => {
-                sumDebit += row[6];
-                sumCredit += row[7];
-                sumBalance += row[8];
-            }));
-            resultArrayFormat.push(["", '', "", "", "", "", sumDebit, sumCredit, sumBalance]);
+            let sumBalance = 0.00;
+            let sumCredit = 0.00;
+            let sumDebit = 0.00;
+            // console.log();
+            resultArrayFormat.forEach((row) => {
+                console.log(row.length);
+                sumDebit += parseFloat(row[row.length - 3]);
+                sumCredit += parseFloat(row[row.length - 2]);
+                sumBalance += parseFloat(row[row.length - 1]);
+            });
+            resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
             console.log("the result of database" + concatenatResult);
             result.closeSync();

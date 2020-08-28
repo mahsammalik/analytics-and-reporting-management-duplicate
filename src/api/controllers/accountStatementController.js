@@ -47,22 +47,24 @@ class accountStatementController {
 
         console.log(`payload ${JSON.stringify(payload)}`);
 
-
+        const responseCodeForAccountStatementQuerySuccess = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
+        const responseCodeForAccountStatementQueryFailure = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
         // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
         if (payload.format == 'pdf') {
-            // 
             const response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
             if (response) {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
-
-                res.status(200).json(responseCodeForAccountStatementQuery);
+                res.status(200).json(responseCodeForAccountStatementQuerySuccess);
             } else {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
-                res.status(422).send(responseCodeForAccountStatementQuery);
+                res.status(422).send(responseCodeForAccountStatementQueryFailure);
             }
-        } else if (payload.format == 'csv')
-            res.status(200).send(responseCodeForAccountStatementQuery);
-        // response = await this.accountStatementService.sendEmailCSV_Format(payload);
+        } else if (payload.format == 'csv') {
+            const response = await this.accountStatementService.sendEmailCSV_Format(payload);
+            if (response) {
+                res.status(200).send(responseCodeForAccountStatementQuerySuccess);
+            } else {
+                res.status(422).send(responseCodeForAccountStatementQueryFailure);
+            }
+        }
 
 
         // if(response == 'Database Error'){
