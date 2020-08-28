@@ -43,11 +43,11 @@ class taxStatementController {
         let responseCodeForAccountStatementQuery;
         const response = await this.taxStatementService.sendTaxStatement(payload, res);
         if (response) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
+            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
 
             res.status(200).json(responseCodeForAccountStatementQuery);
         } else {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
+            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
             res.status(422).send(responseCodeForAccountStatementQuery);
         }
 

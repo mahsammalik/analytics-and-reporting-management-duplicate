@@ -29,7 +29,7 @@ class accountStatementController {
             res.status(422).send(responseCodeForAccountStatementQuery);
         }
         if (req.start_date >= req.end_date) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "Start Date should be before the End Date");
+            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "");
             console.log(queryValidationResponse);
             res.status(422).send(responseCodeForAccountStatementQuery);
         }
@@ -53,11 +53,11 @@ class accountStatementController {
             // 
             const response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
             if (response) {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Successful ");
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
 
                 res.status(200).json(responseCodeForAccountStatementQuery);
             } else {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
+                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
                 res.status(422).send(responseCodeForAccountStatementQuery);
             }
         } else if (payload.format == 'csv')
