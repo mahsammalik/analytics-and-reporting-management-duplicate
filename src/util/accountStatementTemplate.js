@@ -7,12 +7,12 @@ const htmlHead = `<!DOCTYPE html>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Title</title>
-		<link href="file:///${dirName}/css/reset.css" rel="stylesheet">
-		<link href="file:///${dirName}/css/style.css" rel="stylesheet">
+		<link href="file://${dirName}/css/reset.css" rel="stylesheet">
+		<link href="file://${dirName}/css/style.css" rel="stylesheet">
 </head><body>
 <header>
 	<div class="headerLogo">
-		<img class="headerLogo-img" src="file:///${dirName}/images/JazzCash_logo.png" />
+		<img class="headerLogo-img" src="file://${dirName}/images/JazzCash_logo.png" />
 	</div>`;
 
 const htmlFoot = `<footer>
@@ -30,7 +30,7 @@ const htmlFoot = `<footer>
 		<b>wwww.jazzcash.com.pk</b>
 	</div>
 	<div class="footerlogo">
-		<img src="file:///${dirName}/images/mobilink-microfinance.png"
+		<img src="file://${dirName}/images/mobilink-microfinance.png"
 	</div>
 
 </div>
@@ -57,12 +57,7 @@ const accountStatementTemplate = accountData => {
 		</div>
 		</header>
 		<main>
-		<div class="section">
-		<div class="heading">
-		<h1>
-		<b>Statement of Account</b>
-		</h1>
-		</div>
+		
 		`;
 
 
@@ -87,7 +82,7 @@ const accountStatementTemplate = accountData => {
         const statementSummary = `<div class="section">
 			<div class="heading">
 				<h1>
-					<b>Statement Summary</b>
+					Statement Summary
 					</h1>
 				</div>
 			</div>
@@ -115,7 +110,7 @@ const accountStatementTemplate = accountData => {
         statementTableHeader = statementTableHeader.join().replace(/,/g, '');
 
         let slicedArray = [];
-        const pageSize = 10;
+        const pageSize = 9;
         if (accountData.data.length <= pageSize) {
             slicedArray = accountData.data;
         } else {
@@ -127,7 +122,13 @@ const accountStatementTemplate = accountData => {
 
         let htmlString = ``;
         slicedArray.forEach((item, index) => {
-            let pagination = `<div class="pagination"><b>Page</b> <i>${index + 1} of ${slicedArray.length}</i></div>
+            let pagination = `<div class="section">
+			<div class="heading">
+			<h1>
+			Statement of Account
+			</h1>
+			<i>${index + 1} of ${slicedArray.length}</i> <b>Page </b> 
+			</div>
 		</div>`;
             htmlString += `${htmlHead}${accountDetails}${pagination}<table><thead>${statementTableHeader}</thead>`;
 

@@ -102,7 +102,7 @@ class accountStatementService {
             console.error(err.message);
         });
         // When we are done, test that the parsed output matched what expected
-        parser.on('end', function () {
+        parser.on('end', function() {
             let buff = new Buffer.from(output);
             let base64data = buff.toString('base64');
             EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res);
@@ -187,19 +187,19 @@ class accountStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                     'key': 'customerName',
-                    'value': payload.email
+                    'value': `Nishat Linen`
                 },
                 {
                     'key': 'accountNumber',
-                    'value': payload.msisdn
+                    'value': `03015091633`
                 },
                 {
                     'key': 'statementPeriod',
-                    'value': payload.start_date
+                    'value': `20-03-2020`
                 }
             ];
             const attachment = [{
-                fileName: 'AccountStatement.pdf',
+                filename: 'AccountStatement.pdf',
                 content: pdfFile,
                 type: 'base64',
                 embedImage: false

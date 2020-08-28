@@ -48,7 +48,7 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = taxStatementTemplate(accountData);
-            // console.log(htmlTemplate);
+            console.log(htmlTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
@@ -68,15 +68,17 @@ class taxStatementService {
                 }
             ];
             const attachment = [{
-                fileName: 'Tax Certificate.pdf',
+                filename: 'Tax Certificate.pdf',
                 content: pdfFile,
                 type: 'base64',
                 embedImage: false
             }];
 
-            const email = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+            const email = await new Notification.sendEmail(`jazzcash.test.user@gmail.com`, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
             if (email) {
                 return true;
+            } else {
+                return false;
             }
             // myDoc.table(table0, {
             //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),

@@ -1,5 +1,5 @@
 import path from 'path';
-import numerConverter from 'number-to-words';
+import numberConverter from 'number-to-words';
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
 const htmlHead = `<!DOCTYPE html>
@@ -50,7 +50,7 @@ const taxStatementTemplate = accountData => {
         console.log(`payload ${JSON.stringify(accountData.payload)}`);
         console.log(`account data ${JSON.stringify(accountData.data)}`);
 
-
+        const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
         const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>20-Aug-2020</div>
 	</div>
@@ -59,7 +59,7 @@ const taxStatementTemplate = accountData => {
 		<div class="section">
 		<div class="heading">
 		<h1>
-		<b>Certificate of Tax Deduction</b>
+		Certificate of Tax Deduction
 		</h1>
 		</div>
 		`;
@@ -72,7 +72,7 @@ const taxStatementTemplate = accountData => {
 
 	<div class="taxDetails">
 		<div>
-			<div>Account Title </div>Rs 11,110.92</b>
+			<div>Account Title </div>Nishat Linen</b>
 		</div>
 		<div>
 			<div>Account Number </div>${accountData.payload.msisdn}</b>
@@ -98,7 +98,7 @@ Account Balance:
 			<div>Balance (in figures) </div>Rs 11,110.92</b>
 		</div>
 		<div>
-			<div>Balance (in words) </div>${numerConverter.toWords(11110)}</b>
+			<div>Balance (in words) </div>${numberInWords}</b>
 		</div>
 
 	</div>

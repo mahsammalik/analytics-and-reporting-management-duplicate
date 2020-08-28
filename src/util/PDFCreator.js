@@ -1,9 +1,8 @@
 // import fs from "fs";
-const fs = require('fs').promises;
 import pdf from 'html-pdf';
 const options = { format: 'A4', orientation: 'portrait', type: 'pdf', };
 
-const createPDF = async(templateDetails, callback) => {
+const createPDF = async(templateDetails) => {
     try {
 
         // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
@@ -11,7 +10,13 @@ const createPDF = async(templateDetails, callback) => {
         // fs.writeFile(`${fileName}.html`, templateDetails.template, (err, data) => {
         //     if (err) throw err;
         //     console.log('html created');
+        //     pdf.create(templateDetails.template, options).toFile(`${fileName}.pdf`, (err, res) => {
+        //         if (err) return err;
+        //         console.log(res);
+        //         return res;
+        //     });
         // });
+
 
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
