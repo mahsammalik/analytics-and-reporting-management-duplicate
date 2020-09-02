@@ -12,7 +12,7 @@ const responseCodeMW = async(req, res, next) => {
         } else {
             res.status(422).send(await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, ""));
         }
-        next();
+        // next();
     } catch (error) {
         logger.error(error);
     }
