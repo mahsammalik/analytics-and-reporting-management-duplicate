@@ -1,20 +1,6 @@
-import ejs from 'ejs';
-import pdf from 'html-pdf';
-import path from 'path';
-
-const PDFDocument = require('../util/PDFDocumentWithTables');
 import DB2_Connection from '../util/DB2Connection';
-import EmailHandler from '../util/EmailHandler';
-const {
-    Base64Encode
-} = require('base64-stream');
-var base64 = require('file-base64');
-const CSV = require('csv-string');
 const fs = require('fs');
-const generate = require('csv-generate');
-const parse = require('csv-parser');
 const HummusRecipe = require('hummus-recipe');
-
 import {
     createPDF,
     accountStatementTemplate
@@ -110,13 +96,10 @@ class accountStatementService {
                 type: 'base64',
                 embedImage: false
             }];
-            // EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, base64data, res);
-            const email = await new Notification.sendEmail('nabbasi@pk.ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            if (email) {
-                return true;
-            } else {
-                return false;
-            }
+            const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+            return email ? true : false;
+            // return true;
+
             // let output = [];
             // console.log(`pdf path ${pdfPath}`);
 
@@ -250,11 +233,7 @@ class accountStatementService {
             }];
 
             const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            if (email) {
-                return true;
-            } else {
-                return false;
-            }
+            return email ? true : false;
 
             // myDoc.table(table0, {
             //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),

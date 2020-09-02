@@ -12,7 +12,7 @@ class accountStatementController {
         this.calculateAccountStatement = this.calculateAccountStatement.bind(this);
     }
 
-    async calculateAccountStatement(req, res) {
+    async calculateAccountStatement(req, res, next) {
         const headersValidationResponse = validations.verifySchema(
             schema.REQUEST_HEADER_SCHEMA,
             req.headers
@@ -49,27 +49,10 @@ class accountStatementController {
 
 
         // await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");;
-        if (payload.format == 'pdf') {
-            const response = await this.accountStatementService.sendEmailPDF_Format(payload, res);
-            if (response) {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
 
-                res.status(200).json(responseCodeForAccountStatementQuery);
-            } else {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
-                res.status(422).send(responseCodeForAccountStatementQuery);
-            }
-        } else if (payload.format == 'csv') {
-            const response = await this.accountStatementService.sendEmailCSV_Format(payload);
-            if (response) {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
+        res.locals.response = payload.format === 'pdf' ? await this.accountStatementService.sendEmailPDF_Format(payload, res) : await this.accountStatementService.sendEmailCSV_Format(payload);
+        next();
 
-                res.status(200).json(responseCodeForAccountStatementQuery);
-            } else {
-                const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
-                res.status(422).send(responseCodeForAccountStatementQuery);
-            }
-        }
 
 
         // if(response == 'Database Error'){

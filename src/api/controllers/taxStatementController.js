@@ -12,7 +12,7 @@ class taxStatementController {
         this.calculateTaxStatement = this.calculateTaxStatement.bind(this);
     }
 
-    async calculateTaxStatement(req, res) {
+    async calculateTaxStatement(req, res, next) {
         const headersValidationResponse = validations.verifySchema(
             schema.REQUEST_HEADER_SCHEMA,
             req.headers
@@ -40,16 +40,8 @@ class taxStatementController {
         };
         console.log("payload" + payload);
 
-        let responseCodeForAccountStatementQuery;
-        const response = await this.taxStatementService.sendTaxStatement(payload, res);
-        if (response) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
-
-            res.status(200).json(responseCodeForAccountStatementQuery);
-        } else {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
-            res.status(422).send(responseCodeForAccountStatementQuery);
-        }
+        res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+        next();
 
         //   const responseCodeForTaxStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");;
         //   res.status(200).json(responseCodeForTaxStatementQuery);

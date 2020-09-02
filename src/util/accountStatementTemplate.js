@@ -117,7 +117,7 @@ const accountStatementTemplate = accountData => {
             slicedArray = accountData.data.map((item, index) => {
                 return index % pageSize === 0 ? accountData.data.slice(index, index + pageSize) : null;
             }).filter((item) => { return item; });
-        };
+        }
 
 
         let htmlString = ``;
@@ -133,7 +133,7 @@ const accountStatementTemplate = accountData => {
             htmlString += `${htmlHead}${accountDetails}${pagination}<table><thead>${statementTableHeader}</thead>`;
 
             let page = item.map(row => {
-                let column = row.map((col, ind) => { if (ind != 2) { return ind > 5 ? `<td>${parseFloat(col).toFixed(2)}</td>` : `<td>${col}</td>`; }; });
+                let column = row.map((col, ind) => { if (ind != 2) { return ind > 5 ? `<td>${parseFloat(col).toFixed(2)}</td>` : `<td>${col}</td>`; } });
                 column = column.join().replace(/,/g, '');
                 return `<tr>${column}</tr>`;
             });

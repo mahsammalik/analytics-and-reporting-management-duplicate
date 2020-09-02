@@ -1,0 +1,256 @@
+openapi: 3.0.1
+info:
+  title: Analytics and Reporting
+  description: This API returns the account statement of a user
+  version: 1.0.0
+servers:
+  - url: /rest/api/v1/reports/statement
+tags:
+  - name: Analytics and Reporting
+    externalDocs:
+      description: Find out more on box
+      url: http://box.ibm
+paths:
+  /account:
+    get:
+      tags:
+        - Account Statement
+      summary: Download or Email with Summery of account statement
+      description: Download or Email with Summery of account statement
+      parameters:
+        - name: X-APP-TYPE
+          in: header
+          description: Describes application or device type.
+          required: true
+          schema:
+            type: string
+            enum:
+              - Andriod
+              - IOS
+              - Web
+        - name: X-APP-VERSION
+          in: header
+          description: Describes application version 1.0.1.
+          required: true
+          schema:
+            type: string
+        - name: X-DEVICE-ID
+          in: header
+          description: Describes device ID XDFSD23345435.
+          required: true
+          schema:
+            type: string
+        - name: X-IP-ADDRESS
+          in: header
+          description: Describes IP Address of the device.
+          required: true
+          schema:
+            type: string
+        - name: X-CHANNEL
+          in: header
+          description: Describes channel code
+          required: true
+          schema:
+            type: string
+            enum:
+              - Third Party
+              - Mobile APP
+              - Backend Portal
+        - name: X-IBM-CLIENT-ID
+          in: header
+          description: Client credentials required for API Connect
+          required: true
+          schema:
+            type: string
+        - name: X-MSISDN
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-META-DATA
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: requestType
+          in: query
+          description: The request to verify needed download or email
+          schema:
+            type: string
+            enum:
+              - Download
+              - Email
+        - name: format
+          in: query
+          description: The request to verify needed download or email
+          required: true
+          schema:
+            type: string
+            enum:
+              - csv
+              - pdf
+        - name: start_date
+          in: query
+          description: The proccess account statement start date
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          description: The proccess account statement end date
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Account'
+        401:
+          description: Authentication Failed
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+      security:
+        - Bearer: []
+  /tax:
+    get:
+      tags:
+        - Tax Statement
+      summary: Download or Email with Summery of tax statement
+      parameters:
+        - name: X-APP-TYPE
+          in: header
+          description: Describes application or device type.
+          required: true
+          schema:
+            type: string
+            enum:
+              - Andriod
+              - IOS
+              - Web
+        - name: X-APP-VERSION
+          in: header
+          description: Describes application version 1.0.1.
+          required: true
+          schema:
+            type: string
+        - name: X-DEVICE-ID
+          in: header
+          description: Describes device ID XDFSD23345435.
+          required: true
+          schema:
+            type: string
+        - name: X-IP-ADDRESS
+          in: header
+          description: Describes IP Address of the device.
+          required: true
+          schema:
+            type: string
+        - name: X-CHANNEL
+          in: header
+          description: Describes channel code
+          required: true
+          schema:
+            type: string
+            enum:
+              - Third Party
+              - Mobile APP
+              - Backend Portal
+        - name: X-IBM-CLIENT-ID
+          in: header
+          description: Client credentials required for API Connect
+          required: true
+          schema:
+            type: string
+        - name: X-MSISDN
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-META-DATA
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: requestType
+          in: query
+          description: The request to verify needed download or email
+          schema:
+            type: string
+            enum:
+              - Download
+              - Email
+        - name: start_date
+          in: query
+          description: The proccess tax statement start date
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          description: The proccess tax statement end date
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Tax'
+        401:
+          description: Authentication Failed
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+      security:
+        - Bearer: []
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        property:
+          type: integer
+    Tax:
+      type: object
+      properties:
+        property:
+          type: integer
+    Account:
+      type: object
+      properties:
+        property:
+          type: integer
+
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

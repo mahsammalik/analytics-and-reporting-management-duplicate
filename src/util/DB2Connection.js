@@ -21,14 +21,13 @@ class DatabaseConn {
             let sumDebit = 0.00;
             // console.log();
             resultArrayFormat.forEach((row) => {
-                console.log(row.length);
                 sumDebit += parseFloat(row[row.length - 3]);
                 sumCredit += parseFloat(row[row.length - 2]);
                 sumBalance += parseFloat(row[row.length - 1]);
             });
             resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
-            console.log("the result of database" + concatenatResult);
+            // console.log("the result of database" + concatenatResult);
             result.closeSync();
             stmt.closeSync();
             conn.close(function(err) {});
