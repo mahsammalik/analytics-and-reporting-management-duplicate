@@ -96,8 +96,8 @@ class accountStatementService {
                 type: 'base64',
                 embedImage: false
             }];
-            const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            return email ? true : false;
+            return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+
             // return true;
 
             // let output = [];

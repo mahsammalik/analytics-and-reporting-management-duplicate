@@ -1,16 +1,12 @@
 import accountStatementController from '../controllers/accountStatementController';
 import taxStatementController from '../controllers/taxStatementController';
 import { msisdnParserMW, responseCodeMW } from '../middlewares';
+import express from 'express';
 
-const routes = (app) => {
+const router = express.Router();
 
-    app.get(
-        '/rest/api/v1/reports/statement/account', msisdnParserMW(), accountStatementController.calculateAccountStatement, responseCodeMW
-    );
-    app.get(
-        '/rest/api/v1/reports/statement/tax', msisdnParserMW(),
-        taxStatementController.calculateTaxStatement, responseCodeMW
-    );
-};
+router.get('/account', msisdnParserMW(), accountStatementController.calculateAccountStatement, responseCodeMW);
 
-export default routes;
+router.get('rest/api/v1/reports/statement/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW);
+
+export default router;

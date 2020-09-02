@@ -95,14 +95,14 @@ paths:
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
         - name: end_date
           in: query
           description: The proccess account statement end date
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
       responses:
         200:
           description: successful operation
@@ -200,14 +200,14 @@ paths:
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
         - name: end_date
           in: query
           description: The proccess tax statement end date
           required: true
           schema:
             type: string
-            format: date-time
+            format: date
       responses:
         200:
           description: successful operation
@@ -248,9 +248,8 @@ components:
       properties:
         property:
           type: integer
-
-  securitySchemes:
-    Bearer:
-      type: apiKey
-      name: Authorization
-      in: header
+  # securitySchemes:
+  #   Bearer:
+  #     type: apiKey
+  #     name: Authorization
+  #     in: header

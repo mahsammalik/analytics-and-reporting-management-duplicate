@@ -74,18 +74,18 @@ class Notification {
                 emailReqBody.data = Data;
             }
             console.log('printing email');
-            console.log(emailReqBody);
-            let Response = await axios
+            // console.log(emailReqBody);
+            return await axios
                 .post(config.NotificationService.emailNotificationUrl, emailReqBody)
-                .then((response) => {
-                    console.log(response);
+                .then((res) => {
+                    console.log(res);
                     return true;
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     return false;
                 });
-            return true;
+
         } catch (error) {
             logger.error(
                 'Error in Notification.sendEmail from accountmanagement microservice' + error

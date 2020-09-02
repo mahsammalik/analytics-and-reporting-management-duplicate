@@ -13,26 +13,26 @@ class accountStatementController {
     }
 
     async calculateAccountStatement(req, res, next) {
-        const headersValidationResponse = validations.verifySchema(
-            schema.REQUEST_HEADER_SCHEMA,
-            req.headers
-        );
-        const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
+        // const headersValidationResponse = validations.verifySchema(
+        //     schema.REQUEST_HEADER_SCHEMA,
+        //     req.headers
+        // );
+        // const queryValidationResponse = validations.verifySchema(schema.Account_Statement_SCHEMA, req.query);
 
-        if (!headersValidationResponse.success) {
-            const responseCodeForAccountStatementHeader = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
-            res.status(422).send(responseCodeForAccountStatementHeader);
-        }
-        if (!queryValidationResponse.success) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
-            console.log(queryValidationResponse);
-            res.status(422).send(responseCodeForAccountStatementQuery);
-        }
-        if (req.start_date >= req.end_date) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "");
-            console.log(queryValidationResponse);
-            res.status(422).send(responseCodeForAccountStatementQuery);
-        }
+        // if (!headersValidationResponse.success) {
+        //     const responseCodeForAccountStatementHeader = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
+        //     res.status(422).send(responseCodeForAccountStatementHeader);
+        // }
+        // if (!queryValidationResponse.success) {
+        //     const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
+        //     console.log(queryValidationResponse);
+        //     res.status(422).send(responseCodeForAccountStatementQuery);
+        // }
+        // if (req.start_date >= req.end_date) {
+        //     const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.date_invalid, "");
+        //     console.log(queryValidationResponse);
+        //     res.status(422).send(responseCodeForAccountStatementQuery);
+        // }
         let payload = {
             msisdn: req.headers['x-msisdn'],
             start_date: req.query.start_date,
