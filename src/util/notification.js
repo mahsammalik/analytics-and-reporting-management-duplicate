@@ -24,20 +24,20 @@ class Notification {
                 },
             };
 
-            let Response = await axios
+            return await axios
                 .post(
                     config.NotificationService.pushNotificationUrl,
                     pushNotificationReqBody
                 )
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     return true;
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     return false;
                 });
-            return true;
+
         } catch (error) {
             logger.error(
                 'Error in Notification.sendPushNotification from accountmanagement microservice' +
@@ -73,19 +73,19 @@ class Notification {
                 emailReqBody.template = Template;
                 emailReqBody.data = Data;
             }
-            console.log('printing email');
-            console.log(emailReqBody);
-            let Response = await axios
+            // console.log('printing email');
+            // console.log(emailReqBody);
+            return await axios
                 .post(config.NotificationService.emailNotificationUrl, emailReqBody)
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     return true;
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     return false;
                 });
-            return true;
+
         } catch (error) {
             logger.error(
                 'Error in Notification.sendEmail from accountmanagement microservice' + error

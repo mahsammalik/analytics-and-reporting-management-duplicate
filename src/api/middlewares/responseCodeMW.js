@@ -8,11 +8,15 @@ import responseCodeHandler from '../../util/responseCodeHandler';
 const responseCodeMW = async(req, res, next) => {
     try {
         if (res.locals.response) {
-            res.status(200).json(await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, ""));
+            const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
+            res.locals.response = response;
+            res.status(200).json(response);
         } else {
-            res.status(422).send(await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, ""));
+            const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
+            res.locals.response = response;
+            res.status(422).send(response);
         }
-        // next();
+        next();
     } catch (error) {
         logger.error(error);
     }

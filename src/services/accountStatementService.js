@@ -96,9 +96,7 @@ class accountStatementService {
                 type: 'base64',
                 embedImage: false
             }];
-            const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            return email ? true : false;
-            // return true;
+            return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
 
             // let output = [];
             // console.log(`pdf path ${pdfPath}`);
@@ -232,8 +230,7 @@ class accountStatementService {
                 embedImage: false
             }];
 
-            const email = await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            return email ? true : false;
+            return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
 
             // myDoc.table(table0, {
             //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),

@@ -1,17 +1,13 @@
-import moment from 'moment';
-import responseTime from 'response-time';
-const requestLoggerMW = () => {
-    return (req, res, time) => {
-        try {
-            const loggingTime = responseTime(req, res, time);
-            // const log = `Response Time:${loggingTime}`;
-            // logger.info();
-            console.log(`loggingTime ${loggingTime}`);
-        } catch (error) {
-            console.log(error);
-            logger.error(error);
-        }
-    };
+const requestLoggerMW = (req, res) => {
+    try {
+
+        const headers = res.getHeaders();
+
+        const log = `\n\r Method:${req.method}\n\r URL:${req.url}\n\r Request Headers:${JSON.stringify(req.headers, null, 4)}\n\r Response:${JSON.stringify(res.locals.response, null, 4)}\n\r Response Time: ${headers['x-response-time']}\n\r `;
+        logger.info(log);
+    } catch (error) {
+        logger.error(error);
+    }
 };
 
 export default requestLoggerMW;
