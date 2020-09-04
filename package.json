@@ -34,6 +34,7 @@
         "request": "^2.88.0"
     },
     "dependencies": {
+        "@apidevtools/swagger-express-middleware": "^4.0.2",
         "@babel/cli": "^7.10.1",
         "@babel/core": "^7.10.2",
         "@babel/plugin-transform-classes": "^7.10.1",
@@ -49,7 +50,6 @@
         "csv-parser": "^2.3.3",
         "csv-string": "^4.0.1",
         "ejs": "^2.6.1",
-        "express-openapi-validator": "^3.16.11",
         "file-base64": "^1.0.0",
         "html-pdf": "^2.2.0",
         "hummus-recipe": "^2.0.0",
