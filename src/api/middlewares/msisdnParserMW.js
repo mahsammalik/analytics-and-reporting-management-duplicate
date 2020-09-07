@@ -9,8 +9,8 @@ import { parsePhoneNumber } from 'libphonenumber-js';
 const msisdnParserMW = (keys) => {
     try {
         return (req, res, next) => {
-            if (req.headers && req.headers.hasOwnProperty('X-MSISDN')) {
-                req.headers[keys.headerKey] = formatNumber(req.headers['X-MSISDN']);
+            if (req.headers && req.headers.hasOwnProperty('X-MSISDN'.toLowerCase())) {
+                req.headers['X-MSISDN'.toLowerCase()] = formatNumber(req.headers['X-MSISDN'.toLowerCase()]);
             }
             if (req.body && keys && keys.bodyKey) {
                 req.body = findKey(req.body, keys.bodyKey);

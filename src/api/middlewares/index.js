@@ -1,7 +1,5 @@
 export { default as uploadMW }
 from './uploadMW';
-export { default as logRequestTimeMW }
-from './logRequestTimeMW';
 export { default as msisdnParserMW }
 from './msisdnParserMW';
 export { default as responseCodeMW }
