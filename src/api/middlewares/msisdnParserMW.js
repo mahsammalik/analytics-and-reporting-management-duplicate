@@ -1,56 +1,75 @@
-import { parsePhoneNumber } from 'libphonenumber-js';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 /**
  * * keys are name of msisdn in request header and body
- * @param keys {keys.headerKey,keys.bodyKey}
- * @return next() next function in chain
+ * @param keys {keys.headerKeys['msisdn', 'msisdn1'],keys.bodyKeys:['msisdn', 'msisdn1']}
+ * @return next() next function in chain or throw error
  * 
  */
+
 const msisdnParserMW = (keys) => {
     try {
         return (req, res, next) => {
-            if (req.headers && req.headers.hasOwnProperty('X-MSISDN'.toLowerCase())) {
-                req.headers['X-MSISDN'.toLowerCase()] = formatNumber(req.headers['X-MSISDN'.toLowerCase()]);
+            const headerMSISDN = 'X-MSISDN'.toLowerCase();
+            if (req.headers && req.headers.hasOwnProperty(headerMSISDN)) {
+                req.headers[headerMSISDN] = formatNumber(req.headers[headerMSISDN]);
             }
-            if (req.body && keys && keys.bodyKey) {
-                req.body = findKey(req.body, keys.bodyKey);
+            if (req.body && keys && keys.bodyKeys) {
+                req.body = findKey(req.body, keys.bodyKeys);
             }
-            if (req.query && keys && keys.paramKey) {
-                req.query[keys.paramKey] = formatNumber(req.query[keys.paramKey]);
+            if (req.query && keys && keys.paramKeys) {
+                req.query = findKey(req.query, keys.paramKeys);
+            }
+            if (!req.headers[headerMSISDN] || !req.body || !req.query) {
+                throw new Error('Invalid MSISDN in request');
             }
             next();
         };
     } catch (error) {
         logger.error(error);
+        throw new Error(error);
     }
 
 };
 
 /**
  * * Return number in international E164 format for Pakistan
- * @param {number} msisdn number from header/bodu
+ * @param {number} msisdn number from header/body
  * @return number in international format for Pakistan 
  */
+
 const formatNumber = (number) => {
-    return parsePhoneNumber(number.toString(), 'PK').number;
+    try {
+        const phoneNumber = parsePhoneNumberFromString(number.toString(), 'PK');
+        return phoneNumber.isValid() ? phoneNumber.number : false;
+    } catch (error) {
+        logger.error(error);
+    }
 };
+
 /**
  * * Return request body with number in international E164 format
  * @param {object, key} request body, key to be formated
  * @return {object} request body with msisdn in E164 format
  */
-const findKey = (object, targetKey) => {
+const findKey = (object, targetKeys) => {
+    let msisdnIsValid = true;
     Object.keys(object).map((key) => {
-        if (key === targetKey) {
-            object[key] = formatNumber(object[key]);
-            return object;
+        if (targetKeys.includes(key)) {
+            if (formatNumber(object[key])) {
+                object[key] = formatNumber(object[key]);
+                return object;
+            } else {
+                msisdnIsValid = false;
+                return false;
+            }
         }
-        if (object[key] && typeof object[key] === 'object') {
+        if (object[key] && typeof object[key] === 'object' && msisdnIsValid) {
             let value = findKey(object[key], targetKey);
             return value !== undefined;
         }
     });
-    return object;
+    return msisdnIsValid ? object : false;
 };
 
 export default msisdnParserMW;
