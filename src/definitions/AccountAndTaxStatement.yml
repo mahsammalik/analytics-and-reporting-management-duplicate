@@ -229,19 +229,7 @@ paths:
         '200':
           description: 'successful operation'
           schema:
-            properties:
-              success:
-                type: boolean
-                example: true
-              responseCode:
-                type: string
-                example: AR-TS-T01
-              responseMessage_en:
-                type: string
-                example: The Email send succefully.
-              responseMessage_ur:
-                type: string
-                example: The Email send succefully.
+                "$ref": '#/definitions/getAccount'
         '401':
           description: 'Authentication Failed'
           schema:
@@ -274,7 +262,22 @@ paths:
               responseMessage_ur:
                 type: string
                 example: Failed to get tax statement.
-
+definitions:
+  getAccount:
+    type: object
+    properties:
+              success:
+                type: boolean
+                example: true
+              responseCode:
+                type: string
+                example: AR-TS-T01
+              responseMessage_en:
+                type: string
+                example: The Email send succefully.
+              responseMessage_ur:
+                type: string
+                example: The Email send succefully.
 securityDefinitions:
   Bearer:
     type: apiKey

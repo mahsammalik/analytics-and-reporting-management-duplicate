@@ -2,8 +2,8 @@ import accountStatementController from '../controllers/accountStatementControlle
 import taxStatementController from '../controllers/taxStatementController';
 import { msisdnParserMW, responseCodeMW } from '../middlewares';
 import express from 'express';
-import path from 'path';
-const swaggerPath = `${path.dirname(__dirname)}/../definitions/AccountAndTaxStatement.yml`;
+// import path from 'path';
+// const swaggerPath = `${path.dirname(__dirname)}/../definitions/AccountAndTaxStatement.yml`;
 // console.log(swaggerPath);
 
 const router = express.Router();
