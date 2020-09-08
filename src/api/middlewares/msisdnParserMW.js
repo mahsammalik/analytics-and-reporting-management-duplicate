@@ -1,8 +1,8 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 /**
- * * keys are name of msisdn in request header and body
- * @param keys {keys.headerKeys['msisdn', 'msisdn1'],keys.bodyKeys:['msisdn', 'msisdn1']}
+ * * Validates and converts number to 92xxxxxxxxxx format
+ * @param keys {bodyKeys:['msisdn', 'msisdn1'],paramKeys:['msisdn', 'msisdn1']}
  * @return next() next function in chain or throw error
  * 
  */
@@ -41,7 +41,7 @@ const msisdnParserMW = (keys) => {
 const formatNumber = (number) => {
     try {
         const phoneNumber = parsePhoneNumberFromString(number.toString(), 'PK');
-        return phoneNumber.isValid() ? phoneNumber.number : false;
+        return phoneNumber.isValid() ? phoneNumber.number.substring(1) : false; //converts number to 92xxxxxxxxxx format
     } catch (error) {
         logger.error(error);
     }
