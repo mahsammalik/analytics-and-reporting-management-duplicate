@@ -42,7 +42,7 @@
         "@babel/polyfill": "^7.0.0",
         "@babel/preset-env": "^7.10.2",
         "@babel/runtime": "^7.10.2",
-        "ajv": "^6.12.2",
+        "ajv": "^6.12.4",
         "axios": "^0.19.2",
         "base64-stream": "^1.0.0",
         "compression": "^1.7.4",
@@ -56,7 +56,7 @@
         "ibm_db": "^2.7.0",
         "infinispan": "^0.7.0",
         "libphonenumber-js": "^1.7.57",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.20",
         "moment": "^2.27.0",
         "mongoose": "^5.9.18",
         "mongoose-unique-validator": "^2.0.3",
@@ -68,6 +68,8 @@
         "response-time": "^2.3.2",
         "sharp": "^0.25.4",
         "uuidv4": "^6.1.1",
-        "winston": "^3.2.1"
+        "validator": "^13.1.1",
+        "winston": "^3.2.1",
+        "yamljs": "^0.3.0"
     }
 }

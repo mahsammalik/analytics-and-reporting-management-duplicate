@@ -17,21 +17,19 @@ logger.info('Trace message, Winston!');
 
 
 const app = express();
+
 app.use(compression());
 app.use(bodyParser.json());
 app.use(responseTime());
 
 app.use(schemaValidatorMW);
-app.use('/rest/api/v1/reports/statement', router);
 
+app.use('/rest/api/v1/reports/statement', router);
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,
     });
 });
-
-
-app.use(requestLoggerMW);
 
 module.exports.app = app;

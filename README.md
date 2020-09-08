@@ -14,7 +14,7 @@ MSISDN Parser validates and mobile phone number and converts it into 92xxxxxxxxx
 
 Swagger validator validates the incoming request against the swagger 2.0 specification. It throws errors if any of the required fields are missing.
 
-### Use
+## Use
 
 1.  Create a new folder in 'src' called 'definitions' and add your swagger 2.0 swagger specification file.
 2.  Add 'schemaValidatorMW.js' middlware in 'middlewares' folder.

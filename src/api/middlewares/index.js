@@ -6,3 +6,5 @@ export { default as responseCodeMW }
 from './responseCodeMW';
 export { default as requestLoggerMW }
 from './requestLoggerMW';
+export { default as schemaValidatorMW }
+from './schemaValidatorMW';
