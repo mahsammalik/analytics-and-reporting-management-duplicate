@@ -4,3 +4,5 @@ export { default as accountStatementTemplate }
 from './accountStatementTemplate';
 export { default as taxStatementTemplate }
 from './taxStatementTemplate';
+export { default as logger }
+from './logger';

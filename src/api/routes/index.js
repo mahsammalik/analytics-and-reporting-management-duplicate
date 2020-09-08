@@ -5,8 +5,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get(
-    '/account', msisdnParserMW(), accountStatementController.calculateAccountStatement, responseCodeMW
+router.post(
+    '/account', msisdnParserMW({ bodyKeys: ['msisdn', 'msisdn1'], paramKeys: ['msisdn', 'x-msisdn-11'] }), accountStatementController.calculateAccountStatement, responseCodeMW
 );
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW

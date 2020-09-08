@@ -8,7 +8,7 @@ const logFormat = winston.format.printf(({ level, message, timestamp }) => {
 let logger = winston.createLogger({
     format: winston.format.combine(
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss', 'colorize': true }),
-        winston.format.colorize(),
+        winston.format.colorize({ all: true }),
         winston.format.prettyPrint(),
         logFormat
     ),
