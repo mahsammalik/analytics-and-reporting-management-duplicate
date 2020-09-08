@@ -12,7 +12,7 @@ MSISDN Parser validates and mobile phone number and converts it into 92xxxxxxxxx
 
 # Swagger Validator
 
-Swagger validator validates the incoming request against the swagger 2.0 specification. It throws errors if any of the required fields are missing.
+Swagger validator validates the incoming request against the swagger 2.0 specification. It throws errors if any of the required fields are missing. The validator supports only one swagger file.
 
 ## Use
 
