@@ -65,7 +65,7 @@ const findKey = (object, targetKeys) => {
             }
         }
         if (object[key] && typeof object[key] === 'object' && msisdnIsValid) {
-            let value = findKey(object[key], targetKey);
+            let value = findKey(object[key], targetKeys);
             return value !== undefined;
         }
     });
