@@ -16,10 +16,15 @@ Swagger validator validates the incoming request against the swagger 2.0 specifi
 
 ## Use
 
+1.  Install following packages from npm.
+    >     ajv
+    >     lodash
+    >     validator
+    >     yamljs
 1.  Create a new folder in 'src' called 'definitions' and add your swagger 2.0 swagger specification file.
-2.  Add 'schemaValidatorMW.js' middlware in 'middlewares' folder.
-3.  Change the path of swagger file to your swagger 2.0 specification in 'schemaValidatorMW' middleware.
-4.  Add 'schema' folder from to 'util' folder.
-5.  Import 'schemaValidatorMW' in app.js
-6.  Add 'schemaValidator' as an application middlerware in app.js before calling routes.
+1.  Add 'schemaValidatorMW.js' middlware in 'middlewares' folder.
+1.  Change the path of swagger file to your swagger 2.0 specification in 'schemaValidatorMW' middleware.
+1.  Add 'schema' folder from to 'util' folder.
+1.  Import 'schemaValidatorMW' in app.js
+1.  Add 'schemaValidator' as an application middlerware in app.js before calling routes.
     >     app.use(schemaValidator)
