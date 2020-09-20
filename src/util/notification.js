@@ -4,6 +4,12 @@ import {
     isNull
 } from 'lodash';
 
+
+const NOTIFICATION_SERVICE_URL_PUSH = process.env.NOTIFICATION_SERVICE_URL_PUSH || config.NotificationService.pushNotificationUrl;
+const NOTIFICATION_SERVICE_URL_EMAIL = process.env.NOTIFICATION_SERVICE_URL_EMAIL || config.NotificationService.emailNotificationUrl;
+const NOTIFICATION_SERVICE_URL_SMS = process.env.NOTIFICATION_SERVICE_URL_SMS || config.NotificationService.smsNotificationUrl;
+
+
 class Notification {
     constructor() {}
 
@@ -26,7 +32,7 @@ class Notification {
 
             return await axios
                 .post(
-                    config.NotificationService.pushNotificationUrl,
+                    NOTIFICATION_SERVICE_URL_PUSH,
                     pushNotificationReqBody
                 )
                 .then((response) => {
@@ -76,7 +82,7 @@ class Notification {
             // console.log('printing email');
             // console.log(emailReqBody);
             return await axios
-                .post(config.NotificationService.emailNotificationUrl, emailReqBody)
+                .post(NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
                 .then((response) => {
                     // console.log(response);
                     return true;
