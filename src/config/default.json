@@ -153,6 +153,10 @@
                 "CNIC": "CNIC"
             }
         },
-        "profiles": { "l0": "L0", "l1": "Basic Business", "l2": "Premium Business" }
+        "profiles": {
+            "l0": "L0",
+            "l1": "Basic Business",
+            "l2": "Premium Business"
+        }
     }
 }
