@@ -43,7 +43,7 @@ class DatabaseConn {
 
         try {
             const conn = await open(cn);
-            const stmt = conn.prepareSync(`Select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
+            const stmt = conn.prepareSync(`Select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN TO_TIMESTAMP(REPLACE(REPLACE(?,'T',' '),'Z',''),'YYYY-MM-DD HH24:MI:SS') AND TO_TIMESTAMP(REPLACE(REPLACE(?,'T',' '),'Z',''),'YYYY-MM-DD HH24:MI:SS') ;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();

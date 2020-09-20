@@ -173,25 +173,13 @@ class accountStatementService {
 
     async sendEmailPDF_Format(payload, res) {
         console.log("email pdf");
-        // const myDoc = new PDFDocument({ bufferPages: true });
-        // myDoc.pipe(fs.createWriteStream(imageDIR + 'test.pdf'));
-        // this.generateHeader(myDoc);
-        // generateCustomerInformation(myDoc, invoice);
-        // generateInvoiceTable(doc, invoice);
-        // generateFooter(doc);
-        // let finalString = ''; // contains the base64 string
-        const data = await DB2_Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        // console.log(`the output of changing database ${JSON.stringify(data)}`);
-        if (data === 'Database Error') return "Database Error";
-        // myDoc.pipe(new Base64Encode());
-        // myDoc.on('data', function(chunk) {
-        //     finalString += chunk;
-        // });
-        // myDoc.on('end', function() {
-        //     // the stream is at its end, so push the resulting base64 string to the response
-        //     EmailHandler.sendEmail("", payload.email, payload.subject, payload.html, finalString, res);
-        // });
+
+
         try {
+            const data = await DB2_Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            // console.log(`the output of changing database ${JSON.stringify(data)}`);
+            if (data === 'Database Error') return "Database Error";
+
 
             // console.log(`Array Format statement ${JSON.stringify(data)}`);
             const accountData = {
@@ -200,11 +188,9 @@ class accountStatementService {
                 payload
 
             };
-            // console.log(accountData);
-            const htmlTemplate = accountStatementTemplate(accountData);
-            // console.log(htmlTemplate);
+
             let pdfFile = await createPDF({
-                template: htmlTemplate,
+                template: accountStatementTemplate(accountData),
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');

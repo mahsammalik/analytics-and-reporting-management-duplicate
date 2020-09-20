@@ -4,9 +4,8 @@ const options = { format: 'A4', orientation: 'portrait', type: 'pdf', };
 
 const createPDF = async(templateDetails) => {
     try {
-
-        // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
         //Comment	for testing HTML Template
+        // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
         // fs.writeFile(`${fileName}.html`, templateDetails.template, (err, data) => {
         //     if (err) throw err;
         //     console.log('html created');

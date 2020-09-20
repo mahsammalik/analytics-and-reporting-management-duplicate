@@ -183,3 +183,14 @@ table>tbody>tr td {
     min-width: 100px;
     margin-right: 10px;
 }
+
+.section>.noData {
+    margin: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.mainSection {
+    display: block;
+    height: 510px;
+}

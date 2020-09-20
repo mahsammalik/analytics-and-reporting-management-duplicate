@@ -6,7 +6,7 @@ import express from 'express';
 const router = express.Router();
 const accountStatement = new accountStatementController();
 router.get(
-    '/account', msisdnParserMW({ paramKeys: ['msisdn'] }), accountStatement.calculateAccountStatement, responseCodeMW, requestLoggerMW
+    '/account', msisdnParserMW(), accountStatement.calculateAccountStatement, responseCodeMW, requestLoggerMW
 );
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW, requestLoggerMW

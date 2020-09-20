@@ -90,13 +90,13 @@ paths:
         - in: query
           name: start_date
           type: string
-          format: date
+          format: date-time
           required: true
           description: The proccess account statement start date
         - in: query
           name: end_date
           type: string
-          format: date
+          format: date-time
           required: true
           description: The proccess account statement end date
       responses:
@@ -229,7 +229,7 @@ paths:
         '200':
           description: 'successful operation'
           schema:
-                "$ref": '#/definitions/getAccount'
+            '$ref': '#/definitions/getAccount'
         '401':
           description: 'Authentication Failed'
           schema:
@@ -266,18 +266,18 @@ definitions:
   getAccount:
     type: object
     properties:
-              success:
-                type: boolean
-                example: true
-              responseCode:
-                type: string
-                example: AR-TS-T01
-              responseMessage_en:
-                type: string
-                example: The Email send succefully.
-              responseMessage_ur:
-                type: string
-                example: The Email send succefully.
+      success:
+        type: boolean
+        example: true
+      responseCode:
+        type: string
+        example: AR-TS-T01
+      responseMessage_en:
+        type: string
+        example: The Email send succefully.
+      responseMessage_ur:
+        type: string
+        example: The Email send succefully.
 securityDefinitions:
   Bearer:
     type: apiKey

@@ -84,11 +84,11 @@ class Notification {
             return await axios
                 .post(NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
                 .then((response) => {
-                    // console.log(response);
+                    // console.log('response', response);
                     return true;
                 })
                 .catch((error) => {
-                    // console.log(error);
+                    // console.log('error', error);
                     return false;
                 });
 
