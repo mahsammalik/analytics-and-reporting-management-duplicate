@@ -10,8 +10,6 @@ import Notification from '../util/notification';
 
 class accountStatementService {
     constructor() {
-        this.sendEmailPDF_Format = this.sendEmailPDF_Format.bind(this);
-        this.sendEmailCSV_Format = this.sendEmailCSV_Format.bind(this);
         this.test = this.test.bind(this);
     }
 
@@ -69,7 +67,7 @@ class accountStatementService {
 
     async sendEmailCSV_Format(payLoad) {
         try {
-            console.log("enter the csv method");
+
             const data = await DB2_Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 
             let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
@@ -382,4 +380,4 @@ class accountStatementService {
 
 }
 
-export default new accountStatementService();
+export default accountStatementService;

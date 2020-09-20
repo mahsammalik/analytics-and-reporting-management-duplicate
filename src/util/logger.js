@@ -1,5 +1,4 @@
-import winston from 'winston';
-
+const winston = require('winston');
 
 const logFormat = winston.format.printf(({ level, message, timestamp }) => {
     return `${timestamp} => ${level}: ${message}`;
@@ -20,4 +19,4 @@ let logger = winston.createLogger({
     exitOnError: false, // do not exit on handled exceptions
 });
 
-export default logger;
+module.exports = logger;

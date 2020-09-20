@@ -24,7 +24,10 @@
             "password": "MmZmZGQ1YmJlM2E1",
             "address": "",
             "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MmZmZGQ1YmJlM2E1;",
-            "schema": "JazzCash"
+            "schema": "JazzCash",
+            "hostName": "dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net",
+            "port": 5000,
+            "protocol": "TCPIP"
         },
         "winston": {
             "file": {
