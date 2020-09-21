@@ -4,7 +4,7 @@ metadata:
   annotations:
     architecture: x86_64
     authoritative-source-url: registry.access.redhat.com
-    build-date: 2020-01-30T08:17:04.175507
+    build-date: 2020-07-14T15:49:43.738993
     commit.image.appsody.dev/contextDir: C:\Users\OsamaTahir\Desktop\Development\Jazz\Analytics-And-Reporting-Management
     commit.image.appsody.dev/date: Thu Aug 27 17:00:22 2020 +0200
     commit.image.appsody.dev/message: remove success msg from response
@@ -31,36 +31,30 @@ metadata:
     name: kabanero/nodejs-express
     openshift.io/expose-services: 8080:http
     openshift.io/tags: builder,nodejs,nodejs12
-    redhat.com/build-host: cpt-1001.osbs.prod.upshift.rdu2.redhat.com
+    redhat.com/build-host: cpt-1007.osbs.prod.upshift.rdu2.redhat.com
     redhat.com/component: nodejs-12-container
     redhat.com/deployments-dir: /opt/app-root/src
     redhat.com/dev-mode: DEV_MODE:false
     redhat.com/dev-mode.port: DEBUG_PORT:5858
     redhat.com/license_terms: https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI
-    release: "27"
+    release: "50"
     s2i.io/scripts-url: image:///usr/libexec/s2i
     s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
     stack.appsody.dev/authors: Jahangir Khalid <jahangir.khalid1@pk.ibm.com>
     stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.2
     stack.appsody.dev/created: "2020-09-15T17:06:08+05:00"
     stack.appsody.dev/description: Express web framework for Node.js
-    stack.appsody.dev/documentation: |-
-      https://github.com/JazzCash/jazzcash-appsody-stack/tree/master
-      ??C:\Users\OsamaTahir\Desktop\Development\Jazz\jazzcash-appsody-stack/README.md
+    stack.appsody.dev/documentation: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/README.md
     stack.appsody.dev/licenses: Apache-2.0
-    stack.appsody.dev/revision: 413f3cfe884a164073571036b4988d87c905911d
-    stack.appsody.dev/source: |-
-      https://github.com/JazzCash/jazzcash-appsody-stack/tree/master
-      ??C:\Users\OsamaTahir\Desktop\Development\Jazz\jazzcash-appsody-stack/image
+    stack.appsody.dev/revision: 413f3cfe884a164073571036b4988d87c905911d-modified
+    stack.appsody.dev/source: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/image
     stack.appsody.dev/tag: dev.local/appsody/jazzcash-appsody-stack:0.2.10
     stack.appsody.dev/title: Node.js Express
-    stack.appsody.dev/url: |-
-      https://github.com/JazzCash/jazzcash-appsody-stack/tree/master
-      ??C:\Users\OsamaTahir\Desktop\Development\Jazz\jazzcash-appsody-stack
+    stack.appsody.dev/url: https://github.com/JazzCash/jazzcash-appsody-stack
     summary: Image for Kabanero Node.js Express development
-    url: https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/nodejs-12/images/1-27
+    url: https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/nodejs-12/images/1-50
     usage: s2i build <SOURCE-REPOSITORY> ubi8/nodejs-12:latest <APP-NAME>
-    vcs-ref: 9a85b86edcc6c765692f15311abe259b0f9997b2
+    vcs-ref: a6b3970d86fb885d9c20445676a2f31aa9bedf0b
     vcs-type: git
     vendor: Kabanero
     version: 0.2.10
@@ -81,6 +75,8 @@ spec:
     value: http://rest-cps-service-ibm-ace-server-icp4i-prod.ace:7800/rest/requestmgrservice/v1/sync
   - name: MASTER_DATA_API_GET_RESPCODE_URL
     value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
+  - name: NOTIFICATION_SERVICE_URL_EMAIL
+    value: http://notification-microservice.jazzcash-microservices-dev:3000/rest/api/v1/notification/email
   expose: true
   livenessProbe:
     failureThreshold: 12

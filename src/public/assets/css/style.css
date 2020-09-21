@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+header,
+footer,
+main {
+    width: auto;
+    display: block;
+    height: auto;
+    clear: both;
+    margin: 5px;
+    padding: 5px;
+}
+
+.headerLogo {
+    width: 20%;
+    float: left;
+    display: flex;
+}
+
+.headerLogo-img {
+    width: 150px;
+    height: 80px;
+}
+
+.headerTable {
+    width: 80%;
+    float: right;
+    text-align: right;
+    font-size: 10px;
+}
+
+.headerTable b {
+    font-size: 10px;
+    font-family: Arial Black;
+}
+
+.headerTable-heading {
+    font-weight: bold;
+    display: inline;
+}
+
+.heading {
+    text-align: center;
+    display: block;
+}
+
+.heading h1 {
+    display: inline;
+    font-family: Arial Black;
+}
+
+.heading b,
+.heading i {
+    display: inline;
+    float: right;
+}
+
+.pagination {
+    width: 11%;
+    text-align: right;
+    display: inline-block;
+}
+
+.section {
+    margin: 20px auto;
+}
+
+footer {
+    width: auto;
+    display: block;
+    height: auto;
+    clear: both;
+    margin: 0px 0 10px 10px;
+    padding: 5px;
+    bottom: 0;
+}
+
+.disclaimer {
+    border-bottom: 1px solid red;
+    margin: 5px 0 10px 0;
+    padding: 10px 0;
+    width: 100%;
+    display: block;
+    font-size: 8px;
+}
+
+.disclaimer b {
+    font-family: Arial Black;
+}
+
+.copyright {
+    margin: 10px auto;
+    display: block;
+    width: 100%;
+    font-size: 8px;
+}
+
+.copyright b {
+    font-family: Arial Black;
+}
+
+.helpline {
+    float: left;
+    display: inline-block;
+}
+
+.footerlogo {
+    width: 20%;
+    float: right;
+    display: inline-block;
+}
+
+.footerlogo img {
+    width: 150px;
+    float: right;
+}
+
+table {
+    width: 100%;
+    font-size: 10px;
+}
+
+table>thead>tr th {
+    background: #eee;
+    padding: 5px 1px;
+    border-radius: 5px;
+    border-right: 2px solid #fff;
+    width: 10px;
+    font-family: Arial Black, sans-serif;
+}
+
+table>thead {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+table>tbody {
+    margin-top: 20px;
+}
+
+table>tbody>tr {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    /* border-top: 1px solid #eee; */
+}
+
+table>tbody>tr td {
+    padding: 10px;
+    text-align: center;
+}
+
+.statementBalance {
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    margin: 10px auto;
+}
+
+.statementDetails {
+    padding: 10px;
+}
+
+.taxHeading {
+    font-family: Arial Black, sans-serif;
+    margin: 10px auto;
+}
+
+.taxDetails>div {
+    display: block;
+    width: auto;
+    border: 1px solid #eee;
+    /* padding: 5px; */
+    margin: 5px auto;
+}
+
+.taxDetails div>div {
+    background-color: #eee;
+    display: inline-block;
+    padding: 5px;
+    min-width: 100px;
+    margin-right: 10px;
+}
+
+.section>.noData {
+    margin: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.mainSection {
+    display: block;
+    height: 510px;
+}

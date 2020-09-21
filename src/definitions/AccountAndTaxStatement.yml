@@ -1,0 +1,285 @@
+swagger: '2.0'
+info:
+  description: 'This API returns the account statement of a user'
+  version: '1.0.0'
+  title: 'Analytics and Reporting'
+host: 'ibm.com'
+basePath: /rest/api/v1/reports/statement
+tags:
+  - name: 'Analytics and Reporting'
+    externalDocs:
+      description: 'Find out more on box'
+      url: 'http://box.ibm'
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /account:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'Account Statement'
+      summary: 'Download or Email with Summery of account statement'
+      description: ''
+      produces:
+        - 'application/json'
+      parameters:
+        - in: header
+          name: X-APP-TYPE
+          required: true
+          type: string
+          enum:
+            - Andriod
+            - IOS
+            - Web
+          description: Describes application or device type.
+        - in: header
+          name: X-APP-VERSION
+          required: true
+          type: string
+          description: Describes application version 1.0.1.
+        - in: header
+          name: X-DEVICE-ID
+          required: true
+          type: string
+          description: Describes device ID XDFSD23345435.
+        - in: header
+          name: X-IP-ADDRESS
+          required: true
+          type: string
+          description: Describes IP Address of the device.
+        - in: header
+          name: X-CHANNEL
+          required: true
+          type: string
+          enum:
+            - Third Party
+            - Mobile APP
+            - Backend Portal
+          description: Describes channel code
+        - in: header
+          name: X-IBM-CLIENT-ID
+          required: true
+          type: string
+          description: Client credentials required for API Connect
+        - in: header
+          name: X-MSISDN
+          required: true
+          type: string
+        - in: header
+          name: X-META-DATA
+          required: true
+          type: string
+        - in: query
+          name: requestType
+          type: string
+          required: false
+          enum:
+            - Download
+            - Email
+          description: The request to verify needed download or email
+        - in: query
+          name: format
+          type: string
+          required: true
+          enum:
+            - csv
+            - pdf
+          description: The request to verify needed download or email
+        - in: query
+          name: start_date
+          type: string
+          format: date-time
+          required: true
+          description: The proccess account statement start date
+        - in: query
+          name: end_date
+          type: string
+          format: date-time
+          required: true
+          description: The proccess account statement end date
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            properties:
+              success:
+                type: boolean
+                example: true
+              responseCode:
+                type: string
+                example: AR-AS-T01
+              responseMessage_en:
+                type: string
+                example: The Email send succefully.
+              responseMessage_ur:
+                type: string
+                example: The Email send succefully.
+        '401':
+          description: 'Authentication Failed'
+          schema:
+            properties:
+              success:
+                type: boolean
+                example: false
+              responseCode:
+                type: string
+                example: T02
+              responseMessage_en:
+                type: string
+                example: Authentication_Failed
+              responseMessage_ur:
+                type: string
+                example: Authentication_Failed
+        '422':
+          description: 'Missing required parameters'
+          schema:
+            properties:
+              success:
+                type: boolean
+                example: false
+              responseCode:
+                type: string
+                example: AR-AS-T02
+              responseMessage_en:
+                type: string
+                example: Failed to get account statement
+              responseMessage_ur:
+                type: string
+                example: Failed to get account statement.
+  /tax:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - 'Tax Statement'
+      summary: 'Download or Email with Summery of tax statement'
+      description: ''
+      produces:
+        - 'application/json'
+      parameters:
+        - in: header
+          name: X-APP-TYPE
+          required: true
+          type: string
+          enum:
+            - Andriod
+            - IOS
+            - Web
+          description: Describes application or device type.
+        - in: header
+          name: X-APP-VERSION
+          required: true
+          type: string
+          description: Describes application version 1.0.1.
+        - in: header
+          name: X-DEVICE-ID
+          required: true
+          type: string
+          description: Describes device ID XDFSD23345435.
+        - in: header
+          name: X-IP-ADDRESS
+          required: true
+          type: string
+          description: Describes IP Address of the device.
+        - in: header
+          name: X-CHANNEL
+          required: true
+          type: string
+          enum:
+            - Third Party
+            - Mobile APP
+            - Backend Portal
+          description: Describes channel code
+        - in: header
+          name: X-IBM-CLIENT-ID
+          required: true
+          type: string
+          description: Client credentials required for API Connect
+        - in: header
+          name: X-MSISDN
+          required: true
+          type: string
+        - in: header
+          name: X-META-DATA
+          required: true
+          type: string
+        - in: query
+          name: requestType
+          type: string
+          required: false
+          enum:
+            - Download
+            - Email
+          description: The request to verify needed download or email
+        - in: query
+          name: start_date
+          type: string
+          format: date-time
+          required: true
+          description: The proccess tax statement start date
+        - in: query
+          name: end_date
+          type: string
+          format: date-time
+          required: true
+          description: The proccess tax statement end date
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            '$ref': '#/definitions/getAccount'
+        '401':
+          description: 'Authentication Failed'
+          schema:
+            properties:
+              success:
+                type: boolean
+                example: false
+              responseCode:
+                type: string
+                example: AR-TS-T03
+              responseMessage_en:
+                type: string
+                example: Authentication_Failed
+              responseMessage_ur:
+                type: string
+                example: Authentication_Failed
+        '422':
+          description: 'Missing required parameters'
+          schema:
+            properties:
+              success:
+                type: boolean
+                example: false
+              responseCode:
+                type: string
+                example: AR-TS-T02
+              responseMessage_en:
+                type: string
+                example: Failed to get tax statement
+              responseMessage_ur:
+                type: string
+                example: Failed to get tax statement.
+definitions:
+  getAccount:
+    type: object
+    properties:
+      success:
+        type: boolean
+        example: true
+      responseCode:
+        type: string
+        example: AR-TS-T01
+      responseMessage_en:
+        type: string
+        example: The Email send succefully.
+      responseMessage_ur:
+        type: string
+        example: The Email send succefully.
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header

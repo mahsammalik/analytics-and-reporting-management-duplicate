@@ -11,7 +11,7 @@
         },
         "externalServices": {
             "masterDataAPI": {
-                "responseCodeURL": "http://host.docker.internal:3000/rest/api/v1/masterdata/responseCodes"
+                "responseCodeURL": "http://masterdata-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/masterdata/responseCodes"
             }
         },
         "mongodb": {
@@ -20,10 +20,14 @@
             "database": "sampledb"
         },
         "IBMDB2": {
-            "username": "something",
-            "password": "thatthing",
+            "username": "bluadmin",
+            "password": "MmZmZGQ1YmJlM2E1",
+            "address": "",
+            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MmZmZGQ1YmJlM2E1;",
             "schema": "JazzCash",
-            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MmZmZGQ1YmJlM2E1"
+            "hostName": "dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net",
+            "port": 5000,
+            "protocol": "TCPIP"
         },
         "winston": {
             "file": {
@@ -41,7 +45,6 @@
                 "json": false,
                 "colorize": true
             }
-
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
@@ -59,19 +62,18 @@
             "port": 11222,
             "cacheName": "jazzcash",
             "responseCodeCache": "ResponseCodeCache"
-
         },
         "NotificationService": {
-            "smsNotificationUrl": "http://localhost:3000/api/notification/sms",
-            "emailNotificationUrl": "http://localhost:3000/api/notification/email",
-            "pushNotificationUrl": "http://localhost:3000/api/notification/pushNotification"
-          },
+            "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
+            "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
+            "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
+        },
         "responseCode": {
             "default": {
                 "code": "G-01",
                 "message": "Internal Server Error"
-              },
-              "useCases": {
+            },
+            "useCases": {
                 "accountStatement": {
                     "success": "AR-AS-T03",
                     "invalid": "AR-AS-T01",
@@ -80,80 +82,81 @@
                     "database_connection": "AR-AS-T05",
                     "email_problem": "AR-AS-T08",
                     "pdf_internal_error": "AR-AS-T06"
-                  },
+                },
                 "contactIntegration": {
-                  "success": "AM-CI-T01",
-                  "invalid": "AM-CI-T02"
+                    "success": "AM-CI-T01",
+                    "invalid": "AM-CI-T02"
                 },
                 "changeMPIN": {
-                  "success": "AM-CMP-T01",
-                  "invalid": "AM-CMP-T02",
-                  "data_not_found": "AM-CMP-T04",
-                  "device_unauthentic": "AM-CMP-T03",
-                  "cps": "AM-CMP-CPS-"
+                    "success": "AM-CMP-T01",
+                    "invalid": "AM-CMP-T02",
+                    "data_not_found": "AM-CMP-T04",
+                    "device_unauthentic": "AM-CMP-T03",
+                    "cps": "AM-CMP-CPS-"
                 },
                 "generateOTPForMPIN": {
-                  "success": "AM-RMP-T02",
-                  "invalid": "AM-RMP-T07",
-                  "data_not_found": "AM-RMP-T09",
-                  "device_unauthentic": "AM-RMP-T08"
+                    "success": "AM-RMP-T02",
+                    "invalid": "AM-RMP-T07",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
                 },
                 "verifyOTPForMPIN": {
-                  "success": "AM-RMP-T01",
-                  "invalid": "AM-RMP-T06",
-                  "data_not_found": "AM-RMP-T09",
-                  "device_unauthentic": "AM-RMP-T08"
+                    "success": "AM-RMP-T01",
+                    "invalid": "AM-RMP-T06",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
                 },
                 "resetMPIN": {
-                  "success": "AM-RMP-T04",
-                  "invalid": "AM-RMP-T05",
-                  "data_not_found": "AM-RMP-T09",
-                  "device_unauthentic": "AM-RMP-T08",
-                  "cps": "AM-RMP-CPS-"
+                    "success": "AM-RMP-T04",
+                    "invalid": "AM-RMP-T05",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08",
+                    "cps": "AM-RMP-CPS-"
                 },
                 "profile": {
-                  "cps": "AM-PR-CPS-",
-                  "success_profile": "AM-PR-T36",
-                  "success_email": "AM-PR-T37",
-                  "success_image_upload": "AM-PR-T38",
-                  "fail_profile": "AM-PR-T35",
-                  "invalid": "AM-PR-T34",
-                  "esb": "AM-PR-T02",
-                  "internal": "AM-PR-T01"
+                    "cps": "AM-PR-CPS-",
+                    "success_profile": "AM-PR-T36",
+                    "success_email": "AM-PR-T37",
+                    "success_image_upload": "AM-PR-T38",
+                    "fail_profile": "AM-PR-T35",
+                    "invalid": "AM-PR-T34",
+                    "esb": "AM-PR-T02",
+                    "internal": "AM-PR-T01"
                 },
                 "limits": {
-                  "cps": "AM-AL-CPS-",
-                  "success": "AM-AL-T35",
-                  "invalid": "AM-AL-T34",
-                  "esb": "AM-AL-T02",
-                  "internal": "AM-AL-T01"
+                    "cps": "AM-AL-CPS-",
+                    "success": "AM-AL-T35",
+                    "invalid": "AM-AL-T34",
+                    "esb": "AM-AL-T02",
+                    "internal": "AM-AL-T01"
                 },
                 "favouritList": {
-                  "cps": "AM-FL-CPS-",
-                  "success": "AM-FL-T35",
-                  "invalid": "AM-FL-T34",
-                  "esb": "AM-FL-T02",
-                  "internal": "AM-FL-T01",
-                  "error": "AM-FL-T39",
-                  "notFound": "AM-FL-T38"
+                    "cps": "AM-FL-CPS-",
+                    "success": "AM-FL-T35",
+                    "invalid": "AM-FL-T34",
+                    "esb": "AM-FL-T02",
+                    "internal": "AM-FL-T01",
+                    "error": "AM-FL-T39",
+                    "notFound": "AM-FL-T38"
                 },
                 "balance": {
-                  "cps": "AM-AB-CPS-",
-                  "success": "AM-AB-T35",
-                  "invalid": "AM-AB-T34",
-                  "esb": "AM-AB-T02",
-                  "internal": "AM-AB-T01"
+                    "cps": "AM-AB-CPS-",
+                    "success": "AM-AB-T35",
+                    "invalid": "AM-AB-T34",
+                    "esb": "AM-AB-T02",
+                    "internal": "AM-AB-T01"
                 }
-              },
-              "transactionType": {
+            },
+            "transactionType": {
                 "c2C": "C2C",
                 "bank": "BA",
                 "CNIC": "CNIC"
-              }
+            }
+        },
+        "profiles": {
+            "l0": "L0",
+            "l1": "Basic Business",
+            "l2": "Premium Business"
         }
-
-
-
-
     }
 }

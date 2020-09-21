@@ -9,7 +9,12 @@
         "regenerator": true
       }
     ],
-    ["@babel/plugin-transform-classes"]
-
+    ["@babel/plugin-transform-classes"],
+    [
+      "module-resolver",
+      {
+        "root": ["./src"]
+      }
+    ]
   ]
 }
