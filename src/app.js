@@ -7,7 +7,10 @@ import compression from 'compression';
 import responseTime from 'response-time';
 // import Cache from './util/cache';
 //import Subscriber from './services/subscriberService';
-import { requestLoggerMW, schemaValidatorMW } from './api/middlewares';
+import {
+    requestLoggerMW,
+    schemaValidatorMW
+} from './api/middlewares';
 
 
 logger.info('printing webserver value' + config.mongodb.host);
@@ -32,4 +35,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-module.exports.app = app;
+module.exports = () => app;
