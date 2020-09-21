@@ -6,8 +6,8 @@ metadata:
     authoritative-source-url: registry.access.redhat.com
     build-date: 2020-01-30T08:17:04.175507
     commit.image.appsody.dev/contextDir: C:\Users\OsamaTahir\Desktop\Development\Jazz\Analytics-And-Reporting-Management
-    commit.image.appsody.dev/date: Wed Aug 26 10:39:35 2020 +0200
-    commit.image.appsody.dev/message: Add responsecode handler update
+    commit.image.appsody.dev/date: Thu Aug 27 17:00:22 2020 +0200
+    commit.image.appsody.dev/message: remove success msg from response
     commit.stack.appsody.dev/contextDir: C:\Users\OsamaTahir\Desktop\Development\Jazz\jazzcash-appsody-stack
     commit.stack.appsody.dev/date: Fri Jul 24 20:59:51 2020 +0500
     commit.stack.appsody.dev/message: Changes in Appsody Stack for Deployment on Cloud
@@ -15,11 +15,10 @@ metadata:
       Express collection
     distribution-scope: public
     help: For more information visit https://github.com/sclorg/s2i-nodejs-container
-    image.opencontainers.org/created: "2020-08-26T13:53:39+05:00"
+    image.opencontainers.org/created: "2020-09-21T14:00:32+05:00"
     image.opencontainers.org/documentation: https://github.com/JazzCash/Analytics-And-Reporting-Management
-    image.opencontainers.org/revision: 222d3772c5b6764935587d0333a0d9ba729e11c0
-    image.opencontainers.org/source: |
-      https://github.com/JazzCash/Analytics-And-Reporting-Management/tree/dev
+    image.opencontainers.org/revision: 626065050f2dbdc012ebb8561d88b9afc5d89ec8
+    image.opencontainers.org/source: https://github.com/JazzCash/Analytics-And-Reporting-Management/tree/dev
     image.opencontainers.org/url: https://github.com/JazzCash/Analytics-And-Reporting-Management
     k8s.io/description: Node.js 12 available as container is a base platform for building
       and running various Node.js 12 applications and frameworks. Node.js is a platform
@@ -43,7 +42,7 @@ metadata:
     s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
     stack.appsody.dev/authors: Jahangir Khalid <jahangir.khalid1@pk.ibm.com>
     stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.2
-    stack.appsody.dev/created: "2020-08-26T05:31:31+05:00"
+    stack.appsody.dev/created: "2020-09-15T17:06:08+05:00"
     stack.appsody.dev/description: Express web framework for Node.js
     stack.appsody.dev/documentation: |-
       https://github.com/JazzCash/jazzcash-appsody-stack/tree/master
@@ -73,7 +72,7 @@ metadata:
   name: analytics
   namespace: jk-microservices-test
 spec:
-  applicationImage: image-registry.openshift-image-registry.svc:5000/jk-microservices-test/analytics:v1.5
+  applicationImage: image-registry.openshift-image-registry.svc:5000/jk-microservices-test/analytics:v2.9
   createKnativeService: false
   env:
   - name: CACHE_SERVER
