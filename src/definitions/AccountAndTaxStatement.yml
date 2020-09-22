@@ -90,13 +90,13 @@ paths:
         - in: query
           name: start_date
           type: string
-          format: date-time
+          format: date
           required: true
           description: The proccess account statement start date
         - in: query
           name: end_date
           type: string
-          format: date-time
+          format: date
           required: true
           description: The proccess account statement end date
       responses:
@@ -216,13 +216,13 @@ paths:
         - in: query
           name: start_date
           type: string
-          format: date-time
+          format: date
           required: true
           description: The proccess tax statement start date
         - in: query
           name: end_date
           type: string
-          format: date-time
+          format: date
           required: true
           description: The proccess tax statement end date
       responses:
