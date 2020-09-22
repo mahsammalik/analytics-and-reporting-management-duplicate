@@ -44,7 +44,6 @@ const htmlFoot = `<footer>
  */
 const accountStatementTemplate = accountData => {
 
-
     try {
         const pageSize = 9;
 
@@ -63,7 +62,6 @@ const accountStatementTemplate = accountData => {
 		`;
         let htmlString = ``;
         if (accountData.data.length === 0) {
-            console.log('accountData.data', accountData.data);
             htmlString = `${htmlHead}${accountDetails}<div class="section">
 			<div class="heading">
 			<h1>
@@ -119,13 +117,14 @@ const accountStatementTemplate = accountData => {
             statementTableHeader = statementTableHeader.join().replace(/,/g, '');
             let slicedArray = [];
 
-            if (accountData.data.length <= pageSize) {
-                slicedArray = accountData.data;
-            } else {
-                slicedArray = accountData.data.map((item, index) => {
-                    return index % pageSize === 0 ? accountData.data.slice(index, index + pageSize) : null;
-                }).filter((item) => { return item; });
-            }
+            // if (accountData.data.length <= pageSize) {
+            //     slicedArray = accountData.data;
+            //     console.log(slicedArray);
+            // } else {
+            slicedArray = accountData.data.map((item, index) => {
+                return index % pageSize === 0 ? accountData.data.slice(index, index + pageSize) : null;
+            }).filter((item) => { return item; });
+            // }
 
             slicedArray.forEach((item, index) => {
                 let pagination = `<div class="section">
@@ -137,7 +136,6 @@ const accountStatementTemplate = accountData => {
 				</div>
 			</div>`;
                 htmlString += `${htmlHead}${accountDetails}${pagination}<div class="main-section"><table><thead>${statementTableHeader}</thead>`;
-
                 let page = item.map(row => {
                     let column = row.map((col, ind) => { if (ind != 2) { return ind > 5 ? `<td>${parseFloat(col).toFixed(2)}</td>` : `<td>${col}</td>`; } });
                     column = column.join().replace(/,/g, '');
