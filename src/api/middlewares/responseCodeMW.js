@@ -1,4 +1,5 @@
-import responseCodeHandler from '../../util/responseCodeHandler';
+import { logger, responseCodeHandler } from '/util/';
+
 /**
  * * Send response based on response code from controller input  {locals.reponse}
  * @param {*} req,res,next
@@ -7,6 +8,7 @@ import responseCodeHandler from '../../util/responseCodeHandler';
  */
 const responseCodeMW = async(req, res, next) => {
     try {
+        logger.info({ event: 'Entered function', functionName: 'responseCodeMW' });
         if (res.locals.response) {
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
             res.locals.response = response;
@@ -16,9 +18,13 @@ const responseCodeMW = async(req, res, next) => {
             res.locals.response = response;
             res.status(422).send(response);
         }
-        next();
+        logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
+
     } catch (error) {
-        logger.error(error);
+
+        logger.error({ event: 'Exited function', functionName: 'responseCodeMW', error: { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, response: res.locals.response });
+        logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
+        throw new Error(error);
     }
 
 };

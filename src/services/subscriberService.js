@@ -1,34 +1,26 @@
-import Broker from "../util/broker";
-
+import { logger, Broker } from '/util/';
 
 class Subscriber {
 
     constructor() {
         //provide list of topics from which you want to consume messages 
-        this.event = new Broker([config.kafkaBroker.init_topic, config.kafkaBroker.confirm_topic]);
+        this.event = new Broker([config.kafkaBroker.init_topic, config.kafkaBroker.confirm_topic, config.kafkaBroker.initTrans_auditLog, config.kafkaBroker.confirmTrans_auditLog, config.kafkaBroker.intTrans_sendMoney_c2c]);
     }
 
     setConsumer() {
 
-        this.event.addConsumerOnDataEvent(function (msg) {
-
-            if (msg.topic === config.kafkaBroker.init_topic)
-                logger.info('*********** INIT TOPIC *****************');
-
-            if (msg.topic === config.kafkaBroker.confirm_topic)
-                logger.info('*********** Confirm TOPIC *****************');
-
+        this.event.addConsumerOnDataEvent(async function(msg) {
             try {
-                msg.value = JSON.parse(msg.value.toString());
-            } catch {}
+                logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
 
-            // convert key to string before logging
-            if (msg.key) msg.key = msg.key.toString();
+                if (msg.topic === config.kafkaBroker.init_auditLog) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });
+                }
 
-            // Output the actual message contents
-            logger.info('data received value');
-            logger.info(' value is ' + msg.value);
-            logger.info(' Printing topic Name' + msg.topic);
+            } catch (error) {
+                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
+                throw new Error(e);
+            }
 
         });
 

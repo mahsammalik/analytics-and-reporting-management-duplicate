@@ -1,5 +1,7 @@
 // import fs from "fs";
 import pdf from 'html-pdf';
+import logger from './logger';
+
 const options = { format: 'A4', orientation: 'portrait', type: 'pdf', };
 
 const createPDF = async(templateDetails) => {
@@ -17,6 +19,8 @@ const createPDF = async(templateDetails) => {
         // });
 
 
+        logger.info({ event: 'Entered function', functionName: 'createPDF' });
+        logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
                 if (err) {
@@ -28,7 +32,8 @@ const createPDF = async(templateDetails) => {
         });
 
     } catch (error) {
-        logger.error(error);
+        logger.error({ event: 'Error throw', functionName: 'createPDF', error: { message: error.message, stack: error.stack } });
+        logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Error("PDF creation error");
     }
 

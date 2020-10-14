@@ -1,20 +1,26 @@
 const winston = require('winston');
+const flatten = require('flat');
 
-const logFormat = winston.format.printf(({ level, message, timestamp }) => {
-    return `${timestamp} => ${level}: ${message}`;
+const loggerFormat = winston.format.printf((info) => {
+    let log = info.message;
+    log.timestamp = info.timestamp;
+    log.level = info.level;
+    Object.keys(log).map(key => {
+        log[`ms_${key}`] = log[key];
+        delete log[key];
+    });
+    return JSON.stringify(flatten(log));
 });
 
-let logger = winston.createLogger({
+const logger = winston.createLogger({
     format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss', 'colorize': true }),
-        winston.format.colorize({ all: true }),
-        winston.format.prettyPrint(),
-        logFormat
+        winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
+        loggerFormat,
+        winston.format.colorize({ all: process.env.NODE_ENV === 'development' ? true : false, }),
     ),
-    level: process.env.NODE_ENV === 'dev' ? 'debug' : 'silent',
     transports: [
         // new winston.transports.File(config.winston.file),
-        new winston.transports.Console(config.winston.console)
+        new winston.transports.Console(config.winston.console[process.env.NODE_ENV]),
     ],
     exitOnError: false, // do not exit on handled exceptions
 });

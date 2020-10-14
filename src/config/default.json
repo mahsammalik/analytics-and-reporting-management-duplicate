@@ -40,10 +40,16 @@
                 "colorize": "false"
             },
             "console": {
-                "level": "debug",
-                "handleExceptions": true,
-                "json": false,
-                "colorize": true
+                "development": {
+                    "level": "debug",
+                    "handleExceptions": true,
+                    "json": true
+                },
+                "production": {
+                    "level": "info",
+                    "handleExceptions": true,
+                    "json": true
+                }
             }
         },
         "kafkaBroker": {
@@ -55,7 +61,8 @@
             "numMessages": 1,
             "consumerAutoCommit": true,
             "init_topic": "initTopic",
-            "confirm_topic": "confirmTopic"
+            "confirm_topic": "confirmTopic",
+            "init_auditLog": "Init_auditLog"
         },
         "cache": {
             "server": "datagrid",

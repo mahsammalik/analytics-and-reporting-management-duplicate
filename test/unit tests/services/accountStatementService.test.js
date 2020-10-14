@@ -20,7 +20,7 @@ describe('Unit test accountStatementService', () => {
             html: '<html></html>',
             format: 'csv'
         };
-        const response = await accountStatement.sendEmailCSV_Format(payload);
+        const response = await accountStatement.sendEmailCSVFormat(payload);
         expect(response).toBe(true);
     });
     it('should fail in creating an account statement CSV', async() => {
@@ -35,7 +35,7 @@ describe('Unit test accountStatementService', () => {
             html: '<html></html>',
             format: 'csv'
         };
-        const response = await accountStatement.sendEmailCSV_Format(payload);
+        const response = await accountStatement.sendEmailCSVFormat(payload);
         expect(response).toBe(true); //false for now
     });
 });

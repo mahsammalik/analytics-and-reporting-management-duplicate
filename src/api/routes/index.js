@@ -6,10 +6,10 @@ import express from 'express';
 const router = express.Router();
 const accountStatement = new accountStatementController();
 router.get(
-    '/account', msisdnParserMW(), accountStatement.calculateAccountStatement, responseCodeMW, requestLoggerMW
+    '/account', msisdnParserMW(), accountStatement.calculateAccountStatement, responseCodeMW,
 );
 router.get(
-    '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW, requestLoggerMW
+    '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
 );
 
 export default router;

@@ -1,6 +1,9 @@
 import moment from 'moment';
+import { logger } from '/util/';
+
 const requestLoggerMW = (req, res) => {
     try {
+        logger.info({ event: 'Entered function', functionName: 'requestLoggerMW' });
 
         const headers = res.getHeaders();
 
@@ -19,8 +22,11 @@ const requestLoggerMW = (req, res) => {
         });
         logger.info(log);
     } catch (error) {
-        logger.error(error);
+        logger.error({ event: 'Error thrown ', functionName: 'requestLoggerMW', error, });
+        logger.info({ event: 'Exited function', functionName: 'requestLoggerMW' });
+
+        throw new Error(error);
     }
 };
 
-export default requestLoggerMW;;;;;;;;;;
+export default requestLoggerMW;

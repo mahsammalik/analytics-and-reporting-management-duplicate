@@ -8,3 +8,5 @@ export { default as requestLoggerMW }
 from './requestLoggerMW';
 export { default as schemaValidatorMW }
 from './schemaValidatorMW';
+export { default as auditLoggerMW }
+from './auditLoggerMW';

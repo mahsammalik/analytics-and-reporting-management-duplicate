@@ -1,8 +1,9 @@
 import { open } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
+import { logger } from '/util/';
 
 
-const cn = process.env.DB2_CONNECTION || config.IBMDB2.connectionString;
+const cn = process.env.DB2Connection || config.IBMDB2.connectionString;
 const schema = config.IBMDB2.schema;
 
 class DatabaseConn {
@@ -42,19 +43,24 @@ class DatabaseConn {
     async getValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
+
+            logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             const conn = await open(cn);
             const stmt = conn.prepareSync(`Select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
             stmt.closeSync();
-            conn.close(function(err) { console.error(err); });
+            conn.close();
             // console.log(`the resulted array ${JSON.stringify(arrayResult)}`);
+
+            logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn' });
             return arrayResult;
 
-        } catch (err) {
-            logger.error('Database connection error' + err);
-            return new Error("Database Error");
+        } catch (error) {
+            logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+            throw new Error(`Database error ${error}`);
         }
     }
 

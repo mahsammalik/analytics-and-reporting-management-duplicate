@@ -1,4 +1,5 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { logger } from '/util/';
 
 /**
  * * Validates and converts number to 92xxxxxxxxxx format
@@ -9,6 +10,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const msisdnParserMW = (keys) => {
     try {
+        logger.info({ event: 'Entered function', functionName: 'msisdnParserMW', arguments: keys });
         return (req, res, next) => {
             const headerMSISDN = 'X-MSISDN'.toLowerCase();
             if (req.headers && req.headers.hasOwnProperty(headerMSISDN)) {
@@ -23,10 +25,12 @@ const msisdnParserMW = (keys) => {
             if (!req.headers[headerMSISDN] || !req.body || !req.query) {
                 throw new Error('Invalid MSISDN in request');
             }
+            logger.info({ event: 'Exited function', functionName: 'msisdnParserMW' });
             next();
         };
     } catch (error) {
-        logger.error(error);
+        logger.error({ event: 'Error thrown', functionName: 'msisdnParserMW', error, request: req, keys: keys, method: req.method });
+        logger.info({ event: 'Exited function', functionName: 'msisdnParser' });
         throw new Error(error);
     }
 
@@ -43,7 +47,9 @@ const formatNumber = (number) => {
         const phoneNumber = parsePhoneNumberFromString(number.toString(), 'PK');
         return phoneNumber.isValid() ? phoneNumber.number.substring(1) : false; //converts number to 92xxxxxxxxxx format
     } catch (error) {
-        logger.error(error);
+        logger.error({ event: 'Error thrown', functionName: 'msisdnParserMW', 'error': error, 'number': number, });
+        logger.info({ event: 'Exited function', functionName: 'format Number' });
+        throw new Error(error);
     }
 };
 

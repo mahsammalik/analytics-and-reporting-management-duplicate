@@ -11,10 +11,10 @@ const NOTIFICATION_SERVICE_URL_SMS = process.env.NOTIFICATION_SERVICE_URL_SMS ||
 
 
 class Notification {
-    constructor() {}
 
     async sendPushNotification(PushID, DeviceType, MessageTitle, MessageBody) {
         try {
+            logger.info({ event: 'Entered function', functionName: 'sendPushNotification in class Notification' });
             let pushNotificationReqBody = {
                 pushID: PushID,
                 deviceType: DeviceType,
@@ -29,6 +29,7 @@ class Notification {
                     body: MessageBody,
                 },
             };
+            logger.info({ event: 'Exited function', functionName: 'sendPushNotification in class Notification' });
 
             return await axios
                 .post(
@@ -40,26 +41,29 @@ class Notification {
                     return true;
                 })
                 .catch((error) => {
-                    // console.log(error);
+                    logger.error({ event: 'Error thrown ', functionName: 'NOTIFICATION_SERVICE_URL_PUSH in class Notification', error, arguments: { PushID, DeviceType, MessageTitle, MessageBody } });
+                    logger.info({ event: 'Exited function', functionName: 'NOTIFICATION_SERVICE_URL_PUSH in class Notification' });
+
                     return false;
                 });
 
         } catch (error) {
-            logger.error(
-                'Error in Notification.sendPushNotification from accountmanagement microservice' +
-                error
-            );
+
+            logger.error({ event: 'Error thrown ', functionName: 'sendPushNotification in class Notification', error, arguments: { PushID, DeviceType, MessageTitle, MessageBody } });
+            logger.info({ event: 'Exited function', functionName: 'sendPushNotification in class Notification' });
             return false;
+            // throw new Error(error);
         }
     }
 
     //added by kashif abbasi dated 27-Jul-2020
     async sendEmail(To, Subject, HTML, Attachments, Template, Data) {
         try {
+            logger.info({ event: 'Entered function', functionName: 'sendEmail in class Notification' });
             //Attachmet should be array
             //1- if file present on disk than having two properties like this Attachments: [{"path": 'ww.googl.com/image.jpg', "embedImage": true}]
             //2- if file is in binary or base64 format than having 4 properties like this Attachments: [{"fileName": "test.png", content: "kjkjjhj", type:"base64", "embedImage": true}]
-            console.log('in sendEmail');
+
             let emailReqBody = {
                 // Move from email to env variables
                 // from: 'no-reply@JazzCash.com.pk',
@@ -88,15 +92,17 @@ class Notification {
                     return true;
                 })
                 .catch((error) => {
-                    // console.log('error', error);
-                    return false;
+                    logger.error({ event: 'Error thrown ', functionName: 'NOTIFICATION_SERVICE_URL_EMAIL in class Notification', error: { message: error.message, stack: error.stack }, arguments: { To, Subject, HTML, } });
+                    logger.info({ event: 'Exited function', functionName: 'NOTIFICATION_SERVICE_URL_EMAIL in class Notification' });
+
+                    throw new Error(error);
                 });
 
         } catch (error) {
-            logger.error(
-                'Error in Notification.sendEmail from accountmanagement microservice' + error
-            );
-            return false;
+            logger.error({ event: 'Error thrown ', functionName: 'sendEmail in class Notification', error: { message: error.message, stack: error.stack }, arguments: { To, Subject, HTML, } });
+            logger.info({ event: 'Exited function', functionName: 'sendEmail in class Notification' });
+
+            throw new Error(error);
         }
     }
 }

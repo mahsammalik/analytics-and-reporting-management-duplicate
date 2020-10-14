@@ -1,6 +1,9 @@
 import path from 'path';
-const dirName = `${path.dirname(__dirname)}/public/assets`;
 import moment from 'moment';
+import logger from './logger';
+
+
+const dirName = `${path.dirname(__dirname)}/public/assets`;
 
 const htmlHead = `<!DOCTYPE html>
 <head>
@@ -45,6 +48,7 @@ const htmlFoot = `<footer>
 const accountStatementTemplate = accountData => {
 
     try {
+        logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
         const pageSize = 9;
 
         // console.log(JSON.stringify(accountData.payload));
@@ -62,13 +66,16 @@ const accountStatementTemplate = accountData => {
 		`;
         let htmlString = ``;
         if (accountData.data.length === 0) {
+            logger.info({ event: 'Entered block accountData.data.length === 0 ', functionName: 'accountStatementTemplate' });
             htmlString = `${htmlHead}${accountDetails}<div class="section">
 			<div class="heading">
 			<h1>
 			Statement of Account
 			</h1></div><div class="mainSection"><i class="noData">No transactions performed during the selected period.</i></div></div></main>${htmlFoot}`;
+            logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
             return htmlString;
         } else {
+            logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplate' });
             const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 1]).toFixed(2);
             const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 1]).toFixed(2);
             let creditTransactions = 0;
@@ -147,12 +154,15 @@ const accountStatementTemplate = accountData => {
                 htmlString += index === slicedArray.length - 1 ? `${statementSummary}</main>${htmlFoot}` : `</main>${htmlFoot}`;
 
             });
+            logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
             return htmlString;
         }
 
     } catch (error) {
-        logger.error(error);
-        return new Error(`error:  ${error}`);
+
+        logger.error({ event: 'Error thrown ', functionName: 'accountStatementTemplate', error, accountData });
+        logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
+        throw new Error(`error in account statement template  ${error}`);
     }
 
 

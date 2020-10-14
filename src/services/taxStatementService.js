@@ -1,4 +1,4 @@
-import DB2_Connection from '../util/DB2Connection';
+import DB2Connection from '../util/DB2Connection';
 import {
     createPDF,
     taxStatementTemplate
@@ -13,7 +13,7 @@ class taxStatementService {
 
     async sendTaxStatement(payload, res) {
         console.log("email pdf");
-        const data = await DB2_Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
+        const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
         // console.log("the output of changing database" + data);
         if (data === 'Database Error') return "Database Error";
 
@@ -65,7 +65,7 @@ class taxStatementService {
     }
 
     async populateDataBase() {
-        await DB2_Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
+        await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
     }
 }
 
