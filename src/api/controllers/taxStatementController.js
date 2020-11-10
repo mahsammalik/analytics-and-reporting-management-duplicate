@@ -3,7 +3,7 @@ import Controller from './controller';
 import validations from './validators/validations';
 import schema from './validators/schema.json';
 import responseCodeHandler from '../../util/responseCodeHandler';
-
+import { logger, mappedMetaData } from '/util/';
 
 class taxStatementController {
 
@@ -28,17 +28,23 @@ class taxStatementController {
             console.log(queryValidationResponse);
             return res.status(422).send(responseCodeForAccountStatementQuery);
         }
+        const metadataHeaders = req.headers['x-meta-data'];
+        const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+        const userProfile = await getUserProfile(req.headers);
+        logger.debug({ userProfile });
         let payload = {
             msisdn: req.headers['x-msisdn'],
             start_date: req.query.start_date,
             end_date: req.query.end_date,
             request: req.query.requestType,
-            email: req.headers['x-meta-data'],
+            email: metaData.emailAddress,
             subject: 'Hello',
             html: '<html></html>',
+            format: req.query.format,
+            metadata,
+            merchantName: userProfile.businessDetails.businessName || ''
 
         };
-        console.log("payload" + payload);
 
         res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
         next();

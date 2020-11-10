@@ -12,6 +12,14 @@
         "externalServices": {
             "masterDataAPI": {
                 "responseCodeURL": "http://masterdata-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/masterdata/responseCodes"
+            },
+            "accountManagementAPI": {
+                "userProfileURL": "http://account-management-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/account/profile"
+            },
+            "NotificationService": {
+                "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
+                "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
+                "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
             }
         },
         "mongodb": {
@@ -60,9 +68,40 @@
             "commit-msgs-after": 1,
             "numMessages": 1,
             "consumerAutoCommit": true,
-            "init_topic": "initTopic",
-            "confirm_topic": "confirmTopic",
-            "init_auditLog": "Init_auditLog"
+            "consumerConfig": {
+                "debug": "all",
+                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
+                "group.id": "kafka-nodejs-console-sample-group--dev19",
+                "metadata.broker.list": "es-1-ibm-es-proxy-route-bootstrap-eventstreams.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud:443",
+                "security.protocol": "sasl_ssl",
+                "sasl.mechanisms": "PLAIN",
+                "ssl.ca.location": "/project/user-app/dist/util/cert.pem",
+                "sasl.username": "Super Key",
+                "sasl.password": "TuR8UGIVVnxNF6EWp7Q2rb_dubYc5AH1MTgUNfOhWcaU",
+                "enable.ssl.certificate.verification": false,
+                "enable.auto.commit": true,
+                "broker.version.fallback": "0.10.2.1",
+                "log.connection.close": false,
+                "auto.offset.reset": "smallest"
+            },
+            "producerConfig": {
+                "bootstrap.servers": "es-1-ibm-es-proxy-route-bootstrap-eventstreams.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud:443",
+                "security.protocol": "sasl_ssl",
+                "sasl.mechanisms": "PLAIN",
+                "ssl.ca.location": "/project/user-app/dist/util/cert.pem",
+                "sasl.username": "Super Key",
+                "sasl.password": "TuR8UGIVVnxNF6EWp7Q2rb_dubYc5AH1MTgUNfOhWcaU",
+                "enable.ssl.certificate.verification": false,
+                "broker.version.fallback": "0.10.0",
+                "log.connection.close": false
+            },
+            "topics": {
+                "Init_topic": "Init_topic",
+                "App_Consumer_Audit_Log": "App_Consumer_Audit_Log",
+                "App_Merchant_Audit_Log": "App_Merchant_Audit_Log",
+                "App_Admin_Audit_Log": "App_Admin_Audit_Log",
+                "App_Merchant_Account_Statement": "App_Merchant_Account_Statement"
+            }
         },
         "cache": {
             "server": "datagrid",
@@ -70,11 +109,7 @@
             "cacheName": "jazzcash",
             "responseCodeCache": "ResponseCodeCache"
         },
-        "NotificationService": {
-            "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
-            "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
-            "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
-        },
+
         "responseCode": {
             "default": {
                 "code": "G-01",
@@ -164,6 +199,38 @@
             "l0": "L0",
             "l1": "Basic Business",
             "l2": "Premium Business"
+        },
+        "metadata": {
+            "mapping": {
+                "a": "msisdn",
+                "b": "cnic",
+                "c": "accountLevel",
+                "d": "emailAddress",
+                "e": "firstName",
+                "f": "LastName",
+                "g": "profileImageURL",
+                "h": "customerType",
+                "i": "language",
+                "j": "dateOfBirth",
+                "k": "isLoggedInOnce"
+            },
+            "customerType": {
+                "1": "customer",
+                "2": "merchant"
+            },
+            "language": {
+                "1": "english",
+                "2": "urdu"
+            },
+            "isLoggedInOnce": {
+                "1": true,
+                "2": false
+            },
+            "accountLevel": {
+                "0": "L0",
+                "1": "Basic Business",
+                "2": "Premium Business"
+            }
         }
     }
 }

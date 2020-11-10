@@ -33,7 +33,7 @@ class taxStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                     'key': 'customerName',
-                    'value': payload.email
+                    'value': payload.merchantName
                 },
                 {
                     'key': 'accountNumber',
@@ -59,7 +59,7 @@ class taxStatementService {
             // });
             // myDoc.end();
         } catch (err) {
-            logger.error('Error in pdf Creation' + err);
+            logger.error({ event: 'Error in pdf Creation' + err });
             return "PDF creation error";
         }
     }

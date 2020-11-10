@@ -52,12 +52,12 @@ const accountStatementTemplate = accountData => {
         const pageSize = 9;
 
         // console.log(JSON.stringify(accountData.payload));
-
+        //TODO: update account title based on input for metadata
         const accountDetails = `<div class="headerTable">
 		<div><b>Date of Issue: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</div>
-		<div><b>Account Title: </b>Nishat Linen</div>
+		<div><b>Account Title: </b>${accountData.payload.merchantName}</div>
 		<div><b>Account Number: </b>${accountData.payload.msisdn}</div>
-		<div><b>Account Type: </b>Premium Business Account</div>
+		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel}</div>
 		<div><b>Statement Period: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</div>
 		</div>
 		</header>

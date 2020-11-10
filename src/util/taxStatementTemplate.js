@@ -72,16 +72,16 @@ const taxStatementTemplate = accountData => {
 
 	<div class="taxDetails">
 		<div>
-			<div>Account Title </div>Nishat Linen</b>
+			<div>Account Title </div>${accountData.payload.merchantName}</b>
 		</div>
 		<div>
 			<div>Account Number </div>${accountData.payload.msisdn}</b>
 		</div>
 		<div>
-			<div>Account Type </div>C2</b>
+			<div>Account Type </div>${accountData.payload.metadata.accountLevel}</b>
 		</div>
 		<div>
-			<div>CNIC Number </div>42000-123123123123-1</b>
+			<div>CNIC Number </div>${accountData.payload.metadata.cnic}</b>
 		</div>
 	</div>
 	<div class="taxHeading">
@@ -92,7 +92,7 @@ Account Balance:
 
 	<div class="taxDetails">
 		<div>
-			<div>Balance of Account as of </div>30/6/2020</b>
+			<div>Balance of Account as of </div>${accountData.payload.end_date}</b>
 		</div>
 		<div>
 			<div>Balance (in figures) </div>Rs 11,110.92</b>

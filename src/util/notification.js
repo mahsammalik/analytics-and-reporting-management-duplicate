@@ -5,9 +5,9 @@ import {
 } from 'lodash';
 
 
-const NOTIFICATION_SERVICE_URL_PUSH = process.env.NOTIFICATION_SERVICE_URL_PUSH || config.NotificationService.pushNotificationUrl;
-const NOTIFICATION_SERVICE_URL_EMAIL = process.env.NOTIFICATION_SERVICE_URL_EMAIL || config.NotificationService.emailNotificationUrl;
-const NOTIFICATION_SERVICE_URL_SMS = process.env.NOTIFICATION_SERVICE_URL_SMS || config.NotificationService.smsNotificationUrl;
+const NOTIFICATION_SERVICE_URL_PUSH = process.env.NOTIFICATION_SERVICE_URL_PUSH || config.externalServices.NotificationService.pushNotificationUrl;
+const NOTIFICATION_SERVICE_URL_EMAIL = process.env.NOTIFICATION_SERVICE_URL_EMAIL || config.externalServices.NotificationService.emailNotificationUrl;
+const NOTIFICATION_SERVICE_URL_SMS = process.env.NOTIFICATION_SERVICE_URL_SMS || config.externalServices.NotificationService.smsNotificationUrl;
 
 
 class Notification {

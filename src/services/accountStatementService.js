@@ -20,15 +20,15 @@ class accountStatementService {
 
             const emailData = [{
                     'key': 'customerName',
-                    'value': `Nishat Linen`
+                    'value': payload.merchantName
                 },
                 {
                     'key': 'accountNumber',
-                    'value': `03015091633`
+                    'value': payload.msisdn
                 },
                 {
                     'key': 'statementPeriod',
-                    'value': `20-03-2020`
+                    'value': payload.start_date
                 }
             ];
             const attachment = [{
@@ -66,18 +66,17 @@ class accountStatementService {
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
-            //TODO: Change to real data when available
             const emailData = [{
                     'key': 'customerName',
-                    'value': `Nishat Linen`
+                    'value': payload.merchantName
                 },
                 {
                     'key': 'accountNumber',
-                    'value': `03015091633`
+                    'value': payload.msisdn
                 },
                 {
                     'key': 'statementPeriod',
-                    'value': `20-03-2020`
+                    'value': payload.start_date
                 }
             ];
             const attachment = [{

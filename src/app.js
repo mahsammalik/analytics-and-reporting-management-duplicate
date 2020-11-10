@@ -6,8 +6,8 @@ import router from './api/routes';
 import compression from 'compression';
 import responseTime from 'response-time';
 // import Cache from './util/cache';
-//import Subscriber from './services/subscriberService';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
+import { Subscriber } from '/services/';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -21,9 +21,11 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(responseTime());
 
-app.use(auditLoggerMW);
+// app.use(auditLoggerMW);
 
 app.use(schemaValidatorMW);
+const subscriber = new Subscriber();
+subscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
