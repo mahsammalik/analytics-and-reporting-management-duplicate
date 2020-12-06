@@ -1,0 +1,111 @@
+apiVersion: appsody.dev/v1beta1
+kind: AppsodyApplication
+metadata:
+  annotations:
+    architecture: x86_64
+    authoritative-source-url: registry.access.redhat.com
+    build-date: 2020-09-03T09:04:29.841722
+    commit.image.appsody.dev/contextDir: C:\Users\OsamaTahir\Desktop\Development\Jazz\Analytics-And-Reporting-Management
+    commit.image.appsody.dev/date: Tue Sep 22 16:33:37 2020 +0500
+    commit.image.appsody.dev/message: code formatting
+    commit.stack.appsody.dev/contextDir: C:\Users\OsamaTahir\Desktop\Development\Jazz\jazzcash-appsody-stack
+    commit.stack.appsody.dev/date: Fri Jul 24 20:59:51 2020 +0500
+    commit.stack.appsody.dev/message: Changes in Appsody Stack for Deployment on Cloud
+    description:
+      This image contains the Kabanero development stack for the Nodejs
+      Express collection
+    distribution-scope: public
+    help: For more information visit https://github.com/sclorg/s2i-nodejs-container
+    image.opencontainers.org/created: '2020-09-22T21:02:10+05:00'
+    image.opencontainers.org/documentation: https://github.com/JazzCash/Analytics-And-Reporting-Management
+    image.opencontainers.org/revision: 79cd63617d8499bb8f5f05b8a76ab080e6f1e0ac-modified
+    image.opencontainers.org/source: https://github.com/JazzCash/Analytics-And-Reporting-Management/tree/dev
+    image.opencontainers.org/url: https://github.com/JazzCash/Analytics-And-Reporting-Management
+    k8s.io/description:
+      Node.js 12 available as container is a base platform for building
+      and running various Node.js 12 applications and frameworks. Node.js is a platform
+      built on Chrome's JavaScript runtime for easily building fast, scalable network
+      applications. Node.js uses an event-driven, non-blocking I/O model that makes
+      it lightweight and efficient, perfect for data-intensive real-time applications
+      that run across distributed devices.
+    k8s.io/display-name: Node.js 12
+    maintainer: SoftwareCollections.org <sclorg@redhat.com>
+    name: kabanero/nodejs-express
+    openshift.io/expose-services: 8080:http
+    openshift.io/tags: builder,nodejs,nodejs12
+    redhat.com/build-host: cpt-1008.osbs.prod.upshift.rdu2.redhat.com
+    redhat.com/component: nodejs-12-container
+    redhat.com/deployments-dir: /opt/app-root/src
+    redhat.com/dev-mode: DEV_MODE:false
+    redhat.com/dev-mode.port: DEBUG_PORT:5858
+    redhat.com/license_terms: https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI
+    release: '59'
+    s2i.io/scripts-url: image:///usr/libexec/s2i
+    s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
+    stack.appsody.dev/authors: Jahangir Khalid <>
+    stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.4
+    stack.appsody.dev/created: '2020-09-22T20:56:51+05:00'
+    stack.appsody.dev/description: Express web framework for Node.js
+    stack.appsody.dev/documentation: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/README.md
+    stack.appsody.dev/licenses: Apache-2.0
+    stack.appsody.dev/revision: 413f3cfe884a164073571036b4988d87c905911d-modified
+    stack.appsody.dev/source: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/image
+    stack.appsody.dev/tag: dev.local/appsody/jazzcash-appsody-stack:0.4.8
+    stack.appsody.dev/title: Node.js Express
+    stack.appsody.dev/url: https://github.com/JazzCash/jazzcash-appsody-stack
+    summary: Image for Kabanero Node.js Express development
+    url: https://access.redhat.com/containers/#/registry.access.redhat.com/ubi8/nodejs-12/images/1-59
+    usage: s2i build <SOURCE-REPOSITORY> ubi8/nodejs-12:latest <APP-NAME>
+    vcs-ref: a6b3970d86fb885d9c20445676a2f31aa9bedf0b
+    vcs-type: git
+    vendor: Kabanero
+    version: 0.4.8
+  creationTimestamp: null
+  labels:
+    image.opencontainers.org/title: analytics
+    stack.appsody.dev/id: jazzcash-appsody-stack
+    stack.appsody.dev/version: 0.4.8
+  name: analytics
+  namespace: m11s
+spec:
+  applicationImage: image-registry.openshift-image-registry.svc:5000/m11s/analytics:v3.3
+  createKnativeService: false
+  env:
+    - name: CACHE_SERVER
+      value: datagrid.rhdg
+    - name: ESB_SERVER
+      value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
+    - name: MASTER_DATA_API_GET_RESPCODE_URL
+      value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
+    - name: NOTIFICATION_SERVICE_URL_EMAIL
+      value: http://notification-microservice.jazzcash-microservices-dev:3000/rest/api/v1/notification/email
+    - name: PRODUCTION_LOG_LEVEL
+      value: info
+    - name: NODE_ENV
+      value: production
+  expose: true
+  livenessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /live
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+  monitoring:
+    labels:
+      k8s-app: jazzcash-project
+  readinessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    timeoutSeconds: 1
+  service:
+    annotations:
+      prometheus.io/scrape: 'true'
+    port: 3000
+    type: NodePort
+  stack: jazzcash-stack
+  version: 1.0.0
