@@ -28,13 +28,13 @@
             "database": "sampledb"
         },
         "IBMDB2": {
-            "username": "bluadmin",
-            "password": "MmZmZGQ1YmJlM2E1",
+            "username": "cpp11211",
+            "password": "br2n4mbslfwp@sss",
             "address": "",
-            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=bluadmin;PWD=MmZmZGQ1YmJlM2E1;",
-            "schema": "JazzCash",
-            "hostName": "dashdb-txn-flex-yp-fra02-505.services.eu-de.bluemix.net",
-            "port": 5000,
+            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=cpp11211;PWD=br2n4mbslfwp@sss;",
+            "schema": "50000",
+            "hostName": "dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net",
+            "port": 60000,
             "protocol": "TCPIP"
         },
         "winston": {
@@ -100,7 +100,11 @@
                 "App_Consumer_Audit_Log": "App_Consumer_Audit_Log",
                 "App_Merchant_Audit_Log": "App_Merchant_Audit_Log",
                 "App_Admin_Audit_Log": "App_Admin_Audit_Log",
-                "App_Merchant_Account_Statement": "App_Merchant_Account_Statement"
+                "App_Merchant_Account_Statement": "App_Merchant_Account_Statement",
+                "InitTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Init_Passed",
+                "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
+                "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
+                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed"
             }
         },
         "cache": {
@@ -187,6 +191,20 @@
                     "invalid": "AM-AB-T34",
                     "esb": "AM-AB-T02",
                     "internal": "AM-AB-T01"
+                },
+                "easyPaisaIBFT": {
+                    "success": "PT-IFT-T01",
+                    "invalid": "PT-IFT-T62",
+                    "transactionError": "PT-IFT-T02",
+                    "blocked": "PT-IFT-T03",
+                    "internal": "PT-IFT-T41",
+                    "userNotExist": "PT-IFT-T04",
+                    "blockedOrInactive": "PT-IFT-T06",
+                    "limitsBreached": "PT-IFT-T07",
+                    "imdNotFound": "PT-IFT-T63",
+                    "senderTransactionIDNotFound": "PT-IFT-T64",
+                    "transactionIdDuplicated": "PT-IFT-T65",
+                    "authenticationError": "PT-IFT-T61"
                 }
             },
             "transactionType": {

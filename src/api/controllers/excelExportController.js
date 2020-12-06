@@ -1,6 +1,7 @@
 import ExcelExportService from '../../services/excelExportService';
 import _ from 'lodash';
 import logger from '../../util/logger';
+import responseCodeHandler from '../../util/responseCodeHandler';
 
 class excelExportController {
   constructor(service) {
@@ -12,6 +13,7 @@ class excelExportController {
 
   async jazzcashIncomingExport(req, res) {
     logger.info({ event: 'Entered function', functionName: 'jazzcashIncomingExport in class excelExportController', request: req.url, header: req.headers, query: req.query });
+    let clientResponse = {};
     try {
       this.ExcelExportService.jazzcashIncomingExport(req, res, (response) => {
         logger.info({ event: 'Exited function', functionName: 'jazzcashIncomingExport in class excelExportController' });
@@ -21,7 +23,8 @@ class excelExportController {
     } catch (error) {
         logger.error({ event: 'Error thrown', functionName: 'jazzcashIncomingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, query: req.query });
         logger.info({ event: 'Exited function', functionName: 'jazzcashIncomingExport in class excelExportController' });
-      return null;
+        clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
+        return res.status(200).send(this.getResponse(clientResponse));
     }
   }
 
@@ -37,7 +40,31 @@ class excelExportController {
     } catch (error) {
         logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, query: req.query });
         logger.info({ event: 'Exited function', functionName: 'jazzcashOutgoingExport in class excelExportController' });
-        return null;
+        clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
+        return res.status(200).send(this.getResponse(clientResponse));
+    }
+  }
+
+  getResponse(responsePayload) {
+    console.log('_______________ Get Response Called ________________');
+    console.log(responsePayload);
+
+    try {
+      let updatedResponse = {};
+    
+      if (responsePayload.success) {
+        updatedResponse = _.omit(responsePayload, ['message_ur', 'responseCode']);
+      } else {
+        updatedResponse = _.omit(responsePayload, [ 'message_ur', 'data', 'responseCode']);
+      }
+      return updatedResponse;
+
+    } catch(error) {
+      console.log(error);
+      return {
+        "success":false,
+        "message_en": "System internal server error"
+      }
     }
   }
 
