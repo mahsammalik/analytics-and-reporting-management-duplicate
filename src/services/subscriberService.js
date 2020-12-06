@@ -34,22 +34,24 @@ class Subscriber {
                 if (msg.topic === config.kafkaBroker.topics.InitTrans_USSD_Outgoing) {
                     logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });
                     console.log('*********** Init Trans Outgoing USSD Payment Kafka *****************');
-                    
                     try {
                       
                       const payload = JSON.parse(msg.value);
+                      console.log(payload);
                       
                       let db2Response = dataMapping.getIBFTOutgoingInitMapping(payload);
                       console.log('Mapped Response for DB2');
                       logger.debug(db2Response);
           
-                      // if (db2Response!= null) {
-                      //   const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
-                      //   console.log(response);  
-                      // }
+                    //   if (db2Response != null) {
+                    //     const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
+                    //     console.log(response);  
+                    //   }
           
                     } catch(error){
-                      logger.debug({ event: 'Error'}, error);
+                        logger.error({ event: 'Error thrown', functionName: 'InitTrans_USSD_Outgoing in class excelExportController', 'error': { message: error.message, stack: error.stack}});
+                        logger.info({ event: 'Exited function', functionName: 'InitTrans_USSD_Outgoing in class excelExportController' });
+                        console.log(error)
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing) {
@@ -59,14 +61,16 @@ class Subscriber {
                     try {
                       
                         const payload = JSON.parse(msg.value);
+                        console.log(payload);
 
                         if (payload.CustomObject) {
                             console.log('Custom Object exists')
+                           
                             let db2Response = dataMapping.getIBFTOutgoingConfirmMapping(payload);
                             console.log('Mapped Response for DB2');
                             logger.debug(db2Response);
           
-                            // if (db2Response!= null) {
+                            // if (db2Response != null) {
                             //   const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
                             //   console.log(response);  
                             // }
@@ -74,7 +78,9 @@ class Subscriber {
                             console.log('Custom Object doesnt exists')
                         }
                     } catch(error){
-                        logger.debug({ event: 'Error'}, error);
+                        logger.error({ event: 'Error thrown', functionName: 'ConfirmTrans_USSD_Outgoing in class excelExportController'});
+                        logger.info({ event: 'Exited function', functionName: 'ConfirmTrans_USSD_Outgoing in class excelExportController' });
+                        console.log(error)
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.InitTrans_IBFT_Incoming) {
@@ -83,7 +89,8 @@ class Subscriber {
                     
                     try {
                       
-                    //   const payload = JSON.parse(msg.value);
+                      const payload = JSON.parse(msg.value);
+                      console.log(payload);
                      
                     //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmDB2Mapping(payload);
                     //   console.log('Mapped Response for DB2');
@@ -95,7 +102,9 @@ class Subscriber {
                     //   }
           
                     } catch(error){
-                        logger.debug({ event: 'Error'}, error);
+                        logger.error({ event: 'Error thrown', functionName: 'InitTrans_IBFT_Incoming in class excelExportController'});
+                        logger.info({ event: 'Exited function', functionName: 'InitTrans_IBFT_Incoming in class excelExportController' });
+                        console.log(error);
                     }
                 }        
                 if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming) {
@@ -106,7 +115,7 @@ class Subscriber {
                       
                       const payload = JSON.parse(msg.value);
                      
-                      let db2MappingResponse = dataMapping.getIBFTIncomingConfirmDB2Mapping(payload);
+                      let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
                       console.log('Mapped Response for DB2');
                       console.log(db2MappingResponse);
           
@@ -116,15 +125,13 @@ class Subscriber {
                     //   }
           
                     } catch(error){
-                        logger.debug({ event: 'Error'}, error);
+                        console.log(error);
                     }
                 }
-
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);
             }
-
         });
 
     }

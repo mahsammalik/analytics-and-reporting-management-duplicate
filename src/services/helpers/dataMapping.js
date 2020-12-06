@@ -91,7 +91,7 @@ class dataMapping {
                initTransData.senderMsisdn = data.CustomObject.SenderMsisdn;
                initTransData.beneficiaryBankAccountTitle = data.CustomObject.BeneficiaryBankAccountTitle;
                initTransData.beneficiaryBankAccount = data.CustomObject.BeneficiaryBankName;
-               initTransData.beneficiaryBankAccountNumber = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'BankAccountNumber';})?.Value || '';
+               initTransData.beneficiaryBankAccountNumber = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'Rec_BankAccount_number';})?.Value || '';
              
                initTransData.senderLevel = data.CustomObject.IdentityType;
                initTransData.senderCnic = data.CustomObject.SenderCNIC;
