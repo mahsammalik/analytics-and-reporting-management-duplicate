@@ -72,6 +72,7 @@
         "uuidv4": "^6.1.1",
         "validator": "^13.1.1",
         "winston": "^3.2.1",
-        "yamljs": "^0.3.0"
+        "yamljs": "^0.3.0",
+        "exceljs": "^4.1.1"
     }
 }

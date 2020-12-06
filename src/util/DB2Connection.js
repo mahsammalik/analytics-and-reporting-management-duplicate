@@ -2,7 +2,6 @@ import { open } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 
-
 const cn = process.env.DB2Connection || config.IBMDB2.connectionString;
 const schema = config.IBMDB2.schema;
 
@@ -103,8 +102,6 @@ class DatabaseConn {
         }
     }
 
-
-
     async addTaxStatement(msisdn, trxDateTime, trxId, taxDeducted, salesTax, incomeTax, withHoldigTax, fee, comission) {
 
         try {
@@ -124,6 +121,116 @@ class DatabaseConn {
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
         }
     }
+
+    async addIncomingTransaction(dataPayload) {
+        logger.info({ event: 'Entered function', functionName: 'addIncomingTransaction in class DatabaseConn' });
+        try {
+            let conn = await open(cn);
+            const stmt = conn.prepareSync("INSERT INTO CPP11211.INCOMMING_IBFT (TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, RECEIVER_MSISDN, RECEIVER_CNIC, RECEIVER_NAME, ID_LEVEL, REGION, CITY, ADDRESS, AMOUNT, TRX_STATUS, REVERSE_STATUS, SENDER_NAME, SENDER_BANK, SENDER_ACCOUNT, REVERSED_TRX_ID, REVERSED_REASON, FAILURE_REASON, FEE, FED, STAN, CURRENT_BALANCE, CHANNEL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+            stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDEasyJazzcash, dataPayload.transactionDate,  dataPayload.transactionTime, dataPayload.receiverMsisdn, dataPayload.receiverCnic, dataPayload.receiverName, dataPayload.identityLevel, dataPayload.region, dataPayload.city, dataPayload.address, dataPayload.amount, dataPayload.transactionStatus,
+                dataPayload.reversalStatus, dataPayload.senderName, dataPayload.senderBankName, dataPayload.senderAccount, dataPayload.reversedTrasactionID, dataPayload.reversedReason, dataPayload.reasonOfFailure, dataPayload.fee, dataPayload.fed, dataPayload.stan, dataPayload.currentBalance, dataPayload.channel
+            ]);
+            stmt.closeSync();
+            conn.close(function(err) {});
+            console.log("insert done");
+            logger.info({ event: 'Existed function', functionName: 'addIncomingTransaction in class DatabaseConn' });
+            return true;
+        } catch (err) {
+            logger.error({ event: 'Error  thrown', functionName: 'addIncomingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'addIncomingTransaction' });
+            return null;
+        }
+    }
+
+    async addOutgoingTransaction(dataPayload) {
+        logger.info({ event: 'Entered function', functionName: 'addOutgoingTransaction in class DatabaseConn' });
+        try {
+            let conn = await open(cn);
+            const stmt = conn.prepareSync("INSERT INTO CPP11211.OUTGOING_IBFT (TRX_OBJECTIVE, TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, BENEFICIARY_NAME, BENEFICIARY_BANK, SENDER_MSISDN, BENEFICIARY_ACCOUNT, SENDER_LEVEL, SENDER_CNIC, RECEIVER_MSISDN, INITIATOR_MSISDN, INITIATOR_CITY, INITIATOR_REGION, SENDER_NAME, AMOUNT, TRX_STATUS, FAILURE_REASON, REVERSAL_STATUS, FEE, FED, COMMISSION, WHT, STAN, CURRENT_BALANCE, CHANNEL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+            stmt.executeSync([dataPayload.transactionObjective, dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.beneficiaryBankAccountTitle, dataPayload.beneficiaryBankName, dataPayload.senderMsisdn, dataPayload.beneficiaryBankAccountNumber, dataPayload.senderLevel, dataPayload.senderCnic, dataPayload.receiverMsisdn, dataPayload.initiatorMsisdn, dataPayload.initiatorCity,
+                dataPayload.initiatorRegion,dataPayload.senderName, dataPayload.amount, 
+                dataPayload.transactionStatus, dataPayload.reasonOfFailure, dataPayload.reversalStatus, dataPayload.fee, dataPayload.fed,
+                dataPayload.commission, dataPayload.wht, dataPayload.stan,
+                dataPayload.currentBalance, dataPayload.channel
+            ]);
+            stmt.closeSync();
+            conn.close(function(err) {});
+            console.log("insert done");
+            logger.info({ event: 'Existed function', functionName: 'addOutgoingTransaction in class DatabaseConn' });
+            return true;
+
+        } catch (err) {
+            logger.error({ event: 'Error  thrown', functionName: 'addOutgoingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'addOutgoingTransaction' });
+            return null;
+        }
+    }
+
+    async updateOutgoingTransaction(dataPayload) {
+        logger.info({ event: 'Entered function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
+        console.log(dataPayload);
+        try {
+            let conn = await open(cn);
+            const stmt = conn.prepareSync("UPDATE CPP11211.OUTGOING_IBFT SET TRXID_EASYPAISA = ?, TRX_DATE = ?, TRX_TIME = ?, AMOUNT = ?, TRX_STATUS = ?, FEE = ?, FED = ?, COMMISSION = ?, WHT = ?, CURRENT_BALANCE = ? WHERE TRXID_JAZZCASH = ?;");
+            stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.amount, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.commission, dataPayload.wht, dataPayload.currentBalance, dataPayload.transactionID]);
+            stmt.closeSync();
+            conn.close(function(err) {});
+            console.log("insert done");
+            logger.info({ event: 'Exited function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
+            return true;
+        } catch (err) {
+            logger.error({ event: 'Error  thrown', functionName: 'updateOutgoingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'updateOutgoingTransaction' });
+            return null;
+        }
+    }
+
+    async getIncomingTransactions(startDate, endDate) {
+        logger.info({ event: 'Entered function', functionName: 'getIncomingTransactions in class DatabaseConn' });
+        try {
+
+            let conn = await open(cn);
+            const stmt = conn.prepareSync(`select * from CPP11211.INCOMMING_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
+            let result = stmt.executeSync([startDate, endDate]);
+            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+            result.closeSync();
+            stmt.closeSync();
+            conn.close(function(err) {});
+            logger.info({ event: 'Exited function', functionName: 'getIncomingTransactions in class DatabaseConn' });
+
+            return resultArrayFormat;
+
+        } catch (err) {
+            logger.error({ event: 'Error  thrown', functionName: 'getIncomingTransactions in class DatabaseConn', 'arguments': {startDate, endDate}, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'getIncomingTransactions' });
+            return null;
+        }
+    }
+
+    async getOutgoingTransactions(startDate, endDate) {
+        logger.info({ event: 'Entered function', functionName: 'getOutgoingTransactions in class DatabaseConn' });
+        try {
+
+            let conn = await open(cn);
+            const stmt = conn.prepareSync(`select * from CPP11211.OUTGOING_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
+            let result = stmt.executeSync([startDate, endDate]);
+            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+            result.closeSync();
+            stmt.closeSync();
+            conn.close(function(err) {});
+            logger.info({ event: 'Exited function', functionName: 'getOutgoingTransactions in class DatabaseConn' });
+
+            return resultArrayFormat;
+
+        } catch (err) {
+            logger.error({ event: 'Error  thrown', functionName: 'getOutgoingTransactions in class DatabaseConn', 'arguments': {startDate, endDate}, 'error': error });
+            logger.info({ event: 'Exited function', functionName: 'getOutgoingTransactions' });
+            return null;
+        }
+    }
+
 }
 
 export default new DatabaseConn();

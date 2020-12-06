@@ -23,7 +23,7 @@ app.use(responseTime());
 
 // app.use(auditLoggerMW);
 
-app.use(schemaValidatorMW);
+// app.use(schemaValidatorMW);
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
