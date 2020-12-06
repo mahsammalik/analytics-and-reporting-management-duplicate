@@ -1,0 +1,254 @@
+{
+    "config": {
+        "App": {
+            "webServer": {
+                "host": "127.0.0.1",
+                "port": 3000
+            },
+            "restApiEndpoints": {
+                "v1": "/v1/api"
+            }
+        },
+        "externalServices": {
+            "masterDataAPI": {
+                "responseCodeURL": "http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes"
+            },
+            "accountManagementAPI": {
+                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile"
+            },
+            "NotificationService": {
+                "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
+                "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
+                "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
+            }
+        },
+        "mongodb": {
+            "host": "mongodb",
+            "port": 27017,
+            "database": "sampledb"
+        },
+        "IBMDB2": {
+            "username": "cpp11211",
+            "password": "br2n4mbslfwp@sss",
+            "address": "",
+            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=cpp11211;PWD=br2n4mbslfwp@sss;",
+            "schema": "50000",
+            "hostName": "dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
+        "winston": {
+            "file": {
+                "level": "info",
+                "filename": "./logs/app.log",
+                "handleExceptions": "true",
+                "json": true,
+                "maxsize": 5242880,
+                "maxFiles": 5,
+                "colorize": "false"
+            },
+            "console": {
+                "development": {
+                    "level": "debug",
+                    "handleExceptions": true,
+                    "json": true
+                },
+                "production": {
+                    "level": "info",
+                    "handleExceptions": true,
+                    "json": true
+                }
+            }
+        },
+        "kafkaBroker": {
+            "brokers": "kafka:9092",
+            "topicName": "jazz-topic",
+            "pollInterval": 100,
+            "consumerGroupID": "test-consumer",
+            "commit-msgs-after": 1,
+            "numMessages": 1,
+            "consumerAutoCommit": true,
+            "consumerConfig": {
+                "debug": "all",
+                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
+                "group.id": "kafka-nodejs-console-sample-group--dev19",
+                "metadata.broker.list": "kafka-prod-1-kafka-bootstrap-es.apps.pjcocp.jazzcash.com.pk:443",
+                "security.protocol": "sasl_ssl",
+                "sasl.mechanisms": "SCRAM-SHA-512",
+                "ssl.ca.location": "/project/user-app/dist/util/es-cert.pem",
+                "sasl.username": "m11s-scram",
+                "sasl.password": "V4Bcru30QLdC",
+                "enable.ssl.certificate.verification": false,
+                "enable.auto.commit": true,
+                "broker.version.fallback": "0.10.2.1",
+                "log.connection.close": false,
+                "auto.offset.reset": "smallest"
+            },
+            "producerConfig": {
+                "bootstrap.servers": "kafka-prod-1-kafka-bootstrap-es.apps.pjcocp.jazzcash.com.pk:443",
+                "security.protocol": "sasl_ssl",
+                "sasl.mechanisms": "SCRAM-SHA-512",
+                "ssl.ca.location": "/project/user-app/dist/util/es-cert.pem",
+                "sasl.username": "m11s-scram",
+                "sasl.password": "V4Bcru30QLdC",
+                "enable.ssl.certificate.verification": false,
+                "broker.version.fallback": "0.10.0",
+                "log.connection.close": false
+            },
+            "topics": {
+                "Init_topic": "Init_topic",
+                "App_Consumer_Audit_Log": "App_Consumer_Audit_Log",
+                "App_Merchant_Audit_Log": "App_Merchant_Audit_Log",
+                "App_Admin_Audit_Log": "App_Admin_Audit_Log",
+                "App_Merchant_Account_Statement": "App_Merchant_Account_Statement",
+                "InitTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Init_Passed",
+                "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
+                "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
+                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed"
+            }
+        },
+        "cache": {
+            "server": "datagrid",
+            "port": 11222,
+            "cacheName": "jazzcash",
+            "responseCodeCache": "ResponseCodeCache"
+        },
+
+        "responseCode": {
+            "default": {
+                "code": "G-01",
+                "message": "Internal Server Error"
+            },
+            "useCases": {
+                "accountStatement": {
+                    "success": "AR-AS-T03",
+                    "invalid": "AR-AS-T01",
+                    "missing_required_parameters": "AR-AS-T02",
+                    "date_invalid": "AR-AS-T04",
+                    "database_connection": "AR-AS-T05",
+                    "email_problem": "AR-AS-T08",
+                    "pdf_internal_error": "AR-AS-T06"
+                },
+                "contactIntegration": {
+                    "success": "AM-CI-T01",
+                    "invalid": "AM-CI-T02"
+                },
+                "changeMPIN": {
+                    "success": "AM-CMP-T01",
+                    "invalid": "AM-CMP-T02",
+                    "data_not_found": "AM-CMP-T04",
+                    "device_unauthentic": "AM-CMP-T03",
+                    "cps": "AM-CMP-CPS-"
+                },
+                "generateOTPForMPIN": {
+                    "success": "AM-RMP-T02",
+                    "invalid": "AM-RMP-T07",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
+                },
+                "verifyOTPForMPIN": {
+                    "success": "AM-RMP-T01",
+                    "invalid": "AM-RMP-T06",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
+                },
+                "resetMPIN": {
+                    "success": "AM-RMP-T04",
+                    "invalid": "AM-RMP-T05",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08",
+                    "cps": "AM-RMP-CPS-"
+                },
+                "profile": {
+                    "cps": "AM-PR-CPS-",
+                    "success_profile": "AM-PR-T36",
+                    "success_email": "AM-PR-T37",
+                    "success_image_upload": "AM-PR-T38",
+                    "fail_profile": "AM-PR-T35",
+                    "invalid": "AM-PR-T34",
+                    "esb": "AM-PR-T02",
+                    "internal": "AM-PR-T01"
+                },
+                "limits": {
+                    "cps": "AM-AL-CPS-",
+                    "success": "AM-AL-T35",
+                    "invalid": "AM-AL-T34",
+                    "esb": "AM-AL-T02",
+                    "internal": "AM-AL-T01"
+                },
+                "favouritList": {
+                    "cps": "AM-FL-CPS-",
+                    "success": "AM-FL-T35",
+                    "invalid": "AM-FL-T34",
+                    "esb": "AM-FL-T02",
+                    "internal": "AM-FL-T01",
+                    "error": "AM-FL-T39",
+                    "notFound": "AM-FL-T38"
+                },
+                "balance": {
+                    "cps": "AM-AB-CPS-",
+                    "success": "AM-AB-T35",
+                    "invalid": "AM-AB-T34",
+                    "esb": "AM-AB-T02",
+                    "internal": "AM-AB-T01"
+                },
+                "easyPaisaIBFT": {
+                    "success": "PT-IFT-T01",
+                    "invalid": "PT-IFT-T62",
+                    "transactionError": "PT-IFT-T02",
+                    "blocked": "PT-IFT-T03",
+                    "internal": "PT-IFT-T41",
+                    "userNotExist": "PT-IFT-T04",
+                    "blockedOrInactive": "PT-IFT-T06",
+                    "limitsBreached": "PT-IFT-T07",
+                    "imdNotFound": "PT-IFT-T63",
+                    "senderTransactionIDNotFound": "PT-IFT-T64",
+                    "transactionIdDuplicated": "PT-IFT-T65",
+                    "authenticationError": "PT-IFT-T61"
+                }
+            },
+            "transactionType": {
+                "c2C": "C2C",
+                "bank": "BA",
+                "CNIC": "CNIC"
+            }
+        },
+        "profiles": {
+            "l0": "L0",
+            "l1": "Basic Business",
+            "l2": "Premium Business"
+        },
+        "metadata": {
+            "mapping": {
+                "a": "msisdn",
+                "b": "cnic",
+                "c": "accountLevel",
+                "d": "emailAddress",
+                "e": "firstName",
+                "f": "LastName",
+                "g": "profileImageURL",
+                "h": "customerType",
+                "i": "language",
+                "j": "dateOfBirth",
+                "k": "isLoggedInOnce"
+            },
+            "customerType": {
+                "1": "customer",
+                "2": "merchant"
+            },
+            "language": {
+                "1": "english",
+                "2": "urdu"
+            },
+            "isLoggedInOnce": {
+                "1": true,
+                "2": false
+            },
+            "accountLevel": {
+                "0": "L0",
+                "1": "Basic Business",
+                "2": "Premium Business"
+            }
+        }
+    }
+}
