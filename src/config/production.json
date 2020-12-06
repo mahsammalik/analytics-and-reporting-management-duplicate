@@ -28,12 +28,12 @@
             "database": "sampledb"
         },
         "IBMDB2": {
-            "username": "cpp11211",
-            "password": "br2n4mbslfwp@sss",
+            "username": "jcappdb",
+            "password": "abcd@123",
             "address": "",
-            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=cpp11211;PWD=br2n4mbslfwp@sss;",
-            "schema": "50000",
-            "hostName": "dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net",
+            "connectionString": "DATABASE=jazzcash;HOSTNAME=10.50.20.160;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.160",
             "port": 60000,
             "protocol": "TCPIP"
         },
