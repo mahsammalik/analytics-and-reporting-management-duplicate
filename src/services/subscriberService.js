@@ -43,10 +43,10 @@ class Subscriber {
                       console.log('Mapped Response for DB2');
                       logger.debug(db2Response);
           
-                    //   if (db2Response != null) {
-                    //     const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
-                    //     console.log(response);  
-                    //   }
+                      if (db2Response != null) {
+                        const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
+                        console.log(response);  
+                      }
           
                     } catch(error){
                         logger.error({ event: 'Error thrown', functionName: 'InitTrans_USSD_Outgoing in class excelExportController', 'error': { message: error.message, stack: error.stack}});
@@ -70,10 +70,10 @@ class Subscriber {
                             console.log('Mapped Response for DB2');
                             logger.debug(db2Response);
           
-                            // if (db2Response != null) {
-                            //   const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
-                            //   console.log(response);  
-                            // }
+                            if (db2Response != null) {
+                              const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
+                              console.log(response);  
+                            }
                         } else {
                             console.log('Custom Object doesnt exists')
                         }
@@ -120,10 +120,10 @@ class Subscriber {
                       console.log('Mapped Response for DB2');
                       console.log(db2MappingResponse);
           
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
+                      if (db2MappingResponse != null) {
+                        const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.confirmTransData);
+                        console.log({DB2InsertResponse});
+                      }
           
                     } catch(error){
                         console.log(error);
