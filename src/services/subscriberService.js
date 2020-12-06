@@ -37,7 +37,7 @@ class Subscriber {
                     try {
                       
                       const payload = JSON.parse(msg.value);
-                      console.log(payload);
+                      console.log(JSON.stringify(payload));
                       
                       let db2Response = dataMapping.getIBFTOutgoingInitMapping(payload);
                       console.log('Mapped Response for DB2');
@@ -61,7 +61,7 @@ class Subscriber {
                     try {
                       
                         const payload = JSON.parse(msg.value);
-                        console.log(payload);
+                        console.log(JSON.stringify(payload));
 
                         if (payload.CustomObject) {
                             console.log('Custom Object exists')
@@ -114,6 +114,7 @@ class Subscriber {
                     try {
                       
                       const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
                      
                       let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
                       console.log('Mapped Response for DB2');
