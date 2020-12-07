@@ -41,7 +41,7 @@ class Subscriber {
                       
                       let db2Response = dataMapping.getIBFTOutgoingInitMapping(payload);
                       console.log('Mapped Response for DB2');
-                      logger.debug(db2Response);
+                      console.log(db2Response);
           
                       if (db2Response != null) {
                         const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
@@ -68,7 +68,7 @@ class Subscriber {
                            
                             let db2Response = dataMapping.getIBFTOutgoingConfirmMapping(payload);
                             console.log('Mapped Response for DB2');
-                            logger.debug(db2Response);
+                            console.log(db2Response);
           
                             if (db2Response != null) {
                               const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
@@ -90,7 +90,7 @@ class Subscriber {
                     try {
                       
                       const payload = JSON.parse(msg.value);
-                      console.log(payload);
+                      console.log(JSON.stringify(payload));
                      
                     //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmDB2Mapping(payload);
                     //   console.log('Mapped Response for DB2');
