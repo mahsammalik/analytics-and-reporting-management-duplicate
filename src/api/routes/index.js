@@ -15,11 +15,11 @@ router.get(
 );
 
 router.get(
-    '/ibft/export/:startDate/:endDate', excelExportController.jazzcashIncomingExport
+    '/ibft/incoming/:startDate/:endDate', excelExportController.jazzcashIncomingExport
 );
 
 router.get(
-    '/ussd/export/:startDate/:endDate', excelExportController.jazzcashOutgoingExport
+    '/ibft/outgoing/:startDate/:endDate', excelExportController.jazzcashOutgoingExport
 );
 
 export default router;
