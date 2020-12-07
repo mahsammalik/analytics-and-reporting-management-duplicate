@@ -85,19 +85,19 @@ class dataMapping {
               //  initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''
               //  initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || ''
                
-               initTransData.beneficiaryMsisdn = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'ReceiverMSISDN';})?.Value || '';
+               initTransData.beneficiaryMsisdn = data.CustomObject.ReceiverMSISDN;
                initTransData.beneficiaryBankName = 'EasyPaisa';
              
                initTransData.senderMsisdn = data.CustomObject.SenderMsisdn;
                initTransData.beneficiaryBankAccountTitle = data.CustomObject.BeneficiaryBankAccountTitle;
                initTransData.beneficiaryBankAccount = data.CustomObject.BeneficiaryBankName;
-               initTransData.beneficiaryBankAccountNumber = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'Rec_BankAccount_number';})?.Value || '';
+               initTransData.beneficiaryBankAccountNumber = data.CustomObject.BankAccountNumber;
              
                initTransData.senderLevel = data.CustomObject.IdentityType;
                initTransData.senderCnic = data.CustomObject.SenderCNIC;
                initTransData.senderName = data.CustomObject.SenderAccountTitle;
     
-               initTransData.receiverMsisdn =  data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'ReceiverMSISDN';})?.Value || '';
+               initTransData.receiverMsisdn =   data.CustomObject.ReceiverMSISDN;
                initTransData.initiatorMsisdn = data.CustomObject.SenderMsisdn;
                initTransData.initiatorCity= '';
                initTransData.initiatorRegion = '';
