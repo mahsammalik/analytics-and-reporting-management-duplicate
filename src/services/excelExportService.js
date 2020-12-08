@@ -297,6 +297,8 @@ class ExcelExportService {
       incomingTransactionWorkSheet.getRow(1).values = [
         'TransactionID Easypaisa',
         'TransactionID Jazz Cash',
+        'FinancialID Easypaisa',
+        'TransactionID Objective',
         'Transaction Date',
         'Transaction Time',
         'Receiver MSISDN',
@@ -319,13 +321,16 @@ class ExcelExportService {
         'Fed',
         'STAN',
         'Current Balance',
+        'Channel'
       ];
 
       incomingTransactionWorkSheet.getRow(1).height = 10;
 
       incomingTransactionWorkSheet.columns = [
         { key: 'TransactionID Easypaisa', width: 20 },
-        { key: 'TransactionID Jazz Cash', width: 15 },
+        { key: 'TransactionID Jazz Cash', width: 20 },
+        { key: 'FinancialID Easypaisa', width: 20 },
+        { key: 'TransactionID Objective', width: 20 },
         { key: 'Transaction Date', width: 15 },
         { key: 'Transaction Time', width: 15 },
         { key: 'Receiver MSISDN', width: 20 },
@@ -348,12 +353,16 @@ class ExcelExportService {
         { key: 'Fed', width: 20 },
         { key: 'STAN', width: 15 },
         { key: 'Current Balance', width: 15 },
+        { key: 'Channel', width: 15 },
+
       ];
 
       for (let row in data) {
         incomingTransactionWorkSheet.addRow({
           'TransactionID Easypaisa': data[row][0],
           'TransactionID Jazz Cash': data[row][1],
+          'FinancialID Easypaisa': data[row][25],
+          'TransactionID Objective': data[row][26],
           'Transaction Date': data[row][2],
           'Transaction Time': data[row][3],
           'Receiver MSISDN': '' + data[row][4],
@@ -376,6 +385,7 @@ class ExcelExportService {
           Fed: parseFloat(data[row][21]),
           STAN: data[row][22],
           'Current Balance': parseFloat(data[row][23]),
+          'Channel': data[row][24]
         });
       }
 
@@ -436,7 +446,8 @@ class ExcelExportService {
         "WHT",
         "STAN",
         "Current Balance",
-        "Reversal Status"
+        "Reversal Status",
+        "Channel"
       ];
 
       outgoingTransactionWorkSheet.getRow(1).height = 10;
@@ -468,7 +479,7 @@ class ExcelExportService {
         { key: 'STAN', width: 15 },
         { key: 'Current Balance', width: 15 },
         { key: 'Reversal Status', width: 15 },
-
+        { key: 'Channel', width: 15 },
       ];
 
       for (let row in data) {
@@ -499,6 +510,7 @@ class ExcelExportService {
             "STAN": data[row][23],
             "Current Balance": data[row][24],
             "Reversal Status": data[row][25],
+            "Channel": data[row][26]
         });
       }
 
