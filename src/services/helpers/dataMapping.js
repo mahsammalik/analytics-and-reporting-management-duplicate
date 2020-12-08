@@ -76,7 +76,7 @@ class dataMapping {
     
                confirmTransData.transactionIDEasyPaisa = data.CustomObject.senderTransactionID;
                confirmTransData.transactionIDEasyJazzcash = data.Result.TransactionID;
-               confirmTransData.financialIDEasyPaisa =  data.CustomObjectsenderFinancialID;
+               confirmTransData.financialIDEasyPaisa =  data.CustomObject.senderFinancialID;
 
                confirmTransData.paymentPurpose = data.CustomObject.paymentPurpose;         
 
