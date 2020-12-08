@@ -92,14 +92,14 @@ class Subscriber {
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
                      
-                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmDB2Mapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2MappingResponse);
+                      let db2MappingResponse = dataMapping.getIBFTIncomingInitMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(db2MappingResponse);
           
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
+                      if (db2MappingResponse != null) {
+                        const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.initTransData);
+                        console.log({DB2InsertResponse});
+                      }
           
                     } catch(error){
                         logger.error({ event: 'Error thrown', functionName: 'InitTrans_IBFT_Incoming in class excelExportController'});
@@ -121,7 +121,7 @@ class Subscriber {
                       console.log(db2MappingResponse);
           
                       if (db2MappingResponse != null) {
-                        const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.confirmTransData);
+                        const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
                         console.log({DB2InsertResponse});
                       }
           
