@@ -13,7 +13,11 @@ class Subscriber {
             config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
             config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
             config.kafkaBroker.topics.InitTrans_USSD_Outgoing,
-            config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing
+            config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing,
+            config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
+            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+            config.kafkaBroker.topics.InitTrans_USSD_Outgoing_Fail,
+            config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing_Fail
         ]);
     }
 
@@ -129,6 +133,96 @@ class Subscriber {
                         console.log(error);
                     }
                 }
+                // failure events
+                if (msg.topic === config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Init Trans Incoming Failed IBFT Kafka Payment Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                     
+                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2MappingResponse);
+          
+                    //   if (db2MappingResponse != null) {
+                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                    //     console.log({DB2InsertResponse});
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Confirm Trans Incoming Failed IBFT Kafka Payment Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                     
+                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2MappingResponse);
+          
+                    //   if (db2MappingResponse != null) {
+                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                    //     console.log({DB2InsertResponse});
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }                
+                if (msg.topic === config.kafkaBroker.topics.InitTrans_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Init Trans Outgoing USSD Failed IBFT Kafka Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                     
+                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2MappingResponse);
+          
+                    //   if (db2MappingResponse != null) {
+                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                    //     console.log({DB2InsertResponse});
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Confirm Trans Outgoing USSD Failed IBFT Kafka Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                     
+                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2MappingResponse);
+          
+                    //   if (db2MappingResponse != null) {
+                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                    //     console.log({DB2InsertResponse});
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);

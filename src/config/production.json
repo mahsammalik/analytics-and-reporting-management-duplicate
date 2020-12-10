@@ -104,7 +104,11 @@
                 "InitTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Init_Passed",
                 "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
                 "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
-                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed"
+                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
+                "InitTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Init_Failed",
+                "ConfirmTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Confirm_Failed",
+                "InitTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Init_Failed",
+                "ConfirmTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Confirm_Failed"
             }
         },
         "cache": {
