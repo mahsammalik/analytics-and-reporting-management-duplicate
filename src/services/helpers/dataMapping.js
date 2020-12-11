@@ -120,9 +120,11 @@ class dataMapping {
           if (data.Result.ResultCode == 0) {
     
                initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
-               initTransData.transactionIDJazzcash = data.Result.TransactionID;
+               initTransData.financialIDJazzcash = data.Result.TransactionID;
+               initTransData.transactionIDJazzcash = '';
+
                initTransData.transactionIDEasyPaisa = '';
-               
+
                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
                if (initTransData.transactionDate !== ''){
                 initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
@@ -159,7 +161,7 @@ class dataMapping {
                initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
                initTransData.commission = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Commission';})?.Value || '0');
                initTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
-               initTransData.stan = data.Result.TransactionID;
+               initTransData.stan = "";
                initTransData.currentBalance = 0;
                initTransData.reversalStatus = ''; 
                initTransData.channel = data.Header.SubChannel;
@@ -185,9 +187,10 @@ class dataMapping {
           console.log(data);
           if (data.Result.ResultCode == 0) {
     
-            confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
-            confirmTransData.transactionID = data.Result.TransactionID;
-            
+            confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'receiverFinancialID';})?.Value || '';
+            confirmTransData.financialIDJazzcash = data.Result.TransactionID;
+            confirmTransData.transactionIDJazzcash = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
+             
             confirmTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
             if (confirmTransData.transactionDate !== ''){
              confirmTransData.transactionDate = moment(confirmTransData.transactionDate).format('YYYY-MM-DD');           
@@ -206,6 +209,8 @@ class dataMapping {
             confirmTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
             confirmTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
            
+            confirmTransData.stan =  data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
+
            console.log(JSON.stringify(confirmTransData));
           return { confirmTransData };
           } else {
@@ -217,6 +222,124 @@ class dataMapping {
           console.log(err);
           return null;
         }
+    }
+    
+    getIBFTMobileOutgoingInitMapping(data) {
+      let initTransData= {} ;
+      try { 
+        logger.info({ event: 'Entered function', functionName: 'getIBFTMobileOutgoingInitMapping in class dataMapping'});
+        // logger.info('Inside the Data Mapping function-> getIBFTOutgoingInitMapping');
+        console.log(data);
+        if (data.Result.ResultCode == 0) {
+  
+             initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
+             initTransData.financialIDJazzcash = data.Result.TransactionID;
+             initTransData.transactionIDJazzcash = '';
+             
+             initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || '';          
+             if (initTransData.transactionDate !== ''){
+              initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
+             }
+  
+             initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || '';
+             if (initTransData.transactionTime !== ''){
+              const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
+              initTransData.transactionTime = initTransData.transactionDate + " " + time;      
+             }
+
+             initTransData.beneficiaryMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'ReceiverMSISDN';})?.Value || '';
+             initTransData.beneficiaryBankName = 'EasyPaisa';
+           
+             initTransData.senderMsisdn = data.Header.Identity.Initiator.Identifier;
+             initTransData.beneficiaryBankAccountTitle = "";
+             initTransData.beneficiaryBankAccount = "";
+             initTransData.beneficiaryBankAccountNumber = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'Rec_BankAccount_number';})?.Value || '';
+           
+             initTransData.senderLevel = "";
+             initTransData.senderCnic = "";
+             initTransData.senderName = "";
+  
+             initTransData.receiverMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'ReceiverMSISDN';})?.Value || '';
+             initTransData.initiatorMsisdn = data.Header.Identity.Initiator.Identifier;
+             
+             initTransData.initiatorCity= '';
+             initTransData.initiatorRegion = '';
+             
+             initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
+             initTransData.transactionStatus = 'Pending'; 
+             initTransData.reasonOfFailure = ''; 
+             initTransData.stan = '';
+             initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
+             initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
+             initTransData.commission = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Commission';})?.Value || '0');
+             initTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
+            
+             initTransData.currentBalance = 0;
+             initTransData.reversalStatus = ''; 
+             initTransData.channel = data.Header.SubChannel;
+  
+            console.log("contextData");
+            console.log(JSON.stringify(initTransData));
+           return { initTransData };
+        } else {
+          return null;
+        }
+      }
+      catch(err){
+        console.log('error -> getIBFTOutgoingInitMapping');
+        console.log(err);
+        return null;
+      }
+    }
+  
+    getIBFTMobileOutgoingConfirmMapping(data) {
+        let confirmTransData = {};
+        try{ 
+          logger.info({ event: 'Entered function', functionName: 'getIBFTMobileOutgoingConfirmMapping in class dataMapping'});
+          console.log(data);
+         
+          if (data.Result.ResultCode == 0) {
+    
+            confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'receiverFinancialID';})?.Value || '';
+        
+            confirmTransData.financialIDJazzcash = data.Result.TransactionID;
+            confirmTransData.transactionIDJazzcash = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
+            
+            confirmTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
+            if (confirmTransData.transactionDate !== '') {
+              confirmTransData.transactionDate = moment(confirmTransData.transactionDate).format('YYYY-MM-DD');           
+            }
+    
+            confirmTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || ''
+            if (confirmTransData.transactionTime !== '') {
+              const time = moment(confirmTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
+              confirmTransData.transactionTime = confirmTransData.transactionDate + " " + time;      
+            }
+
+            confirmTransData.beneficiaryBankAccountTitle = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'BeneficiaryName';})?.Value || ''
+
+            confirmTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
+            confirmTransData.transactionStatus = 'Completed'; 
+            confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
+            confirmTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
+            confirmTransData.commission = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Commission';})?.Value || '0');
+            confirmTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
+            confirmTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
+          
+            confirmTransData.stan =  data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
+
+            console.log(JSON.stringify(confirmTransData));
+            return { confirmTransData };
+          } else {
+            return null;
+          }
+        }
+        catch(err){
+          console.log('error -> getIBFTOutgoingConfirmMapping');
+          console.log(err);
+          return null;
+        }
     }  
+
 }
 export default new dataMapping();
