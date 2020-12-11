@@ -8,6 +8,8 @@ export { default as logger }
 from './logger';
 export { default as DB2Connection }
 from './DB2Connection';
+export { default as OracleConnection }
+from './OracleDBConnection';
 export { default as Notification }
 from './notification';
 export { default as responseCodeHandler }

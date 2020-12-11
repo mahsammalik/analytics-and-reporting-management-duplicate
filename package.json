@@ -67,6 +67,7 @@
         "multer": "^1.4.2",
         "node-rdkafka": "^2.8.1",
         "number-to-words": "^1.2.4",
+        "oracledb": "^4.0.1",
         "path": "^0.12.7",
         "response-time": "^2.3.2",
         "uuidv4": "^6.1.1",
