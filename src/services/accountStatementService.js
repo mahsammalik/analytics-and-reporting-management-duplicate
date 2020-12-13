@@ -1,9 +1,11 @@
+import { isString } from 'lodash';
 import {
     logger,
     createPDF,
     accountStatementTemplate,
     Notification,
-    DB2Connection
+    DB2Connection,
+    OracleDBConnection,
 } from '/util/';
 
 class accountStatementService {
@@ -11,25 +13,26 @@ class accountStatementService {
     async sendEmailCSVFormat(payLoad) {
         try {
 
-            const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
 
             let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + data).toString('base64');
-            // console.log(`csvData ${csvData}`);
+            console.log(`csvData ${csvData}`);
 
             const emailData = [{
-                    'key': 'customerName',
-                    'value': payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': payload.start_date
-                }
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
             ];
             const attachment = [{
                 filename: 'AccountStatement.csv',
@@ -52,7 +55,8 @@ class accountStatementService {
         try {
             logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
 
-            const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
 
             const accountData = {
                 headers: ['Transaction ID', 'Transaction Date', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
@@ -66,18 +70,20 @@ class accountStatementService {
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+          
+            console.log(`pdfFile ${pdfFile}`);
             const emailData = [{
-                    'key': 'customerName',
-                    'value': payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': payload.start_date
-                }
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
             ];
             const attachment = [{
                 filename: 'AccountStatement.pdf',
