@@ -40,7 +40,7 @@ class Subscriber {
                     console.log(JSON.stringify(payload));
                     const accountStatement = new accountStatementService();
                     if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-                    await accountStatement.sendEmailCSVFormat(payload);
+                    else await accountStatement.sendEmailCSVFormat(payload);
                 }
 
                 if (msg.topic === config.kafkaBroker.topics.InitTrans_USSD_Outgoing) {
