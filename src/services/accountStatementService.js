@@ -21,7 +21,7 @@ class accountStatementService {
 
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
-            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
             console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             const { data, success, message } = response;
             if (success) {
@@ -71,8 +71,9 @@ class accountStatementService {
 
             // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}`)
-            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}`, "Oracle db Pdf response", response)
+            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
+            console
+            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
             const { data, success, message } = response;
             if (success) {
                 const accountData = {
