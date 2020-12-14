@@ -191,7 +191,7 @@ class DatabaseConn {
         console.log(dataPayload);
         try {
             let conn = await open(cn);
-            const stmt = conn.prepareSync("UPDATE COMMON.OUTGOING_IBFT SET TRXID_EASYPAISA = ?, TRXID_EASYPAISA = ?, TRX_DATE = ?, TRX_TIME = ?, AMOUNT = ?, TRX_STATUS = ?, FEE = ?, FED = ?, COMMISSION = ?, WHT = ?, CURRENT_BALANCE = ?, STAN = ? WHERE FINID_JAZZCASH = ?;");
+            const stmt = conn.prepareSync("UPDATE COMMON.OUTGOING_IBFT SET TRXID_EASYPAISA = ?, TRXID_JAZZCASH = ?, TRX_DATE = ?, TRX_TIME = ?, AMOUNT = ?, TRX_STATUS = ?, FEE = ?, FED = ?, COMMISSION = ?, WHT = ?, CURRENT_BALANCE = ?, STAN = ? WHERE FINID_JAZZCASH = ?;");
             stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.amount, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.commission, dataPayload.wht, dataPayload.currentBalance, dataPayload.stan, dataPayload.financialIDJazzcash]);
             stmt.closeSync();
             conn.close(function(err) {});
