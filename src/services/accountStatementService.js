@@ -52,7 +52,7 @@ class accountStatementService {
                         type: 'base64',
                         embedImage: false
                     }];
-                    return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                    return await new Notification.sendEmail('ehsan.ellahi@ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                 }
                 else {
                     return new Error(`Error mailing csv:${message}`);
@@ -122,7 +122,7 @@ class accountStatementService {
 
                     logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
 
-                    return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                    return await new Notification.sendEmail('ehsan.ellahi@ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                 }
                 else {
                     throw new Error(`Error fetching data for account statement:${message}`);
