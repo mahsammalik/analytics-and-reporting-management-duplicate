@@ -26,7 +26,7 @@ class accountStatementService {
             if (resp.status === 200) {
                 const response = resp.data;
                 console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
-                const { data, success, message } = response;
+                const { data, success, message } = response.data;
                 if (success) {
                     let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
                     header = header.join(',');
@@ -84,7 +84,7 @@ class accountStatementService {
             if (resp.status === 200) {
                 const response = resp.data;
                 console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
-                const { data, success, message } = response;
+                const { data, success, message } = response.data;
                 if (success) {
                     const accountData = {
                         headers: ['Transaction ID', 'Transaction Date', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
