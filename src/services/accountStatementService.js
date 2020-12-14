@@ -13,13 +13,16 @@ const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || 
 
 class accountStatementService {
 
-    async sendEmailCSVFormat(payLoad) {
+    async sendEmailCSVFormat(payload) {
         try {
+
+            console.log('-----payload sendEmailCSVFormat---',payload);
+
 
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
-            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}&isStringify=true`)
-            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}&isStringify=true`, "Oracle db CSV response", response)
+            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             const { data, success, message } = response;
             if (success) {
                 let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
@@ -62,6 +65,8 @@ class accountStatementService {
     async sendEmailPDFFormat(payload) {
 
         try {
+
+            console.log('-----payload sendEmailPDFFormat---',payload);
             logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
 
             // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
