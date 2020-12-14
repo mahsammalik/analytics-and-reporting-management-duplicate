@@ -78,7 +78,7 @@ spec:
     - name: MASTER_DATA_API_GET_RESPCODE_URL
       value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
     - name: NOTIFICATION_SERVICE_URL_EMAIL
-      value: http://notification-microservice.jazzcash-microservices-dev:3000/rest/api/v1/notification/email
+      value: http://notification-microservice:3000/rest/api/v1/notification/email
     - name: PRODUCTION_LOG_LEVEL
       value: info
     - name: NODE_ENV
