@@ -18,7 +18,7 @@ class accountStatementService {
 
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
-            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}&isStringify=true`)
+            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payLoad.msisdn}&startDate=${payLoad.start_date}&endDate=${payLoad.end_date}&isStringify=true`)
             const { data, success, message } = response;
             if (success) {
                 let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
@@ -65,7 +65,7 @@ class accountStatementService {
 
             // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-            const response = axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
+            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             const { data, success, message } = response;
             if (success) {
                 const accountData = {
