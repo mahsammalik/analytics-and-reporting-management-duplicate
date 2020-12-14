@@ -28,7 +28,7 @@ class accountStatementService {
                 console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
                 const { data, success, message } = response;
                 if (success) {
-                    let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+                    let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
                     header = header.join(',');
                     const csvData = new Buffer.from(header + data).toString('base64');
                     console.log(`csvData ${csvData}`, data);
@@ -87,7 +87,7 @@ class accountStatementService {
                 const { data, success, message } = response;
                 if (success) {
                     const accountData = {
-                        headers: ['Transaction ID', 'Transaction Date', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
+                        header =["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"],
                         data,
                         payload
 
