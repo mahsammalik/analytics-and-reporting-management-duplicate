@@ -22,10 +22,10 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
-            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
             if (resp.status === 200) {
                 const response = resp.data;
-                console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
+                console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
                 const { data, success, message } = response;
                 if (success) {
                     let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
@@ -80,10 +80,10 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
+            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             if (resp.status === 200) {
                 const response = resp.data;
-                console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
+                console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
                 const { data, success, message } = response;
                 if (success) {
                     const accountData = {
