@@ -20,6 +20,9 @@
                 "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
                 "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
                 "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
+            },
+            "oracleAccountManagement": {
+                "oracleAccountManagementURL": "http://oracle-account-management-git-oracle-account-management.apps.pjcocp.jazzcash.com.pk/getaccountstatement"
             }
         },
         "mongodb": {
@@ -120,7 +123,6 @@
             "cacheName": "jazzcash",
             "responseCodeCache": "ResponseCodeCache"
         },
-
         "responseCode": {
             "default": {
                 "code": "G-01",
