@@ -235,7 +235,8 @@ class dataMapping {
              initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
              initTransData.financialIDJazzcash = data.Result.TransactionID;
              initTransData.transactionIDJazzcash = '';
-             
+             initTransData.transactionIDEasyPaisa = '';
+
              initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || '';          
              if (initTransData.transactionDate !== ''){
               initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
