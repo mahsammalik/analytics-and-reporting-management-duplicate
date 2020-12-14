@@ -423,8 +423,8 @@ class ExcelExportService {
       outgoingTransactionWorkSheet.getRow(1).values = [
         'TransactionID Objective',
         'TransactionID Jazz Cash',
-        'TransactionID Easypaisa',
-        'FinancialID Easypaisa',
+        'Receiver FinancialID',
+        'FinancialID Jazz Cash',
         'Transaction Date',
         'Transaction Time',
         'Beneficiary Name',
@@ -456,8 +456,8 @@ class ExcelExportService {
       outgoingTransactionWorkSheet.columns = [
         { key: 'TransactionID Objective', width: 20 },
         { key: 'TransactionID Jazz Cash', width: 20 },
-        { key: 'TransactionID Easypaisa', width: 20 },
-        { key: 'FinancialID Easypaisa', width: 20 },
+        { key: 'Receiver FinancialID', width: 20 },
+        { key: 'FinancialID Jazz Cash', width: 20 },
         { key: 'Transaction Date', width: 15 },
         { key: 'Transaction Time', width: 15 },
         { key: 'Beneficiary Name', width: 20 },
@@ -488,8 +488,8 @@ class ExcelExportService {
         outgoingTransactionWorkSheet.addRow({
             "TransactionID Objective": data[row][0],
             "TransactionID Jazz Cash": data[row][1],
-            "TransactionID Easypaisa": data[row][2],
-            "FinancialID Easypaisa": data[row][28],
+            "Receiver FinancialID": data[row][2],
+            "FinancialID Jazz Cash": data[row][28],
             "Transaction Date": data[row][3],
             "Transaction Time": data[row][4],
             "Beneficiary Name": data[row][5],

@@ -37,6 +37,7 @@ class Subscriber {
                 if (msg.topic === config.kafkaBroker.topics.App_Merchant_Account_Statement) {
                     logger.info({ event: 'Consume Topic', value: JSON.parse(msg.value) });
                     const payload = JSON.parse(msg.value);
+                    console.log(JSON.stringify(payload));
                     const accountStatement = new accountStatementService();
                     res.locals.response = payload.format === 'pdf' ? await accountStatement.sendEmailPDFFormat(payload) : await accountStatement.sendEmailCSVFormat(payload);
                 }

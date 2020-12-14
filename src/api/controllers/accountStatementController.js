@@ -25,13 +25,13 @@ class accountStatementController {
                 merchantName: userProfile.businessName || ''
 
             };
+            console.log(JSON.stringify(payload));
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
             logger.info({ event: 'Exited function', functionName: 'calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
             return next();
-
 
         } catch (error) {
             logger.error({ event: 'Error thrown', functionName: 'calculateAccountStatement in class accountStatementController', 'error': { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, query: req.query });
