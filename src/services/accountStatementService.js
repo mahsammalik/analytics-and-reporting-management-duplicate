@@ -16,43 +16,50 @@ class accountStatementService {
     async sendEmailCSVFormat(payload) {
         try {
 
-            console.log('-----payload sendEmailCSVFormat---',payload);
-
-
+            console.log('-----payload sendEmailCSVFormat---', payload);
+            let msisdn = payload.msisdn;
+            if (msisdn.substring(0, 2) === '92')
+                msisdn = msisdn.replace("92", "0");
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
-            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
-            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
-            const { data, success, message } = response;
-            if (success) {
-                let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
-                header = header.join(',');
-                const csvData = new Buffer.from(header + data).toString('base64');
-                console.log(`csvData ${csvData}`, data);
+            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            if (resp.status === 200) {
+                const response = resp.data;
+                console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
+                const { data, success, message } = response;
+                if (success) {
+                    let header = ["Transaction ID, Transaction DateTime, MSISDN, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+                    header = header.join(',');
+                    const csvData = new Buffer.from(header + data).toString('base64');
+                    console.log(`csvData ${csvData}`, data);
 
-                const emailData = [{
-                    'key': 'customerName',
-                    'value': payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': payload.start_date
+                    const emailData = [{
+                        'key': 'customerName',
+                        'value': payload.merchantName
+                    },
+                    {
+                        'key': 'accountNumber',
+                        'value': payload.msisdn
+                    },
+                    {
+                        'key': 'statementPeriod',
+                        'value': payload.start_date
+                    }
+                    ];
+                    const attachment = [{
+                        filename: 'AccountStatement.csv',
+                        content: csvData,
+                        type: 'base64',
+                        embedImage: false
+                    }];
+                    return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                 }
-                ];
-                const attachment = [{
-                    filename: 'AccountStatement.csv',
-                    content: csvData,
-                    type: 'base64',
-                    embedImage: false
-                }];
-                return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                else {
+                    return new Error(`Error mailing csv:${message}`);
+                }
             }
             else {
-                return new Error(`Error mailing csv:${message}`);
+                return new Error(`Error mailing csv`);
             }
         } catch (error) {
             logger.error(error);
@@ -66,56 +73,63 @@ class accountStatementService {
 
         try {
 
-            console.log('-----payload sendEmailPDFFormat---',payload);
+            console.log('-----payload sendEmailPDFFormat---', payload);
             logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
-
+            let msisdn = payload.msisdn;
+            if (msisdn.substring(0, 2) === '92')
+                msisdn = msisdn.replace("92", "0");
             // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-            const response = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
-            console
-            console.log(`${oracleAccountManagementURL}?customerMobileNumer=${payload.msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
-            const { data, success, message } = response;
-            if (success) {
-                const accountData = {
-                    headers: ['Transaction ID', 'Transaction Date', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
-                    data,
-                    payload
+            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
+            if (resp.status === 200) {
+                const response = resp.data;
+                console.log(`${oracleAccountManagementURL}?customerMobileNumer=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
+                const { data, success, message } = response;
+                if (success) {
+                    const accountData = {
+                        headers: ['Transaction ID', 'Transaction Date', 'Transaction Type', 'Channel', 'Description', 'Amount debited', 'Amount credited', 'Running balance'],
+                        data,
+                        payload
 
-                };
+                    };
 
-                let pdfFile = await createPDF({
-                    template: accountStatementTemplate(accountData),
-                    fileName: `Account Statement`
-                });
-                pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+                    let pdfFile = await createPDF({
+                        template: accountStatementTemplate(accountData),
+                        fileName: `Account Statement`
+                    });
+                    pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
 
-                console.log(`pdfFile ${pdfFile}`, data);
-                const emailData = [{
-                    'key': 'customerName',
-                    'value': payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': payload.start_date
+                    console.log(`pdfFile ${pdfFile}`, data);
+                    const emailData = [{
+                        'key': 'customerName',
+                        'value': payload.merchantName
+                    },
+                    {
+                        'key': 'accountNumber',
+                        'value': payload.msisdn
+                    },
+                    {
+                        'key': 'statementPeriod',
+                        'value': payload.start_date
+                    }
+                    ];
+                    const attachment = [{
+                        filename: 'AccountStatement.pdf',
+                        content: pdfFile,
+                        type: 'base64',
+                        embedImage: false
+                    }];
+
+                    logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+
+                    return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                 }
-                ];
-                const attachment = [{
-                    filename: 'AccountStatement.pdf',
-                    content: pdfFile,
-                    type: 'base64',
-                    embedImage: false
-                }];
-
-                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-
-                return await new Notification.sendEmail('jazzcash.test.user@gmail.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                else {
+                    throw new Error(`Error fetching data for account statement:${message}`);
+                }
             }
             else {
-                throw new Error(`Error fetching data for account statement:${message}`);
+                throw new Error(`Error fetching data for account statement`);
             }
 
         } catch (error) {
