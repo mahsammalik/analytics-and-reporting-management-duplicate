@@ -49,7 +49,7 @@ const accountStatementTemplate = accountData => {
 
 	try {
 		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
-		const pageSize = 9;
+		const pageSize = 8;
 
 		// console.log(JSON.stringify(accountData.payload));
 		//TODO: update account title based on input for metadata
