@@ -421,7 +421,7 @@ class ExcelExportService {
       logger.debug({ event: 'Info Message', functionName: 'Creating sheet Upload for Outgoing Transactions'});
 
       outgoingTransactionWorkSheet.getRow(1).values = [
-        'TransactionID Objective',
+        'Payment Purpose',
         'TransactionID Jazz Cash',
         'Receiver FinancialID',
         'FinancialID Jazz Cash',
@@ -454,7 +454,7 @@ class ExcelExportService {
       outgoingTransactionWorkSheet.getRow(1).height = 10;
 
       outgoingTransactionWorkSheet.columns = [
-        { key: 'TransactionID Objective', width: 20 },
+        { key: 'Payment Purpose', width: 20 },
         { key: 'TransactionID Jazz Cash', width: 20 },
         { key: 'Receiver FinancialID', width: 20 },
         { key: 'FinancialID Jazz Cash', width: 20 },
@@ -486,7 +486,7 @@ class ExcelExportService {
 
       for (let row in data) {
         outgoingTransactionWorkSheet.addRow({
-            "TransactionID Objective": data[row][0],
+            "Payment Purpose": data[row][0],
             "TransactionID Jazz Cash": data[row][1],
             "Receiver FinancialID": data[row][2],
             "FinancialID Jazz Cash": data[row][28],

@@ -22,7 +22,12 @@ class Subscriber {
             config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing,
             config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing,
             config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing,
-            config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing
+            config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing,
+
+            config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing_Fail,
+            config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing_Fail,
+            config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing_Fail,
+            config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail,
         ]);
     }
 
@@ -72,6 +77,7 @@ class Subscriber {
                     try {
                       
                         const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
 
                         if (payload.CustomObject) {
                             console.log('Custom Object exists')
@@ -141,6 +147,7 @@ class Subscriber {
                         console.log(error);
                     }
                 }
+
                 // failure events
                 if (msg.topic === config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail) {
                     logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
@@ -151,14 +158,14 @@ class Subscriber {
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
                      
-                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2MappingResponse);
+                      let db2MappingResponse = dataMapping.getIBFTIncomingInitMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(JSON.stringify(db2MappingResponse));
           
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
+                      if (db2MappingResponse != null) {
+                        const DB2InsertResponse = await DB2Connection.addIncomingTransaction(db2MappingResponse.initTransData);
+                        console.log({DB2InsertResponse});
+                      }
           
                     } catch(error){
                         console.log(error);
@@ -173,14 +180,14 @@ class Subscriber {
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
                      
-                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2MappingResponse);
+                      let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(JSON.stringify(db2MappingResponse));
           
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
+                      if (db2MappingResponse != null) {
+                        const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                        console.log({DB2InsertResponse});
+                      }
           
                     } catch(error){
                         console.log(error);
@@ -194,16 +201,16 @@ class Subscriber {
                       
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
-                     
-                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2MappingResponse);
+                      
+                      let db2Response = dataMapping.getIBFTOutgoingInitMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(JSON.stringify(db2Response));
           
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
-          
+                      if (db2Response != null) {
+                        const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
+                        console.log(response);  
+                      }
+
                     } catch(error){
                         console.log(error);
                     }
@@ -213,19 +220,25 @@ class Subscriber {
                     console.log('*********** Confirm Trans Outgoing USSD Failed IBFT Kafka Called *****************');
                     
                     try {
-                      
-                      const payload = JSON.parse(msg.value);
-                      console.log(JSON.stringify(payload));
-                     
-                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2MappingResponse);
-          
-                    //   if (db2MappingResponse != null) {
-                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
-                    //     console.log({DB2InsertResponse});
-                    //   }
-          
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        if (payload.CustomObject) {
+                            console.log('Custom Object exists')
+                            console.log(JSON.stringify(payload));
+                        
+                            let db2Response = dataMapping.getIBFTOutgoingConfirmMapping(payload);
+                            console.log('Mapped Response for DB2');
+                            console.log(JSON.stringify(db2Response));
+        
+                            if (db2Response != null) {
+                                const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
+                                console.log(response);  
+                            }
+                        } else {
+                            console.log('Custom Object doesnt exists')
+                            console.log(JSON.stringify(payload));
+                     }
                     } catch(error){
                         console.log(error);
                     }
@@ -320,7 +333,97 @@ class Subscriber {
                         console.log(error);
                     }
                 }
-                
+
+                // events from mobile app failures
+                if (msg.topic === config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Init Trans Failed Outgoing Mobile USSD IBFT Kafka Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                        
+                    //   let db2Response = dataMapping.getIBFTMobileOutgoingInitMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2Response);
+          
+                    //   if (db2Response != null) {
+                    //     const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
+                    //     console.log(response);  
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Confirm Trans Failed Outgoing Mobile USSD IBFT Kafka Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                     
+                    //   let db2MappingResponse = dataMapping.getIBFTIncomingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2MappingResponse);
+          
+                    //   if (db2MappingResponse != null) {
+                    //     const DB2InsertResponse = await DB2Connection.updateIncomingTransaction(db2MappingResponse.confirmTransData);
+                    //     console.log({DB2InsertResponse});
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Confirm Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Init Trans Failed Outgoing SOAP Mobile USSD Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                       
+                    //   let db2Response = dataMapping.getIBFTMobileOutgoingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2Response);
+    
+                    //   if (db2Response != null) {
+                    //     const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
+                    //     console.log(response);  
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail) {
+                    logger.info({ event: 'Confirm Topic', value: JSON.parse(msg.value) });                    
+                    console.log('*********** Confirm Trans Failed Outgoing SOAP Mobile USSD Called *****************');
+                    
+                    try {
+                      
+                      const payload = JSON.parse(msg.value);
+                      console.log(JSON.stringify(payload));
+                       
+                    //   let db2Response = dataMapping.getIBFTMobileOutgoingConfirmMapping(payload);
+                    //   console.log('Mapped Response for DB2');
+                    //   console.log(db2Response);
+    
+                    //   if (db2Response != null) {
+                    //     const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
+                    //     console.log(response);  
+                    //   }
+          
+                    } catch(error){
+                        console.log(error);
+                    }
+                }
+   
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);
