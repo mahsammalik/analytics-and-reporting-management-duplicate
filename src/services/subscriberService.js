@@ -345,14 +345,14 @@ class Subscriber {
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
                         
-                    //   let db2Response = dataMapping.getIBFTMobileOutgoingInitMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2Response);
+                      let db2Response = dataMapping.getIBFTMobileOutgoingInitMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(db2Response);
           
-                    //   if (db2Response != null) {
-                    //     const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
-                    //     console.log(response);  
-                    //   }
+                      if (db2Response != null) {
+                        const response = await DB2Connection.addOutgoingTransaction(db2Response.initTransData);
+                        console.log(response);  
+                      }
           
                     } catch(error){
                         console.log(error);
@@ -411,14 +411,14 @@ class Subscriber {
                       const payload = JSON.parse(msg.value);
                       console.log(JSON.stringify(payload));
                        
-                    //   let db2Response = dataMapping.getIBFTMobileOutgoingConfirmMapping(payload);
-                    //   console.log('Mapped Response for DB2');
-                    //   console.log(db2Response);
+                      let db2Response = dataMapping.getIBFTMobileOutgoingConfirmMapping(payload);
+                      console.log('Mapped Response for DB2');
+                      console.log(db2Response);
     
-                    //   if (db2Response != null) {
-                    //     const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
-                    //     console.log(response);  
-                    //   }
+                      if (db2Response != null) {
+                        const response = await DB2Connection.updateOutgoingTransaction(db2Response.confirmTransData);
+                        console.log(response);  
+                      }
           
                     } catch(error){
                         console.log(error);
@@ -430,7 +430,6 @@ class Subscriber {
                 throw new Error(error);
             }
         });
-
     }
 
 }
