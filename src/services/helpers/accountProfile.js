@@ -38,33 +38,33 @@ const userProfileURL = process.env.USER_PROFILE_URL || config.externalServices.a
 	}
  */
 const getUserProfile = headers => {
-    try {
+	try {
 
-        logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
-        const headerFields = {
-            'Content-Type': headers['content-type'],
-            'X-MSISDN': headers['x-msisdn'],
-            'X-META-DATA': headers['x-meta-data'],
-            'X-APP-TYPE': headers['x-app-type'],
-            'x-channel': headers['x-channel'],
-            'x-device-id': headers['x-device-id'],
-            'X-IBM-CLIENT-ID': headers['x-ibm-client-id'],
-            'X-IP-ADDRESS': headers['x-ip-address'],
-            'X-APP-Version': headers['x-app-version'],
-        };
-        const profile = axios.get(userProfileURL, { headers: headerFields }).then(result => {
-            return result.data.data.businessDetails || {};
-        }).catch(error => {
-            logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
-            return {};
-        });
-        logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
-        return profile;
-    } catch (error) {
-        logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
-        logger.info({ event: 'Exited function', functionName: 'getUserProfile' });
-        return {};
-    }
+		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
+		const headerFields = {
+			'Content-Type': headers['content-type'],
+			'X-MSISDN': headers['x-msisdn'],
+			'X-META-DATA': headers['x-meta-data'],
+			'X-APP-TYPE': headers['x-app-type'],
+			'x-channel': headers['x-channel'],
+			'x-device-id': headers['x-device-id'],
+			'X-IBM-CLIENT-ID': headers['x-ibm-client-id'],
+			'X-IP-ADDRESS': headers['x-ip-address'],
+			'X-APP-Version': headers['x-app-version'],
+		};
+		const profile = axios.get(userProfileURL, { headers: headerFields }).then(result => {
+			return result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn } : {};
+		}).catch(error => {
+			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
+			return {};
+		});
+		logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
+		return profile;
+	} catch (error) {
+		logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
+		logger.info({ event: 'Exited function', functionName: 'getUserProfile' });
+		return {};
+	}
 };
 
 export default getUserProfile;
