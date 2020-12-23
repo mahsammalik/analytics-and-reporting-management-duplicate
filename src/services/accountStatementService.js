@@ -46,13 +46,20 @@ class accountStatementService {
                         'value': payload.start_date
                     }
                     ];
-                    const attachment = [{
-                        filename: 'AccountStatement.csv',
-                        content: csvData,
-                        type: 'base64',
-                        embedImage: false
-                    }];
-                    return await new Notification.sendEmail('ehsan.ellahi@ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+
+                    if (payload.email) {
+                        logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
+                        const attachment = [{
+                            filename: 'AccountStatement.csv',
+                            content: csvData,
+                            type: 'base64',
+                            embedImage: false
+                        }];
+                        return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                    }
+                    else {
+                        throw new Error(`Email Not provided`);
+                    }
                 }
                 else {
                     return new Error(`Error mailing csv:${message}`);
@@ -113,16 +120,20 @@ class accountStatementService {
                         'value': payload.start_date
                     }
                     ];
-                    const attachment = [{
-                        filename: 'AccountStatement.pdf',
-                        content: pdfFile,
-                        type: 'base64',
-                        embedImage: false
-                    }];
 
-                    logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-
-                    return await new Notification.sendEmail('ehsan.ellahi@ibm.com', 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                    if (payload.email) {
+                        logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                        const attachment = [{
+                            filename: 'AccountStatement.pdf',
+                            content: pdfFile,
+                            type: 'base64',
+                            embedImage: false
+                        }];
+                        return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                    }
+                    else {
+                        throw new Error(`Email Not provided`);
+                    }
                 }
                 else {
                     throw new Error(`Error fetching data for account statement:${message}`);
