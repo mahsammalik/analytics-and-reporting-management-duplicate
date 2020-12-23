@@ -115,7 +115,12 @@
                 "InitTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Init_Passed",
                 "ConfirmTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Confirm_Passed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Init_Passed",
-                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Confirm_Passed"
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Confirm_Passed",
+                
+                "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
+                "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
+                "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed"
             }
         },
         "cache": {
