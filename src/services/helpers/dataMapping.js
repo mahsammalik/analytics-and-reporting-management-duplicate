@@ -593,6 +593,9 @@ class dataMapping {
             confirmTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
             confirmTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
           
+            confirmTransData.reversalStatus = '';
+            confirmTransData.reasonOfFailure = '';
+
             confirmTransData.stan =  data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
 
             console.log(JSON.stringify(confirmTransData));
