@@ -93,8 +93,8 @@ class Subscriber {
                                 console.log(response);
                             }
                         } else {
-                            console.log('Custom Object doesnt exists')
-                            console.log(JSON.stringify(payload));
+                            // console.log('Custom Object doesnt exists')
+                            console.log('Custom Object doesnt exists: ',JSON.stringify(payload));
                         }
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'ConfirmTrans_USSD_Outgoing in class excelExportController' });

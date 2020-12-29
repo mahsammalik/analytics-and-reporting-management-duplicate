@@ -45,14 +45,10 @@ class dataMapping {
           initTransData.senderBankName = 'Easy Paisa'; 
           initTransData.senderAccount = data.CustomObject.debitParty.iban;
 
-          let reasonOfFailure = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'FailedReason';})?.Value || '';
-          if (typeof(reasonOfFailure) === 'object' && obj !== null) {
-            reasonOfFailure = '';
-          }
-          initTransData.reasonOfFailure = reasonOfFailure;
-
           initTransData.reversedTrasactionID = ''; 
           initTransData.reversedReason = ''; 
+          initTransData.reasonOfFailure = '';
+
           initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
           initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
           initTransData.stan = data.CustomObject.senderTransactionID;
@@ -95,8 +91,17 @@ class dataMapping {
           initTransData.senderName = data.CustomObject.debitParty.accountTitle; 
           initTransData.senderBankName = 'Easy Paisa'; 
           initTransData.senderAccount = data.CustomObject.debitParty.iban;
+          
           initTransData.reversedTrasactionID = ''; 
-          initTransData.reversedReason = ''; 
+          initTransData.reversedReason = '';
+          
+          let reasonOfFailure = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'FailedReason';})?.Value || '';
+          if (typeof(reasonOfFailure) === 'object' && obj !== null) {
+            reasonOfFailure = '';
+          }
+
+          initTransData.reasonOfFailure = reasonOfFailure;
+          
           initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
           initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
           initTransData.stan = data.CustomObject.senderTransactionID;
@@ -142,7 +147,9 @@ class dataMapping {
                
                confirmTransData.transactionStatus = 'Completed'; 
                confirmTransData.reversalStatus = ''; ;
+
                confirmTransData.reasonOfFailure = ''; 
+               
                confirmTransData.reversedTrasactionID = ''; 
                confirmTransData.reversedReason = ''; 
                confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
@@ -157,6 +164,10 @@ class dataMapping {
                confirmTransData.transactionIDEasyJazzcash = data.Result.TransactionID;
                confirmTransData.financialIDEasyPaisa =  data.CustomObject.senderFinancialID;
 
+               if (confirmTransData.transactionIDEasyJazzcash == '0000000000000000') {
+                  confirmTransData.transactionIDEasyJazzcash = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'TransID';})?.Value || '';
+               }
+               
                confirmTransData.paymentPurpose = data.CustomObject.paymentPurpose;         
 
                confirmTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || '';       
@@ -218,9 +229,7 @@ class dataMapping {
                 const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
                 initTransData.transactionTime = initTransData.transactionDate + " " + time;      
                }
-              //  initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''
-              //  initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || ''
-               
+
                initTransData.beneficiaryMsisdn = data.CustomObject.ReceiverMSISDN;
                initTransData.beneficiaryBankName = 'EasyPaisa';
              
@@ -237,16 +246,21 @@ class dataMapping {
                initTransData.initiatorMsisdn = data.CustomObject.SenderMsisdn;
                initTransData.initiatorCity= '';
                initTransData.initiatorRegion = '';
+
                initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
                initTransData.transactionStatus = 'Pending'; 
+
                initTransData.reasonOfFailure = ''; 
+
                initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
                initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
                initTransData.commission = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Commission';})?.Value || '0');
                initTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
+              
+               initTransData.reversalStatus = ''; 
+              
                initTransData.stan = "";
                initTransData.currentBalance = 0;
-               initTransData.reversalStatus = ''; 
                initTransData.channel = data.Header.SubChannel;
     
                console.log("contextData");
@@ -288,6 +302,7 @@ class dataMapping {
               initTransData.initiatorMsisdn = data.CustomObject.SenderMsisdn;
               initTransData.initiatorCity= '';
               initTransData.initiatorRegion = '';
+
               initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
               initTransData.transactionStatus = 'Failed'; 
               
@@ -295,6 +310,7 @@ class dataMapping {
               initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
               initTransData.commission = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Commission';})?.Value || '0');
               initTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
+             
               initTransData.stan = "";
               initTransData.currentBalance = 0;
               initTransData.channel = data.Header.SubChannel;
@@ -351,6 +367,7 @@ class dataMapping {
              const time = moment(confirmTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
              confirmTransData.transactionTime = confirmTransData.transactionDate + " " + time;      
             }
+            
             confirmTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
             confirmTransData.transactionStatus = 'Completed'; 
             confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
@@ -383,6 +400,11 @@ class dataMapping {
              const time = moment(confirmTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
              confirmTransData.transactionTime = confirmTransData.transactionDate + " " + time;      
             }
+
+            if (confirmTransData.financialIDJazzcash == '0000000000000000') {
+              confirmTransData.financialIDJazzcash = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'TransID';})?.Value || '';
+            }
+
             confirmTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
             confirmTransData.transactionStatus = 'Failed'; 
             confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
@@ -467,7 +489,7 @@ class dataMapping {
              
              initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
              initTransData.transactionStatus = 'Pending'; 
-             initTransData.reasonOfFailure = ''; 
+
              initTransData.stan = '';
              initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
              initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
@@ -475,13 +497,16 @@ class dataMapping {
              initTransData.wht = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'WHT';})?.Value || '0');
             
              initTransData.currentBalance = 0;
-             initTransData.reversalStatus = ''; 
              initTransData.channel = data.Header.SubChannel;
+
+             initTransData.reversalStatus = ''; 
+             initTransData.reasonOfFailure = '';
   
             console.log("contextData");
             console.log(JSON.stringify(initTransData));
            return { initTransData };
         } else {
+
           initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
           initTransData.financialIDJazzcash = data.Result.TransactionID;
           initTransData.transactionIDJazzcash = '';
@@ -606,6 +631,10 @@ class dataMapping {
             confirmTransData.financialIDJazzcash = data.Result.TransactionID;
             confirmTransData.transactionIDJazzcash = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
             
+            if (confirmTransData.financialIDJazzcash == '0000000000000000') {
+              confirmTransData.financialIDJazzcash = data?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'TransID';})?.Value || '';
+            }
+
             confirmTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
             if (confirmTransData.transactionDate !== '') {
               confirmTransData.transactionDate = moment(confirmTransData.transactionDate).format('YYYY-MM-DD');           
