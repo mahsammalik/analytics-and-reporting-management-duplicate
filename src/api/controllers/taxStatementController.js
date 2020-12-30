@@ -4,6 +4,7 @@ import validations from './validators/validations';
 import schema from './validators/schema.json';
 import responseCodeHandler from '../../util/responseCodeHandler';
 import { logger, mappedMetaData } from '/util/';
+import getUserProfile from '../../services/helpers/accountProfile';
 
 class taxStatementController {
 
