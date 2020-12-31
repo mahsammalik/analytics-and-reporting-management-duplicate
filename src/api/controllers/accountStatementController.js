@@ -10,9 +10,7 @@ class accountStatementController {
 
             let metadataHeaders = req.headers['x-meta-data'];
 
-            if (metadataHeaders.substring(0, 2) === "a:") {
-                metadataHeaders = metadataHeaders.replace("a:", "")
-            }
+            if (metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
             // console.log("Headers METADATA --------**************", headers, metadataHeaders, req.headers['x-meta-data']);
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
