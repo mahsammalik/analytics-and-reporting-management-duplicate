@@ -10,12 +10,6 @@ class accountStatementController {
 
             const metadataHeaders = req.headers['x-meta-data'];
             console.log("Metadata Headers: ", metadataHeaders);
-            const headers = Object.keys(metadataHeaders);
-            if (headers.length === 1 && headers[0] === 'a') {
-                metadataHeaders = metadataHeaders.a
-            }
-
-            console.log("Headers METADATA --------**************",headers,metadataHeaders,req.headers['x-meta-data']);
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
@@ -34,7 +28,7 @@ class accountStatementController {
                 merchantName: userProfile.businessName || ''
 
             };
-            console.log(" PAYLOAD FINAL -----*******",JSON.stringify(payload));
+            console.log(JSON.stringify(payload));
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
