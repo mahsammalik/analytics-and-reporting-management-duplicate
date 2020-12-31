@@ -9,9 +9,12 @@ class accountStatementController {
             logger.info({ event: 'Entered function', functionName: 'calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
 
             const metadataHeaders = req.headers['x-meta-data'];
+            console.log("Metadata Headers: ", metadataHeaders);
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
+
+            console.log("Metadata", metadata);
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,
