@@ -17,7 +17,6 @@ class accountStatementController {
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
 
-            console.log("Metadata", metadata);
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,
@@ -31,7 +30,7 @@ class accountStatementController {
                 merchantName: userProfile.businessName || ''
 
             };
-            console.log(" PAYLOAD FINAL -----*******", JSON.stringify(payload));
+            if (!payload.email) res.status(422).send({ success: false, message: "Email Not Provided" });
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
