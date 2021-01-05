@@ -106,12 +106,14 @@
                 "App_Merchant_Account_Statement": "App_Merchant_Account_Statement",
                 "InitTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Init_Passed",
                 "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
-                "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
-                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
                 "InitTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Init_Failed",
                 "ConfirmTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Confirm_Failed",
+                
+                "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
+                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
                 "InitTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Init_Failed",
                 "ConfirmTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Confirm_Failed",
+                
                 "InitTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Init_Passed",
                 "ConfirmTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Confirm_Passed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Init_Passed",

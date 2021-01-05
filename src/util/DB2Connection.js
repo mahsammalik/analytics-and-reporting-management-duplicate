@@ -242,7 +242,7 @@ class DatabaseConn {
         try {
 
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from ${schema}.OUTGOING_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
+            const stmt = conn.prepareSync(`select * from ${schema}.OUTGOING_DIRECT_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
             let result = stmt.executeSync([startDate, endDate]);
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
