@@ -12,7 +12,7 @@ class accountStatementController {
 
             if (metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
-            // console.log("Headers METADATA --------**************", headers, metadataHeaders, req.headers['x-meta-data']);
+            console.log("Headers METADATA --------**************", metadataHeaders);
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
@@ -30,7 +30,11 @@ class accountStatementController {
                 merchantName: userProfile.businessName || ''
 
             };
-            if (!payload.email) res.status(422).send({ success: false, message: "Email Not Provided" });
+            console.log("Headers PAYLOAD --------**************", payload);
+
+            if (!payload.email) {
+                return res.status(401).send({ success: false, message: "Email Not Provided" });
+            }
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
