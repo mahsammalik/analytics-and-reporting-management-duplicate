@@ -16,13 +16,15 @@ class accountStatementController {
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
-
+            if (!req.query.email) {
+                return res.status(401).send({ success: false, message: "Email Not Provided" });
+            }
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,
                 end_date: req.query.end_date,
                 request: req.query.requestType,
-                email: metadata.emailAddress,
+                email: req.query.email,
                 subject: 'Hello',
                 html: '<html></html>',
                 format: req.query.format,
@@ -32,9 +34,6 @@ class accountStatementController {
             };
             console.log("Headers PAYLOAD --------**************", payload);
 
-            if (!payload.email) {
-                return res.status(401).send({ success: false, message: "Email Not Provided" });
-            }
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
