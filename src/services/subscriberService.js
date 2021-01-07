@@ -12,24 +12,25 @@ class Subscriber {
             config.kafkaBroker.topics.App_Merchant_Account_Statement,
             config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
             config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
-            config.kafkaBroker.topics.InitTrans_USSD_Outgoing,
-            config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing,
             config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
-            config.kafkaBroker.topics.InitTrans_USSD_Outgoing_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing_Fail,
-
-            config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing,
-            config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing,
-            config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing,
-            config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing,
-
-            config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing_Fail,
-            config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail,
+            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail
         ]);
     }
+
+    // config.kafkaBroker.topics.InitTrans_USSD_Outgoing,
+    // config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing,
+    // config.kafkaBroker.topics.InitTrans_USSD_Outgoing_Fail,
+    // config.kafkaBroker.topics.ConfirmTrans_USSD_Outgoing_Fail,
+
+    // config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing,
+    // config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing,
+    // config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing,
+    // config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing,
+
+    // config.kafkaBroker.topics.InitTrans_Mobile_USSD_Outgoing_Fail,
+    // config.kafkaBroker.topics.ConfirmTrans_Mobile_USSD_Outgoing_Fail,
+    // config.kafkaBroker.topics.InitTrans_Mobile_SOAP_USSD_Outgoing_Fail,
+    // config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail,
 
     setConsumer() {
         this.event.addConsumerOnDataEvent(async function (msg) {
