@@ -8,6 +8,7 @@ import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
 import { Subscriber } from '/services/';
+import { ConsumerSubscriber } from './consumers/sendMoneyToBankConsumer';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -26,6 +27,9 @@ app.use(responseTime());
 // app.use(schemaValidatorMW);
 const subscriber = new Subscriber();
 subscriber.setConsumer();
+
+const consumerSubscriber = new ConsumerSubscriber();
+consumerSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);

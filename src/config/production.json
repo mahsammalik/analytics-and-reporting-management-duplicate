@@ -37,7 +37,7 @@
             "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=cpp11211;PWD=br2n4mbslfwp@sss;",
             "schema": "CPP11211",
             "hostName": "dashdb-txn-sbox-yp-dal09-10.services.dal.bluemix.net",
-            "port": 60000,
+            "port": 50000,
             "protocol": "TCPIP"
         },
         "winston": {
@@ -73,8 +73,8 @@
             "consumerAutoCommit": true,
             "consumerConfig": {
                 "debug": "all",
-                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
-                "group.id": "kafka-nodejs-console-sample-group--dev19",
+                "client.id": "kafka-nodejs-console-sample-consumer--dev19_reporting",
+                "group.id": "kafka-nodejs-console-sample-group--dev19_reporting",
                 "metadata.broker.list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
                 "security.protocol": "sasl_ssl",
                 "sasl.mechanisms": "SCRAM-SHA-512",
@@ -120,7 +120,9 @@
                 "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
                 "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
-                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed"
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed",
+
+                "intTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed"
             }
         },
         "cache": {
@@ -264,6 +266,45 @@
                 "1": "Basic Business",
                 "2": "Premium Business"
             }
+        }, 
+        "reportingDBTables" : {
+            "APP_SIGNUP": "APP_SIGNUP",
+            "BUS_TICKET": "BUS_TICKET",
+            "CARD_BLOCK": "CARD_BLOCK",
+            "CAREEM_VOUCHER": "CAREEM_VOUCHER",
+            "CHANGE_PIN": "CHANGE_PIN",
+            "DARAZ_WALLET": "DARAZ_WALLET",
+            "DEBIT_CARD_TRACK": "DEBIT_CARD_TRACK",
+            "DEPOSIT_VIA_CARD_DELINK": "DEPOSIT_VIA_CARD_DELINK",
+            "DEPOSIT_WITH_SAVED_CARD": "DEPOSIT_WITH_SAVED_CARD",
+            "DEVICE_AUTH": "DEVICE_AUTH",
+            "DISPLAY_QR": "DISPLAY_QR",
+            "DONATION": "DONATION",
+            "DOORSTEP_CASHIN": "DOORSTEP_CASHIN",
+            "EVENT_TICKET": "EVENT_TICKET",
+            "EVOUCHER": "EVOUCHER",
+            "FALLBACK_FAILURE": "FALLBACK_FAILURE",
+            "FOOD_DELIVERY": "FOOD_DELIVERY",
+            "INCOMMING_IBFT": "INCOMMING_IBFT",
+            "INSURANCE_CLAIM": "INSURANCE_CLAIM",
+            "OPS_IBFT": "OPS_IBFT",
+            "OUTGOING_IBFT": "OUTGOING_IBFT",
+            "INVITEANDEARN": "INVITEANDEARN",
+            "MOBILE_BUNDLE": "MOBILE_BUNDLE",
+            "MOVIE_TICKET": "MOVIE_TICKET",
+            "NEW_SIGNUP_REWARD": "NEW_SIGNUP_REWARD",
+            "ONBOARDING": "ONBOARDING",
+            "OUTGOING_IBFT_ORIG": "OUTGOING_IBFT_ORIG",
+            "PAYON_REG_LINK": "PAYON_REG_LINK",
+            "PAYON_TRANSACTIONS": "PAYON_TRANSACTIONS",
+            "PROFILE_CHANGE": "PROFILE_CHANGE",
+            "PROMOCODE_SECTION": "PROMOCODE_SECTION",
+            "QR_PAYMENT": "QR_PAYMENT",
+            "RATING": "RATING",
+            "REQUEST_TO_PAY": "REQUEST_TO_PAY",
+            "RESET_PIN": "RESET_PIN",
+            "TRANS_DETAILS": "TRANS_DETAILS",
+            "WALLET_REQUEST": "WALLET_REQUEST"
         }
     }
 }

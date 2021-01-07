@@ -1,11 +1,140 @@
 import { open } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
+import moment from 'moment';
 
 const cn = process.env.DB2Connection || config.IBMDB2.connectionString;
 const schema = config.IBMDB2.schema;
 
 class DatabaseConn {
+
+    async insertTransactionHistory(schemaName, tableName, data) {
+        if(tableName === config.reportingDBTables.INCOMMING_IBFT)
+        {
+            let initTransData = {};
+            try { 
+                logger.info({ event: 'Entered function', functionName: 'insertTransactionHistory in class DB2Connection - INCOMING_IBFT'});
+                console.log(data);
+
+                if (data.Result.ResultCode == 0) {
+                    initTransData.transactionIDEasyPaisa = data.CustomObject.senderTransactionID? data.CustomObject.senderTransactionID : '';
+                    initTransData.financialIDEasyPaisa = '';
+                    initTransData.transactionIDEasyJazzcash = data.Result.TransactionID;         
+                    initTransData.paymentPurpose = '';
+
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
+                    if (initTransData.transactionDate !== ''){
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
+                    }
+
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || ''
+                    if (initTransData.transactionTime !== ''){
+                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
+                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                    //initTransData.transactionTime = moment(initTransData.transactionTime).format('YYYY-MM-DD HH:mm:ss');
+                    }
+
+                    initTransData.receiverMsisdn = Number(data.CustomObject.creditParty?.msisdn || '0');
+                    initTransData.receiverCnic = data.CustomObject.receiverCnic? data.CustomObject.receiverCnic : '';
+                    initTransData.receiverName = data.CustomObject.receiverAccountTitle ? data.CustomObject.receiverAccountTitle : '';
+                    initTransData.identityLevel =  data.CustomObject.identityType ? data.CustomObject.identityType : '';
+                    initTransData.region = ''; 
+                    initTransData.city = ''; 
+                    initTransData.address = ''; 
+                    initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
+                    initTransData.transactionStatus = 'Pending'; 
+                    initTransData.reversalStatus = ''; 
+                    initTransData.senderName = data.CustomObject.debitParty?.accountTitle || ''; 
+                    initTransData.senderBankName = ''; 
+                    initTransData.senderAccount = data.CustomObject.debitParty?.iban || '';
+
+                    initTransData.reversedTrasactionID = ''; 
+                    initTransData.reversedReason = ''; 
+                    initTransData.reasonOfFailure = '';
+
+                    initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
+                    initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
+                    initTransData.stan = data.CustomObject.senderTransactionID ? data.CustomObject.senderTransactionID : '';
+                    initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
+                    initTransData.channel = data.Header.Channel;
+                    console.log(JSON.stringify(initTransData));
+                    }
+                    else {
+                    console.log('Failure scenario for insertTransactionHistroy - INCOMING_IBFT');
+                    
+                    initTransData.transactionIDEasyPaisa = data.CustomObject.senderTransactionID;
+                    initTransData.financialIDEasyPaisa = '';
+                    initTransData.transactionIDEasyJazzcash = data.Result.TransactionID;         
+                    initTransData.paymentPurpose = '';
+
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
+                    if (initTransData.transactionDate !== ''){
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
+                    }
+
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || ''
+                    if (initTransData.transactionTime !== ''){
+                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
+                    initTransData.transactionTime = initTransData.transactionDate + " " + time;     
+                    //initTransData.transactionTime = new Date(initTransData.transactionTime).toString(); 
+                    }
+
+                    initTransData.receiverMsisdn = data.CustomObject.creditParty?.msisdn || '';
+                    initTransData.receiverCnic = data.CustomObject.receiverCnic;
+                    initTransData.receiverName = data.CustomObject.receiverAccountTitle;
+                    initTransData.identityLevel =  data.CustomObject.identityType;
+                    initTransData.region = ''; 
+                    initTransData.city = ''; 
+                    initTransData.address = ''; 
+                    initTransData.amount = Number(data.CustomObject.amount);
+                    initTransData.transactionStatus = 'Failed'; 
+                    initTransData.reversalStatus = ''; 
+                    initTransData.senderName = data.CustomObject.debitParty?.accountTitle || ''; 
+                    initTransData.senderBankName = ''; 
+                    initTransData.senderAccount = data.CustomObject.debitParty?.iban || '';
+                    
+                    initTransData.reversedTrasactionID = ''; 
+                    initTransData.reversedReason = '';
+                    
+                    let reasonOfFailure = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'FailedReason';})?.Value || '';
+                    if (typeof(reasonOfFailure) === 'object' && obj !== null) {
+                        reasonOfFailure = '';
+                    }
+
+                    initTransData.reasonOfFailure = reasonOfFailure;
+                    
+                    initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
+                    initTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
+                    initTransData.stan = data.CustomObject.senderTransactionID;
+                    initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
+                    initTransData.channel = data.Header.Channel;
+                    console.log(JSON.stringify(initTransData));
+                }
+            }catch(err){
+                console.log('error -> insertTransactionHistory - INCOMING_IBFT');
+                console.log(err);
+            }
+
+            if(initTransData != null) {
+                try {
+                    let conn = await open(cn);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.INCOMMING_IBFT (TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, RECEIVER_MSISDN, RECEIVER_CNIC, RECEIVER_NAME, ID_LEVEL, REGION, CITY, ADDRESS, AMOUNT, TRX_STATUS, REVERSE_STATUS, SENDER_NAME, SENDER_BANK, SENDER_ACCOUNT, REVERSED_TRX_ID, REVERSED_REASON, FAILURE_REASON, FEE, FED, STAN, CURRENT_BALANCE, CHANNEL, FINID_EASYPAISA, TRANS_OBJECTIVE) VALUES('${initTransData.transactionIDEasyPaisa}' , ${initTransData.transactionIDEasyJazzcash} , '${initTransData.transactionDate}' , '${initTransData.transactionTime}' , ${initTransData.receiverMsisdn} , '${initTransData.receiverCnic}' , '${initTransData.receiverName}' , '${initTransData.identityLevel}' , '${initTransData.region}' , '${initTransData.city}' , '${initTransData.address}' , ${initTransData.amount} , '${initTransData.transactionStatus}' , '${initTransData.reversalStatus}' , '${initTransData.senderName}' , '${initTransData.senderBankName}' , '${initTransData.senderAccount}' , '${initTransData.reversedTrasactionID}' , '${initTransData.reversedReason}' , '${initTransData.reasonOfFailure}' , ${initTransData.fee} , ${initTransData.fed} , '${initTransData.stan}' , ${initTransData.currentBalance} , '${initTransData.channel}' , '${initTransData.financialIDEasyPaisa}' , '${initTransData.paymentPurpose}');`);
+                    stmt.executeSync();
+                    // const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.INCOMMING_IBFT
+                    // (TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, RECEIVER_MSISDN, RECEIVER_CNIC, RECEIVER_NAME, ID_LEVEL, REGION, CITY, ADDRESS, AMOUNT, TRX_STATUS, REVERSE_STATUS, SENDER_NAME, SENDER_BANK, SENDER_ACCOUNT, REVERSED_TRX_ID, REVERSED_REASON, FAILURE_REASON, FEE, FED, STAN, CURRENT_BALANCE, CHANNEL, FINID_EASYPAISA, TRANS_OBJECTIVE)
+                    // VALUES('${initTransData.transactionIDEasyPaisa}', '${initTransData.transactionIDEasyJazzcash}', '${initTransData.transactionDate}', '${initTransData.transactionTime}', ${initTransData.receiverMsisdn}, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', 0, 0, '', 0, '', '', '');
+                    // `);
+                    // stmt.executeSync();
+                    stmt.closeSync();
+                    conn.close(function(err) {});
+                    console.log("insert done");
+                } catch (err) {
+                    logger.error('Database connection error' + err);
+                    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+                }
+            }
+        }
+    }
 
     async getValue(customerMobileNumer, endDate, startDate) {
 
