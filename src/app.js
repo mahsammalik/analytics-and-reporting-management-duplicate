@@ -28,7 +28,7 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-const consumerSubscriber = new ConsumerSubscriber();
+const consumerSubscriber = new Subscriber();
 consumerSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
