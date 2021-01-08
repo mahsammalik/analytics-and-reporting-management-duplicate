@@ -170,6 +170,49 @@ class DatabaseConn {
                 }
             }
         }
+
+        if(tableName === config.reportingDBTables.MOBILE_BUNDLE)
+        {
+            let initTransData = {};
+            try { 
+                logger.info({ event: 'Entered function', functionName: 'insertTransactionHistory in class DB2Connection - MOBILE_BUNDLE'});
+                console.log(data);
+
+                if (data.Result.ResultCode == 0) {
+                    initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
+                    initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'bundleName';})?.Value || '';
+                    initTransData.bundleType = '';
+                    initTransData.channel = data.Header.SubChannel;
+                    initTransData.initiatorMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                    initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'operator';})?.Value || '';
+                    initTransData.targetMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'TargetMSISDN';})?.Value || '0');
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
+                    if (initTransData.transactionDate !== ''){
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
+                    }
+                    initTransData.TID = Number(data?.Result?.TransactionID || '0');
+
+                    console.log(JSON.stringify(initTransData));
+                }
+            }catch(err){
+                console.log('error -> insertTransactionHistory - MOBILE_BUNDLE');
+                console.log(err);
+            }
+
+            if(initTransData != null) {
+                try {
+                    let conn = await open(cn);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.MOBILE_BUNDLE (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+                    stmt.executeSync([initTransData.amount, initTransData.bundleName, initTransData.bundleType, initTransData.channel, initTransData.initiatorMsisdn, initTransData.network, initTransData.targetMsisdn, initTransData.transactionDate, initTransData.TID                    ]);
+                    stmt.closeSync();
+                    conn.close(function(err) {});
+                    console.log("insert done");
+                } catch (err) {
+                    logger.error('Database connection error' + err);
+                    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+                }
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {

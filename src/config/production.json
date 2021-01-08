@@ -129,7 +129,12 @@
                 "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
                 "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",
                 "initTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Init_Passed",
-                "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed"
+                "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
+
+                "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
+                "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
+                "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
+                "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed"
                 
             }
         },
