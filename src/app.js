@@ -8,7 +8,7 @@ import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
 import { Subscriber } from '/services/';
-import { SendMoneyToBankSubscriber } from '/consumers/';
+import { SendMoneyToBankSubscriber, QRPaymentConsumer } from '/consumers/';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -30,6 +30,8 @@ subscriber.setConsumer();
 
 const consumerSubscriber = new SendMoneyToBankSubscriber();
 consumerSubscriber.setConsumer();
+const qrConsumerObj = new QRPaymentConsumer();
+qrConsumerObj.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);

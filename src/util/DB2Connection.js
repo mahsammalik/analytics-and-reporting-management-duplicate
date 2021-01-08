@@ -103,6 +103,73 @@ class DatabaseConn {
                 }
             }
         }
+
+        if(tableName === config.reportingDBTables.QR_PAYMENT)
+        {
+            let initTransData = {};
+            try { 
+                logger.info({ event: 'Entered function', functionName: 'insertTransactionHistory in class DB2Connection - QR_PAYMENT'});
+                console.log(data);
+
+                if (data.Result.ResultCode == 0) {
+                    initTransData.consumerBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
+                    initTransData.channel = data.Header.SubChannel;
+                    initTransData.custMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndDate';})?.Value || ''          
+                    if (initTransData.transactionDate !== ''){
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');           
+                    }
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TransEndTime';})?.Value || '';
+                    if (initTransData.transactionTime !== ''){
+                        const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');    
+                        initTransData.transactionTime = initTransData.transactionDate + " " + time;      
+                    }
+                    initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
+                    initTransData.merchAccount = Number(data?.Header?.Identity?.ReceiverParty?.Identifier || '0');
+                    initTransData.merchBalance = 0;
+                    initTransData.merchantBank = data?.CustomObject?.merchantBank || '';
+                    initTransData.merchCategoryCode = '';
+                    initTransData.merchCategoryType = '';
+                    initTransData.merchID = Number(data?.CustomObject?.merchantTillID || '0');
+                    initTransData.merchantName = data?.CustomObject?.merchantName || '';
+                    initTransData.paidVia = data?.CustomObject?.paidVia || '';
+                    initTransData.qrCode = data?.CustomObject?.qrCode || '';
+                    initTransData.qrType = data?.CustomObject?.qrType || '';
+                    initTransData.rating = '';
+                    initTransData.reverseTID = 0;
+                    initTransData.reviews = '';
+                    initTransData.thirdPartTID = 0;
+                    initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                    initTransData.tilPayment = 0;
+                    initTransData.tipAmount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'TIP Amount';})?.Value || '0');
+                    initTransData.transAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Amount';})?.Value || '0');
+                    initTransData.transactionStatus = 'Pending'; 
+
+                    console.log(JSON.stringify(initTransData));
+                }
+            }catch(err){
+                console.log('error -> insertTransactionHistory - QR_PAYMENT');
+                console.log(err);
+            }
+
+            if(initTransData != null) {
+                try {
+                    let conn = await open(cn);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.QR_PAYMENT (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUEMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+                    stmt.executeSync([initTransData.channel, initTransData.merchantName, initTransData.reverseTID, initTransData.reviews, initTransData.thirdPartTID, initTransData.TID, initTransData.tilPayment, initTransData.tipAmount, initTransData.consumerBalance, initTransData.custMsisdn, initTransData.transactionDate, initTransData.fee, initTransData.merchAccount, initTransData.merchBalance, initTransData.merchantBank,
+                        initTransData.merchCategoryCode,initTransData.merchCategoryType, initTransData.merchID, 
+                        initTransData.paidVia, initTransData.qrCode, initTransData.qrType, initTransData.rating, initTransData.transAmount,
+                        initTransData.transactionStatus
+                    ]);
+                    stmt.closeSync();
+                    conn.close(function(err) {});
+                    console.log("insert done");
+                } catch (err) {
+                    logger.error('Database connection error' + err);
+                    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+                }
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {
