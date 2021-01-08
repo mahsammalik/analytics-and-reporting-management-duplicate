@@ -26,7 +26,7 @@ class SendMoneyToBankSubscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        const response = await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.INCOMMING_IBFT, db2Response);
+                        const response = await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.OUTGOING_IBFT, db2Response);
                         console.log(response);
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans send money bank', 'error': { message: error.message, stack: error.stack } });
