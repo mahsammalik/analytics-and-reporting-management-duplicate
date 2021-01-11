@@ -16,7 +16,7 @@ class Subscriber {
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
                 logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
-
+console.log("message: ", msg)
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
                     logger.info('*********** Init Trans Mobile Bundle *****************');
                     try {
@@ -33,7 +33,7 @@ class Subscriber {
                     }
                 }
             } catch (error) {
-                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error:error });
+                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error: {message:error.message, stack: error.stack} });
                 //throw new Error(error);
             }
         });
