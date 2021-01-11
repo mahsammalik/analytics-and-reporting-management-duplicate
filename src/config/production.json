@@ -73,8 +73,8 @@
             "consumerAutoCommit": true,
             "consumerConfig": {
                 "debug": "all",
-                "client.id": "kafka-nodejs-console-sample-consumer--dev19_reporting",
-                "group.id": "kafka-nodejs-console-sample-group--dev19_reporting",
+                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
+                "group.id": "kafka-nodejs-console-sample-group--dev19",
                 "metadata.broker.list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
                 "security.protocol": "sasl_ssl",
                 "sasl.mechanisms": "SCRAM-SHA-512",
