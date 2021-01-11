@@ -26,8 +26,8 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        const response = await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.OUTGOING_IBFT, payload);
-                        console.log(response);
+                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.OUTGOING_IBFT, payload);
+                        //console.log(response);
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans send money bank', 'error': { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans send money bank' });
@@ -35,7 +35,7 @@ class Subscriber {
                     }
                 }
             } catch (error) {
-                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
+                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error:error });
                 //throw new Error(error);
             }
         });
