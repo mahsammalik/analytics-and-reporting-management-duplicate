@@ -36,7 +36,7 @@ class Subscriber {
                 }
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
-                throw new Error(error);
+                //throw new Error(error);
             }
         });
     }
