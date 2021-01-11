@@ -5,17 +5,24 @@ const CACHE_SERVER_PORT = config.cache.port;
 
 
 class Cache {
-    constructor() {}
+    constructor() { }
 
     async _getCacheInstance(cacheName) {
-        const client = await infinispan.client({
-            port: CACHE_SERVER_PORT,
-            host: CACHE_SERVER,
-        }, {
-            cacheName: cacheName
-        });
-        if (client) logger.info({ event: `Connected to Infinispan DataCache ` + cacheName });
-        return client;
+        try {
+            console.log(cacheName, "_getCacheInstance cacheName", CACHE_SERVER_PORT, CACHE_SERVER)
+            const client = await infinispan.client({
+                port: CACHE_SERVER_PORT,
+                host: CACHE_SERVER,
+            }, {
+                cacheName: cacheName
+            });
+            console.log(client, "client _getCacheInstance")
+            if (client) logger.info({ event: `Connected to Infinispan DataCache ` + cacheName });
+            return client;
+        }
+        catch (err) {
+            console.log(err, "_getCacheInstance error")
+        }
     }
 
     async putValue(key, value, cacheName) {
@@ -40,8 +47,11 @@ class Cache {
     async getValue(key, cacheName) {
         let client;
         try {
+            console.log(cacheName, " cacheName getValue")
             client = await this._getCacheInstance(cacheName);
+            console.log(client, "client getValue")
             let value = await client.get(key);
+            console.log(value, "value getValue")
             logger.info({ event: 'printing value for key ' + key + ' is ' + value });
             client.disconnect();
             return value;
