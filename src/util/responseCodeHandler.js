@@ -30,19 +30,27 @@ class ResponseCodeHandler {
                 message_ur: config.responseCode.default.message,
                 data: {}
             };
+            console.log(response, " cacheresponseObj getResponseCode", code)
+
             if (!code || _.isEmpty(code)) {
                 return response;
             }
+            console.log(" cacheresponseObj BEFORE getResponseCode", config.cache.responseCodeCache)
+
             //Get Response Code Object From Cache
             let cacheresponseObj = await cache.getValue(code, config.cache.responseCodeCache);
+            console.log(cacheresponseObj, " cacheresponseObj getResponseCode")
             if (!cacheresponseObj) { //If not found in cache get Response Code from Master Data Microservice
                 logger.info({ event: 'Entered !cacheresponseObj block', functionName: 'getResponseCode in class responseCodeHandler' });
+                console.log(RESPCODE_SERVICE_URL, "RESPCODE_SERVICE_URL getResponseCode")
                 const url = RESPCODE_SERVICE_URL;
+                console.log(url)
                 let axiosResp = await axios.get(url);
+                console.log(axiosResp, " axiosResp getResponseCode")
                 if (axiosResp && axiosResp.status == 200) {
                     let resp = axiosResp.data;
                     if (resp && resp.success) {
-                        let index = _.findIndex(resp.data, function(o) {
+                        let index = _.findIndex(resp.data, function (o) {
                             return o.key == code;
                         });
                         logger.info({ event: " Object found at " + index });

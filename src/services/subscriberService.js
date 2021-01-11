@@ -35,7 +35,7 @@ class Subscriber {
     setConsumer() {
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
-                logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
+                logger.info({ event: 'Entered function', functionName: `setConsumer in class subscriber ${msg.topic}` });
 
                 if (msg.topic === config.kafkaBroker.topics.Init_auditLog) {
                     logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });
