@@ -27,7 +27,7 @@ console.log("message: ", msg)
                         await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, payload);
                         //console.log(response);
                     } catch (error) {
-                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle', 'error': { message: error.message, stack: error.stack } });
+                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle', error: { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle' });
                         //console.log(error)
                     }

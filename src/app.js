@@ -8,7 +8,8 @@ import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
 import { Subscriber } from '/services/';
-import { SendMoneyToBankSubscriber, QRPaymentConsumer, MobileBundleConsumer } from '/consumers/';
+import { SendMoneyToBankSubscriber, QRPaymentConsumer, MobileBundleConsumer, BusTicketConsumer, eVoucherConsumer,
+EventTicketConsumer, CreemVoucherConsumer, DonationConsumer } from '/consumers/';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -34,6 +35,16 @@ const qrConsumerObj = new QRPaymentConsumer();
 qrConsumerObj.setConsumer();
 const mobileBundleConsumer = new MobileBundleConsumer();
 mobileBundleConsumer.setConsumer();
+const busTicketConsumer = new BusTicketConsumer();
+busTicketConsumer.setConsumer();
+const evoucherConsumer = new eVoucherConsumer();
+evoucherConsumer.setConsumer();
+const eventTicketConsumer = new EventTicketConsumer();
+eventTicketConsumer.setConsumer();
+const creemVoucherConsumer = new CreemVoucherConsumer();
+creemVoucherConsumer.setConsumer();
+const donationConsumer = new DonationConsumer();
+donationConsumer.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
