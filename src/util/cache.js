@@ -11,7 +11,7 @@ class Cache {
         let client;
         try {
             client = await infinispan.client({
-                port: CACHE_PORT,
+                port: CACHE_SERVER_PORT,
                 host: CACHE_SERVER
             }, {
                 cacheName: cacheName
