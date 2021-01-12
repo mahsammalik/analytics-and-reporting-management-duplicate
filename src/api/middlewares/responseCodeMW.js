@@ -6,11 +6,12 @@ import { logger, responseCodeHandler } from '/util/';
  * @return response from response code
  * TODO: Check for language param in request and send response in english/urdu
  */
-const responseCodeMW = async(req, res, next) => {
+const responseCodeMW = async (req, res, next) => {
     try {
         logger.info({ event: 'Entered function', functionName: 'responseCodeMW' });
         if (res.locals.response) {
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
+            console.log(response, "responseCodeMW")
             res.locals.response = response;
             res.status(200).json(response);
         } else {

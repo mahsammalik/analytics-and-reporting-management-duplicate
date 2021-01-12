@@ -28,12 +28,12 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-const consumerSubscriber = new SendMoneyToBankSubscriber();
-consumerSubscriber.setConsumer();
-const qrConsumerObj = new QRPaymentConsumer();
-qrConsumerObj.setConsumer();
-const mobileBundleConsumer = new MobileBundleConsumer();
-mobileBundleConsumer.setConsumer();
+// const consumerSubscriber = new SendMoneyToBankSubscriber();
+// consumerSubscriber.setConsumer();
+// const qrConsumerObj = new QRPaymentConsumer();
+// qrConsumerObj.setConsumer();
+// const mobileBundleConsumer = new MobileBundleConsumer();
+// mobileBundleConsumer.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
