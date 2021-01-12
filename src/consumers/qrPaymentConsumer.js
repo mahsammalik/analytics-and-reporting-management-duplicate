@@ -18,7 +18,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.initTrans_qr_payment){
-                    logger.info('*********** Init Trans QR Payment *****************');
+                    logger.info({message:'*********** Init Trans QR Payment *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -29,7 +29,6 @@ class Subscriber {
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans QR Payment', 'error': { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans QR Payment' });
-                        console.log(error)
                     }
                 }
             } catch (error) {

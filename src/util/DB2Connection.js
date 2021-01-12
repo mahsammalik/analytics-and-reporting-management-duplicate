@@ -71,8 +71,8 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - OUTGOING_IBFT');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - OUTGOING_IBFT', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {
@@ -147,8 +147,8 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - QR_PAYMENT');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - QR_PAYMENT', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {
@@ -193,8 +193,8 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - MOBILE_BUNDLE');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - MOBILE_BUNDLE', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {

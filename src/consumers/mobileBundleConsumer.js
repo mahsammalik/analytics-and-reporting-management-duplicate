@@ -18,7 +18,7 @@ class Subscriber {
                 logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
 console.log("message: ", msg)
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
-                    logger.info('*********** Init Trans Mobile Bundle *****************');
+                    logger.info({message:'*********** Init Trans Mobile Bundle *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -29,7 +29,7 @@ console.log("message: ", msg)
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle', 'error': { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle' });
-                        console.log(error)
+                        //console.log(error)
                     }
                 }
             } catch (error) {

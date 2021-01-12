@@ -21,7 +21,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.intTrans_sendMoney_bank){
-                    logger.info('*********** Init Trans Send Money Bank *****************');
+                    logger.info({message:'*********** Init Trans Send Money Bank *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -32,7 +32,7 @@ class Subscriber {
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans send money bank', 'error': { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans send money bank' });
-                        console.log(error)
+                        //console.log(error)
                     }
                 }
             } catch (error) {
