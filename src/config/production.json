@@ -124,7 +124,7 @@
                 "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
                 "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed",
 
-                "intTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
+                "initTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
 
                 "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
                 "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",

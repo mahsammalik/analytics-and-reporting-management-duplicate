@@ -1,8 +1,8 @@
-export {default as SendMoneyToBankSubscriber} from './sendMoneyToBankConsumer';
-export {default as QRPaymentConsumer} from './qrPaymentConsumer';
-export {default as MobileBundleConsumer } from './mobileBundleConsumer';
+export {default as sendMonyToBankProcessor} from './sendMoneyToBankConsumer';
+export {default as qrPaymentProcessor} from './qrPaymentConsumer';
+export {default as mobileBundleProcessor } from './mobileBundleConsumer';
 export {default as BusTicketConsumer } from './busTicketConsumer';
 export {default as eVoucherConsumer } from './eVouchersConsumer';
-export {default as EventTicketConsumer} from './eventTicket';
+export {default as EventTicketConsumer} from './eventTicketConsumer';
 export {default as CreemVoucherConsumer } from './creemVoucherConsumer';
 export {default as DonationConsumer} from './donationConsumer';

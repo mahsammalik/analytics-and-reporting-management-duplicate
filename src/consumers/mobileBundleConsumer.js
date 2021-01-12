@@ -2,43 +2,41 @@ import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
 
-class Subscriber {
+class Processor {
 
-    constructor() {
-        //provide list of topics from which you want to consume messages 
-        this.event = new Broker([
-            config.kafkaBroker.topics.initTrans_MobileBundle
-        ]);
-        //console.log("Consturctor called")
-    }
+    constructor() { }
 
-    setConsumer() {
-        this.event.addConsumerOnDataEvent(async function (msg) {
-            try {
-                logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
-console.log("message: ", msg)
-                if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
-                    //logger.info({message:'*********** Init Trans Mobile Bundle *****************'});
-                    try {
+    async mobileBundleConsumerProcessor(data) {
+        try {
+            logger.info({ event: 'Entered function', functionName: 'mobileBundleConsumerProcessor in class Processor' });
+            console.log(data);
+            let initTransData = {};
 
-                        const payload = JSON.parse(msg.value);
-                        console.log(JSON.stringify(payload));
-                        
-                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, payload);
-                        //console.log(response);
-                    } catch (error) {
-                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle', error: { message: error.message, stack: error.stack } });
-                        logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans Mobile Bundle' });
-                        //console.log(error)
-                    }
+            if (data.Result.ResultCode == 0) {
+                initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
+                initTransData.bundleType = '';
+                initTransData.channel = data.Header.SubChannel;
+                initTransData.initiatorMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
+                initTransData.targetMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0');
+                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
+                if (initTransData.transactionDate !== '') {
+                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                 }
-            } catch (error) {
-                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error: {message:error.message, stack: error.stack} });
-                //throw new Error(error);
-            }
-        });
-    }
+                initTransData.TID = Number(data?.Result?.TransactionID || '0');
 
+                console.log(JSON.stringify(initTransData));
+            }
+
+            if (JSON.stringify(initTransData) !== '{}') {
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, initTransData);
+            }
+        } catch (error) {
+            logger.error({ event: 'Error thrown ', functionName: 'mobileBundleConsumerProcessor in class Processor', error: { message: error.message, stack: error.stack } });
+            //throw new Error(error);
+        }
+    }
 }
 
-export default Subscriber;
+export default new Processor();

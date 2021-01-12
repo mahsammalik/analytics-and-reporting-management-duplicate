@@ -2,6 +2,7 @@ import { logger, Broker } from '/util/';
 import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
+import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -13,7 +14,11 @@ class Subscriber {
             config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
             config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
             config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail
+            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+
+            config.kafkaBroker.topics.initTrans_sendMoney_bank,
+            config.kafkaBroker.topics.initTrans_qr_payment,
+            config.kafkaBroker.topics.initTrans_MobileBundle
         ]);
     }
 
@@ -426,6 +431,47 @@ class Subscriber {
                     }
                 }
    
+                // events to store data into for reporting
+                if (msg.topic === config.kafkaBroker.topics.initTrans_sendMoney_bank){
+                    console.log('*********** Init Trans Send Money Bank *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await sendMonyToBankProcessor.processSendMoneyToBankConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_qr_payment){
+                    console.log('*********** Init Trans QR Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await qrPaymentProcessor.processQRPaymentConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
+                    console.log('*********** Init Trans Mobile Bundle *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);
