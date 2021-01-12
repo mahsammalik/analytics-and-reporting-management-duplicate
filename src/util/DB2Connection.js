@@ -71,8 +71,8 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - OUTGOING_IBFT');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - OUTGOING_IBFT', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {
@@ -82,13 +82,12 @@ class DatabaseConn {
                     // (TRX_OBJECTIVE, TRXID_JAZZCASH, TRXID_EASYPAISA, TRX_DATE, TRX_TIME, BENEFICIARY_NAME, BENEFICIARY_BANK, SENDER_MSISDN, BENEFICIARY_ACCOUNT, SENDER_LEVEL, SENDER_CNIC, RECEIVER_MSISDN, INITIATOR_MSISDN, INITIATOR_CITY, SENDER_NAME, INITIATOR_REGION, AMOUNT, TRX_STATUS, FAILURE_REASON, FEE, FED, COMMISSION, WHT, STAN, CURRENT_BALANCE, REVERSAL_STATUS, CHANNEL, TRANS_OBJECTIVE, FINID_JAZZCASH) 
                     // VALUES('${initTransData.paymentPurpose}' , ${initTransData.transactionIDEasyJazzcash}, '${initTransData.transactionIDEasyPaisa}' , '${initTransData.transactionDate}' , '${initTransData.transactionTime}' , ${initTransData.receiverMsisdn} , '${initTransData.receiverCnic}' , '${initTransData.receiverName}' , '${initTransData.identityLevel}' , '${initTransData.region}' , '${initTransData.city}' , '${initTransData.address}' , ${initTransData.amount} , '${initTransData.transactionStatus}' , '${initTransData.reversalStatus}' , '${initTransData.senderName}' , '${initTransData.senderBankName}' , '${initTransData.senderAccount}' , '${initTransData.reversedTrasactionID}' , '${initTransData.reversedReason}' , '${initTransData.reasonOfFailure}' , ${initTransData.fee} , ${initTransData.fed} , '${initTransData.stan}' , ${initTransData.currentBalance} , '${initTransData.channel}' , '${initTransData.financialIDEasyPaisa}');`);
                     // stmt.executeSync();
-                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.OUTGOING_IBFT (TRX_OBJECTIVE, TRXID_EASYPAISA, FINID_JAZZCASH, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, BENEFICIARY_NAME, BENEFICIARY_BANK, SENDER_MSISDN, BENEFICIARY_ACCOUNT, SENDER_LEVEL, SENDER_CNIC, RECEIVER_MSISDN, INITIATOR_MSISDN, INITIATOR_CITY, INITIATOR_REGION, SENDER_NAME, AMOUNT, TRX_STATUS, FAILURE_REASON, REVERSAL_STATUS, FEE, FED, COMMISSION, WHT, STAN, CURRENT_BALANCE, CHANNEL, TRANS_OBJECTIVE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`);
-                    stmt.executeSync([initTransData.trxObjective, initTransData.transactionIDEasyPaisa, initTransData.financialIDJazzcash, initTransData.transactionIDJazzcash, initTransData.transactionDate, initTransData.transactionTime, initTransData.beneficiaryBankAccountTitle, initTransData.beneficiaryBankName, initTransData.senderMsisdn, initTransData.beneficiaryBankAccountNumber, initTransData.senderLevel, initTransData.senderCnic, initTransData.receiverMsisdn, initTransData.initiatorMsisdn, initTransData.initiatorCity,
-                        initTransData.initiatorRegion,initTransData.senderName, initTransData.amount, 
-                        initTransData.transactionStatus, initTransData.reasonOfFailure, initTransData.reversalStatus, initTransData.fee, initTransData.fed,
-                        initTransData.commission, initTransData.wht, initTransData.stan,
-                        initTransData.currentBalance, initTransData.channel, initTransData.transactionObjective
-                    ]);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.OUTGOING_IBFT (TRX_OBJECTIVE, TRXID_EASYPAISA, FINID_JAZZCASH, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, BENEFICIARY_NAME, BENEFICIARY_BANK, SENDER_MSISDN, BENEFICIARY_ACCOUNT, SENDER_LEVEL, SENDER_CNIC, RECEIVER_MSISDN, INITIATOR_MSISDN, INITIATOR_CITY, INITIATOR_REGION, SENDER_NAME, AMOUNT, TRX_STATUS, FAILURE_REASON, REVERSAL_STATUS, FEE, FED, COMMISSION, WHT, STAN, CURRENT_BALANCE, CHANNEL, TRANS_OBJECTIVE) VALUES('${initTransData.trxObjective}', '${initTransData.transactionIDEasyPaisa}', '${initTransData.financialIDJazzcash}', '${initTransData.transactionIDJazzcash}', '${initTransData.transactionDate}', TIMESTAMP_FORMAT('${initTransData.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${initTransData.beneficiaryBankAccountTitle}', '${initTransData.beneficiaryBankName}', '${initTransData.senderMsisdn}', '${initTransData.beneficiaryBankAccountNumber}', '${initTransData.senderLevel}', '${initTransData.senderCnic}', '${initTransData.receiverMsisdn}', '${initTransData.initiatorMsisdn}', '${initTransData.initiatorCity}',
+                        '${initTransData.initiatorRegion}','${initTransData.senderName}', ${initTransData.amount}, 
+                        '${initTransData.transactionStatus}', '${initTransData.reasonOfFailure}', '${initTransData.reversalStatus}', ${initTransData.fee}, ${initTransData.fed},
+                        ${initTransData.commission}, ${initTransData.wht}, '${initTransData.stan}',
+                        ${initTransData.currentBalance}, '${initTransData.channel}', '${initTransData.transactionObjective}');`);
+                    stmt.executeSync();
                     // const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.INCOMMING_IBFT
                     // (TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, RECEIVER_MSISDN, RECEIVER_CNIC, RECEIVER_NAME, ID_LEVEL, REGION, CITY, ADDRESS, AMOUNT, TRX_STATUS, REVERSE_STATUS, SENDER_NAME, SENDER_BANK, SENDER_ACCOUNT, REVERSED_TRX_ID, REVERSED_REASON, FAILURE_REASON, FEE, FED, STAN, CURRENT_BALANCE, CHANNEL, FINID_EASYPAISA, TRANS_OBJECTIVE)
                     // VALUES('${initTransData.transactionIDEasyPaisa}', '${initTransData.transactionIDEasyJazzcash}', '${initTransData.transactionDate}', '${initTransData.transactionTime}', ${initTransData.receiverMsisdn}, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', 0, 0, '', 0, '', '', '');
@@ -148,19 +147,18 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - QR_PAYMENT');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - QR_PAYMENT', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {
                 try {
                     let conn = await open(cn);
-                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.QR_PAYMENT (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUEMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                    stmt.executeSync([initTransData.channel, initTransData.merchantName, initTransData.reverseTID, initTransData.reviews, initTransData.thirdPartTID, initTransData.TID, initTransData.tilPayment, initTransData.tipAmount, initTransData.consumerBalance, initTransData.custMsisdn, initTransData.transactionDate, initTransData.fee, initTransData.merchAccount, initTransData.merchBalance, initTransData.merchantBank,
-                        initTransData.merchCategoryCode,initTransData.merchCategoryType, initTransData.merchID, 
-                        initTransData.paidVia, initTransData.qrCode, initTransData.qrType, initTransData.rating, initTransData.transAmount,
-                        initTransData.transactionStatus
-                    ]);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schema}.QR_PAYMENT (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUEMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS) VALUES('${initTransData.channel}', '${initTransData.merchantName}', ${initTransData.reverseTID}, '${initTransData.reviews}', ${initTransData.thirdPartTID}, ${initTransData.TID}, ${initTransData.tilPayment}, ${initTransData.tipAmount}, ${initTransData.consumerBalance}, ${initTransData.custMsisdn}, TIMESTAMP_FORMAT('${initTransData.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${initTransData.fee}, ${initTransData.merchAccount}, ${initTransData.merchBalance}, '${initTransData.merchantBank}',
+                    '${initTransData.merchCategoryCode}','${initTransData.merchCategoryType}', ${initTransData.merchID}, 
+                    '${initTransData.paidVia}', '${initTransData.qrCode}', '${initTransData.qrType}', '${initTransData.rating}', ${initTransData.transAmount},
+                    '${initTransData.transactionStatus}');`);
+                    stmt.executeSync();
                     stmt.closeSync();
                     conn.close(function(err) {});
                     console.log("insert done");
@@ -195,8 +193,8 @@ class DatabaseConn {
                     console.log(JSON.stringify(initTransData));
                 }
             }catch(err){
-                console.log('error -> insertTransactionHistory - MOBILE_BUNDLE');
-                console.log(err);
+                logger.error({event: 'error -> insertTransactionHistory - MOBILE_BUNDLE', error: {message:error.message, stack: error.stack}});
+                //console.log(err);
             }
 
             if(initTransData != null) {

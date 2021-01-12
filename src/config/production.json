@@ -73,8 +73,8 @@
             "consumerAutoCommit": true,
             "consumerConfig": {
                 "debug": "all",
-                "client.id": "kafka-nodejs-console-sample-consumer--dev19_reporting",
-                "group.id": "kafka-nodejs-console-sample-group--dev19_reporting",
+                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
+                "group.id": "kafka-nodejs-console-sample-group--dev19",
                 "metadata.broker.list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
                 "security.protocol": "sasl_ssl",
                 "sasl.mechanisms": "SCRAM-SHA-512",
@@ -134,8 +134,20 @@
                 "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
                 "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
                 "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
-                "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed"
-                
+                "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed",
+
+                "initTrans_BusTicket": "ESB_Mobile_BusTickets_Init_Passed",
+                "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
+
+                "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_eVouchers_Confirm_Passed",
+
+                "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
+                "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
+
+                "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
+
+                "initTrans_donation" : "ESB_Mobile_Donation_Init_Passed"
             }
         },
         "cache": {
