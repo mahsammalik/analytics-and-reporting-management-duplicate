@@ -18,7 +18,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.initTrans_qr_payment){
-                    logger.info({message:'*********** Init Trans QR Payment *****************'});
+                    //logger.info({message:'*********** Init Trans QR Payment *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);

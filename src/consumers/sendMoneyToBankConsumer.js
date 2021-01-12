@@ -21,7 +21,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.intTrans_sendMoney_bank){
-                    logger.info({message:'*********** Init Trans Send Money Bank *****************'});
+                    //logger.info({message:'*********** Init Trans Send Money Bank *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);

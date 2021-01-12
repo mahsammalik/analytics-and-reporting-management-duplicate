@@ -18,7 +18,7 @@ class Subscriber {
                 logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
 console.log("message: ", msg)
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
-                    logger.info({message:'*********** Init Trans Mobile Bundle *****************'});
+                    //logger.info({message:'*********** Init Trans Mobile Bundle *****************'});
                     try {
 
                         const payload = JSON.parse(msg.value);
