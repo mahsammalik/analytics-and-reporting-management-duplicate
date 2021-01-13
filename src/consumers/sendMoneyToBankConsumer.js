@@ -10,7 +10,7 @@ class Processor {
     async processSendMoneyToBankConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processSendMoneyToBankConsumer in class Processor' });
-            console.log(data);
+            //console.log(data);
 
             let initTransData = {};
             if (data.Result.ResultCode == 0) {

@@ -10,7 +10,7 @@ class Processor {
     async processQRPaymentConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processQRPaymentConsumer in class Processor' });
-            console.log(data);
+            //console.log(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.consumerBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
