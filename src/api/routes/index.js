@@ -6,7 +6,7 @@ import { msisdnParserMW, responseCodeMW, requestLoggerMW } from '../middlewares'
 import express from 'express';
 import DB2Connection from '../../util/DB2Connection'
 import moment  from 'moment';
-import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor} from '/consumers/'
+import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -21,6 +21,8 @@ const accountStatement = new accountStatementController();
 //     // qrPaymentProcessor.processQRPaymentConsumer(data);
 //     // const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"MobileBundle","ThirdPartyType":"merchantApp","Identity":{"Caller":{"ThirdPartyID":"ibm_merchant_app"},"Initiator":{"IdentifierType":1,"Identifier":"923000851852"}},"AppConnectUUID":"b30d2910-51b3-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_PrepaidTopup(Jazz)","OriginatorConversationID":"7e7d8c1caaf546628ab74813767e8815","Parameters":{"Parameter":[{"Key":"TargetMSISDN","Value":"03237604448"},{"Key":"Amount","Value":25},{"Key":"ChannelCode","Value":"1030"}]},"ReferenceData":{"ReferenceItem":[{"Key":"bundlePrice","Value":25},{"Key":"bundleId","Value":38},{"Key":"operator","Value":"jazz"},{"Key":"bundleValidity","Value":{"hours":0,"days":1,"weeks":0,"months":0}},{"Key":"bundleName","Value":"Day Bundle"}]},"Timestamp":"20210108131620"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711395908","ResultParameters":{"ResultParameter":[{"Key":"TargetMSISDN","Value":"03237604448"},{"Key":"TransEndDate","Value":"20210108"},{"Key":"TransEndTime","Value":"181620"},{"Key":"Amount","Value":"25.00"},{"Key":"Balance","Value":"33.00"}]}}};
 //     // mobileBundleProcessor.mobileBundleConsumerProcessor(data);
+//     // const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"Donation","ThirdPartyType":"merchantApp","Identity":{"Caller":{"ThirdPartyID":"ibm_merchant_app"},"Initiator":{"IdentifierType":1,"Identifier":"923328721082"}},"AppConnectUUID":"6799b362-55b5-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_Customer Donation","OriginatorConversationID":"d6860b38T1610552317653","Parameters":{"Parameter":[{"Key":"OrgShortCode","Value":"00180377"},{"Key":"Amount","Value":"10"},{"Key":"ChannelCode","Value":"1030"}]},"Timestamp":"20210113153837"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711438912","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210113"},{"Key":"TransEndTime","Value":"203837"}]}},"CustomObject":{"orgShortCode":"00180377","orgName":"Edhi","donationType":""}};
+//     // donationProcessor.processDonationConsumer(data);
 //     res.status(200).json({message: "Done!"})
 // });
 

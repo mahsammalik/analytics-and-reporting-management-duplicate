@@ -5,4 +5,4 @@ export {default as BusTicketConsumer } from './busTicketConsumer';
 export {default as eVoucherConsumer } from './eVouchersConsumer';
 export {default as EventTicketConsumer} from './eventTicketConsumer';
 export {default as CreemVoucherConsumer } from './creemVoucherConsumer';
-export {default as DonationConsumer} from './donationConsumer';
+export {default as donationProcessor} from './donationConsumer';

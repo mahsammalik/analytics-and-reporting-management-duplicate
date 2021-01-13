@@ -60,7 +60,22 @@ class DatabaseConn {
             try {
                 let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.MOBILE_BUNDLE (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID                    ]);
+                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID]);
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
+
+        if(tableName === config.reportingDBTables.DONATION)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.DONATION (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', ${data.msisdn}, '${data.organization}', '${data.transactionStatus}',${data.TID});`);
+                stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
                 console.log("insert done");
