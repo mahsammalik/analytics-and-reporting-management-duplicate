@@ -18,7 +18,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.initTrans_eventTickets){
-                    //logger.info({message:'*********** Init Trans Event Tickets *****************'});
+                    console.log('*********** Init Trans Event Tickets *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);

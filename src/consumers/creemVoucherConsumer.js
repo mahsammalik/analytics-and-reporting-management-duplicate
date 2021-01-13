@@ -18,7 +18,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.queryTrans_creemVoucher){
-                    //logger.info({message:'*********** Init Trans Creem Vouchers *****************'});
+                    console.log('*********** Init Trans Creem Vouchers *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);

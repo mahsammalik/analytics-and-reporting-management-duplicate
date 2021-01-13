@@ -18,7 +18,7 @@ class Subscriber {
                 console.log("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.initTrans_donation){
-                    //logger.info({message:'*********** Init Trans Donations *****************'});
+                    console.log('*********** Init Trans Donations *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);

@@ -18,7 +18,12 @@ class Subscriber {
 
             config.kafkaBroker.topics.initTrans_sendMoney_bank,
             config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.initTrans_MobileBundle
+            config.kafkaBroker.topics.initTrans_MobileBundle,
+            config.kafkaBroker.topics.initTrans_BusTicket,
+            config.kafkaBroker.topics.initTrans_eVouchers,
+            config.kafkaBroker.topics.initTrans_eventTickets,
+            config.kafkaBroker.topics.queryTrans_creemVoucher,
+            config.kafkaBroker.topics.initTrans_donation
         ]);
     }
 
@@ -466,6 +471,71 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_BusTicket){
+                    console.log('*********** Init Trans Bus Ticket *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_eVouchers){
+                    console.log('*********** Init Trans eVouchers *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_eventTickets){
+                    console.log('*********** Init Trans Event Tickets *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.queryTrans_creemVoucher){
+                    console.log('*********** Query Trans Creem Voucher *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_donation){
+                    console.log('*********** Init Trans Donation *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

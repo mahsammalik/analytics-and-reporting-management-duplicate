@@ -1,7 +1,6 @@
 import { logger, Broker } from '/util/';
-import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
-import dataMapping from '../services/helpers/dataMapping';
+import moment from 'moment';
 const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
 
 class Processor {
@@ -15,8 +14,14 @@ class Processor {
 
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
-                initTransData.trxObjective = data.CustomObject?.purposeofRemittanceCode ? data.CustomObject.purposeofRemittanceCode.split(',')[0].split('=')[1] : '';
-                initTransData.transactionObjective = data.CustomObject?.purposeofRemittanceCode ? data.CustomObject.purposeofRemittanceCode.split(',')[2].split('=')[1] : '';
+                initTransData.trxObjective = data.CustomObject?.purposeofRemittanceCode ? data.CustomObject.purposeofRemittanceCode.split(',')[0]?.split('=')?.[1] || '' : '';
+                if(initTransData.trxObjective === '') {
+                    initTransData.trxObjective = data.CustomObject?.purposeofRemittanceCode;
+                }
+                initTransData.transactionObjective = data.CustomObject?.purposeofRemittanceCode ? data.CustomObject.purposeofRemittanceCode.split(',')[2]?.split('=')?.[1] || '' : '';
+                if(initTransData.transactionObjective === '') {
+                    initTransData.transactionObjective = data.CustomObject?.purposeofRemittanceCode;
+                }
                 initTransData.financialIDJazzcash = data.Result.TransactionID;
                 initTransData.transactionIDJazzcash = '';
 
