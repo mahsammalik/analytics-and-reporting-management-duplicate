@@ -100,6 +100,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if(tableName === config.reportingDBTables.EVENT_TICKET)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.EVENT_TICKET (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, SUCCESSFUL, TRANS_ID) 
+                VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.successfull}', ${data.TID});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {

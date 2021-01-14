@@ -7,7 +7,7 @@ import express from 'express';
 import DB2Connection from '../../util/DB2Connection'
 import moment  from 'moment';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
-busTicketProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -26,6 +26,8 @@ const accountStatement = new accountStatementController();
 //     // donationProcessor.processDonationConsumer(data);
 //     // const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"BusTickets","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923455917646"},"ReceiverParty":{"IdentifierType":4,"Identifier":"00180490"}},"AppConnectUUID":"efe332f0-5652-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_MerchantPaymentByCustomer","OriginatorConversationID":"d853cc1ad50f4ecfb0c5e26b3d7593da","Parameters":{"Parameter":[{"Key":"Amount","Value":"7"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210114102617"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711446195","ResultParameters":{"ResultParameter":[{"Key":"Amount","Value":"7.00"},{"Key":"TransEndDate","Value":"20210114"},{"Key":"TransEndTime","Value":"152617"}]}}}
 //     // await busTicketProcessor.processBusTicketConsumer(data);
+//     const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"EventTickets","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923455917646"},"ReceiverParty":{"IdentifierType":4,"Identifier":"00180490"}},"AppConnectUUID":"cc50fd2a-566d-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_MerchantPaymentByCustomer","OriginatorConversationID":"6f5f07d503434fc2804a7ed31754f696","Parameters":{"Parameter":[{"Key":"Amount","Value":"3"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210114133834"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711449159","ResultParameters":{"ResultParameter":[{"Key":"Amount","Value":"3.00"},{"Key":"TransEndDate","Value":"20210114"},{"Key":"TransEndTime","Value":"183834"}]}}};
+//     await eventTicketProcessor.processEventTicketConsumer(data);
 //     res.status(200).json({message: "Done!"})
 // });
 

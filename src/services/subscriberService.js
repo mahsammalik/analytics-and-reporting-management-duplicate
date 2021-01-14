@@ -3,7 +3,7 @@ import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
-busTicketProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -510,7 +510,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        await eventTicketProcessor.processEventTicketConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
