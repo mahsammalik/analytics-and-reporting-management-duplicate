@@ -1,43 +1,60 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
+import moment from 'moment';
 const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
 
-class Subscriber {
+class Processor {
 
-    constructor() {
-        //provide list of topics from which you want to consume messages 
-        this.event = new Broker([
-            config.kafkaBroker.topics.initTrans_BusTicket
-        ]);
-    }
+    constructor() {}
 
-    setConsumer() {
-        this.event.addConsumerOnDataEvent(async function (msg) {
-            try {
-                logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
-                console.log("message: ", msg)
-
-                if (msg.topic === config.kafkaBroker.topics.initTrans_BusTicket){
-                    console.log('*********** Init Trans Bus Ticket *****************');
-                    try {
-
-                        const payload = JSON.parse(msg.value);
-                        console.log(JSON.stringify(payload));
-                        
-                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.BUS_TICKET, payload);
-                        //console.log(response);
-                    } catch (error) {
-                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Bus Ticket', error: { message: error.message, stack: error.stack } });
-                        logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans Bus Ticket' });
-                    }
+    async processBusTicketConsumer(data) {
+        try {
+            logger.info({ event: 'Entered function', functionName: 'processBusTicketConsumer in class Processor' });
+            //console.log(data);
+            let initTransData = {};
+            if (data.Result.ResultCode == 0) {
+                initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
+                if (initTransData.transactionDate !== '') {
+                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                 }
-            } catch (error) {
-                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error: {message:error.message, stack: error.stack} });
-                //throw new Error(error);
-            }
-        });
-    }
+                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                if (initTransData.transactionTime !== '') {
+                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                }
+                initTransData.bookingID = 0;
+                initTransData.channel = data.Header.SubChannel;
+                initTransData.cnic = '';
+                initTransData.destination = '';
+                initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
+                initTransData.email = '';
+                initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Fee'; })?.Value || '0');
+                initTransData.gender = '';
+                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.origin = '';
+                initTransData.originPrice = 0;
+                initTransData.price = 0;
+                initTransData.promo = '';
+                initTransData.seats = '';
+                initTransData.seatNumber = '';
+                initTransData.service = '';
+                initTransData.transactionStatus = 'Pending';
+                initTransData.statusReason = '';
+                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.travelDate = null;
 
+                console.log(JSON.stringify(initTransData));
+            }
+
+            if (JSON.stringify(initTransData) !== '{}') {
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.BUS_TICKET, initTransData);
+            }
+        } catch (error) {
+            logger.error({ event: 'Error thrown ', functionName: 'processBusTicketConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            //throw new Error(error);
+        }
+    }
 }
 
-export default Subscriber;
+export default new Processor();

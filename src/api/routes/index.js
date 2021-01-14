@@ -6,7 +6,8 @@ import { msisdnParserMW, responseCodeMW, requestLoggerMW } from '../middlewares'
 import express from 'express';
 import DB2Connection from '../../util/DB2Connection'
 import moment  from 'moment';
-import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor} from '/consumers/'
+import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
+busTicketProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -23,6 +24,8 @@ const accountStatement = new accountStatementController();
 //     // mobileBundleProcessor.mobileBundleConsumerProcessor(data);
 //     // const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"Donation","ThirdPartyType":"merchantApp","Identity":{"Caller":{"ThirdPartyID":"ibm_merchant_app"},"Initiator":{"IdentifierType":1,"Identifier":"923328721082"}},"AppConnectUUID":"6799b362-55b5-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_Customer Donation","OriginatorConversationID":"d6860b38T1610552317653","Parameters":{"Parameter":[{"Key":"OrgShortCode","Value":"00180377"},{"Key":"Amount","Value":"10"},{"Key":"ChannelCode","Value":"1030"}]},"Timestamp":"20210113153837"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711438912","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210113"},{"Key":"TransEndTime","Value":"203837"}]}},"CustomObject":{"orgShortCode":"00180377","orgName":"Edhi","donationType":""}};
 //     // donationProcessor.processDonationConsumer(data);
+//     // const data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"BusTickets","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923455917646"},"ReceiverParty":{"IdentifierType":4,"Identifier":"00180490"}},"AppConnectUUID":"efe332f0-5652-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"InitTrans_MerchantPaymentByCustomer","OriginatorConversationID":"d853cc1ad50f4ecfb0c5e26b3d7593da","Parameters":{"Parameter":[{"Key":"Amount","Value":"7"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210114102617"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711446195","ResultParameters":{"ResultParameter":[{"Key":"Amount","Value":"7.00"},{"Key":"TransEndDate","Value":"20210114"},{"Key":"TransEndTime","Value":"152617"}]}}}
+//     // await busTicketProcessor.processBusTicketConsumer(data);
 //     res.status(200).json({message: "Done!"})
 // });
 

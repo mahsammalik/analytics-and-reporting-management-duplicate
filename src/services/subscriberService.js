@@ -2,7 +2,8 @@ import { logger, Broker } from '/util/';
 import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
-import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor} from '/consumers/'
+import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
+busTicketProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -483,7 +484,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        await busTicketProcessor.processBusTicketConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
