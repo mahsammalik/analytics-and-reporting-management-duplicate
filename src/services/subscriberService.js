@@ -528,7 +528,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await busTicketProcessor.processBusTicketConsumer(payload);
+                        await busTicketProcessor.processBusTicketConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

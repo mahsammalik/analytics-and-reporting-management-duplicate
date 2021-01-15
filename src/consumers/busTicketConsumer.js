@@ -7,7 +7,7 @@ class Processor {
 
     constructor() {}
 
-    async processBusTicketConsumer(data) {
+    async processBusTicketConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processBusTicketConsumer in class Processor' });
             //console.log(data);
@@ -39,7 +39,7 @@ class Processor {
                 initTransData.seats = '';
                 initTransData.seatNumber = '';
                 initTransData.service = '';
-                initTransData.transactionStatus = 'Pending';
+                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.statusReason = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.travelDate = null;
