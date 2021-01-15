@@ -19,10 +19,15 @@ class Subscriber {
 
             config.kafkaBroker.topics.initTrans_sendMoney_bank,
             config.kafkaBroker.topics.initTrans_qr_payment,
+            config.kafkaBroker.topics.confirmTrans_qr_payment,
             config.kafkaBroker.topics.initTrans_MobileBundle,
+            config.kafkaBroker.topics.confirmTrans_MobileBundle,
             config.kafkaBroker.topics.initTrans_BusTicket,
+            config.kafkaBroker.topics.confirmTrans_BusTicket,
             config.kafkaBroker.topics.initTrans_eVouchers,
+            config.kafkaBroker.topics.confirmTrans_eVouchers,
             config.kafkaBroker.topics.initTrans_eventTickets,
+            config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
             config.kafkaBroker.topics.initTrans_donation
         ]);
@@ -464,6 +469,19 @@ class Subscriber {
                         console.log(error)
                     }
                 }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_qr_payment){
+                    console.log('*********** Confirm QR Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await qrPaymentProcessor.processQRPaymentConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle){
                     console.log('*********** Init Trans Mobile Bundle *****************');
                     try {
@@ -472,6 +490,19 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundle){
+                    console.log('*********** Confirm Trans Mobile Bundle *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
@@ -490,8 +521,34 @@ class Subscriber {
                         console.log(error)
                     }
                 }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_BusTicket){
+                    console.log('*********** Confirm Trans Bus Ticket *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await busTicketProcessor.processBusTicketConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_eVouchers){
                     console.log('*********** Init Trans eVouchers *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_eVouchers){
+                    console.log('*********** Confirm Trans eVouchers *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -511,6 +568,19 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await eventTicketProcessor.processEventTicketConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_eventTickets){
+                    console.log('*********** Confirm Trans Event Tickets *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await eventTicketProcessor.processEventTicketConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
