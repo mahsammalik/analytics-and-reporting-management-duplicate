@@ -147,7 +147,10 @@
 
                 "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
 
-                "initTrans_donation" : "ESB_Mobile_Donation_Init_Passed"
+                "initTrans_donation" : "ESB_Mobile_Donation_Init_Passed",
+
+                "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
+                "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed"
             }
         },
         "cache": {

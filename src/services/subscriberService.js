@@ -3,7 +3,7 @@ import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
-busTicketProcessor, eventTicketProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -29,7 +29,9 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_eventTickets,
             config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_donation
+            config.kafkaBroker.topics.initTrans_donation,
+            config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
+            config.kafkaBroker.topics.confirm_deposit_DVDC
         ]);
     }
 
@@ -607,6 +609,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await donationProcessor.processDonationConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.intTrans_customerDeposit_DVDC){
+                    console.log('*********** Init Trans Deposit VIA Debit Card *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await depositVIADebitCardProcessor.processDVDCConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirm_deposit_DVDC){
+                    console.log('*********** Confirm Trans Deposit VIA Debit Card *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await depositVIADebitCardProcessor.processDVDCConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

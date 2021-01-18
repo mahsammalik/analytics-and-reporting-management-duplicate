@@ -6,3 +6,4 @@ export {default as eVoucherConsumer } from './eVouchersConsumer';
 export {default as eventTicketProcessor} from './eventTicketConsumer';
 export {default as CreemVoucherConsumer } from './creemVoucherConsumer';
 export {default as donationProcessor} from './donationConsumer';
+export {default as depositVIADebitCardProcessor} from './depositViaDebitCardConsumer';
