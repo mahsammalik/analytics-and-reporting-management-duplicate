@@ -7,7 +7,7 @@ class Processor {
 
     constructor() { }
 
-    async processQRPaymentConsumer(data) {
+    async processQRPaymentConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processQRPaymentConsumer in class Processor' });
             //console.log(data);
@@ -44,7 +44,7 @@ class Processor {
                 initTransData.tilPayment = 0;
                 initTransData.tipAmount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TIP Amount'; })?.Value || '0');
                 initTransData.transAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.transactionStatus = 'Pending';
+                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
 
                 console.log(JSON.stringify(initTransData));
             }

@@ -478,7 +478,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await qrPaymentProcessor.processQRPaymentConsumer(payload);
+                        await qrPaymentProcessor.processQRPaymentConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
