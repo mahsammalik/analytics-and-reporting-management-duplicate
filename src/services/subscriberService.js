@@ -582,7 +582,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await eventTicketProcessor.processEventTicketConsumer(payload);
+                        await eventTicketProcessor.processEventTicketConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
