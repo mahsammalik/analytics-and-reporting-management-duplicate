@@ -160,7 +160,10 @@
                 "confirmTrans_Donation": "ESB_Mobile_Payment_Confirm_Passed",
 
                 "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
-                "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed"
+                "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed",
+
+                "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
+                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed"
             }
         },
         "cache": {

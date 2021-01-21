@@ -7,7 +7,7 @@ import express from 'express';
 import DB2Connection from '../../util/DB2Connection'
 import moment  from 'moment';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
-busTicketProcessor, eventTicketProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor, darazVoucherProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -38,6 +38,10 @@ const accountStatement = new accountStatementController();
 //     // await eventTicketProcessor.processEventTicketConsumer(data);
 //     // data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"EventTickets","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923455917646"}},"AppConnectUUID":"71862cce-5566-11eb-a4ec-0c8205690000"},"Request":{"Transaction":{"CommandID":"ComfirmTransaction","OriginatorConversationID":"47c007c02d24483f8949617d744dbb79","Parameters":{"Parameter":[{"Key":"TransID","Value":"010711428458"},{"Key":"IsSuccess","Value":"true"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210113061324"}},"Result":{"ResultType":"0","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711428458","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210113"},{"Key":"TransEndTime","Value":"111324"},{"Key":"Balance","Value":"5817.84"},{"Key":"BeneficiaryName","Value":"ufone"},{"Key":"Amount","Value":"100.00"}]}}};
 //     // await eventTicketProcessor.processEventTicketConsumer(data, true);
+//     data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"DarazVoucher","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923046664576"},"ReceiverParty":{"IdentifierType":4,"Identifier":"00180490"}},"AppConnectUUID":"29ab1376-5b27-11eb-baf7-0c830a8a0000"},"Request":{"Transaction":{"CommandID":"InitTrans_MerchantPaymentByCustomer","OriginatorConversationID":"981f8eaf6d8e42598daed31b7a7b9be1","Parameters":{"Parameter":[{"Key":"Amount","Value":"200"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210120135532"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711487876","ResultParameters":{"ResultParameter":[{"Key":"Amount","Value":"200.00"},{"Key":"TransEndDate","Value":"20210120"},{"Key":"TransEndTime","Value":"185532"}]}}};
+//     await darazVoucherProcessor.processDarazWalletConsumer(data);
+//     data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"DarazVoucher","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923046664576"}},"AppConnectUUID":"b636e194-5b27-11eb-baf7-0c830a8a0000"},"Request":{"Transaction":{"CommandID":"ComfirmTransaction","OriginatorConversationID":"af5a6244189c441d88f0c5bbccd9cac5","Parameters":{"Parameter":[{"Key":"TransID","Value":"010711487876"},{"Key":"IsSuccess","Value":"true"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210120135923"}},"Result":{"ResultType":"0","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711487876","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210120"},{"Key":"TransEndTime","Value":"185928"},{"Key":"Balance","Value":"19310.91"},{"Key":"BeneficiaryName","Value":"ufone"},{"Key":"Amount","Value":"200.00"}]}}};
+//     await darazVoucherProcessor.processDarazWalletConsumer(data, true);
 //     res.status(200).json({message: "Done!"})
 // });
 
