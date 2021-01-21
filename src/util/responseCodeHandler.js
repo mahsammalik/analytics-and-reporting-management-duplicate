@@ -38,8 +38,7 @@ class ResponseCodeHandler {
             console.log(" cacheresponseObj BEFORE getResponseCode", config.cache.responseCodeCache)
 
             //Get Response Code Object From Cache
-            let cacheresponseObj = null;
-            // await cache.getValue(code, config.cache.responseCodeCache);
+            let cacheresponseObj = await cache.getValue(code, config.cache.responseCodeCache);
             console.log(cacheresponseObj, " cacheresponseObj getResponseCode")
             if (!cacheresponseObj) { //If not found in cache get Response Code from Master Data Microservice
                 logger.info({ event: 'Entered !cacheresponseObj block', functionName: 'getResponseCode in class responseCodeHandler' });
