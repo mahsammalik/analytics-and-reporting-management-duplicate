@@ -15,7 +15,7 @@ class Broker {
 
     _ConnectProducer() {
         logger.info({ event: '_connectProducer called' });
-        const brokerConfig = {...config.kafkaBroker.producerConfig };
+        const brokerConfig = { ...config.kafkaBroker.producerConfig };
 
         brokerConfig.dr_msg_cb = true; // Enable delivery reports with message payload
         const producer = new Kafka.Producer(brokerConfig);
@@ -23,22 +23,22 @@ class Broker {
         producer.setPollInterval(config.kafkaBroker.pollInterval);
 
         // only if debug option set in config
-        producer.on('event.log', function(msg) {
+        producer.on('event.log', function (msg) {
             logger.debug({ event: 'debug from producer:' + msg });
         });
 
         // logging all errors
-        producer.on('event.error', function(err) {
+        producer.on('event.error', function (err) {
             logger.error({ event: 'error from producer: %s' + err });
         });
 
         // wait for the ready event before producing
-        producer.on('ready', function(arg) {
+        producer.on('ready', function (arg) {
             logger.info({ event: 'producer ready' + arg });
         });
 
         // log delivery reports
-        producer.on('delivery-report', function(err, dr) {
+        producer.on('delivery-report', function (err, dr) {
             if (err) {
                 logger.error({ event: 'Delivery failed: %j' + err });
                 // consider retrying
@@ -61,7 +61,7 @@ class Broker {
             logger.debug({ topicsArray });
 
             // logging all errors
-            consumer.on('event.error', function(err) {
+            consumer.on('event.error', function (err) {
                 logger.error({
                     event: 'Error thrown',
                     functionName: "_ConnectConsumer in broker",
@@ -73,7 +73,7 @@ class Broker {
             var counter = 0;
             var numMessages = config.kafkaBroker.numMessages;
 
-            consumer.on('ready', function(arg) {
+            consumer.on('ready', function (arg) {
                 logger.info({ event: `consumer ready`, arg });
 
                 consumer.subscribe(topicsArray);
@@ -85,28 +85,28 @@ class Broker {
             });
 
             /*consumer.on('data', function (m) {
-			  counter++;
-		
-			  // committing offsets every numMessages
-			  if (counter % numMessages === 0) {
-				logger.info('calling commit');
-				consumer.commit(m);
-			  }
-		
-			  // convert value to JSON (if it is) before logging
-			  try {
-				m.value = JSON.parse(m.value.toString());
-			  } catch {}
-		
-			  // convert key to string before logging
-			  if (m.key) m.key = m.key.toString();
-		
-			  // Output the actual message contents
-			  logger.info('data received value');
-			  logger.info(' value is ' + m.value);
-			  logger.info(' Printing topic Name' + m.topic);
-		
-			});*/
+              counter++;
+    	
+              // committing offsets every numMessages
+              if (counter % numMessages === 0) {
+                logger.info('calling commit');
+                consumer.commit(m);
+              }
+    	
+              // convert value to JSON (if it is) before logging
+              try {
+                m.value = JSON.parse(m.value.toString());
+              } catch {}
+    	
+              // convert key to string before logging
+              if (m.key) m.key = m.key.toString();
+    	
+              // Output the actual message contents
+              logger.info('data received value');
+              logger.info(' value is ' + m.value);
+              logger.info(' Printing topic Name' + m.topic);
+    	
+            });*/
 
             // starting the consumer
             consumer.connect();
@@ -130,7 +130,7 @@ class Broker {
         var numMessages = config.kafkaBroker.numMessages;
         let consumer = this.consumer;
 
-        consumer.on('data', function(msg) {
+        consumer.on('data', function (msg) {
 
             // // committing offsets every numMessages
             // if (counter % numMessages === 0) {
@@ -152,10 +152,10 @@ class Broker {
         logger.debug({ value });
 
         try {
-            this.producer.on('ready', (arg) => {
-                this.producer.produce(topicName, partition, value);
-                logger.info({ event: `producer ready ${arg}` });
-            });
+            // this.producer.on('ready', (arg) => {
+            this.producer.produce(topicName, partition, value);
+            //     logger.info({ event: `producer ready ${arg}` });
+            // });
 
 
         } catch (error) {
