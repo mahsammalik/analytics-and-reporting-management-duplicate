@@ -3,7 +3,7 @@ import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
-busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -29,10 +29,12 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_eventTickets,
             config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_donation,
-            config.kafkaBroker.topics.confirmTrans_donation,
+            config.kafkaBroker.topics.initTrans_Donation,
+            config.kafkaBroker.topics.confirmTrans_Donation,
             config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
-            config.kafkaBroker.topics.confirm_deposit_DVDC
+            config.kafkaBroker.topics.confirm_deposit_DVDC,
+            config.kafkaBroker.topics.init_daraz_voucher,
+            config.kafkaBroker.topics.confirm_daraz_voucher
         ]);
     }
 
@@ -602,7 +604,7 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.initTrans_donation){
+                if (msg.topic === config.kafkaBroker.topics.initTrans_Donation){
                     console.log('*********** Init Trans Donation *****************');
                     try {
 
@@ -615,7 +617,7 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.confirmTrans_donation){
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_Donation){
                     console.log('*********** Confirm Trans Donation *****************');
                     try {
 
@@ -649,6 +651,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await depositVIADebitCardProcessor.processDVDCConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.init_daraz_voucher){
+                    console.log('*********** Init Trans Daraz Voucher *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await darazVoucherProcessor.processDarazWalletConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirm_daraz_voucher){
+                    console.log('*********** Confirm Trans Daraz Voucher *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await darazVoucherProcessor.processDarazWalletConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

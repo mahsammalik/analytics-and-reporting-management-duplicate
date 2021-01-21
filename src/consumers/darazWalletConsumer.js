@@ -7,14 +7,18 @@ class Processor {
 
     constructor() {}
 
-    async processEventTicketConsumer(data, isConfirm = false) {
+    async processDarazWalletConsumer(data, isConfirm = false) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'processEventTicketConsumer in class Processor' });
+            logger.info({ event: 'Entered function', functionName: 'processDarazWalletConsumer in class Processor' });
             //console.log(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
-                initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.bookingID = '';
+                initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                initTransData.balanceBefore = 0;
+                initTransData.channel = data.Header.SubChannel;
+                initTransData.walletEmail = '';
+                initTransData.walletNumber = 0;
+                initTransData.walletOwner = '';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
@@ -24,33 +28,22 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.channel = data.Header.SubChannel;
-                initTransData.city = '';
-                initTransData.cnic = '';
-                initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
-                initTransData.email = '';
-                initTransData.event = '';
-                initTransData.eventDate = null;
-                initTransData.failReason = '';
+                initTransData.failureReason = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.numSeats = 0;
-                initTransData.partner = '';
-                initTransData.price = 0;
-                initTransData.promoAmount = 0;
-                initTransData.promoApplied = '';
-                initTransData.revenue = 0;
-                initTransData.seatClass = '';
-                initTransData.successfull = '';
+                initTransData.promoCode = '';
+                initTransData.promoCodeAmount = 0;
+                initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.userEmail = '';
 
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVENT_TICKET, initTransData);
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_DARAZ_WALLET, initTransData);
             }
         } catch (error) {
-            logger.error({ event: 'Error thrown ', functionName: 'processEventTicketConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            logger.error({ event: 'Error thrown ', functionName: 'processDarazWalletConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
         }
     }
