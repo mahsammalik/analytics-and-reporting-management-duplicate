@@ -1,15 +1,15 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import moment from 'moment';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
+const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
 
 class Processor {
 
     constructor() { }
 
-    async processDonationConsumer(data, isConfirm = false) {
+    async processCOMMON_DONATIONConsumer(data, isConfirm = false) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'processDonationConsumer in class Processor' });
+            logger.info({ event: 'Entered function', functionName: 'processCOMMON_DONATIONConsumer in class Processor' });
             //console.log(data);
             let initTransData = {};
 
@@ -37,10 +37,10 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DONATION, initTransData);
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DONATION, initTransData);
             }
         } catch (error) {
-            logger.error({ event: 'Error thrown ', functionName: 'processDonationConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            logger.error({ event: 'Error thrown ', functionName: 'processCOMMON_DONATIONConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
         }
     }

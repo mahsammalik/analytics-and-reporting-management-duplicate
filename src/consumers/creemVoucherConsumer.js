@@ -1,6 +1,6 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
+const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
 
 class Subscriber {
 
@@ -25,7 +25,7 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         // TODO: DB2 Table has to be created before calling insert function
-                        //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.EVENT_TICKET, payload);
+                        //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVENT_TICKET, payload);
                         //console.log(response);
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Creem Vouchers', error: { message: error.message, stack: error.stack } });

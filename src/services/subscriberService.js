@@ -2,7 +2,7 @@ import { logger, Broker } from '/util/';
 import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
-import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
+import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, COMMON_DONATIONProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor} from '/consumers/'
 
 class Subscriber {
@@ -18,19 +18,19 @@ class Subscriber {
             config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
 
             config.kafkaBroker.topics.initTrans_sendMoney_bank,
-            config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.confirmTrans_qr_payment,
+            config.kafkaBroker.topics.initTrans_COMMON_QR_PAYMENT,
+            config.kafkaBroker.topics.confirmTrans_COMMON_QR_PAYMENT,
             config.kafkaBroker.topics.initTrans_MobileBundle,
             config.kafkaBroker.topics.confirmTrans_MobileBundle,
             config.kafkaBroker.topics.initTrans_BusTicket,
             config.kafkaBroker.topics.confirmTrans_BusTicket,
-            config.kafkaBroker.topics.initTrans_eVouchers,
-            config.kafkaBroker.topics.confirmTrans_eVouchers,
+            config.kafkaBroker.topics.initTrans_COMMON_EVOUCHERs,
+            config.kafkaBroker.topics.confirmTrans_COMMON_EVOUCHERs,
             config.kafkaBroker.topics.initTrans_eventTickets,
             config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_donation,
-            config.kafkaBroker.topics.confirmTrans_donation,
+            config.kafkaBroker.topics.initTrans_COMMON_DONATION,
+            config.kafkaBroker.topics.confirmTrans_COMMON_DONATION,
             config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
             config.kafkaBroker.topics.confirm_deposit_DVDC
         ]);
@@ -459,7 +459,7 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.initTrans_qr_payment){
+                if (msg.topic === config.kafkaBroker.topics.initTrans_COMMON_QR_PAYMENT){
                     console.log('*********** Init Trans QR Payment *****************');
                     try {
 
@@ -472,7 +472,7 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.confirmTrans_qr_payment){
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_COMMON_QR_PAYMENT){
                     console.log('*********** Confirm QR Payment *****************');
                     try {
 
@@ -537,8 +537,8 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.initTrans_eVouchers){
-                    console.log('*********** Init Trans eVouchers *****************');
+                if (msg.topic === config.kafkaBroker.topics.initTrans_COMMON_EVOUCHERs){
+                    console.log('*********** Init Trans COMMON_EVOUCHERs *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -550,8 +550,8 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.confirmTrans_eVouchers){
-                    console.log('*********** Confirm Trans eVouchers *****************');
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_COMMON_EVOUCHERs){
+                    console.log('*********** Confirm Trans COMMON_EVOUCHERs *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -602,27 +602,27 @@ class Subscriber {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.initTrans_donation){
-                    console.log('*********** Init Trans Donation *****************');
+                if (msg.topic === config.kafkaBroker.topics.initTrans_COMMON_DONATION){
+                    console.log('*********** Init Trans COMMON_DONATION *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        await donationProcessor.processDonationConsumer(payload);
+                        await COMMON_DONATIONProcessor.processCOMMON_DONATIONConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.confirmTrans_donation){
-                    console.log('*********** Confirm Trans Donation *****************');
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_COMMON_DONATION){
+                    console.log('*********** Confirm Trans COMMON_DONATION *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        await donationProcessor.processDonationConsumer(payload, true);
+                        await COMMON_DONATIONProcessor.processCOMMON_DONATIONConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
