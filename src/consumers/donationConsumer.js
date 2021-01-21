@@ -7,9 +7,9 @@ class Processor {
 
     constructor() { }
 
-    async processDonationConsumer(data, isConfirm = false) {
+    async processCOMMON_DONATIONConsumer(data, isConfirm = false) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'processDonationConsumer in class Processor' });
+            logger.info({ event: 'Entered function', functionName: 'processCOMMON_DONATIONConsumer in class Processor' });
             //console.log(data);
             let initTransData = {};
 
@@ -40,7 +40,7 @@ class Processor {
                 await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DONATION, initTransData);
             }
         } catch (error) {
-            logger.error({ event: 'Error thrown ', functionName: 'processDonationConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            logger.error({ event: 'Error thrown ', functionName: 'processCOMMON_DONATIONConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
         }
     }

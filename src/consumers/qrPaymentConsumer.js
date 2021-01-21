@@ -36,7 +36,7 @@ class Processor {
                 initTransData.paidVia = data?.CustomObject?.paidVia || '';
                 initTransData.qrCode = data?.CustomObject?.qrCode || '';
                 initTransData.qrType = data?.CustomObject?.qrType || '';
-                initTransData.rating = '';
+                initTransData.MERCHANT_RATING = '';
                 initTransData.reverseTID = 0;
                 initTransData.reviews = '';
                 initTransData.thirdPartTID = 0;
