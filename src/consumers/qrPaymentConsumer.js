@@ -1,7 +1,7 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import moment from 'moment';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2.schema;
+const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
 
 class Processor {
 
@@ -50,7 +50,7 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.QR_PAYMENT, initTransData);
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_QR_PAYMENT, initTransData);
             }
         } catch(error) {
         logger.error({ event: 'Error thrown ', functionName: 'processQRPaymentConsumer in class Processor', error: { message: error.message, stack: error.stack } });
