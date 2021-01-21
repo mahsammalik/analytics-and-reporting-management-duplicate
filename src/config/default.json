@@ -135,10 +135,10 @@
 
                 "initTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
 
-                "initTrans_COMMON_QR_PAYMENT": "ESB_Mobile_QRPayment_Init_Passed",
-                "confirmTrans_COMMON_QR_PAYMENT": "ESB_Mobile_QRPayment_Confirm_Passed",
-                "initTrans_refund_COMMON_QR_PAYMENT": "ESB_Mobile_RefundQRPayment_Init_Passed",
-                "confirmTrans_refund_COMMON_QR_PAYMENT": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
+                "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
+                "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",
+                "initTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Init_Passed",
+                "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
 
                 "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
                 "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
@@ -148,16 +148,16 @@
                 "initTrans_BusTicket": "ESB_Mobile_BusTickets_Init_Passed",
                 "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
 
-                "initTrans_COMMON_EVOUCHERs" : "ESB_Mobile_COMMON_EVOUCHERs_Init_Passed",
-                "confirmTrans_COMMON_EVOUCHERs": "ESB_Mobile_COMMON_EVOUCHERs_Confirm_Passed",
+                "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_eVouchers_Confirm_Passed",
 
                 "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
                 "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
 
                 "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
 
-                "initTrans_COMMON_DONATION" : "ESB_Mobile_COMMON_DONATION_Init_Passed",
-                "confirmTrans_COMMON_DONATION": "ESB_Mobile_Payment_Confirm_Passed",
+                "initTrans_Donation" : "ESB_Mobile_Donation_Init_Passed",
+                "confirmTrans_Donation": "ESB_Mobile_Payment_Confirm_Passed",
 
                 "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
                 "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed"

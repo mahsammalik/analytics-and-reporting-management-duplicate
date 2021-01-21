@@ -7,7 +7,7 @@ class Subscriber {
     constructor() {
         //provide list of topics from which you want to consume messages 
         this.event = new Broker([
-            config.kafkaBroker.topics.initTrans_COMMON_EVOUCHERs
+            config.kafkaBroker.topics.initTrans_eVouchers
         ]);
     }
 
@@ -17,8 +17,8 @@ class Subscriber {
                 logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
                 console.log("message: ", msg)
 
-                if (msg.topic === config.kafkaBroker.topics.initTrans_COMMON_EVOUCHERs){
-                    console.log('*********** Init Trans COMMON_EVOUCHERs *****************');
+                if (msg.topic === config.kafkaBroker.topics.initTrans_eVouchers){
+                    console.log('*********** Init Trans eVouchers *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -27,8 +27,8 @@ class Subscriber {
                         await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVOUCHER, payload);
                         //console.log(response);
                     } catch (error) {
-                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans COMMON_EVOUCHERs', error: { message: error.message, stack: error.stack } });
-                        logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans COMMON_EVOUCHERs' });
+                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans eVouchers', error: { message: error.message, stack: error.stack } });
+                        logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans eVouchers' });
                     }
                 }
             } catch (error) {

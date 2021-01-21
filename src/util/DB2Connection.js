@@ -41,9 +41,9 @@ class DatabaseConn {
         {
             try {
                 let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.COMMON_QR_PAYMENT (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUEMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, MERCHANT_RATING, TRANS_AMOUNT, TRANS_STATUS) VALUES('${data.channel}', '${data.merchantName}', ${data.reverseTID}, '${data.reviews}', ${data.thirdPartTID}, ${data.TID}, ${data.tilPayment}, ${data.tipAmount}, ${data.consumerBalance}, ${data.custMsisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.fee}, ${data.merchAccount}, ${data.merchBalance}, '${data.merchantBank}',
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.COMMON_QR_PAYMENT (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUEMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS) VALUES('${data.channel}', '${data.merchantName}', ${data.reverseTID}, '${data.reviews}', ${data.thirdPartTID}, ${data.TID}, ${data.tilPayment}, ${data.tipAmount}, ${data.consumerBalance}, ${data.custMsisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.fee}, ${data.merchAccount}, ${data.merchBalance}, '${data.merchantBank}',
                 '${data.merchCategoryCode}','${data.merchCategoryType}', ${data.merchID}, 
-                '${data.paidVia}', '${data.qrCode}', '${data.qrType}', '${data.MERCHANT_RATING}', ${data.transAmount},
+                '${data.paidVia}', '${data.qrCode}', '${data.qrType}', '${data.rating}', ${data.transAmount},
                 '${data.transactionStatus}');`);
                 stmt.executeSync();
                 stmt.closeSync();
