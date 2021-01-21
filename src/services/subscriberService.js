@@ -30,6 +30,7 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
             config.kafkaBroker.topics.initTrans_donation,
+            config.kafkaBroker.topics.confirmTrans_donation,
             config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
             config.kafkaBroker.topics.confirm_deposit_DVDC
         ]);
@@ -609,6 +610,19 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await donationProcessor.processDonationConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_donation){
+                    console.log('*********** Confirm Trans Donation *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await donationProcessor.processDonationConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

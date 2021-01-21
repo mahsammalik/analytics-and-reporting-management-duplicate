@@ -7,7 +7,7 @@ class Processor {
 
     constructor() { }
 
-    async processDonationConsumer(data) {
+    async processDonationConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processDonationConsumer in class Processor' });
             //console.log(data);
@@ -21,7 +21,7 @@ class Processor {
                 initTransData.fund = initTransData.amount;
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
                 initTransData.organization = data.CustomObject?.orgName || '';
-                initTransData.transactionStatus = 'Pending';
+                initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');

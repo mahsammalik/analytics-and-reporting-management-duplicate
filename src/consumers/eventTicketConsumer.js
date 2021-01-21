@@ -7,7 +7,7 @@ class Processor {
 
     constructor() {}
 
-    async processEventTicketConsumer(data) {
+    async processEventTicketConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processEventTicketConsumer in class Processor' });
             //console.log(data);
