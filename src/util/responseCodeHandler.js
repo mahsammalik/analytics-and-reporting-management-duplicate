@@ -38,10 +38,7 @@ class ResponseCodeHandler {
             console.log(" cacheresponseObj BEFORE getResponseCode", config.cache.responseCodeCache)
 
             //Get Response Code Object From Cache
-            let cacheresponseObj = code === "AR-AS-T03" ?
-                JSON.stringify({ "_id": "5f47d15593b9db475f9f2589", "key": "AR-AS-T03", "code": "AR-AS-T03", "description": "Email Send Successful", "success": true, "thirdPartyError": false, "thirdPartyCode": "FALSE", "thirdPartyName": "Email Send Successful", "useCase": "Account Statement", "microservice": "Analytics and report", "message_en": "Email Send Successful", "message_ur": "Email Send Successful" })
-                : await cache.getValue(code, config.cache.responseCodeCache);
-
+            let cacheresponseObj = await cache.getValue(code, config.cache.responseCodeCache);
             console.log(cacheresponseObj, " cacheresponseObj getResponseCode")
             if (!cacheresponseObj) { //If not found in cache get Response Code from Master Data Microservice
                 logger.info({ event: 'Entered !cacheresponseObj block', functionName: 'getResponseCode in class responseCodeHandler' });
