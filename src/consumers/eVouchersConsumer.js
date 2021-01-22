@@ -1,43 +1,56 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
+import moment from 'moment';
 const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
 
-class Subscriber {
+class Processor {
 
-    constructor() {
-        //provide list of topics from which you want to consume messages 
-        this.event = new Broker([
-            config.kafkaBroker.topics.initTrans_eVouchers
-        ]);
-    }
+    constructor() {}
 
-    setConsumer() {
-        this.event.addConsumerOnDataEvent(async function (msg) {
-            try {
-                logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
-                console.log("message: ", msg)
-
-                if (msg.topic === config.kafkaBroker.topics.initTrans_eVouchers){
-                    console.log('*********** Init Trans eVouchers *****************');
-                    try {
-
-                        const payload = JSON.parse(msg.value);
-                        console.log(JSON.stringify(payload));
-                        
-                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVOUCHER, payload);
-                        //console.log(response);
-                    } catch (error) {
-                        logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans eVouchers', error: { message: error.message, stack: error.stack } });
-                        logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans eVouchers' });
-                    }
+    async processEVouchersConsumer(data, isConfirm = false) {
+        try {
+            logger.info({ event: 'Entered function', functionName: 'processEVouchersConsumer in class Processor' });
+            //console.log(data);
+            let initTransData = {};
+            if (data.Result.ResultCode == 0) {
+                initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DueAmount'; })?.Value || '0');
+                initTransData.amountDollar = 0;
+                initTransData.channel = data.Header.SubChannel;
+                initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'CompanyShortName'; })?.Value || '';                
+                initTransData.email = '';
+                initTransData.failReason = '';
+                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.promoAmount = 0;
+                initTransData.promoCode = '';
+                initTransData.status = 'Pending';
+                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
+                if (initTransData.transactionDate !== '') {
+                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                 }
-            } catch (error) {
-                logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error: {message:error.message, stack: error.stack} });
-                //throw new Error(error);
-            }
-        });
-    }
+                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                if (initTransData.transactionTime !== '') {
+                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                }
+                initTransData.TID = Number(data?.Result?.TransactionID || '0');
 
+                if(isConfirm) {
+                    initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                    initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'BeneficiaryName'; })?.Value || '';                
+                    initTransData.status = 'Completed';
+                }
+
+                console.log(JSON.stringify(initTransData));
+            }
+
+            if (JSON.stringify(initTransData) !== '{}') {
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVOUCHER, initTransData);
+            }
+        } catch (error) {
+            logger.error({ event: 'Error thrown ', functionName: 'processEVouchersConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            //throw new Error(error);
+        }
+    }
 }
 
-export default Subscriber;
+export default new Processor();

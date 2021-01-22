@@ -3,7 +3,8 @@ import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
-busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor} from '/consumers/'
+busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
+eVoucherProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -546,7 +547,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        await eVoucherProcessor.processEVouchersConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
@@ -559,7 +560,7 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         console.log(JSON.stringify(payload));
                         
-                        //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        await eVoucherProcessor.processEVouchersConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
