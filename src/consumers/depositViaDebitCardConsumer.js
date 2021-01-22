@@ -13,7 +13,7 @@ class Processor {
             //console.log(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
-                initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
@@ -23,32 +23,21 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.bookingID = 0;
-                initTransData.channel = data.Header.SubChannel;
-                initTransData.cnic = '';
-                initTransData.destination = '';
-                initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
-                initTransData.email = '';
-                initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Fee'; })?.Value || '0');
-                initTransData.gender = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.origin = '';
-                initTransData.originPrice = 0;
-                initTransData.price = 0;
-                initTransData.promo = '';
-                initTransData.seats = '';
-                initTransData.seatNumber = '';
-                initTransData.service = '';
-                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.statusReason = '';
+                initTransData.cardNum = 0;
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
-                initTransData.travelDate = null;
+                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
+                initTransData.retrivalRef = 0;
+                initTransData.cashInTransID = 0;
+                initTransData.cashInTransStatus = '';
+                initTransData.cashInTransTime = null,
+                initTransData.channel = data?.Header?.SubChannel || '';
 
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DEPOSIT_WITH_SAVED_CARD, initTransData);
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DEPOSIT_VIA_CARD, initTransData);
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processDVDCConsumer in class Processor', error: { message: error.message, stack: error.stack } });

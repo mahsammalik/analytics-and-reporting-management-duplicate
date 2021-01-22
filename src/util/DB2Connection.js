@@ -147,6 +147,23 @@ class DatabaseConn {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
+
+        }
+
+        if(tableName === config.reportingDBTables.COMMON_DEPOSIT_VIA_CARD)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.COMMON_DEPOSIT_VIA_CARD (MSISDN, CARD_NUM, CARD_TRANS_ID, TRANS_AMOUNT, TRANS_DATE, TRANS_STATUS, RETRIEVAL_REFERENCE, CASHIN_TRANSID, CASHIN_TRANSTATUS, CASHIN_AMOUNT, CASHIN_TRANSTIME, CHANNEL) 
+                VALUES(${data.msisdn}, ${data.cardNum}, ${data.TID}, ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.retrivalRef}, ${data.cashInTransID}, '${data.cashInTransStatus}', ${data.amount}, ${data.cashInTransTime}, '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
         }
     }
 
