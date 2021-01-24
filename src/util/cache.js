@@ -30,10 +30,10 @@ class Cache {
                 host: CACHE_SERVER
             }, {
                 cacheName: cacheName,
-                // dataFormat: {
-                //     keyType: 'text/plain',
-                //     valueType: 'application/json'
-                // }
+                dataFormat: {
+                    keyType: 'text/plain',
+                    valueType: 'application/json'
+                }
             });
             logger.info(`Connected to Infinispan Cache ` + cacheName);
             
