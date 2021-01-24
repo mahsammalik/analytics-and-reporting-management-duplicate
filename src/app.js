@@ -24,8 +24,7 @@ app.use(responseTime());
 // app.use(auditLoggerMW);
 
 // app.use(schemaValidatorMW);
-const subscriber = new Subscriber();
-subscriber.setConsumer();
+Subscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
