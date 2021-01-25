@@ -166,7 +166,10 @@
                 "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
                 "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed",
 
-                "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed"
+                "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed",
+
+                "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
+                "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed"                
             }
         },
         "cache": {

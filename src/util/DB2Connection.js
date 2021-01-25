@@ -197,6 +197,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if(tableName === config.reportingDBTables.MERCHANT_REQUEST_TO_PAY)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.MERCHANT_REQUEST_TO_PAY (REQUEST_DATE, CHANNEL, BUSINESS_NAME, BUSINESS_LINK, NAME, EMAIL, JAZZCASH_ACC, BUSINESS_LOGO, REQ_MEDIUM, REQ_TYPE, REQ_ITEMS, TAX_SHIP_DISC_APPLIED, REQ_ID, AMOUNT, SERVICE_DESC, PAYMENT_DUE_DATE, DOC_ATTACH, STATUS, REMINDERS_SENT, PAYER_NAME, MOBILE_NUMBER, EMAIL_ID, EXTENSION_REQUESTED, PAYMENT_CHANNEL, EXISTING_ACCT, PAYMENT_DATE) 
+                VALUES(${data.reqDate}, '${data.channel}', '${data.businessName}', '${data.businessLink}', '${data.name}', '${data.email}', ${data.jazzcashAcc}, ${data.businessLogo}, '${data.reqMedium}', '${data.reqType}', '${data.reqItems}', '${data.tax_ship_disc_applied}', ${data.reqID}, ${data.amount}, '${data.serviceDescriptin}', ${data.paymentDueDate}, '${data.docAttached}', '${data.transactionStatus}', ${data.remindersSent}, '${data.payerName}', ${data.mobileNumber}, '${data.emailID}', ${data.extensionRequested}, '${data.paymentChannel}', '${data.existingAcc}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'));`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {

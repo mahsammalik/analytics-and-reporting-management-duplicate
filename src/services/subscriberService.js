@@ -4,7 +4,7 @@ import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
-eVoucherProcessor, accountDetailsUpdateProcessor} from '/consumers/'
+eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -37,6 +37,8 @@ class Subscriber {
             config.kafkaBroker.topics.init_daraz_voucher,
             config.kafkaBroker.topics.confirm_daraz_voucher,
             config.kafkaBroker.topics.update_account_details,
+            config.kafkaBroker.topics.initTrans_mr_payment,
+            config.kafkaBroker.topics.confirmTrans_mr_payment
         ]);
     }
 
@@ -693,6 +695,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await accountDetailsUpdateProcessor.processUpdateAccountDetailsConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_mr_payment){
+                    console.log('*********** Init Trans Request2Pay *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await requestToPayProcessor.processRequestToPayConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_mr_payment){
+                    console.log('*********** Confirm Trans Request2Pay *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await requestToPayProcessor.processRequestToPayConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
