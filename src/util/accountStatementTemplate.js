@@ -57,7 +57,7 @@ const accountStatementTemplate = accountData => {
 		<div><b>Date of Issue: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</div>
 		<div><b>Account Title: </b>${accountData.payload.merchantName}</div>
 		<div><b>Account Number: </b>${accountData.payload.msisdn}</div>
-		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel || ''}</div>
+		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</div>
 		<div><b>Statement Period: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</div>
 		</div>
 		</header>

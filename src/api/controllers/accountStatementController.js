@@ -31,8 +31,8 @@ class accountStatementController {
                 html: '<html></html>',
                 format: req.query.format,
                 metadata,
-                merchantName: userProfile.businessName || ''
-
+                merchantName: userProfile.businessName || '',
+                accountLevel: userProfile.accountLevel || ''
             };
             console.log("Headers PAYLOAD --------**************", payload);
             const subscriber = new Subscriber();
