@@ -13,6 +13,8 @@ class accountStatementController {
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
             console.log("Headers METADATA --------**************", metadataHeaders);
+            console.log("REQUEST HEADERS METADATA --------**************", req.headers);
+
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });

@@ -52,9 +52,12 @@ const getUserProfile = headers => {
 			'X-IP-ADDRESS': headers['x-ip-address'],
 			'X-APP-Version': headers['x-app-version'],
 		};
+		console.log("REQUEST HEADERS IN PROFILE CALL: ", headerFields)
 		const profile = axios.get(userProfileURL, { headers: headerFields }).then(result => {
+			console.log(result, "   result")
 			return result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn } : {};
 		}).catch(error => {
+			console.log("ERROR IN PROFILE CALL: ", headerFields)
 			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 			return {};
 		});
