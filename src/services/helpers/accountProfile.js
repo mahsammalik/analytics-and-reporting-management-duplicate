@@ -42,22 +42,22 @@ const getUserProfile = headers => {
 
 		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
 		const headerFields = {
-			'Content-Type': headers['content-type'],
-			'X-MSISDN': headers['x-msisdn'],
-			'X-META-DATA': headers['x-meta-data'],
-			'X-APP-TYPE': headers['x-app-type'],
-			'x-channel': headers['x-channel'],
-			'x-device-id': headers['x-device-id'],
-			'X-IBM-CLIENT-ID': headers['x-ibm-client-id'],
-			'X-IP-ADDRESS': headers['x-ip-address'],
-			'X-APP-Version': headers['x-app-version'],
+			'Content-Type': headers['content-type'] || '',
+			'X-MSISDN': headers['x-msisdn'] || '',
+			'X-META-DATA': headers['x-meta-data'] || '',
+			'X-APP-TYPE': headers['x-app-type'] || '',
+			'x-channel': headers['x-channel'] || '',
+			'x-device-id': headers['x-device-id'] || '',
+			'X-IBM-CLIENT-ID': headers['x-ibm-client-id'] || '',
+			'X-IP-ADDRESS': headers['x-ip-address'] || '',
+			'X-APP-Version': headers['x-app-version'] || '',
 		};
 		console.log("REQUEST HEADERS IN PROFILE CALL: ", headerFields)
 		const profile = axios.get(userProfileURL, { headers: headerFields }).then(result => {
-			console.log(result, "   result")
+			console.log(result, "   result IN PROFILE CALL")
 			return result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn } : {};
 		}).catch(error => {
-			console.log("ERROR IN PROFILE CALL: ", headerFields)
+			console.log("ERROR IN PROFILE CALL: ", headerFields, error)
 			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 			return {};
 		});
