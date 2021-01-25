@@ -694,5 +694,5 @@ class Subscriber {
 
 }
 
-// export default Subscriber;
-export default new Subscriber();
+export default Subscriber;
+// export default new Subscriber();

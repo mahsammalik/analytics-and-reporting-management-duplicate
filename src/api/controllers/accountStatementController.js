@@ -33,8 +33,8 @@ class accountStatementController {
 
             };
             console.log("Headers PAYLOAD --------**************", payload);
-            // const subscriber = new Subscriber();
-            await Subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
+            const subscriber = new Subscriber();
+            await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
             logger.info({ event: 'Exited function', functionName: 'calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
