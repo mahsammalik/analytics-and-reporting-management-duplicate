@@ -4,7 +4,7 @@ import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
-eVoucherProcessor} from '/consumers/'
+eVoucherProcessor, accountDetailsUpdateProcessor} from '/consumers/'
 
 class Subscriber {
 
@@ -35,7 +35,8 @@ class Subscriber {
             config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
             config.kafkaBroker.topics.confirm_deposit_DVDC,
             config.kafkaBroker.topics.init_daraz_voucher,
-            config.kafkaBroker.topics.confirm_daraz_voucher
+            config.kafkaBroker.topics.confirm_daraz_voucher,
+            config.kafkaBroker.topics.update_account_details,
         ]);
     }
 
@@ -678,6 +679,19 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await darazVoucherProcessor.processDarazWalletConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.update_account_details){
+                    console.log('*********** Update Account Details *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await accountDetailsUpdateProcessor.processUpdateAccountDetailsConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

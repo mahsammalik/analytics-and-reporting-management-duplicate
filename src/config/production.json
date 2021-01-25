@@ -164,7 +164,9 @@
                 "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed",
 
                 "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
-                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed"
+                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed",
+
+                "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed"
             }
         },
         "cache": {

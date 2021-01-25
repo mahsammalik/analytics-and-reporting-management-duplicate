@@ -8,3 +8,4 @@ export {default as CreemVoucherConsumer } from './creemVoucherConsumer';
 export {default as donationProcessor} from './donationConsumer';
 export {default as depositVIADebitCardProcessor} from './depositViaDebitCardConsumer';
 export {default as darazVoucherProcessor} from './darazWalletConsumer';
+export {default as accountDetailsUpdateProcessor} from './updateAccountDetailsConsumer';
