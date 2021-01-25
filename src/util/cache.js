@@ -6,16 +6,16 @@ const CACHE_SERVER_PORT = config.cache.port;
 
 class Cache {
     constructor() { 
-        // this.pool = {}
+        this.pool = {}
     }
 
     async _getCacheInstance(cacheName) {
         try {
             console.log(cacheName, "_getCacheInstance cacheName", CACHE_SERVER_PORT, CACHE_SERVER)
-            // if (this.pool.cacheName) {
-            //     console.log(`Found an existing cache pool for ${cacheName}`)
-            //     return this.pool.cacheName
-            // }
+            if (this.pool.cacheName) {
+                console.log(`Found an existing cache pool for ${cacheName}`)
+                return this.pool.cacheName
+            }
             console.log(`Did not find an existing cache pool for ${cacheName} , try to set new connection wish me luck `)
             const client = await infinispan.client({
                 port: CACHE_SERVER_PORT,
@@ -29,7 +29,7 @@ class Cache {
             });
             if (client) logger.info({ event: `Connected to Infinispan DataCache ` + cacheName });
             
-            // this.pool.cacheName = client;
+            this.pool.cacheName = client;
             return client;
         }
         catch (err) {
