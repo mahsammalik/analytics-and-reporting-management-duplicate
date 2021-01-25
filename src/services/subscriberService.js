@@ -56,6 +56,7 @@ class Subscriber {
     // config.kafkaBroker.topics.ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail,
 
     setConsumer() {
+        console.log("SET COnsumer Called")
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
                 logger.info({ event: 'Entered function', functionName: `setConsumer in class subscriber ${msg.topic}` });
@@ -707,4 +708,5 @@ class Subscriber {
 
 }
 
-export default new Subscriber();
+export default Subscriber;
+// export default new Subscriber();

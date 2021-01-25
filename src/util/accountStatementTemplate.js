@@ -57,7 +57,7 @@ const accountStatementTemplate = accountData => {
 		<div><b>Date of Issue: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</div>
 		<div><b>Account Title: </b>${accountData.payload.merchantName}</div>
 		<div><b>Account Number: </b>${accountData.payload.msisdn}</div>
-		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel || ''}</div>
+		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</div>
 		<div><b>Statement Period: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</div>
 		</div>
 		</header>
@@ -106,11 +106,11 @@ const accountStatementTemplate = accountData => {
 			<div class="statementDetails">
 				<div>Total Credit Amount: <b>Rs. ${totalCredit}</b></div>
 				<div>Total Credit Transactions: <b>${creditTransactions}</b></div>
-				<div>Average Credit Transactions: <b>Rs. ${parseFloat(totalCredit / creditTransactions).toFixed(2)}</b></div>
+				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2) : 0}</b></div>
 				<div>&nbsp;</div>
 				<div>Total Debit Amount: <b>Rs. ${totalDebit}</b></div>
 				<div>Total Debit Transactions: <b>${debitTransactions}</b></div>
-				<div>Average Debit Transactions: <b>Rs. ${parseFloat(totalDebit / debitTransactions).toFixed(2)}</b></div>
+				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2) : 0}</b></div>
 			</div>
 		
 			<div class="statementBalance">

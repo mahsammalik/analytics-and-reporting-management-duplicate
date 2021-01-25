@@ -13,6 +13,8 @@ class accountStatementController {
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
             console.log("Headers METADATA --------**************", metadataHeaders);
+            console.log("REQUEST HEADERS METADATA --------**************", req.headers);
+
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug({ userProfile });
@@ -29,12 +31,12 @@ class accountStatementController {
                 html: '<html></html>',
                 format: req.query.format,
                 metadata,
-                merchantName: userProfile.businessName || ''
-
+                merchantName: userProfile.businessName || '',
+                accountLevel: userProfile.accountLevel || ''
             };
             console.log("Headers PAYLOAD --------**************", payload);
-
-            await Subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
+            const subscriber = new Subscriber();
+            await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
 
             logger.info({ event: 'Exited function', functionName: 'calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
