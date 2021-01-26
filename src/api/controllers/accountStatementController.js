@@ -35,7 +35,11 @@ class accountStatementController {
             };
 
             const subscriber = new Subscriber();
+            subscriber.setConsumer(); 
+            console.log(`============PRODUCING MESSAGE OF ACCOUNT STATEMENT======================`)
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
+            console.log(`============DONE PRODUCING MESSAGE OF ACCOUTN STATEMENT==================`)
+            
             // const accountStatement = new accountStatementService();
             // if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
             // else await accountStatement.sendEmailCSVFormat(payload);

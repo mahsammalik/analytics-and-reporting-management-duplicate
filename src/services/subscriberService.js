@@ -75,6 +75,7 @@ class Subscriber {
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
                 logger.info({ event: 'Entered function', functionName: `setConsumer in class subscriber ${msg.topic}` });
+                console.log(`============PROCESSING MESSAGE FROM KAFKA TOPIC ${msg.topic}======================`)
 
                 if (msg.topic === config.kafkaBroker.topics.Init_auditLog) {
                     logger.info({ event: 'Init Topic', value: JSON.parse(msg.value) });
@@ -84,8 +85,12 @@ class Subscriber {
                     const payload = JSON.parse(msg.value);
                     console.log(JSON.stringify(payload));
                     const accountStatement = new accountStatementService();
-                    if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-                    else await accountStatement.sendEmailCSVFormat(payload);
+                    if (payload.format === 'pdf')
+                        { await accountStatement.sendEmailPDFFormat(payload) }
+                    else
+                    {   console.log(`===SENDIN ACCOUNT STATEMENT CSV==============`)
+                        await accountStatement.sendEmailCSVFormat(payload);
+                    }
                 }
 
                 if (msg.topic === config.kafkaBroker.topics.InitTrans_USSD_Outgoing) {

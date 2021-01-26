@@ -23,7 +23,7 @@ class accountStatementService {
             // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
-            console.log("******Orace Account Management Response*****",resp);
+            console.log("******Oracle Account Management Response*****",resp);
             if (resp.status === 200) {
                 const response = resp.data;
                 console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
