@@ -7,7 +7,7 @@ busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVou
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor} from '/consumers/'
 
 class Subscriber {
-
+    instance = null;
     constructor() {
         //provide list of topics from which you want to consume messages 
         this.event = new Broker([
@@ -40,6 +40,9 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_mr_payment,
             config.kafkaBroker.topics.confirmTrans_mr_payment
         ]);
+
+        this.setConsumer();
+        
     }
 
     // config.kafkaBroker.topics.InitTrans_USSD_Outgoing,
@@ -732,6 +735,16 @@ class Subscriber {
                 throw new Error(error);
             }
         });
+    }
+
+    getInstance() {
+        if (this.instance) {
+            return this.instance;
+        }
+        else {
+            this.instance = new Subscriber();
+            return this.instance;            
+        }
     }
 
 }

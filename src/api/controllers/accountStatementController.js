@@ -34,7 +34,7 @@ class accountStatementController {
                 accountLevel: userProfile.accountLevel || ''
             };
 
-            const subscriber = new Subscriber();
+            const subscriber = Subscriber.getInstance();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             // const accountStatement = new accountStatementService();
             // if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
