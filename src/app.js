@@ -25,7 +25,7 @@ app.use(responseTime());
 
 // app.use(schemaValidatorMW);
 
- const subscriber = Subscriber.getInstance();
+ const subscriber = new Subscriber();
  //subscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);

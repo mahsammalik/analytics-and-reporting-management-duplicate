@@ -6,42 +6,52 @@ import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, dona
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor} from '/consumers/'
 
+let instance = null;
+
 class Subscriber {
-    instance = null;
+    
     constructor() {
-        //provide list of topics from which you want to consume messages 
-        this.event = new Broker([
-            config.kafkaBroker.topics.Init_topic,
-            config.kafkaBroker.topics.App_Merchant_Account_Statement,
-            config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
-            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
-            config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
-            config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+        if (!instance) {
+            instance = this;
+            this.event = new Broker([
+                config.kafkaBroker.topics.Init_topic,
+                config.kafkaBroker.topics.App_Merchant_Account_Statement,
+                config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
+                config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
+                config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
+                config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+    
+                config.kafkaBroker.topics.initTrans_sendMoney_bank,
+                config.kafkaBroker.topics.initTrans_qr_payment,
+                config.kafkaBroker.topics.confirmTrans_qr_payment,
+                config.kafkaBroker.topics.initTrans_MobileBundle,
+                config.kafkaBroker.topics.confirmTrans_MobileBundle,
+                config.kafkaBroker.topics.initTrans_BusTicket,
+                config.kafkaBroker.topics.confirmTrans_BusTicket,
+                config.kafkaBroker.topics.initTrans_eVouchers,
+                config.kafkaBroker.topics.confirmTrans_eVouchers,
+                config.kafkaBroker.topics.initTrans_eventTickets,
+                config.kafkaBroker.topics.confirmTrans_eventTickets,
+                config.kafkaBroker.topics.queryTrans_creemVoucher,
+                config.kafkaBroker.topics.initTrans_Donation,
+                config.kafkaBroker.topics.confirmTrans_Donation,
+                config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
+                config.kafkaBroker.topics.confirm_deposit_DVDC,
+                config.kafkaBroker.topics.init_daraz_voucher,
+                config.kafkaBroker.topics.confirm_daraz_voucher,
+                config.kafkaBroker.topics.update_account_details,
+                config.kafkaBroker.topics.initTrans_mr_payment,
+                config.kafkaBroker.topics.confirmTrans_mr_payment
+            ]);    
+            this.setConsumer();
+            return instance;
+        }
+        else {
+            return instance;
+        }
+        
+        //provide list of topics from which you want to consume messages
 
-            config.kafkaBroker.topics.initTrans_sendMoney_bank,
-            config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.confirmTrans_qr_payment,
-            config.kafkaBroker.topics.initTrans_MobileBundle,
-            config.kafkaBroker.topics.confirmTrans_MobileBundle,
-            config.kafkaBroker.topics.initTrans_BusTicket,
-            config.kafkaBroker.topics.confirmTrans_BusTicket,
-            config.kafkaBroker.topics.initTrans_eVouchers,
-            config.kafkaBroker.topics.confirmTrans_eVouchers,
-            config.kafkaBroker.topics.initTrans_eventTickets,
-            config.kafkaBroker.topics.confirmTrans_eventTickets,
-            config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_Donation,
-            config.kafkaBroker.topics.confirmTrans_Donation,
-            config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
-            config.kafkaBroker.topics.confirm_deposit_DVDC,
-            config.kafkaBroker.topics.init_daraz_voucher,
-            config.kafkaBroker.topics.confirm_daraz_voucher,
-            config.kafkaBroker.topics.update_account_details,
-            config.kafkaBroker.topics.initTrans_mr_payment,
-            config.kafkaBroker.topics.confirmTrans_mr_payment
-        ]);
-
-        this.setConsumer();
         
     }
 
@@ -737,15 +747,6 @@ class Subscriber {
         });
     }
 
-    getInstance() {
-        if (this.instance) {
-            return this.instance;
-        }
-        else {
-            this.instance = new Subscriber();
-            return this.instance;            
-        }
-    }
 
 }
 
