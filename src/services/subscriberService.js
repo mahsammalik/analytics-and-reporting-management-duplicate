@@ -6,14 +6,14 @@ import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, dona
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor} from '/consumers/'
 
-let instance = null;
+//let instance = null;
 
 class Subscriber {
     
     constructor() {
-        if (!instance) {
-            instance = this;
-            this.event = new Broker([
+        // if (!instance) {
+        //     instance = this;
+             this.event = new Broker([
                 config.kafkaBroker.topics.Init_topic,
                 config.kafkaBroker.topics.App_Merchant_Account_Statement,
                 config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
@@ -42,13 +42,10 @@ class Subscriber {
                 config.kafkaBroker.topics.update_account_details,
                 config.kafkaBroker.topics.initTrans_mr_payment,
                 config.kafkaBroker.topics.confirmTrans_mr_payment
-            ]);    
-            this.setConsumer();
-            return instance;
-        }
-        else {
-            return instance;
-        }
+             ]);    
+            //this.setConsumer();
+            //return instance;
+        
         
         //provide list of topics from which you want to consume messages
 
