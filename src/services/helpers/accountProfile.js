@@ -52,17 +52,17 @@ const getUserProfile = headers => {
 			'X-IP-ADDRESS': headers['x-ip-address'] || '',
 			'X-APP-Version': headers['x-app-version'] || '',
 		};
-		console.log("REQUEST HEADERS IN PROFILE CALL: ", headerFields)
-		const profile = await axios.get(userProfileURL, { headers: headerFields }).then(result => {
+
+		return axios.get(userProfileURL, { headers: headerFields }).then(result => {
 			console.log(result, "   result IN PROFILE CALL")
-			return result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
+			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
+			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
+			return profile
 		}).catch(error => {
 			console.log("ERROR IN PROFILE CALL: ", headerFields, error)
 			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 			return {};
 		});
-		logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
-		return profile;
 	} catch (error) {
 		logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 		logger.info({ event: 'Exited function', functionName: 'getUserProfile' });

@@ -11,7 +11,6 @@ const responseCodeMW = async (req, res, next) => {
         logger.info({ event: 'Entered function', functionName: 'responseCodeMW' });
         if (res.locals.response) {
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
-            console.log(response, "responseCodeMW")
             res.locals.response = response;
             res.status(200).json(response);
         } else {

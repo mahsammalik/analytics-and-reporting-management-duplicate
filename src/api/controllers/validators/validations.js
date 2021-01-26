@@ -2,7 +2,6 @@ import _ajv from 'ajv';
 import _ from 'lodash';
 
 const verifySchema = (Schema, requestedJSON) => {
-  console.log(requestedJSON);
   let result = {};
   const ajv = _ajv({
     allErrors: true,
@@ -26,7 +25,6 @@ const verifySchema = (Schema, requestedJSON) => {
         }),
       };
     } else {
-      console.log('requested JSON is valid');
       result = {
         success: true,
         message: 'requested JSON is valid',
