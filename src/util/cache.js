@@ -140,4 +140,4 @@ class Cache {
 
 const _Cache = new Cache();
 
-export default _Cache();
+export default _Cache;
