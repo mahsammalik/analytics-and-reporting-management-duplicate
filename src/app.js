@@ -26,7 +26,7 @@ app.use(responseTime());
 // app.use(schemaValidatorMW);
 
  const subscriber = new Subscriber();
- //subscriber.setConsumer();
+ subscriber.setConsumer(); //TODO investigate that this should be auto-called via constructor
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
