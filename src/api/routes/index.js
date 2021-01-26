@@ -65,6 +65,10 @@ const accountStatement = new accountStatementController();
 router.get(
     '/account', msisdnParserMW(), accountStatement.calculateAccountStatement, responseCodeMW,
 );
+
+router.get(
+    '/main/account', msisdnParserMW(), accountStatement.calculateAccountStatementTemp, responseCodeMW,
+);
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
 );
