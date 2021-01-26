@@ -63,7 +63,7 @@ class accountStatementController {
         }
     }
 
-    async calculateAccountStatementTemp(req, res, next) {
+    async calculateAccountStatementWithoutKafka(req, res, next) {
         try {
             logger.info({ event: 'Entered function', functionName: 'main calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
 
