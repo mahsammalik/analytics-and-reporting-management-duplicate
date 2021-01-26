@@ -53,7 +53,7 @@ const getUserProfile = headers => {
 			'X-APP-Version': headers['x-app-version'] || '',
 		};
 		console.log("REQUEST HEADERS IN PROFILE CALL: ", headerFields)
-		const profile = axios.get(userProfileURL, { headers: headerFields }).then(result => {
+		const profile = await axios.get(userProfileURL, { headers: headerFields }).then(result => {
 			console.log(result, "   result IN PROFILE CALL")
 			return result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
 		}).catch(error => {

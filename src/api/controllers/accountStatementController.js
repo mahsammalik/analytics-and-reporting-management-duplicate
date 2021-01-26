@@ -37,6 +37,9 @@ class accountStatementController {
             console.log("Headers PAYLOAD --------**************", payload);
             const subscriber = new Subscriber();
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
+            // const accountStatement = new accountStatementService();
+            // if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
+            // else await accountStatement.sendEmailCSVFormat(payload);
 
             logger.info({ event: 'Exited function', functionName: 'calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
