@@ -35,7 +35,7 @@ class accountStatementController {
             };
 
             const subscriber = new Subscriber();
-            subscriber.setConsumer(); 
+            //subscriber.setConsumer(); 
             console.log(`============PRODUCING MESSAGE OF ACCOUNT STATEMENT======================`)
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             console.log(`============DONE PRODUCING MESSAGE OF ACCOUTN STATEMENT==================`)
