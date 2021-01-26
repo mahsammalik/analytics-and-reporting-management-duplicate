@@ -13,7 +13,9 @@ class accountStatementController {
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+            console.log(`getting userProfile : `)
             const userProfile = await getUserProfile(req.headers);
+            console.log(`Obtained user profile as follows : `)
             logger.debug({ userProfile });
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
