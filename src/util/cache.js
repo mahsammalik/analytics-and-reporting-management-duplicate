@@ -51,7 +51,7 @@ class Cache {
         } catch (e) {
             logger.info({ event: 'Error Thrown', message: 'Unable to put value in cache' + e });
             if (client) {
-                await client.disconnect();
+                //await client.disconnect();
             }
         }
     }
@@ -65,12 +65,12 @@ class Cache {
             let value = await client.get(key);
             console.log(value, "value getValue")
             logger.info({ event: 'printing value for key ' + key + ' is ' + value });
-            await client.disconnect();
+            //await client.disconnect();
             return value;
         } catch (e) {
             logger.info({ event: 'Unable to get value from cache' + e });
             if (client) {
-                await client.disconnect();
+                //await client.disconnect();
             }
         }
     }
@@ -97,11 +97,11 @@ class Cache {
             logger.info('Number of cache hits: ' + stats.hits);
             logger.info('All stats: ' + JSON.stringify(stats, null, ' '));
             logger.info('Values saved in Datacache');
-            await client.disconnect();
+            //await client.disconnect();
         } catch (e) {
             logger.info('Unable to put All values in cache' + e);
             if (client) {
-                await client.disconnect();
+                //await client.disconnect();
             }
         }
     }
@@ -125,12 +125,12 @@ class Cache {
             logger.info('All stats: ' + JSON.stringify(stats, null, ' '));
             if (data)
                 logger.info('Values get from Datacache' + JSON.stringify(data));
-            await client.disconnect();
+            //await client.disconnect();
             return data;
         } catch (e) {
             logger.info('Unable to get All values from cache' + e);
             if (client) {
-                await client.disconnect();
+                //await client.disconnect();
             }
         }
     }
