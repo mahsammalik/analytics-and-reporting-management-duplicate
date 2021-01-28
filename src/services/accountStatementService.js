@@ -95,7 +95,7 @@ class accountStatementService {
                 const { data, success, message } = response;
                 if (success) {
                     const accountData = {
-                        headers: ["Transaction ID", "Transaction Date", "Transaction Type", "Channel", "Description", "Amount debited", "Amount credited", "Running balance\n"],
+                        headers: ["Transaction ID", "Date", "Transaction Type", "Channel", "Description", "Amount debited", "Amount credited", "Running balance\n"],
                         data,
                         payload
 

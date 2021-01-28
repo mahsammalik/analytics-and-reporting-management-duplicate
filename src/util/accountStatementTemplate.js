@@ -54,11 +54,11 @@ const accountStatementTemplate = accountData => {
 		// console.log(JSON.stringify(accountData.payload));
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div><b>Date of Issue: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</div>
-		<div><b>Account Title: </b>${accountData.payload.merchantName}</div>
-		<div><b>Account Number: </b>${accountData.payload.msisdn}</div>
-		<div><b>Account Type: </b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</div>
-		<div><b>Statement Period: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</div>
+		<div>Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</b></div>
+		<div>Account Title: <b>${accountData.payload.merchantName}</b></div>
+		<div>Account Number: <b>${accountData.payload.msisdn}</b></div>
+		<div>Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
+		<div>Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</b></div>
 		</div>
 		</header>
 		<main>
