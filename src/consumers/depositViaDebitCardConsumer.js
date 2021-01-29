@@ -38,7 +38,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DEPOSIT_VIA_CARD, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DEPOSIT_VIA_CARD, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DEPOSIT_VIA_CARD, initTransData);

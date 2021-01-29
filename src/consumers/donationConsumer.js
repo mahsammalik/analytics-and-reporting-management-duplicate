@@ -38,7 +38,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DONATION, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DONATION, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DONATION, initTransData);

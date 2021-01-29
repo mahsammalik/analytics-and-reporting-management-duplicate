@@ -77,7 +77,7 @@ class Processor {
             if(JSON.stringify(initTransData) !== '{}')
             {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_OUTGOING_IBFT, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.OUTGOING_IBFT, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.OUTGOING_IBFT, initTransData);

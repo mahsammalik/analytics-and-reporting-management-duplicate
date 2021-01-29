@@ -45,7 +45,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVOUCHER, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.EVOUCHER, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVOUCHER, initTransData);

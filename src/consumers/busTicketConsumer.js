@@ -40,7 +40,7 @@ class Processor {
                 initTransData.seatNumber = '';
                 initTransData.service = '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.statusReason = '';
+                initTransData.failureReason = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.travelDate = null;
 
@@ -49,7 +49,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_BUS_TICKET, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.BUS_TICKET, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.BUS_TICKET, initTransData);

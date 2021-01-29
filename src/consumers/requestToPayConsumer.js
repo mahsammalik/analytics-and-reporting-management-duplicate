@@ -53,7 +53,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MERCHANT_REQUEST_TO_PAY, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.REQUEST_TO_PAY, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("MERCHANT", config.reportingDBTables.REQUEST_TO_PAY, initTransData);

@@ -41,7 +41,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_DARAZ_WALLET, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DARAZ_WALLET, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.DARAZ_WALLET, initTransData);

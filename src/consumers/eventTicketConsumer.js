@@ -40,7 +40,7 @@ class Processor {
                 initTransData.promoApplied = '';
                 initTransData.revenue = 0;
                 initTransData.seatClass = '';
-                initTransData.successfull = '';
+                initTransData.status = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
 
                 console.log(JSON.stringify(initTransData));
@@ -48,7 +48,7 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVENT_TICKET, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.EVENT_TICKET, initTransData);
                 }
                 else {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVENT_TICKET, initTransData);
