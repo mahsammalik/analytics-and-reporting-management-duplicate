@@ -31,7 +31,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_MOBILE_BUNDLE, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_MOBILE_BUNDLE, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.MOBILE_BUNDLE, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'mobileBundleConsumerProcessor in class Processor', error: { message: error.message, stack: error.stack } });

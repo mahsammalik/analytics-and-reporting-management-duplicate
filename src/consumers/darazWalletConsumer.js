@@ -40,7 +40,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_DARAZ_WALLET, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_DARAZ_WALLET, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.DARAZ_WALLET, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processDarazWalletConsumer in class Processor', error: { message: error.message, stack: error.stack } });

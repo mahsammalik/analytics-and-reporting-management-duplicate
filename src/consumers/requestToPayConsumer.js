@@ -52,7 +52,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MERCHANT_REQUEST_TO_PAY, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MERCHANT_REQUEST_TO_PAY, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("MERCHANT", config.reportingDBTables.REQUEST_TO_PAY, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processRequestToPayConsumer in class Processor', error: { message: error.message, stack: error.stack } });

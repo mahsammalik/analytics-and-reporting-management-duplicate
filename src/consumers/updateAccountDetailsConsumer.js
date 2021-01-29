@@ -33,11 +33,21 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(initTransData.useCase.toLowerCase() === 'changempin') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_CHANGE_MPIN, initTransData);
+                    if(process.env.NODE_ENV === 'development') {
+                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_CHANGE_MPIN, initTransData);
+                    }
+                    else {
+                        await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.CHANGE_MPIN, initTransData);
+                    }
                 }
                 
                 if(initTransData.useCase.toLowerCase() === 'resetmpin') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_RESET_MPIN, initTransData);
+                    if(process.env.NODE_ENV === 'development') {
+                        await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CONSUMER_RESET_MPIN, initTransData);
+                    }
+                    else {
+                        await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.RESET_MPIN, initTransData);
+                    }
                 }
             }
         } catch (error) {

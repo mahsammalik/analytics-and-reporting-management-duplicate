@@ -48,7 +48,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_BUS_TICKET, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_BUS_TICKET, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.BUS_TICKET, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processBusTicketConsumer in class Processor', error: { message: error.message, stack: error.stack } });

@@ -3,7 +3,7 @@ import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 
-const cn = process.env.DB2Connection || config.IBMDB2_Dev.connectionString;
+const cn = process.env.DB2Connection || config.IBMDB2_Test.connectionString || config.IBMDB2_Dev.connectionString;
 const schema = config.IBMDB2_Dev.schema;
 
 class DatabaseConn {
