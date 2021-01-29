@@ -10,3 +10,4 @@ export {default as depositVIADebitCardProcessor} from './depositViaDebitCardCons
 export {default as darazVoucherProcessor} from './darazWalletConsumer';
 export {default as accountDetailsUpdateProcessor} from './updateAccountDetailsConsumer';
 export {default as requestToPayProcessor} from './requestToPayConsumer';
+export {default as cardOrderingProcessor} from './cardOrderingConsumer';

@@ -168,7 +168,9 @@
                 "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed",
 
                 "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
-                "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed" 
+                "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
+                "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
+                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed" 
             }
         },
         "cache": {

@@ -4,7 +4,7 @@ import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
-eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor} from '/consumers/'
+eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -41,7 +41,9 @@ class Subscriber {
                 config.kafkaBroker.topics.confirm_daraz_voucher,
                 config.kafkaBroker.topics.update_account_details,
                 config.kafkaBroker.topics.initTrans_mr_payment,
-                config.kafkaBroker.topics.confirmTrans_mr_payment
+                config.kafkaBroker.topics.confirmTrans_mr_payment,
+                config.kafkaBroker.topics.initTrans_cardOrdering,
+                config.kafkaBroker.topics.confirmTrans_cardOrdering
              ]);    
             //this.setConsumer();
             //return instance;
@@ -736,6 +738,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await requestToPayProcessor.processRequestToPayConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_cardOrdering){
+                    console.log('*********** Init Trans Card Ordering *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await cardOrderingProcessor.processCardOrderingConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_cardOrdering){
+                    console.log('*********** Confirm Trans Card Ordering *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
