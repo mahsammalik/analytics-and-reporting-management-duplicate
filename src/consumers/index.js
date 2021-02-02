@@ -11,3 +11,4 @@ export {default as darazVoucherProcessor} from './darazWalletConsumer';
 export {default as accountDetailsUpdateProcessor} from './updateAccountDetailsConsumer';
 export {default as requestToPayProcessor} from './requestToPayConsumer';
 export {default as cardOrderingProcessor} from './cardOrderingConsumer';
+export {default as newSignupRewardProcessor} from './newSignupRewardConsumer';

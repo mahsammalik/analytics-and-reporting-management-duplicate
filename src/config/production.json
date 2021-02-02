@@ -181,7 +181,13 @@
                 "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
                 "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
                 "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
-                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed" 
+                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
+
+                "initTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Init_Passed",
+                "confirmTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Confirm_Passed",
+                
+                "initTrans_signupReward": "ESB_Mobile_SignupReward_Init_Passed",
+                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed"
             }
         },
         "cache": {

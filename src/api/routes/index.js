@@ -8,7 +8,7 @@ import DB2Connection from '../../util/DB2Connection'
 import moment  from 'moment';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
 busTicketProcessor, eventTicketProcessor, darazVoucherProcessor, eVoucherProcessor, depositVIADebitCardProcessor,
-accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor} from '/consumers/'
+accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, newSignupRewardProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -63,6 +63,10 @@ const accountStatement = new accountStatementController();
 //     // await cardOrderingProcessor.processCardOrderingConsumer(data);
 //     // data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"CardOrdering","ThirdPartyType":"merchantApp","Identity":{"Caller":{"ThirdPartyID":"ibm_merchant_app"},"Initiator":{"IdentifierType":1,"Identifier":"923445304085"}},"AppConnectUUID":"6ca81c86-6186-11eb-9ebf-0c83041d0000"},"Request":{"Transaction":{"CommandID":"ComfirmTransaction","OriginatorConversationID":"0082b1fef9e84e7f98e2028884e72d2c","Parameters":{"Parameter":[{"Key":"TransID","Value":"010711585959"},{"Key":"IsSuccess","Value":"true"},{"Key":"ChannelCode","Value":"1030"}]},"Timestamp":"20210128163233"}},"Result":{"ResultType":"0","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711585959","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210128"},{"Key":"TransEndTime","Value":"213234"},{"Key":"Balance","Value":"100.94"},{"Key":"BeneficiaryName","Value":"Card ordering"},{"Key":"Amount","Value":"1.00"}]}}};
 //     // await cardOrderingProcessor.processCardOrderingConsumer(data, true);
+//     data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"SignupReward","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923012009818"}},"AppConnectUUID":"328e2374-647e-11eb-9ebf-0c83041d0000"},"Request":{"Transaction":{"CommandID":"InitTrans_CustomerDeposit","OriginatorConversationID":"e7df3add1a034058ad128a7726938018","Parameters":{"Parameter":[{"Key":"Amount","Value":50},{"Key":"CustomerMSISDN","Value":"923465105562"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210201111113"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711610833","ResultParameters":{"ResultParameter":[{"Key":"BeneficiaryName","Value":"nouraiz taimour"},{"Key":"TransEndDate","Value":"20210201"},{"Key":"TransEndTime","Value":"161114"}]}}};
+//     await newSignupRewardProcessor.processNewSignupRewardConsumer(data);
+//     data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"SignupReward","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923012009818"}},"AppConnectUUID":"32c67742-647e-11eb-9ebf-0c83041d0000"},"Request":{"Transaction":{"CommandID":"ComfirmTransaction","OriginatorConversationID":"7fae46465ff24c9c8222a58f58c2c61c","Parameters":{"Parameter":[{"Key":"TransID","Value":"010711610833"},{"Key":"IsSuccess","Value":true},{"Key":"Amount","Value":50},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210201111114"}},"Result":{"ResultType":"0","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711610833","ResultParameters":{"ResultParameter":[{"Key":"TransEndDate","Value":"20210201"},{"Key":"TransEndTime","Value":"161114"},{"Key":"BeneficiaryName","Value":"nouraiz taimour"},{"Key":"Amount","Value":"50.00"}]}}};
+//     await newSignupRewardProcessor.processNewSignupRewardConsumer(data, true);
 //     res.status(200).json({message: "Done!"})
 // });
 

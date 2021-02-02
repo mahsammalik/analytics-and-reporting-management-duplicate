@@ -4,7 +4,8 @@ import DB2Connection from '../util/DB2Connection';
 import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
-eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor} from '/consumers/'
+eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
+newSignupRewardProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -43,7 +44,12 @@ class Subscriber {
                 config.kafkaBroker.topics.initTrans_mr_payment,
                 config.kafkaBroker.topics.confirmTrans_mr_payment,
                 config.kafkaBroker.topics.initTrans_cardOrdering,
-                config.kafkaBroker.topics.confirmTrans_cardOrdering
+                config.kafkaBroker.topics.confirmTrans_cardOrdering,
+                config.kafkaBroker.topics.initTrans_InsuranceSubPayment,
+                config.kafkaBroker.topics.confirmTrans_InsuranceSubPayment,
+                config.kafkaBroker.topics.initTrans_signupReward,
+                config.kafkaBroker.topics.confirmTrans_signupReward,
+                
              ]);    
             //this.setConsumer();
             //return instance;
@@ -764,6 +770,58 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_InsuranceSubPayment){
+                    console.log('*********** Init Trans Insurance Sub. Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        //await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_InsuranceSubPayment){
+                    console.log('*********** Confirm Insurance Sub. Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_signupReward){
+                    console.log('*********** Init Trans Signup Reward *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await newSignupRewardProcessor.processNewSignupRewardConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_signupReward){
+                    console.log('*********** Confirm Trans Signup Reward *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await newSignupRewardProcessor.processNewSignupRewardConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
