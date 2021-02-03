@@ -37,7 +37,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_DEPOSIT_VIA_CARD, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DEPOSIT_VIA_CARD, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DEPOSIT_VIA_CARD, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processDVDCConsumer in class Processor', error: { message: error.message, stack: error.stack } });

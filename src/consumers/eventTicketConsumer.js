@@ -40,14 +40,19 @@ class Processor {
                 initTransData.promoApplied = '';
                 initTransData.revenue = 0;
                 initTransData.seatClass = '';
-                initTransData.successfull = '';
+                initTransData.status = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
 
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVENT_TICKET, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.EVENT_TICKET, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVENT_TICKET, initTransData);
+                }
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processEventTicketConsumer in class Processor', error: { message: error.message, stack: error.stack } });

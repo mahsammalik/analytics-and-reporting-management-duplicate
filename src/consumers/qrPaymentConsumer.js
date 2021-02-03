@@ -50,7 +50,12 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_QR_PAYMENT, initTransData);
+                if(process.env.NODE_ENV === 'development') {
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.QR_PAYMENT, initTransData);
+                }
+                else {
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.QR_PAYMENT, initTransData);
+                }
             }
         } catch(error) {
         logger.error({ event: 'Error thrown ', functionName: 'processQRPaymentConsumer in class Processor', error: { message: error.message, stack: error.stack } });

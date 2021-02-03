@@ -5,20 +5,23 @@ const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.sc
 
 class Processor {
 
-    constructor() {}
+    constructor() { }
 
-    async processDarazWalletConsumer(data, isConfirm = false) {
+    async processCardOrderingConsumer(data, isConfirm = false) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'processDarazWalletConsumer in class Processor' });
+            logger.info({ event: 'Entered function', functionName: 'processCardOrderingConsumer in class Processor' });
             //console.log(data);
             let initTransData = {};
+
             if (data.Result.ResultCode == 0) {
-                initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.balanceBefore = 0;
+                initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                initTransData.email = data.CustomObject?.email || '';
                 initTransData.channel = data.Header.SubChannel;
-                initTransData.walletEmail = '';
-                initTransData.walletNumber = 0;
-                initTransData.walletOwner = '';
+                initTransData.failureReason = '';
+                initTransData.fund = initTransData.amount;
+                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.organization = data.CustomObject?.orgName || '';
+                initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
@@ -28,27 +31,21 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.failureReason = '';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.promoCode = '';
-                initTransData.promoCodeAmount = 0;
-                initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
-                initTransData.userEmail = '';
 
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DARAZ_WALLET, initTransData);
+                    //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DONATION, initTransData);
                 }
                 else {
-                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.DARAZ_WALLET, initTransData);
+                    //await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DONATION, initTransData);
                 }
             }
         } catch (error) {
-            logger.error({ event: 'Error thrown ', functionName: 'processDarazWalletConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            logger.error({ event: 'Error thrown ', functionName: 'processCardOrderingConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
         }
     }
