@@ -50,7 +50,6 @@ main {
 .heading h1 {
     display: inline;
     font-family: Arial Black;
-    font-size: 13;
 }
 
 .heading b,
@@ -136,19 +135,15 @@ table>thead>tr th {
 table>thead {
     margin-bottom: 10px;
     padding-bottom: 10px;
-    font-size: 13px;
 }
 
 table>tbody {
     margin-top: 20px;
-    font-size: 12px;
-
 }
 
 table>tbody>tr {
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
-    font-size: 12px;
     /* border-top: 1px solid #eee; */
 }
 
