@@ -30,7 +30,7 @@ const htmlFoot = `<footer>
 </div>
 <div class="copyright">
 	<div class="helpline">
-		<p>Customer Helpline: <b>444</b> | UAN: 111-124-444</p>
+		<p>Customer Helpline: <b>444</b> | UAN: <b>111-124-444</b></p>
 		<b>wwww.jazzcash.com.pk</b>
 	</div>
 	<div class="footerlogo">
