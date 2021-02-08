@@ -187,7 +187,10 @@
                 "confirmTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Confirm_Passed",
                 
                 "initTrans_signupReward": "ESB_Mobile_SignupReward_Init_Passed",
-                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed"
+                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
+
+                "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed"
             }
         },
         "cache": {
