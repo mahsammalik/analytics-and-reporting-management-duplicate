@@ -30,6 +30,7 @@ main {
     float: right;
     text-align: right;
     font-size: 10px;
+    margin-top: 10px;
 }
 
 .headerTable b {
@@ -50,6 +51,7 @@ main {
 .heading h1 {
     display: inline;
     font-family: Arial Black;
+    font-size: 13;
 }
 
 .heading b,
@@ -135,16 +137,23 @@ table>thead>tr th {
 table>thead {
     margin-bottom: 10px;
     padding-bottom: 10px;
+    font-size: 10px;
 }
 
 table>tbody {
     margin-top: 20px;
+    font-size: 10px;
 }
 
 table>tbody>tr {
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
+    font-size: 10px;
     /* border-top: 1px solid #eee; */
+}
+
+.mt-5 {
+    margin-top: 5px;
 }
 
 table>tbody>tr td {
@@ -184,13 +193,13 @@ table>tbody>tr td {
     margin-right: 10px;
 }
 
-.section>.noData {
+.noData {
     margin: 10px;
     padding-left: 10px;
-    padding-top: 10px;
 }
 
 .mainSection {
     display: block;
-    height: 510px;
+    height: 500px;
+margin-top: 10px;
 }
