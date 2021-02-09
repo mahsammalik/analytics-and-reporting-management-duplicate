@@ -1,5 +1,15 @@
+
+@font-face {
+    font-family: work-sans-italic;
+    src: url('../fonts/Work_Sans/WorkSans-Italic-VariableFont_wght.ttf');
+  }
+
+  @font-face {
+    font-family: work-sans;
+    src: url('../fonts/Work_Sans/WorkSans-VariableFont_wght.ttf');
+  }
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: work-sans, work-sans-italic, Helvetica, sans-serif;
     font-size: 12px;
 }
 
@@ -14,6 +24,9 @@ main {
     padding: 5px;
 }
 
+main {
+height: 550px !important;
+}
 .headerLogo {
     width: 20%;
     float: left;
@@ -35,7 +48,7 @@ main {
 
 .headerTable b {
     font-size: 10px;
-    font-family: Arial Black;
+    font-family: work-sans Black;
 }
 
 .headerTable-heading {
@@ -50,7 +63,7 @@ main {
 
 .heading h1 {
     display: inline;
-    font-family: Arial Black;
+    font-family: work-sans Black;
     font-size: 13;
 }
 
@@ -67,7 +80,7 @@ main {
 }
 
 .section {
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 footer {
@@ -86,11 +99,12 @@ footer {
     padding: 10px 0;
     width: 100%;
     display: block;
-    font-size: 8px;
+    font-size: 9px;
 }
 
 .disclaimer b {
-    font-family: Arial Black;
+    font-family: work-san;
+    font-size: 9px;
 }
 
 .copyright {
@@ -101,7 +115,7 @@ footer {
 }
 
 .copyright b {
-    font-family: Arial Black;
+    font-family: work-sans Black;
 }
 
 .helpline {
@@ -131,7 +145,7 @@ table>thead>tr th {
     border-radius: 5px;
     border-right: 2px solid #fff;
     width: 10px;
-    font-family: Arial Black, sans-serif;
+    font-family: work-sans Black, sans-serif;
 }
 
 table>thead {
@@ -156,6 +170,13 @@ table>tbody>tr {
     margin-top: 5px;
 }
 
+td > div {
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
 table>tbody>tr td {
     padding: 10px;
     text-align: center;
@@ -173,7 +194,7 @@ table>tbody>tr td {
 }
 
 .taxHeading {
-    font-family: Arial Black, sans-serif;
+    font-family: work-sans Black, sans-serif;
     margin: 10px auto;
 }
 

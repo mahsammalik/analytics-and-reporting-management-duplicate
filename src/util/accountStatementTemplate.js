@@ -50,59 +50,6 @@ const accountStatementTemplate = accountData => {
 	try {
 		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
 		let pageSize = 7;
-		let marginTop = '0px';
-		let marginNextTop = '0px';
-		let sectionMargin;
-		if (accountData.data.length === 1) {
-			marginTop = '210px';
-			marginNextTop = '210px';
-		}
-		if (accountData.data.length === 2) {
-			marginTop = '120px';
-			marginNextTop = '120px';
-		}
-		if (accountData.data.length === 3) {
-			marginTop = '80px';
-			marginNextTop = '80px';
-		}
-		if (accountData.data.length === 4) {
-			pageSize = 4;
-			marginTop = '20px';
-			marginNextTop = '10px';
-		}
-		if (accountData.data.length === 5) {
-			pageSize = 4;
-			marginTop = '220px';
-			marginNextTop = '220px';
-		}
-		if (accountData.data.length === 6) {
-			pageSize = 5;
-			marginTop = '130px';
-			marginNextTop = '230px';
-		}
-		if (accountData.data.length === 7) {
-			marginNextTop = '300px';
-		}
-		if (accountData.data.length > 7) {
-			if ((accountData.data.length % 7) === 0) {
-				marginNextTop = '200px';
-			}
-			if ((accountData.data.length % 7) === 1) {
-				marginNextTop = '210px';
-			}
-			if ((accountData.data.length % 7) === 2) {
-				marginNextTop = '135px';
-			}
-			if ((accountData.data.length % 7) === 3) {
-				marginNextTop = '63px';
-			}
-			if ((accountData.data.length % 7) === 4) {
-				marginNextTop = '-10px';
-			}
-			if ((accountData.data.length % 7) >= 5) {
-				marginNextTop = '330px';
-			}
-		}
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
@@ -144,7 +91,7 @@ const accountStatementTemplate = accountData => {
 			});
 			totalCredit = parseFloat(totalCredit).toFixed(2);
 			totalDebit = parseFloat(totalDebit).toFixed(2);
-			const statementSummary = `<div class="section" style="margin-top:${sectionMargin}">
+			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
 				Statement Summary
@@ -172,31 +119,15 @@ const accountStatementTemplate = accountData => {
 		</div>`;
 
 
-			const checkiflastindex = (ind) => (ind === accountData.data.length && (ind % 7 >= 5 || ind % 7 == 0))
-
-			const checkIndex = () => {
-				if ((accountData.data.length % 7) === 0)
-					return '0px';
-
-				if ((accountData.data.length % 7) === 6)
-					return '45px';
-
-				if ((accountData.data.length % 7) === 5)
-					return '115px';
-
-			}
-
+			const checkifsecondlastpage = (ind) => (ind === accountData.data.length && (ind % 7 >= 5 || ind % 7 == 0))
 
 			let statementTableHeader = accountData.headers.map(header => `<th>${header}</th>`);
 			statementTableHeader = statementTableHeader.join().replace(/,/g, '');
 			let slicedArray = [];
 
-			// if (accountData.data.length <= pageSize) {
-			//     slicedArray = accountData.data;
-			//     console.log(slicedArray);
-			// } else {
+		
 			slicedArray = accountData.data.map((item, index) => {
-				if (accountData.data.length >= 7 && checkiflastindex(index + 1))
+				if (checkifsecondlastpage(index + 1))
 					return [''];
 
 				if (index % pageSize === 0)
@@ -204,7 +135,6 @@ const accountStatementTemplate = accountData => {
 
 				return null;
 			}).filter((item) => { return item; });
-			// }
 
 			slicedArray.forEach((item, index) => {
 				let pagination = `<div class="section">
@@ -219,7 +149,7 @@ const accountStatementTemplate = accountData => {
 				if (item[0] !== '') {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
-						let column = row.map((col, ind) => { return ind > 5 ? `<td>${parseFloat(col).toFixed(2)}</td>` : `<td>${col}</td>`; });
+						let column = row.map((col, ind) => { return ind > 5 ? `<td><div>${parseFloat(col).toFixed(2)}</td></div>` : `<td><div>${col}</div></td>`; });
 						column = column.join().replace(/,/g, '');
 						return `<tr>${column}</tr>`;
 					});
@@ -227,7 +157,7 @@ const accountStatementTemplate = accountData => {
 					htmlString += `<tbody>${page}</tbody></table><div class="main-section">`;
 				}
 
-				htmlString += index === slicedArray.length - 1 ? `${statementSummary}<div style="margin-top:${marginNextTop}"/></main>${htmlFoot}` : `</main><div style="margin-top:${(index === (slicedArray.length - 2) && accountData.data.length > 7) ? checkIndex() : marginTop}"/>${htmlFoot}`;
+				htmlString += index === slicedArray.length - 1 ? `${statementSummary}</main>${htmlFoot}` : `</main>${htmlFoot}`;
 
 			});
 			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
