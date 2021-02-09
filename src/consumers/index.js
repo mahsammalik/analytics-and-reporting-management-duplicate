@@ -12,3 +12,4 @@ export {default as accountDetailsUpdateProcessor} from './updateAccountDetailsCo
 export {default as requestToPayProcessor} from './requestToPayConsumer';
 export {default as cardOrderingProcessor} from './cardOrderingConsumer';
 export {default as newSignupRewardProcessor} from './newSignupRewardConsumer';
+export {default as foodOrderingProcessor} from './foodOrdering';
