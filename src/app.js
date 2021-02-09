@@ -1,5 +1,5 @@
 import { logger } from '/util/';
-// global.logger = logger;
+global.logger = logger;
 import express from 'express';
 import bodyParser from 'body-parser';
 import router from './api/routes';
