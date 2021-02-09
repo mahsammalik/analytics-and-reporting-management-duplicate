@@ -1,4 +1,4 @@
-import { logger, responseCodeHandler } from '/util/';
+import { logger, responseCodeHandler } from '../../util';
 
 /**
  * * Send response based on response code from controller input  {locals.reponse}
