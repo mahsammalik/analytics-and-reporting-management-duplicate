@@ -14,15 +14,12 @@ class Processor {
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
-                initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.email = data.CustomObject?.email || '';
+                initTransData.action = '';
+                initTransData.cardCategory = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardCategory'; })?.Value || '';
+                initTransData.cardType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardType'; })?.Value || '';
                 initTransData.channel = data.Header.SubChannel;
-                initTransData.failureReason = '';
-                initTransData.fund = initTransData.amount;
+                initTransData.cnic = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.organization = data.CustomObject?.orgName || '';
-                initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                 }
@@ -31,17 +28,22 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
+                initTransData.orderID = 0;
+                initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
+                initTransData.suplCardCnic = '';
+                initTransData.suplCardNum = 0;
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
-
+                initTransData.trackDate = null;
+                
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DONATION, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DEBIT_CARD_TRACK, initTransData);
                 }
                 else {
-                    //await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DONATION, initTransData);
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DEBIT_CARD_TRACK, initTransData);
                 }
             }
         } catch (error) {

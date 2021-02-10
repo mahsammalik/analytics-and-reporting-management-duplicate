@@ -245,6 +245,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if(tableName === config.reportingDBTables.DEBIT_CARD_TRACK)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRACK_DATE, "ACTION", MSISDN, CNIC, CARD_TYPE, CARD_CAT, ORDER_ID, ORDER_DATE, SUPL_CARD_NUMBER, SUPL_CARD_CNIC, TID, STATUS, CHANNEL) 
+                VALUES(${data.trackDate}, '${data.action}', ${data.msisdn}, '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {
