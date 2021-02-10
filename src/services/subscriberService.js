@@ -5,7 +5,7 @@ import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
-newSignupRewardProcessor, foodOrderingProcessor} from '/consumers/'
+newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -51,6 +51,7 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_signupReward,
                 config.kafkaBroker.topics.initTrans_foodOrdering,
                 config.kafkaBroker.topics.confirmTrans_foodOrdering,
+                config.kafkaBroker.topics.updateTrans_cardManagement
                 
              ]);    
             //this.setConsumer();
@@ -850,6 +851,19 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await foodOrderingProcessor.processFoodOrderingConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.updateTrans_cardManagement){
+                    console.log('*********** Update Trans Card Management *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await createCardPINProcessor.processCreateCardPINConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

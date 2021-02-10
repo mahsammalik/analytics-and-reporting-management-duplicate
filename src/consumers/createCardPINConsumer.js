@@ -7,14 +7,15 @@ class Processor {
 
     constructor() { }
 
-    async processCardOrderingConsumer(data, isConfirm = false) {
+    async processCreateCardPINConsumer(data) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'processCardOrderingConsumer in class Processor' });
+            logger.info({ event: 'Entered function', functionName: 'processCreateCardPINConsumer in class Processor' });
             //console.log(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
-                initTransData.action = 'Card Order Tracking';
+                initTransData.action = 'Create Card PIN';
+                initTransData.cardNum = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardNumber'; })?.Value || '';
                 initTransData.cardCategory = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardCategory'; })?.Value || '';
                 initTransData.cardType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardType'; })?.Value || '';
                 initTransData.channel = data.Header.SubChannel;
@@ -28,26 +29,25 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.orderID = 0;
-                initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
+                initTransData.pinCreated = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'TargetCardPIN'; })?.Value || '';
+                initTransData.transactionStatus = 'Completed';
                 initTransData.suplCardCnic = '';
                 initTransData.suplCardNum = 0;
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
-                initTransData.trackDate = null;
                 
                 console.log(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.DEBIT_CARD_TRACK, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CREATE_CARD_PIN, initTransData);
                 }
                 else {
-                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.DEBIT_CARD_TRACK, initTransData);
+                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.CREATE_CARD_PIN, initTransData);
                 }
             }
         } catch (error) {
-            logger.error({ event: 'Error thrown ', functionName: 'processCardOrderingConsumer in class Processor', error: { message: error.message, stack: error.stack } });
+            logger.error({ event: 'Error thrown ', functionName: 'processCreateCardPINConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
         }
     }

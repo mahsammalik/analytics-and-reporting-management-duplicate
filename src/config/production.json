@@ -190,7 +190,9 @@
                 "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
 
                 "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
-                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed"
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
+
+                "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed"
             }
         },
         "cache": {
@@ -372,7 +374,8 @@
             "RESET_PIN": "RESET_PIN",
             "RESET_MPIN": "RESET_MPIN",
             "TRANS_DETAILS": "TRANS_DETAILS",
-            "WALLET_REQUEST": "WALLET_REQUEST"
+            "WALLET_REQUEST": "WALLET_REQUEST",
+            "CREATE_CARD_PIN": "CREATE_CARD_PIN"
         }
     }
 }

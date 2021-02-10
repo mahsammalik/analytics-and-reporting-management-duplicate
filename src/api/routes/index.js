@@ -9,7 +9,7 @@ import moment  from 'moment';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
 busTicketProcessor, eventTicketProcessor, darazVoucherProcessor, eVoucherProcessor, depositVIADebitCardProcessor,
 accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, newSignupRewardProcessor,
-foodOrderingProcessor} from '/consumers/'
+foodOrderingProcessor, createCardPINProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -70,6 +70,8 @@ const accountStatement = new accountStatementController();
 //     // await newSignupRewardProcessor.processNewSignupRewardConsumer(data, true);
 //     // data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"foodOrder","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923046664576"},"ReceiverParty":{"IdentifierType":4,"Identifier":"00180490"}},"AppConnectUUID":"87f050d4-69e3-11eb-8f58-0c83041d0000"},"Request":{"Transaction":{"CommandID":"InitTrans_MerchantPaymentByCustomer","OriginatorConversationID":"812708a76097415caac17348cec3c714","Parameters":{"Parameter":[{"Key":"Amount","Value":"1"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210208075912"}},"Result":{"ResultType":"1","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"010711667395","ResultParameters":{"ResultParameter":[{"Key":"Amount","Value":"1.00"},{"Key":"TransEndDate","Value":"20210208"},{"Key":"TransEndTime","Value":"125912"}]}}};
 //     // await foodOrderingProcessor.processFoodOrderingConsumer(data);
+//     data = {"Header":{"Channel":"App","SubChannel":"Mobile","UseCase":"createVisaCardPin","ThirdPartyType":"consumerApp","Identity":{"Caller":{"ThirdPartyID":"ibm_consumer_app"},"Initiator":{"IdentifierType":1,"Identifier":"923413366632"}},"AppConnectUUID":"49c58112-6b2d-11eb-8f58-0c83041d0000"},"Request":{"Transaction":{"CommandID":"GenerateCardPIN","OriginatorConversationID":"f0e7ce69dc1240968aa0280ce1477306","Parameters":{"Parameter":[{"Key":"TargetCardPIN","Value":"quj2"},{"Key":"ChannelCode","Value":"1031"}]},"Timestamp":"20210209231929"}},"Result":{"ResultType":"0","ResultCode":"0","ResultDesc":"Process service request successfully.","TransactionID":"110711690911","ResultParameters":{"ResultParameter":[{"Key":"WHT","Value":"0.00"},{"Key":"Commission","Value":"0.00"},{"Key":"FED","Value":"0.00"},{"Key":"Fee","Value":"0.00"},{"Key":"TransEndTime","Value":"041941"},{"Key":"TransEndDate","Value":"20210210"}]}}};
+//     await createCardPINProcessor.processCreateCardPINConsumer(data);
 //     res.status(200).json({message: "Done!"})
 // });
 
