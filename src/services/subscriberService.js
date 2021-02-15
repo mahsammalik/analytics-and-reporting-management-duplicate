@@ -53,6 +53,8 @@ class Subscriber {
                 config.kafkaBroker.topics.initTrans_foodOrdering,
                 config.kafkaBroker.topics.confirmTrans_foodOrdering,
                 config.kafkaBroker.topics.updateTrans_cardManagement,
+                config.kafkaBroker.topics.initTrans_inviteAndEarn,
+                config.kafkaBroker.topics.confirmTrans_inviteAndEarn,
                 config.kafkaBroker.topics.SecureCard_CardDelink,
                 config.kafkaBroker.topics.SecureCard_CardLink,
              ]);    
@@ -866,6 +868,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_inviteAndEarn){
+                    console.log('*********** Init Trans Invite&Earn *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_inviteAndEarn){
+                    console.log('*********** Confirm Trans Invite&Earn *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

@@ -193,6 +193,8 @@
                 "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
 
                 "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed",
+                "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
+                "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
                 "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
                 "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink"
             }
@@ -360,7 +362,7 @@
             "INCOMMING_IBFT": "INCOMMING_IBFT",
             "INSURANCE_CLAIM": "INSURANCE_CLAIM",
             "OUTGOING_IBFT": "OUTGOING_IBFT",
-            "INVITEANDEARN": "INVITEANDEARN",
+            "INVITEANDEARN": "INVITEANDEARN_T",
             "MOBILE_BUNDLE": "MOBILE_BUNDLE",
             "MOVIE_TICKET": "MOVIE_TICKET",
             "NEW_SIGNUP_REWARD": "NEW_SIGNUP_REWARD",
