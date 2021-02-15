@@ -5,7 +5,8 @@ import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
-newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor} from '/consumers/'
+newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
+cardLinkDelinkProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -51,8 +52,9 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_signupReward,
                 config.kafkaBroker.topics.initTrans_foodOrdering,
                 config.kafkaBroker.topics.confirmTrans_foodOrdering,
-                config.kafkaBroker.topics.updateTrans_cardManagement
-                
+                config.kafkaBroker.topics.updateTrans_cardManagement,
+                config.kafkaBroker.topics.SecureCard_CardDelink,
+                config.kafkaBroker.topics.SecureCard_CardLink,
              ]);    
             //this.setConsumer();
             //return instance;
@@ -864,6 +866,34 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.SecureCard_CardLink){
+                    console.log('*********** Card Link *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.usecase = "cardLink";
+                        
+                        await cardLinkDelinkProcessor.processCardLinkDelinkConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.SecureCard_CardDelink){
+                    console.log('*********** Card Delink *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.usecase = "cardDelink";
+                        
+                        await cardLinkDelinkProcessor.processCardLinkDelinkConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

@@ -14,3 +14,4 @@ export {default as cardOrderingProcessor} from './cardOrderingConsumer';
 export {default as newSignupRewardProcessor} from './newSignupRewardConsumer';
 export {default as foodOrderingProcessor} from './foodOrdering';
 export {default as createCardPINProcessor} from './createCardPINConsumer';
+export {default as cardLinkDelinkProcessor} from './cardLinkDelinkConsumer';

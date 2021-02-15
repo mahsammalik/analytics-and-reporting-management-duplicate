@@ -277,6 +277,38 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if(tableName === config.reportingDBTables.CARD_LINKING)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, DELINK_STATUS, RETRIEVE_REF, CHANNEL)
+                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', ${data.retrieveRef}, '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
+
+        if(tableName === config.reportingDBTables.CARD_DELINK)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, CHANNEL)
+                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {
