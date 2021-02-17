@@ -203,7 +203,11 @@
                 "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
                 "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
                 "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
-                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed"
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+
+                "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
+                "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure"
             }
         },
         "cache": {
@@ -389,7 +393,8 @@
             "CREATE_CARD_PIN": "CREATE_CARD_PIN",
             "CARD_LINKING": "CARD_LINKING",
             "CARD_DELINK": "CARD_DELINK",
-            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS"
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
+            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE"
         }
     }
 }

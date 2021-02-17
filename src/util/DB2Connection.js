@@ -341,6 +341,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+        
+        if(tableName === config.reportingDBTables.ACCOUNT_UPGRADE)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", CUST_MSISDN, CUST_CNIC, NADRA_RESPONSE, FINGERPRINT_TIME, APPUSER_DETAIL, NADRA_ERROR, CHANNEL, MERCH_MSISDN, MERCH_NIC, PERSONAL_NAME, BIUSINESS_NAME)
+                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.nadraResponse}', '${data.fingerprintTime}', '${data.appUserDetails}', '${data.nadraError}', '${data.channel}', ${data.merchMsisdn}, '${data.merchNic}', '${data.personalName}', '${data.businessName}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {

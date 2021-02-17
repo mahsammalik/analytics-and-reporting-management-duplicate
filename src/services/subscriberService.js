@@ -6,7 +6,7 @@ import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, dona
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
-cardLinkDelinkProcessor, scheduledTransactionsProcessor} from '/consumers/'
+cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -62,7 +62,10 @@ class Subscriber {
                 config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
                 config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
                 config.kafkaBroker.topics.initTrans_cnicPayment,
-                config.kafkaBroker.topics.confirmTrans_cnicPayment
+                config.kafkaBroker.topics.confirmTrans_cnicPayment,
+                config.kafkaBroker.topics.accountUpgrade_success,
+                config.kafkaBroker.topics.accountUpgrade_nadraFailure,
+                config.kafkaBroker.topics.accountUpgrade_cpsFailure
 
              ]);    
             //this.setConsumer();
@@ -960,6 +963,33 @@ class Subscriber {
                         
                         await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload, true);
                         //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.accountUpgrade_success){
+                    console.log('*********** Account Upgrade Success *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.transType = "UpgradeSuccess";
+                        await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.accountUpgrade_nadraFailure ||
+                    msg.topic === config.kafkaBroker.topics.accountUpgrade_cpsFailure){
+                    console.log('*********** Account Upgrade Failure *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.transType = "UpgradeFailure";
+                        await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
+                            //console.log(response);
                     } catch (error) {
                         console.log(error)
                     }
