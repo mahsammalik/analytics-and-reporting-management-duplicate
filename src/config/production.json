@@ -196,7 +196,14 @@
                 "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
                 "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
                 "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
-                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink"
+                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink",
+                
+                "initTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Init_Passed",
+                "confirmTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Confirm_Passed",
+                "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
+                "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
+                "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed"
             }
         },
         "cache": {
@@ -381,7 +388,8 @@
             "WALLET_REQUEST": "WALLET_REQUEST",
             "CREATE_CARD_PIN": "CREATE_CARD_PIN",
             "CARD_LINKING": "CARD_LINKING",
-            "CARD_DELINK": "CARD_DELINK"
+            "CARD_DELINK": "CARD_DELINK",
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS"
         }
     }
 }

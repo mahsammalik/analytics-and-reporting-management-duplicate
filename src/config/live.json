@@ -307,7 +307,8 @@
             "WALLET_REQUEST": "WALLET_REQUEST",
             "CREATE_CARD_PIN": "CREATE_CARD_PIN",
             "CARD_LINKING": "CARD_LINKING",
-            "CARD_DELINK": "CARD_DELINK"
+            "CARD_DELINK": "CARD_DELINK",
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS"
         }
     }
 }

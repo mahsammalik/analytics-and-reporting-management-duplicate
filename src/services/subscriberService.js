@@ -6,7 +6,7 @@ import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, dona
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
-cardLinkDelinkProcessor} from '/consumers/'
+cardLinkDelinkProcessor, scheduledTransactionsProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -57,6 +57,13 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_inviteAndEarn,
                 config.kafkaBroker.topics.SecureCard_CardDelink,
                 config.kafkaBroker.topics.SecureCard_CardLink,
+                config.kafkaBroker.topics.initTrans_moneyTransfer_B2B,
+                config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B,
+                config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
+                config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
+                config.kafkaBroker.topics.initTrans_cnicPayment,
+                config.kafkaBroker.topics.confirmTrans_cnicPayment
+
              ]);    
             //this.setConsumer();
             //return instance;
@@ -922,6 +929,36 @@ class Subscriber {
                         payload.usecase = "cardDelink";
                         
                         await cardLinkDelinkProcessor.processCardLinkDelinkConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_moneyTransfer_B2B ||
+                    msg.topic === config.kafkaBroker.topics.initTrans_moneyTransfer_C2C ||
+                    msg.topic === config.kafkaBroker.topics.initTrans_cnicPayment){
+                    console.log('*********** Init Trans Scheduled Transactions *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B ||
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C ||
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment){
+                    console.log('*********** Confirm Trans Scheduled Transactions *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
