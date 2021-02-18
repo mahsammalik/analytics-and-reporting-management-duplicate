@@ -18,3 +18,4 @@ export {default as inviteAndEarnProcessor} from './inviteAndEarnConsumer';
 export {default as cardLinkDelinkProcessor} from './cardLinkDelinkConsumer';
 export {default as scheduledTransactionsProcessor} from './scheduledTransactionsConsumer';
 export {default as accountUpgradeProcessor} from './accountUpgrade';
+export {default as movieTicketsProcessor} from './movieTicketsConsumer';

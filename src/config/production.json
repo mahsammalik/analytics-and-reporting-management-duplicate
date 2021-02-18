@@ -207,7 +207,11 @@
 
                 "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
                 "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
-                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure"
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
+
+                "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed"
+
             }
         },
         "cache": {
