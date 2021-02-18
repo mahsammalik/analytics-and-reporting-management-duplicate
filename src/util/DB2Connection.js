@@ -234,8 +234,8 @@ class DatabaseConn {
         {
             try {
                 let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (ID, ORDER_DATE, RESTAURANT_NAME, PRODUCT_DETAILS, FOOD_CATEGORY, DELIVERY_ADDRESS, DELIVERY_AREA, DELIVERY_CITY, PROMO_USED, PROMO_AMOUNT, DISCOUNT, DELIVERY_DATE, NAME, CONTACT_NUMBER, EMAIL, TRANS_AMOUNT, STATUS, CHANNEL) 
-                VALUES('${data.ID}', '${data.transactionTime}', '${data.resturantName}', '${data.productDetails}', '${data.foodCategory}', '${data.deliveryAddress}', '${data.deliveryArea}', '${data.deliveryCity}', '${data.promoUsed}', ${data.promoAmount}, ${data.discount}, ${data.deliveryDate}, '${data.name}', '${data.contactNum}', '${data.email}', ${data.amount}, '${data.status}', '${data.channel}');`);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (ID, ORDER_DATE, RESTAURANT_NAME, TRANS_AMOUNT, STATUS, CHANNEL)
+                VALUES('${data.id}', TIMESTAMP_FORMAT('${data.orderDate}','YYYY-MM-DD HH24:MI:SS'), '${data.resturantName}', ${data.amount}, '${data.transStatus}', '${data.channel}');`);
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
@@ -373,7 +373,7 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
-
+        
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {
