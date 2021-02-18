@@ -7,7 +7,7 @@ busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVou
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
-movieTicketsProcessor} from '/consumers/'
+movieTicketsProcessor, doorstepCashinProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -69,6 +69,8 @@ class Subscriber {
                 config.kafkaBroker.topics.accountUpgrade_cpsFailure,
                 config.kafkaBroker.topics.initTrans_movieTickets,
                 config.kafkaBroker.topics.confirmTrans_movieTickets,
+                config.kafkaBroker.topics.doorstepCashin_failed,
+                config.kafkaBroker.topics.doorstepCashin_passed,
 
              ]);    
             //this.setConsumer();
@@ -1018,6 +1020,20 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await movieTicketsProcessor.processMovieTicketsConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.doorstepCashin_passed ||
+                    msg.topic === config.kafkaBroker.topics.doorstepCashin_failed){
+                    console.log('*********** Doorstep Cashin *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await doorstepCashinProcessor.processDoorstepCashinConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

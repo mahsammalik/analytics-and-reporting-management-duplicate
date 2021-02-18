@@ -374,6 +374,22 @@ class DatabaseConn {
             }
         }
         
+        if(tableName === config.reportingDBTables.DOORSTEP_CASHIN)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", AMOUNT, ADDRESS, CITY, LAT_LONG, REQUEST_STATUS, CUST_MSISDN, RIDER_NAME, RIDER_MSISDN, CHANNEL)
+                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, '${data.address}', '${data.city}', ${data.lat}, '${data.reqStatus}', ${data.custMsisdn}, '${data.riderName}', ${data.riderMsisdn}, '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
+
     }
 
     async getValue(customerMobileNumer, endDate, startDate) {

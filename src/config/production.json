@@ -210,7 +210,10 @@
                 "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
 
                 "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
-                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed"
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
+
+                "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed"
 
             }
         },
