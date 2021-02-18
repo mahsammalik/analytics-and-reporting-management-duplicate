@@ -213,7 +213,10 @@
                 "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
 
                 "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
-                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed"
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed",
+                
+                "intTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Init_Passed",
+                "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
 
             }
         },

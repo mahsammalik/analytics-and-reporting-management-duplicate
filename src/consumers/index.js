@@ -4,7 +4,7 @@ export {default as mobileBundleProcessor } from './mobileBundleConsumer';
 export {default as busTicketProcessor } from './busTicketConsumer';
 export {default as eVoucherProcessor } from './eVouchersConsumer';
 export {default as eventTicketProcessor} from './eventTicketConsumer';
-export {default as CreemVoucherConsumer } from './creemVoucherConsumer';
+export {default as careemVoucherProcessor } from './careemVoucherConsumer';
 export {default as donationProcessor} from './donationConsumer';
 export {default as depositVIADebitCardProcessor} from './depositViaDebitCardConsumer';
 export {default as darazVoucherProcessor} from './darazWalletConsumer';

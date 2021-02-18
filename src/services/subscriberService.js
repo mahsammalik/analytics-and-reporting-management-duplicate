@@ -7,7 +7,7 @@ busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVou
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
-movieTicketsProcessor, doorstepCashinProcessor} from '/consumers/'
+movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -71,7 +71,8 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_movieTickets,
                 config.kafkaBroker.topics.doorstepCashin_failed,
                 config.kafkaBroker.topics.doorstepCashin_passed,
-
+                config.kafkaBroker.topics.intTrans_voucherPayment,
+                config.kafkaBroker.topics.confirmTrans_voucherPayment,
              ]);    
             //this.setConsumer();
             //return instance;
@@ -1034,6 +1035,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await doorstepCashinProcessor.processDoorstepCashinConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.intTrans_voucherPayment){
+                    console.log('*********** Init Trans Voucher Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await careemVoucherProcessor.processCareemVoucherConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_voucherPayment){
+                    console.log('*********** Confirm Trans Voucher Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await careemVoucherProcessor.processCareemVoucherConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

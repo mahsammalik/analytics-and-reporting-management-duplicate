@@ -389,6 +389,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+        
+        if(tableName === config.reportingDBTables.CAREEM_VOUCHER)
+        {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRANS_DATE, AMOUNT, MSISDN, TRANS_ID, STATUS, CHANNEL)
+                VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, ${data.msisdn}, ${data.TID}, '${data.status}', '${data.channel}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function(err) {});
+                console.log("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
 
     }
 
