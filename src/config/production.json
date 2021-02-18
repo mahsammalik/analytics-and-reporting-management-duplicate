@@ -190,7 +190,34 @@
                 "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
 
                 "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
-                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed"
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
+
+                "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed",
+                "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
+                "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
+                "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
+                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink",
+                
+                "initTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Init_Passed",
+                "confirmTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Confirm_Passed",
+                "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
+                "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
+                "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+
+                "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
+                "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
+
+                "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
+
+                "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed",
+                
+                "intTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Init_Passed",
+                "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
             }
         },
         "cache": {
@@ -356,7 +383,7 @@
             "INCOMMING_IBFT": "INCOMMING_IBFT",
             "INSURANCE_CLAIM": "INSURANCE_CLAIM",
             "OUTGOING_IBFT": "OUTGOING_IBFT",
-            "INVITEANDEARN": "INVITEANDEARN",
+            "INVITEANDEARN": "INVITEANDEARN_T",
             "MOBILE_BUNDLE": "MOBILE_BUNDLE",
             "MOVIE_TICKET": "MOVIE_TICKET",
             "NEW_SIGNUP_REWARD": "NEW_SIGNUP_REWARD",
@@ -372,7 +399,12 @@
             "RESET_PIN": "RESET_PIN",
             "RESET_MPIN": "RESET_MPIN",
             "TRANS_DETAILS": "TRANS_DETAILS",
-            "WALLET_REQUEST": "WALLET_REQUEST"
+            "WALLET_REQUEST": "WALLET_REQUEST",
+            "CREATE_CARD_PIN": "CREATE_CARD_PIN",
+            "CARD_LINKING": "CARD_LINKING",
+            "CARD_DELINK": "CARD_DELINK",
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
+            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE"
         }
     }
 }

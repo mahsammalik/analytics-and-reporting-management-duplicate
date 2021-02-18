@@ -5,7 +5,9 @@ import dataMapping from './helpers/dataMapping';
 import {sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor, 
 busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVoucherProcessor,
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
-newSignupRewardProcessor, foodOrderingProcessor} from '/consumers/'
+newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
+cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
+movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -51,7 +53,26 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_signupReward,
                 config.kafkaBroker.topics.initTrans_foodOrdering,
                 config.kafkaBroker.topics.confirmTrans_foodOrdering,
-                
+                config.kafkaBroker.topics.updateTrans_cardManagement,
+                config.kafkaBroker.topics.initTrans_inviteAndEarn,
+                config.kafkaBroker.topics.confirmTrans_inviteAndEarn,
+                config.kafkaBroker.topics.SecureCard_CardDelink,
+                config.kafkaBroker.topics.SecureCard_CardLink,
+                config.kafkaBroker.topics.initTrans_moneyTransfer_B2B,
+                config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B,
+                config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
+                config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
+                config.kafkaBroker.topics.initTrans_cnicPayment,
+                config.kafkaBroker.topics.confirmTrans_cnicPayment,
+                config.kafkaBroker.topics.accountUpgrade_success,
+                config.kafkaBroker.topics.accountUpgrade_nadraFailure,
+                config.kafkaBroker.topics.accountUpgrade_cpsFailure,
+                config.kafkaBroker.topics.initTrans_movieTickets,
+                config.kafkaBroker.topics.confirmTrans_movieTickets,
+                config.kafkaBroker.topics.doorstepCashin_failed,
+                config.kafkaBroker.topics.doorstepCashin_passed,
+                config.kafkaBroker.topics.intTrans_voucherPayment,
+                config.kafkaBroker.topics.confirmTrans_voucherPayment,
              ]);    
             //this.setConsumer();
             //return instance;
@@ -850,6 +871,196 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await foodOrderingProcessor.processFoodOrderingConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.updateTrans_cardManagement){
+                    console.log('*********** Update Trans Card Management *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_inviteAndEarn){
+                    console.log('*********** Init Trans Invite&Earn *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_inviteAndEarn){
+                    console.log('*********** Confirm Trans Invite&Earn *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.SecureCard_CardLink){
+                    console.log('*********** Card Link *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.usecase = "cardLink";
+                        
+                        await cardLinkDelinkProcessor.processCardLinkDelinkConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.SecureCard_CardDelink){
+                    console.log('*********** Card Delink *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.usecase = "cardDelink";
+                        
+                        await cardLinkDelinkProcessor.processCardLinkDelinkConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_moneyTransfer_B2B ||
+                    msg.topic === config.kafkaBroker.topics.initTrans_moneyTransfer_C2C ||
+                    msg.topic === config.kafkaBroker.topics.initTrans_cnicPayment){
+                    console.log('*********** Init Trans Scheduled Transactions *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B ||
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C ||
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment){
+                    console.log('*********** Confirm Trans Scheduled Transactions *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.accountUpgrade_success){
+                    console.log('*********** Account Upgrade Success *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.transType = "UpgradeSuccess";
+                        await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.accountUpgrade_nadraFailure ||
+                    msg.topic === config.kafkaBroker.topics.accountUpgrade_cpsFailure){
+                    console.log('*********** Account Upgrade Failure *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        payload.transType = "UpgradeFailure";
+                        await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
+                            //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_movieTickets){
+                    console.log('*********** Init Trans Movie Tickets *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await movieTicketsProcessor.processMovieTicketsConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_movieTickets){
+                    console.log('*********** Confirm Trans Movie Tickets *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await movieTicketsProcessor.processMovieTicketsConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.doorstepCashin_passed ||
+                    msg.topic === config.kafkaBroker.topics.doorstepCashin_failed){
+                    console.log('*********** Doorstep Cashin *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await doorstepCashinProcessor.processDoorstepCashinConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.intTrans_voucherPayment){
+                    console.log('*********** Init Trans Voucher Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await careemVoucherProcessor.processCareemVoucherConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_voucherPayment){
+                    console.log('*********** Confirm Trans Voucher Payment *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await careemVoucherProcessor.processCareemVoucherConsumer(payload, true);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)

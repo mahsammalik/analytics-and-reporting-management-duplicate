@@ -72,7 +72,7 @@ spec:
   createKnativeService: false
   env:
     - name: CACHE_SERVER
-      value: datagrid.rhdg
+      value: datagrid.datagrid-tests
     - name: ESB_SERVER
       value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
     - name: MASTER_DATA_API_GET_RESPCODE_URL
