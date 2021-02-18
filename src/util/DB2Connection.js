@@ -312,7 +312,9 @@ class DatabaseConn {
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
             stmt.closeSync();
-            conn.close(function(err) {});
+            conn.close(function(err) {
+                console.log("CONNECTION ERROR: ", ERR)
+            });
             // console.log('the resulted array ' + arrayResult);
             return arrayResult;
 

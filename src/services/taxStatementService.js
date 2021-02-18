@@ -14,7 +14,7 @@ class taxStatementService {
     async sendTaxStatement(payload, res) {
         console.log("email pdf");
         const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        // console.log("the output of changing database" + data);
+        console.log("the output of changing database " + data);
         if (data === 'Database Error') return "Database Error";
 
         try {
@@ -32,17 +32,17 @@ class taxStatementService {
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
-                    'key': 'customerName',
-                    'value': payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': payload.start_date
-                }
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
             ];
             const attachment = [{
                 filename: 'Tax Certificate.pdf',
@@ -50,6 +50,7 @@ class taxStatementService {
                 type: 'base64',
                 embedImage: false
             }];
+            console.log("FINAL RESPONSE OF THE OUTPUT " + attachment, emailData);
 
             return await new Notification.sendEmail(`jazzcash.test.user@gmail.com`, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
 
