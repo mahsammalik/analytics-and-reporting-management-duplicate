@@ -20,3 +20,5 @@ export {default as scheduledTransactionsProcessor} from './scheduledTransactions
 export {default as accountUpgradeProcessor} from './accountUpgrade';
 export {default as movieTicketsProcessor} from './movieTicketsConsumer';
 export {default as doorstepCashinProcessor} from './doorstepCashinConsumer';
+export {default as payoneerRegProcessor} from './payoneerRegistrationConsumer';
+export {default as payoneerTransProcessor} from './payoneerTransactionConsumer';
