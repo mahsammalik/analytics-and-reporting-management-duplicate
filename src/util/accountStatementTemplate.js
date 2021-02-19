@@ -53,11 +53,11 @@ const accountStatementTemplate = accountData => {
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div >Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</b></div>
-		<div >Account Title: <b>${accountData.payload.merchantName}</b></div>
-		<div >Account Number: <b>${accountData.payload.msisdn}</b></div>
-		<div >Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
-		<div >Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</b></div>
+		<div style="line-height: 1.4;">Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</b></div>
+		<div style="line-height: 1.4;">Account Title: <b>${accountData.payload.merchantName}</b></div>
+		<div style="line-height: 1.4;">Account Number: <b>${accountData.payload.msisdn}</b></div>
+		<div style="line-height: 1.4;">Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
+		<div style="line-height: 1.3;">Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</b></div>
 		</div>
 		</header>
 		<main>
@@ -149,9 +149,9 @@ const accountStatementTemplate = accountData => {
 				if (item[0] !== '') {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
-						let column = row.map((col, ind) => { return ind > 5 ? `<td><div>${parseFloat(col).toFixed(2)}</td></div>` : `<td><div>${col}</div></td>`; });
+						let column = row.map((col, ind) => { return ind > 5 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(col).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`; });
 						column = column.join().replace(/,/g, '');
-						return `<tr>${column}</tr>`;
+						return `<tr style="font-size: 7pt;">${column}</tr>`;
 					});
 					page = page.join().replace(/,/g, '');
 					htmlString += `<tbody>${page}</tbody></table><div class="main-section">`;
