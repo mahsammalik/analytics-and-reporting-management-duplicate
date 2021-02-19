@@ -488,7 +488,9 @@ class DatabaseConn {
 
         try {
             console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate)
-            const conn = await open(cn);
+            const con = config.IBMDB2_Test?.connectionString;
+
+            const conn = await open(con);
             const stmt = conn.prepareSync(`select * from ${schema}.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
