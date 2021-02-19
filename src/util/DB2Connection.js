@@ -488,10 +488,11 @@ class DatabaseConn {
 
         try {
             const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
-            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, con)
+            const schemaCon = config.IBMDB2_Test.schema;
+            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, con, schemaCon)
 
             const conn = await open(con);
-            const stmt = conn.prepareSync(`select * from ${schema}.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
+            const stmt = conn.prepareSync(`select * from ${schemaCon}.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
