@@ -43,7 +43,7 @@ class taxStatementController {
             html: '<html></html>',
             format: req.query.format,
             metadata,
-            merchantName: userProfile.businessDetails.businessName || ''
+            merchantName: userProfile.businessName || '',
 
         };
 

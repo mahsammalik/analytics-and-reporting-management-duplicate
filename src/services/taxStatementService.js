@@ -14,7 +14,7 @@ class taxStatementService {
     async sendTaxStatement(payload, res) {
         console.log("email pdf");
         const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        console.log("the output of changing database " + data);
+        console.log("the output of changing database " + data, accountData);
         if (data === 'Database Error') return "Database Error";
 
         try {
