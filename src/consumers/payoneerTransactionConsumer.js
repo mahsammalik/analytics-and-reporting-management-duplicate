@@ -13,29 +13,30 @@ class Processor {
             //console.log(data);
             let initTransData = {};
 
-            initTransData.id = data?.CustomObject?.orderId || '';
-            initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
-            if (initTransData.transactionDate !== '') {
-                initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
+            initTransData.msisdn = Number(data?.msisdn || '0');
+            initTransData.payUsername = data?.account_details?.contact?.email || '';
+            initTransData.pkrAmount = Number(data?.amountInPKR || '0');
+            initTransData.usdAmount = Number(data?.transferAmount || '0');
+            initTransData.exchangeRate = Number(data?.exchangeRate || '0');
+            initTransData.currency = data?.currency || '';
+            initTransData.description = data?.txLogs || '';
+            initTransData.activityDate = data?.updatedAt || null;
+            if(initTransData.activityDate != null) {
+                initTransData.activityDate = initTransData.activityDate.replace('T', ' ').replace('Z', '');
+                initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
             }
-            initTransData.orderDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
-            if (initTransData.orderDate !== '') {
-                const time = moment(initTransData.orderDate, 'HHmmss').format('HH:mm:ss');
-                initTransData.orderDate = initTransData.transactionDate + " " + time;
-            }
-            initTransData.amount = Number(data?.CustomObject?.transactionObject?.transactionData?.paymentDetails?.amount || '0');
-            initTransData.resturantName = data?.CustomObject?.transactionObject?.transactionData?.paymentDetails?.companyShortName || '';
-            initTransData.transStatus = isConfirm ? 'Completed' : 'Pending';
-            initTransData.channel = data?.CustomObject?.channel || 'Mobile';
+            initTransData.monetaStatus = data?.txStatus || '';
+            initTransData.channel = data?.channel || 'Mobile';
+            initTransData.TID = Number(data?.paymentID || '0');
 
             console.log(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if (process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.FOOD_DELIVERY, initTransData);
+                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.PAYON_TRANSACTIONS, initTransData);
                 }
                 else {
-                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.FOOD_DELIVERY, initTransData);
+                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.PAYON_TRANSACTIONS, initTransData);
                 }
             }
         } catch (error) {
