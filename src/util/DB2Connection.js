@@ -487,8 +487,8 @@ class DatabaseConn {
     async getTaxValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
-            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate)
-            const con = config.IBMDB2_Test?.connectionString;
+            const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
+            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, con)
 
             const conn = await open(con);
             const stmt = conn.prepareSync(`select * from ${schema}.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
