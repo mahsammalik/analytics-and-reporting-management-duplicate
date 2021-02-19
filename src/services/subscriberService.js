@@ -7,7 +7,8 @@ busTicketProcessor, eventTicketProcessor, depositVIADebitCardProcessor, darazVou
 eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor,
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
-movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor} from '/consumers/'
+movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
+payoneerTransProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -73,6 +74,8 @@ class Subscriber {
                 config.kafkaBroker.topics.doorstepCashin_passed,
                 config.kafkaBroker.topics.intTrans_voucherPayment,
                 config.kafkaBroker.topics.confirmTrans_voucherPayment,
+                config.kafkaBroker.topics.payoneer_registration,
+                config.kafkaBroker.topics.payoneer_transaction,
              ]);    
             //this.setConsumer();
             //return instance;
@@ -1061,6 +1064,32 @@ class Subscriber {
                         console.log(JSON.stringify(payload));
                         
                         await careemVoucherProcessor.processCareemVoucherConsumer(payload, true);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.payoneer_registration){
+                    console.log('*********** Payoneer Registration *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await payoneerRegProcessor.processPayoneerRegConsumer(payload);
+                        //console.log(response);
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.payoneer_transaction){
+                    console.log('*********** Payoneer Transaction *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        console.log(JSON.stringify(payload));
+                        
+                        await payoneerTransProcessor.processPayoneerTransConsumer(payload);
                         //console.log(response);
                     } catch (error) {
                         console.log(error)
