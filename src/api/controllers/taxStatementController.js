@@ -33,6 +33,7 @@ class taxStatementController {
         const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
         const userProfile = await getUserProfile(req.headers);
         logger.debug({ userProfile });
+        console.log(metadata," metadata")
         let payload = {
             msisdn: req.headers['x-msisdn'],
             start_date: req.query.start_date,

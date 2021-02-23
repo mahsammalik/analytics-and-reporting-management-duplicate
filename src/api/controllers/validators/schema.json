@@ -16,6 +16,9 @@
             "requestType": {
                 "type": "string",
                 "enum": ["Download", "Email"]
+            },
+            "email": {
+                "type": "string"
             }
         }
     },
