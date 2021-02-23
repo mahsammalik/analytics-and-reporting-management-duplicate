@@ -13,11 +13,11 @@ class taxStatementService {
 
     async sendTaxStatement(payload, res) {
         console.log("email pdf");
+        try {
         const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        console.log("the output of changing database " + data, accountData);
+        console.log("the output of changing database " + data);
         if (data === 'Database Error') return "Database Error";
 
-        try {
 
             console.log(`Array Format statement ${JSON.stringify(data)}`);
             const accountData = {
