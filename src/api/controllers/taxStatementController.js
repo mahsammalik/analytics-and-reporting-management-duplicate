@@ -38,7 +38,7 @@ class taxStatementController {
             start_date: req.query.start_date,
             end_date: req.query.end_date,
             request: req.query.requestType,
-            email: metadata.emailAddress,
+            email: req.query.email || metadata.emailAddress,
             subject: 'Hello',
             html: '<html></html>',
             format: req.query.format,

@@ -12,11 +12,11 @@ class taxStatementService {
     }
 
     async sendTaxStatement(payload, res) {
-        console.log("email pdf");
+        console.log("email pdf", payload);
         try {
-        const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        console.log("the output of changing database " + data);
-        if (data === 'Database Error') return "Database Error";
+            const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            console.log("the output of changing database " + data);
+            if (data === 'Database Error') return "Database Error";
 
 
             console.log(`Array Format statement ${JSON.stringify(data)}`);
@@ -50,9 +50,20 @@ class taxStatementService {
                 type: 'base64',
                 embedImage: false
             }];
-            console.log("FINAL RESPONSE OF THE OUTPUT " + attachment, emailData);
-
-            return await new Notification.sendEmail(`jazzcash.test.user@gmail.com`, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+            console.log("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                const attachment = [{
+                    filename: 'AccountStatement.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+            }
+            else {
+                throw new Error(`Email Not provided`);
+            }
 
             // myDoc.table(table0, {
             //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
