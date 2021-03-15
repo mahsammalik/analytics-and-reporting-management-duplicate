@@ -50,8 +50,12 @@ const taxStatementTemplate = accountData => {
 		console.log(`payload ${JSON.stringify(accountData.payload)}`);
 		console.log(`account data ${JSON.stringify(accountData.data)}`);
 
-		const WithdrawWhtTax = accountData.data.map(tax => tax[8]) || 0;
-		const PostProfitingWhtTax = accountData.data.map(tax => tax[9]) || 0;
+		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
+			return a + b;
+		}, 0) || 0;
+		const PostProfitingWhtTax = accountData.data.map(tax => tax[7]).reduce(function (a, b) {
+			return a + b;
+		}, 0) || 0;
 		const totalTax = WithdrawWhtTax + PostProfitingWhtTax;
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		console.log("TAX:  ", taxInWords, totalTax)

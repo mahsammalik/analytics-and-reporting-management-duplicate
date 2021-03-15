@@ -397,7 +397,7 @@ class DatabaseConn {
             }
         }
         
-        if(tableName === config.reportingDBTables.PAYON_TRANSACTIONS)
+        if(tableName === config.reportingDBTables.PAYON_TRANSACTIONS) 
         {
             try {
                 let conn = await open(cn);
@@ -434,9 +434,8 @@ class DatabaseConn {
 
             let concatenatResult;
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And date(trx_datetime) <= ? And order by trx_datetime desc 
-           And limit 1`);
-            let result = stmt.executeSync([customerMobileNumer, endDate]);
+            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= ${endDate} order by TRX_DATETIME desc limit 1`);
+            let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
             let sumCredit = 0.00;
