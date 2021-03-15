@@ -45,13 +45,18 @@ const htmlFoot = `<footer>
 const taxStatementTemplate = accountData => {
 
 
-    try {
+	try {
 
-        console.log(`payload ${JSON.stringify(accountData.payload)}`);
-        console.log(`account data ${JSON.stringify(accountData.data)}`);
+		console.log(`payload ${JSON.stringify(accountData.payload)}`);
+		console.log(`account data ${JSON.stringify(accountData.data)}`);
 
-        const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
-        const accountDetails = `<div class="headerTable">
+		const WithdrawWhtTax = accountData.data.map(tax => tax[8]) || 0;
+		const PostProfitingWhtTax = accountData.data.map(tax => tax[9]) || 0;
+		const totalTax = WithdrawWhtTax + PostProfitingWhtTax;
+		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
+		console.log("TAX:  ", taxInWords, totalTax)
+		const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
+		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>20-Aug-2020</div>
 	</div>
 		</header>
@@ -64,7 +69,7 @@ const taxStatementTemplate = accountData => {
 		</div>
 		`;
 
-        let htmlString = `${htmlHead}${accountDetails}<div class="taxHeading">
+		let htmlString = `${htmlHead}${accountDetails}<div class="taxHeading">
 		<b>
 	Account Details:
 </b>
@@ -78,11 +83,11 @@ const taxStatementTemplate = accountData => {
 			<div>Account Number </div>${accountData.payload.msisdn}</b>
 		</div>
 		<div>
-			<div>Account Type </div>${accountData.payload.metadata.accountLevel}</b>
+			<div>Account Type </div>${accountData.payload.accountLevel || ''}</b>
 		</div>
-		<div>
-			<div>CNIC Number </div>${accountData.payload.metadata.cnic}</b>
-		</div>
+		${accountData.payload.metadata.cnic && `<div>
+			<div>CNIC Number </div>${accountData.payload.metadata.cnic || ''}</b>
+		</div>`}
 	</div>
 	<div class="taxHeading">
 		<b>
@@ -113,16 +118,16 @@ Withholding Tax Deducted:
 			<div>Time Period of statement</div> ${accountData.payload.start_date} - ${accountData.payload.end_date}</b>
 		</div>
 		<div>
-			<div>Tax Deposited</div>Rs 11,110.92</b>
+			<div>Tax Deposited</div>Rs ${totalTax}</b>
 		</div>
 	</div>
 </main>${htmlFoot}`;
 
-        return htmlString;
-    } catch (error) {
-        logger.error(error);
-        return new Error(`error:  ${error}`);
-    }
+		return htmlString;
+	} catch (error) {
+		logger.error(error);
+		return new Error(`error:  ${error}`);
+	}
 
 
 };

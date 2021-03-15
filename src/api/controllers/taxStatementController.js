@@ -45,6 +45,7 @@ class taxStatementController {
             format: req.query.format,
             metadata,
             merchantName: userProfile.businessName || '',
+            accountLevel: userProfile.accountLevel || ''
 
         };
 

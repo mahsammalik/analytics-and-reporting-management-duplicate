@@ -18,10 +18,13 @@ class taxStatementService {
             console.log("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
 
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, payload.end_date);
 
-            console.log(`Array Format statement ${JSON.stringify(data)}`);
+            console.log(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+
+
             const accountData = {
-                headers: ['Trx ID', 'Trx DateTime', 'MSISDN', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
+                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
                 payload
             };

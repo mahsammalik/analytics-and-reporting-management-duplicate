@@ -428,13 +428,48 @@ class DatabaseConn {
 
     }
 
+    async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
+
+        try {
+
+            let concatenatResult;
+            let conn = await open(cn);
+            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And date(trx_datetime) <= ? And order by trx_datetime desc 
+           And limit 1`);
+            let result = stmt.executeSync([customerMobileNumer, endDate]);
+            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            let sumBalance = 0.00;
+            let sumCredit = 0.00;
+            let sumDebit = 0.00;
+            console.log(resultArrayFormat, " resultArrayFormat", result)
+            // console.log();
+            resultArrayFormat.forEach((row) => {
+                sumDebit += parseFloat(row[row.length - 3]);
+                sumCredit += parseFloat(row[row.length - 2]);
+                sumBalance += parseFloat(row[row.length - 1]);
+            });
+            resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
+            concatenatResult = resultArrayFormat.join('\n');
+            // console.log("the result of database" + concatenatResult);
+            result.closeSync();
+            stmt.closeSync();
+            conn.close(function (err) { });
+            return concatenatResult;
+
+        } catch (err) {
+            logger.error('Database connection error' + err);
+            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+        }
+    }
+
+
     async getValue(customerMobileNumer, endDate, startDate) {
 
         try {
 
             let concatenatResult;
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
+            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
             let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
@@ -466,7 +501,7 @@ class DatabaseConn {
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             const conn = await open(cn);
-            const stmt = conn.prepareSync(`Select * from ${schema}.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
@@ -489,9 +524,9 @@ class DatabaseConn {
         try {
             const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
             const schemaCon = config.IBMDB2_Test.schema;
-            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, con, 'statements')
+            console.log("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, cn, 'statements')
 
-            const conn = await open(con);
+            const conn = await open(cn);
             const stmt = conn.prepareSync(`select * from statements.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.

@@ -20,12 +20,14 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
-            // const data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            const db2Data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            console.log("CHECK DB2 Account Statement: ", db2Data);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
-            console.log("******Oracle Account Management Response*****",resp);
+            console.log("******Oracle Account Management Response*****", resp);
             if (resp.status === 200) {
                 const response = resp.data;
+                console.log("CHECK CsV Oracle Account Statement: ", resp.data);
                 console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
                 const { data, success, message } = response;
                 if (success) {
@@ -86,11 +88,13 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
-            // const data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            const db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            console.log("CHECK DB2 Account Statement: ", db2Data);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             if (resp.status === 200) {
                 const response = resp.data;
+                console.log("CHECK Oracle Account Statement: ", resp.data)
                 console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
                 const { data, success, message } = response;
                 if (success) {
