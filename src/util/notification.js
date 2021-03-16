@@ -88,7 +88,7 @@ class Notification {
             return await axios
                 .post(NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
                 .then((response) => {
-                    // console.log('response', response);
+                    console.log('Email Sent', response);
                     return true;
                 })
                 .catch((error) => {

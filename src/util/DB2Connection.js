@@ -430,29 +430,20 @@ class DatabaseConn {
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
 
         try {
-
-            let concatenatResult;
             let conn = await open(cn);
             const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= '${endDate}' order by TRX_DATETIME desc limit 1`);
             let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            let sumBalance = 0.00;
-            let sumCredit = 0.00;
-            let sumDebit = 0.00;
-            console.log(resultArrayFormat, " resultArrayFormat", result, `select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= '${endDate}' order by TRX_DATETIME desc limit 1`)
-            // console.log();
+            let updatedBalance = 0.00;
+
             resultArrayFormat.forEach((row) => {
-                sumDebit += parseFloat(row[row.length - 3]);
-                sumCredit += parseFloat(row[row.length - 2]);
-                sumBalance += parseFloat(row[row.length - 1]);
+                updatedBalance = row[row.length - 1];
             });
-            resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
-            concatenatResult = resultArrayFormat.join('\n');
-            // console.log("the result of database" + concatenatResult);
+
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
-            return concatenatResult;
+            return updatedBalance;
 
         } catch (err) {
             logger.error('Database connection error' + err);

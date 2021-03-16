@@ -59,7 +59,7 @@ const taxStatementTemplate = accountData => {
 		const totalTax = (WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		console.log("TAX:  ", taxInWords, totalTax)
-		const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
+		const numberInWords = numberConverter.toWords(accountData.payload.updatedRunningbalance || 0).charAt(0).toUpperCase() + numberConverter.toWords(accountData.payload.updatedRunningbalance || 0).slice(1);
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>20-Aug-2020</div>
 	</div>
@@ -104,7 +104,7 @@ Account Balance:
 			<div>Balance of Account as of </div>${accountData.payload.end_date}</b>
 		</div>
 		<div>
-			<div>Balance (in figures) </div>Rs 11,110.92</b>
+			<div>Balance (in figures) </div>Rs ${accountData.payload.updatedRunningbalance ? accountData.payload.updatedRunningbalance.toFixed(2) : 0}</b>
 		</div>
 		<div>
 			<div>Balance (in words) </div>${numberInWords}</b>

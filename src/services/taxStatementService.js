@@ -22,7 +22,7 @@ class taxStatementService {
 
             console.log(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
 
-
+            payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
