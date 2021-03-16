@@ -396,30 +396,29 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
-        
-        if(tableName === config.reportingDBTables.PAYON_TRANSACTIONS) 
-        {
+
+        if (tableName === config.reportingDBTables.PAYON_TRANSACTIONS) {
             try {
                 let conn = await open(cn);
                 const stmt = conn.prepareSync(`select * from ${schema}.${tableName} where TRANS_ID = ?;`);
                 let result = stmt.executeSync([data.TID]);
                 let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
                 // if record does't exist insert new record, otherwise update existing record
-                if(resultArray.length == 0) {
+                if (resultArray.length == 0) {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, PKR_AMOUNT, USD_AMOUNT, EXCHANGE_RATE, CURRENCY, DESCRIPTION, ACTIVITY_DATE, MONETA_STATUS, CHANNEL, TRANS_ID)
                     VALUES(${data.msisdn}, '${data.payUsername}', ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.channel}', ${data.TID});`);
                     stmt.executeSync();
                     stmt.closeSync();
-                    conn.close(function(err) {});
+                    conn.close(function (err) { });
                     console.log("insert done");
                 } else {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', CHANNEL='${data.channel}' WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
-                    conn.close(function(err) {});
+                    conn.close(function (err) { });
                     console.log("Record updated");
                 }
- 
+
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -434,13 +433,13 @@ class DatabaseConn {
 
             let concatenatResult;
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= ${endDate} order by TRX_DATETIME desc limit 1`);
+            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= '${endDate}' order by TRX_DATETIME desc limit 1`);
             let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
-            console.log(resultArrayFormat, " resultArrayFormat", result)
+            console.log(resultArrayFormat, " resultArrayFormat", result, `select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= '${endDate}' order by TRX_DATETIME desc limit 1`)
             // console.log();
             resultArrayFormat.forEach((row) => {
                 sumDebit += parseFloat(row[row.length - 3]);

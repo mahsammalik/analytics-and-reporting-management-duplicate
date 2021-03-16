@@ -56,7 +56,7 @@ const taxStatementTemplate = accountData => {
 		const PostProfitingWhtTax = accountData.data.map(tax => tax[7]).reduce(function (a, b) {
 			return a + b;
 		}, 0) || 0;
-		const totalTax = WithdrawWhtTax + PostProfitingWhtTax;
+		const totalTax = (WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		console.log("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
