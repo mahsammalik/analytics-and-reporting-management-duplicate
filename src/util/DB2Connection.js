@@ -522,7 +522,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) {
-                console.log("CONNECTION ERROR: ", ERR)
+                console.log("CONNECTION ERROR: ", err)
             });
             console.log("Exited getTaxValueArray: ", arrayResult)
             return arrayResult;
