@@ -23,7 +23,7 @@ class accountStatementService {
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             const db2Data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
-            console.log("CHECK DB2 Account Statement: ", db2Data);
+            console.log("CHECK DB2 Account Statement CSV: ", db2Data);
             // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
             console.log("******Oracle Account Management Response*****", resp);

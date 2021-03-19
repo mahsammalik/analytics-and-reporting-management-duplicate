@@ -455,6 +455,7 @@ class DatabaseConn {
     async getValue(customerMobileNumer, endDate, startDate) {
 
         try {
+            logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
 
             let concatenatResult;
             let conn = await open(cn);
@@ -464,7 +465,7 @@ class DatabaseConn {
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
-            // console.log();
+            console.log(resultArrayFormat, "RESULT FROM DB2");
             resultArrayFormat.forEach((row) => {
                 sumDebit += parseFloat(row[row.length - 3]);
                 sumCredit += parseFloat(row[row.length - 2]);
@@ -476,6 +477,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
+            logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn' });
             return concatenatResult;
 
         } catch (err) {
@@ -496,7 +498,6 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close();
-            // console.log(`the resulted array ${JSON.stringify(arrayResult)}`);
 
             logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn' });
             return arrayResult;
