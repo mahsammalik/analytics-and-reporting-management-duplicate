@@ -61,7 +61,7 @@ class accountStatementService {
                             embedImage: false
                         }];
 
-                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: accountNumber, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
 
                         emailData.push({
                             key: "htmlTemplate",
@@ -137,7 +137,7 @@ class accountStatementService {
 
                     if (payload.email) {
 
-                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: accountNumber, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
                         emailData.push({
                             key: "htmlTemplate",
                             value: emailHTMLContent,
