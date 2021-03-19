@@ -121,7 +121,7 @@ const accountStatementTemplate = accountData => {
 
 			const checkifsecondlastpage = (ind) => (ind === accountData.data.length && (ind % 7 >= 5 || ind % 7 == 0))
 
-			let statementTableHeader = accountData.headers.map(header => `<th>${header}</th>`);
+			let statementTableHeader = accountData.headers.map(header => `<th style="font-size: 7pt;">${header}</th>`);
 			statementTableHeader = statementTableHeader.join().replace(/,/g, '');
 			let slicedArray = [];
 
