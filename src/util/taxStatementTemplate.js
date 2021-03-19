@@ -1,5 +1,6 @@
 import path from 'path';
 import numberConverter from 'number-to-words';
+import logger from './logger';
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
 const htmlHead = `<!DOCTYPE html>
@@ -44,7 +45,6 @@ const htmlFoot = `<footer>
  */
 const taxStatementTemplate = accountData => {
 
-
 	try {
 
 		console.log(`payload ${JSON.stringify(accountData.payload)}`);
@@ -56,10 +56,10 @@ const taxStatementTemplate = accountData => {
 		const PostProfitingWhtTax = accountData.data.map(tax => tax[7]).reduce(function (a, b) {
 			return a + b;
 		}, 0) || 0;
-		const totalTax = (WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
+		const totalTax = Number.parseFloat(WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		console.log("TAX:  ", taxInWords, totalTax)
-		const numberInWords = numberConverter.toWords(accountData.payload.updatedRunningbalance || 0).charAt(0).toUpperCase() + numberConverter.toWords(accountData.payload.updatedRunningbalance || 0).slice(1);
+		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>20-Aug-2020</div>
 	</div>
@@ -104,7 +104,7 @@ Account Balance:
 			<div>Balance of Account as of </div>${accountData.payload.end_date}</b>
 		</div>
 		<div>
-			<div>Balance (in figures) </div>Rs ${accountData.payload.updatedRunningbalance ? accountData.payload.updatedRunningbalance.toFixed(2) : 0}</b>
+			<div>Balance (in figures) </div>Rs ${accountData.payload.updatedRunningbalance ? Number.parseFloat(accountData.payload.updatedRunningbalance).toFixed(2) : 0}</b>
 		</div>
 		<div>
 			<div>Balance (in words) </div>${numberInWords}</b>

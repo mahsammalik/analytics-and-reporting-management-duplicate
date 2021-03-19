@@ -4,9 +4,10 @@ import {
     createPDF,
     accountStatementTemplate,
     Notification,
-    DB2Connection,
     OracleDBConnection,
 } from '/util/';
+import DB2Connection from '../util/DB2Connection';
+
 import axios from 'axios';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 

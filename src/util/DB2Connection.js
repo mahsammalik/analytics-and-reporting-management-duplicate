@@ -472,7 +472,7 @@ class DatabaseConn {
             });
             resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
-            // console.log("the result of database" + concatenatResult);
+            console.log("the result of database" + concatenatResult, resultArrayFormat);
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
