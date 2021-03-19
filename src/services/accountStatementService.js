@@ -8,6 +8,7 @@ import {
     OracleDBConnection,
 } from '/util/';
 import axios from 'axios';
+import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -58,6 +59,13 @@ class accountStatementService {
                             type: 'base64',
                             embedImage: false
                         }];
+
+                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: accountNumber, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+
+                        emailData.push({
+                            key: "htmlTemplate",
+                            value: emailHTMLContent,
+                        });
                         return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                     }
                     else {
@@ -127,6 +135,12 @@ class accountStatementService {
                     ];
 
                     if (payload.email) {
+
+                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: accountNumber, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                        emailData.push({
+                            key: "htmlTemplate",
+                            value: emailHTMLContent,
+                        });
                         logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                         const attachment = [{
                             filename: 'AccountStatement.pdf',

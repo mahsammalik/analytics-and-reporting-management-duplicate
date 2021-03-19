@@ -4,6 +4,7 @@ import {
     taxStatementTemplate
 } from '../util/';
 import Notification from '../util/notification';
+import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 
 class taxStatementService {
     constructor() {
@@ -62,6 +63,13 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: accountNumber, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
             }
             else {
