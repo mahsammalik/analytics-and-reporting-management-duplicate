@@ -22,9 +22,9 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
-            const db2Data = await DB2Connection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             console.log("CHECK DB2 Account Statement CSV: ", db2Data);
-            // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date, true);
+            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
             console.log("******Oracle Account Management Response*****", resp);
             if (resp.status === 200) {
@@ -99,7 +99,7 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             const db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             console.log("CHECK DB2 Account Statement: ", db2Data);
-            // const data = await OracleDBConnection.getValue(payLoad.msisdn, payLoad.end_date, payLoad.start_date);
+            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             if (resp.status === 200) {
                 const response = resp.data;
