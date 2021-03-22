@@ -21,8 +21,8 @@ const htmlHead = `<!DOCTYPE html>
 
 const htmlFoot = `<footer>
 <div class="disclaimer">
-	<b>Disclaimer:</b><br/>
-	<p>This is an electronic statement.</p></br>
+	<b >Disclaimer:</b>
+	<p style="margin-top: 3pt">This is an electronic statement.</p></br>
 	<p> This file may contain information that is privileged and/or confidential under applicable laws. If you are not the intended recipient of this file, you should delete it immediately and are hereby notified that any dissemination, copy or disclosure of this file is strictly prohibited. Including any unauthorized use or communication of this file in whole or in part.
 	</p></br>
 	<p>
@@ -121,11 +121,11 @@ const accountStatementTemplate = accountData => {
 
 			const checkifsecondlastpage = (ind) => (ind === accountData.data.length && (ind % 7 >= 5 || ind % 7 == 0))
 
-			let statementTableHeader = accountData.headers.map(header => `<th style="font-size: 7pt;">${header}</th>`);
+			let statementTableHeader = accountData.headers.map(header => `<th style="font-size: 6pt;">${header}</th>`);
 			statementTableHeader = statementTableHeader.join().replace(/,/g, '');
 			let slicedArray = [];
 
-		
+
 			slicedArray = accountData.data.map((item, index) => {
 				if (checkifsecondlastpage(index + 1))
 					return [''];
@@ -139,10 +139,10 @@ const accountStatementTemplate = accountData => {
 			slicedArray.forEach((item, index) => {
 				let pagination = `<div class="section" style="margin-bottom: 5pt;">
 				<div class="heading">
-				<h1>
+				<h1 style="margin-right: -55pt;">
 				Statement of Account
 				</h1>
-				<i style="margin: 0 5pt;">${index + 1} of ${slicedArray.length}</i> <b>Page </b> 
+				<i style="margin: 0 3pt;">${index + 1} of ${slicedArray.length}</i> <b>Page </b> 
 				</div>
 				</div>`;
 				htmlString += `${htmlHead}${accountDetails}${pagination}<div class="main-section">`;
