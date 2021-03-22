@@ -25,61 +25,60 @@ class accountStatementService {
             const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             console.log("CHECK DB2 Account Statement CSV: ", db2Data);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
-            const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
-            console.log("******Oracle Account Management Response*****", resp);
-            if (resp.status === 200) {
-                const response = resp.data;
-                console.log("CHECK CsV Oracle Account Statement: ", resp.data);
-                console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
-                const { data, success, message } = response;
-                if (success) {
-                    let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
-                    header = header.join(',');
-                    const csvData = new Buffer.from(header + data).toString('base64');
-                    console.log(`csvData ${csvData}`, data);
+            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            // if (resp.status === 200) {
+            // const response = db2Data;
+            // console.log("CHECK CsV Oracle Account Statement: ", resp.data);
+            // console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
+            // const { data, success, message } = response;
+            // if (success) {
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+            header = header.join(',');
+            const csvData = new Buffer.from(header + db2Data).toString('base64');
+            console.log(`csvData ${csvData}`, db2Data);
 
-                    const emailData = [{
-                        'key': 'customerName',
-                        'value': payload.merchantName
-                    },
-                    {
-                        'key': 'accountNumber',
-                        'value': payload.msisdn
-                    },
-                    {
-                        'key': 'statementPeriod',
-                        'value': payload.start_date
-                    }
-                    ];
+            const emailData = [{
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
+            ];
 
-                    if (payload.email) {
-                        logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
-                        const attachment = [{
-                            filename: 'AccountStatement.csv',
-                            content: csvData,
-                            type: 'base64',
-                            embedImage: false
-                        }];
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
+                const attachment = [{
+                    filename: 'AccountStatement.csv',
+                    content: csvData,
+                    type: 'base64',
+                    embedImage: false
+                }];
 
-                        let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
 
-                        emailData.push({
-                            key: "htmlTemplate",
-                            value: emailHTMLContent,
-                        });
-                        return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-                    }
-                    else {
-                        throw new Error(`Email Not provided`);
-                    }
-                }
-                else {
-                    return new Error(`Error mailing csv:${message}`);
-                }
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
             }
             else {
-                return new Error(`Error mailing csv`);
+                throw new Error(`Email Not provided`);
             }
+            // }
+            // else {
+            //     return new Error(`Error mailing csv`);
+            // }
+            // }
+            // else {
+            //     return new Error(`Error mailing csv`);
+            // }
         } catch (error) {
             logger.error(error);
             return new Error(`Error mailing csv:${error}`);

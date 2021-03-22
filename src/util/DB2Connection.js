@@ -495,6 +495,7 @@ class DatabaseConn {
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
             const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            console.log(arrayResult, "arrayResult FROM DB2");
             result.closeSync();
             stmt.closeSync();
             conn.close();
