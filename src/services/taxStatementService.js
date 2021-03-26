@@ -63,7 +63,7 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date || '-') + ' to ' + (payload.end_date || '-')}`, accountLevel: payload.accountLevel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",

@@ -11,7 +11,7 @@ const dirName = `${path.dirname(__dirname)}/public/assets`;
  */
 const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel }) => {
 	logger.info({ event: 'Entered function', functionName: 'accountStatementEmailTemplate' });
-	logger.debug("accountStatementEmailTemplate details: ", title, customerName, accountNumber, statementPeriod, accountLevel)
+	console.log("accountStatementEmailTemplate details: ", title, customerName, accountNumber, statementPeriod, accountLevel)
 	try {
 		const htmlString = `
 		<html>
@@ -67,7 +67,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  padding-top: 10px;
 		  padding-left: 25px;
 		  display: ${customerName ? 'block' : 'none'};
-		  ">Dear <b> ${customerName},</b></p>
+		  ">Dear <b> ${customerName ? customerName.trim() : ''},</b></p>
 			</td>
 		  </tr>
 		  <tr>

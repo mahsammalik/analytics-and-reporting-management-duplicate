@@ -15,6 +15,7 @@ class accountStatementController {
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             console.log(`getting userProfile : `)
             const userProfile = await getUserProfile(req.headers);
+            console.log(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA", metadataHeaders)
             console.log(`Obtained user profile as follows : `)
             logger.debug({ userProfile });
             if (!req.query.email) {
@@ -45,7 +46,7 @@ class accountStatementController {
             console.log(`============PRODUCING MESSAGE OF ACCOUNT STATEMENT======================`)
             await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             console.log(`============DONE PRODUCING MESSAGE OF ACCOUTN STATEMENT==================`)
-            
+
             // const accountStatement = new accountStatementService();
             // if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
             // else await accountStatement.sendEmailCSVFormat(payload);
@@ -73,6 +74,8 @@ class accountStatementController {
 
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
+            console.log(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA")
+
             logger.debug({ userProfile });
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });

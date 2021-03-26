@@ -465,7 +465,16 @@ class DatabaseConn {
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
-            console.log(resultArrayFormat, "RESULT FROM DB2");
+
+            if (resultArrayFormat.length > 0)
+                resultArrayFormat = resultArrayFormat.map((dat) => {
+                    dat.splice(0, 1);
+                    let b = dat[1];
+                    dat[1] = dat[0];
+                    dat[0] = b;
+                    return dat
+                });
+
             resultArrayFormat.forEach((row) => {
                 sumDebit += parseFloat(row[row.length - 3]);
                 sumCredit += parseFloat(row[row.length - 2]);

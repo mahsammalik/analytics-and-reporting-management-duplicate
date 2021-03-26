@@ -96,8 +96,7 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
-            const db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
-            console.log("CHECK DB2 Account Statement: ", db2Data);
+            let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
@@ -106,6 +105,14 @@ class accountStatementService {
             //     console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
             //     const { data, success, message } = response;
             // if (success) {
+            if (db2Data.length > 0)
+                db2Data = db2Data.map((dat) => {
+                    dat.splice(0, 1);
+                    let b = dat[1];
+                    dat[1] = dat[0];
+                    dat[0] = b;
+                    return dat
+                })
             const accountData = {
                 headers: ["Transaction ID", "Date", "Transaction Type", "Channel", "Description", "Amount debited", "Amount credited", "Running balance\n"],
                 data: db2Data,
@@ -136,7 +143,8 @@ class accountStatementService {
 
             if (payload.email) {
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${payload.start_date || '-' + ' to ' + payload.end_date || '-'}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date || '-') + ' to ' + (payload.end_date || '-')}`, accountLevel: payload.accountLevel }) || '';
+
                 emailData.push({
                     key: "htmlTemplate",
                     value: emailHTMLContent,

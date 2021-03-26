@@ -82,8 +82,8 @@ const accountStatementTemplate = accountData => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			accountData.data.forEach((number) => {
-				totalCredit += parseFloat(number[number.length - 2]);
-				totalDebit += parseFloat(number[number.length - 3]);
+				totalCredit += parseFloat(number[number.length - 2]) || 0;
+				totalDebit += parseFloat(number[number.length - 3]) || 0;
 				if (parseFloat(number[number.length - 2]) > parseFloat(0))
 					creditTransactions++;
 				if (parseFloat(number[number.length - 3]) > parseFloat(0))
@@ -103,7 +103,7 @@ const accountStatementTemplate = accountData => {
 				<div>Opening Balance: Rs ${openingBalance}</div>
 			</div>
 			<div class="statementDetails">
-				<div>Total Credit Amount: <b>Rs. ${totalCredit}</b></div>
+				<div>Total Credit Amount: <b>Rs. ${totalCredit || 0}</b></div>
 				<div>Total Credit Transactions: <b>${creditTransactions}</b></div>
 				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2) : 0}</b></div>
 				<div>&nbsp;</div>
