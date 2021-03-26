@@ -141,7 +141,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  line-height: 13px;
 		  letter-spacing: 0em;
 		  text-align: left;
-		  padding-left: 25px;
+		  padding-left: 5px;
 		  width: 50%;
 		  color: #000000">
 		
