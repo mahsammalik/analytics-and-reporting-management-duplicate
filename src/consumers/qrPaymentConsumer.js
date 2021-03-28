@@ -10,7 +10,7 @@ class Processor {
     async processQRPaymentConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processQRPaymentConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.consumerBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
@@ -46,7 +46,7 @@ class Processor {
                 initTransData.transAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

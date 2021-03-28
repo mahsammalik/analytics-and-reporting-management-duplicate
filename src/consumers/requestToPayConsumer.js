@@ -10,7 +10,7 @@ class Processor {
     async processRequestToPayConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processRequestToPayConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
@@ -48,7 +48,7 @@ class Processor {
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.tax_ship_disc_applied = '';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

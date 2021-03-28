@@ -10,7 +10,7 @@ class EmailHandler {
  async sendEmail(From, To,Subject,HTML,Attachments, res) {
     try {
       //Attachmet should be array having two properties like this Attachments: [{"path": 'ww.googl.com/image.jpg', "embadImage": true}]
-	  console.log("enter the service");	
+	  logger.debug("enter the service");	
 	  let emailReqBody = {
         "from": (From!="") ? From : "no-reply@JazzCash.com.pk",
         "to": To,
@@ -28,11 +28,11 @@ class EmailHandler {
 	  let Response = await axios
         .post(config.NotificationService.pushNotificationUrl, emailReqBody)
         .then((response) => {
-          console.log(response);
+          logger.debug(response);
           return res.status(200).send(responseCodeForSuccess);          
         })
         .catch((error) => {
-          console.log("Error in email service"+ error);
+          logger.debug("Error in email service"+ error);
           return res.status(422).send(responseCodeForError);          
         });     
     } catch (error) {

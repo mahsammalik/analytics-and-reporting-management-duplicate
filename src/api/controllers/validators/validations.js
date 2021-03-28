@@ -10,9 +10,9 @@ const verifySchema = (Schema, requestedJSON) => {
     const validate = ajv.compile(Schema);
     const valid = validate(requestedJSON);
     if (!valid) {
-      console.log('requested JSON is INVALID!');
-      console.log(validate.errors);
-      console.log(
+      logger.debug('requested JSON is INVALID!');
+      logger.debug(validate.errors);
+      logger.debug(
         _.map(validate.errors, function (er) {
           return er.message;
         })

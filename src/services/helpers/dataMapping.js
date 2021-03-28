@@ -11,7 +11,7 @@ class dataMapping {
       try { 
 
         logger.info({ event: 'Entered function', functionName: 'getIBFTIncomingInitMapping in class dataMapping'});
-        console.log(data);
+        logger.debug(data);
 
         if (data.Result.ResultCode == 0) {
 
@@ -54,13 +54,13 @@ class dataMapping {
           initTransData.stan = data.CustomObject.senderTransactionID;
           initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
           initTransData.channel = data.Header.Channel;
-          console.log(JSON.stringify(initTransData));
+          logger.debug(JSON.stringify(initTransData));
 
           return { initTransData };
 
         }
         else {
-          console.log('Failure scenario for getIBFTIncomingInitMapping');
+          logger.debug('Failure scenario for getIBFTIncomingInitMapping');
         
           initTransData.transactionIDEasyPaisa = data.CustomObject.senderTransactionID;
           initTransData.financialIDEasyPaisa = '';
@@ -107,15 +107,15 @@ class dataMapping {
           initTransData.stan = data.CustomObject.senderTransactionID;
           initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
           initTransData.channel = data.Header.Channel;
-          console.log(JSON.stringify(initTransData));
+          logger.debug(JSON.stringify(initTransData));
 
           return { initTransData };
 
         }
 
       } catch(err){
-        console.log('error -> getIBFTIncomingInitMapping');
-        console.log(err);
+        logger.debug('error -> getIBFTIncomingInitMapping');
+        logger.debug(err);
         return null;
       }
     }
@@ -124,7 +124,7 @@ class dataMapping {
         let confirmTransData={};
         try { 
           logger.info({ event: 'Entered function', functionName: 'getIBFTIncomingConfirmMapping in class dataMapping'});
-          console.log(data);
+          logger.debug(data);
 
           if (data.Result.ResultCode == 0) {
     
@@ -155,10 +155,10 @@ class dataMapping {
                confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
                confirmTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
                confirmTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
-               console.log(JSON.stringify(confirmTransData));
+               logger.debug(JSON.stringify(confirmTransData));
                return { confirmTransData };
           } else {
-               console.log("Failure scenario for getIBFTIncomingConfirmMapping()");
+               logger.debug("Failure scenario for getIBFTIncomingConfirmMapping()");
 
                confirmTransData.transactionIDEasyPaisa = data.CustomObject.senderTransactionID;
                confirmTransData.transactionIDEasyJazzcash = data.Result.TransactionID;
@@ -195,12 +195,12 @@ class dataMapping {
                confirmTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fee';})?.Value || '0');
                confirmTransData.fed = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Fed';})?.Value || '0');
                confirmTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'Balance';})?.Value || '0');
-               console.log(JSON.stringify(confirmTransData));
+               logger.debug(JSON.stringify(confirmTransData));
                return { confirmTransData };
           }
         } catch(err){
-          console.log('error -> getIBFTIncomingConfirmMapping');
-          console.log(err);
+          logger.debug('error -> getIBFTIncomingConfirmMapping');
+          logger.debug(err);
           return null;
         }
     }
@@ -210,7 +210,7 @@ class dataMapping {
         try { 
           logger.info({ event: 'Entered function', functionName: 'getIBFTOutgoingInitMapping in class dataMapping'});
           // logger.info('Inside the Data Mapping function-> getIBFTOutgoingInitMapping');
-          console.log(data);
+          logger.debug(data);
           if (data.Result.ResultCode == 0) {
     
                initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
@@ -263,11 +263,11 @@ class dataMapping {
                initTransData.currentBalance = 0;
                initTransData.channel = data.Header.SubChannel;
     
-               console.log("contextData");
-               console.log(JSON.stringify(initTransData));
+               logger.debug("contextData");
+               logger.debug(JSON.stringify(initTransData));
              return { initTransData };
           } else {     
-              console.log("Failure scenario for getIBFTOutgoingInitMapping()");
+              logger.debug("Failure scenario for getIBFTOutgoingInitMapping()");
 
               initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
               initTransData.financialIDJazzcash = data.Result.TransactionID;
@@ -334,14 +334,14 @@ class dataMapping {
               }
               initTransData.reasonOfFailure = reasonOfFailure;
 
-              console.log("contextData");
-              console.log(JSON.stringify(initTransData));
+              logger.debug("contextData");
+              logger.debug(JSON.stringify(initTransData));
               return { initTransData };
           }
         }
         catch(err){
-          console.log('error -> getIBFTOutgoingInitMapping');
-          console.log(err);
+          logger.debug('error -> getIBFTOutgoingInitMapping');
+          logger.debug(err);
           return null;
         }
     }
@@ -350,7 +350,7 @@ class dataMapping {
         let confirmTransData = {};
         try{ 
           logger.info({ event: 'Entered function', functionName: 'getIBFTOutgoingConfirmMapping in class dataMapping'});
-          console.log(data);
+          logger.debug(data);
           if (data.Result.ResultCode == 0) {
     
             confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'receiverFinancialID';})?.Value || '';
@@ -381,10 +381,10 @@ class dataMapping {
 
             confirmTransData.stan =  data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
 
-           console.log(JSON.stringify(confirmTransData));
+           logger.debug(JSON.stringify(confirmTransData));
             return { confirmTransData };
           } else {
-            console.log("Failure scenario for getIBFTOutgoingConfirmMapping()");
+            logger.debug("Failure scenario for getIBFTOutgoingConfirmMapping()");
             
             confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'receiverFinancialID';})?.Value || '';
             confirmTransData.financialIDJazzcash = data.Result.TransactionID;
@@ -434,13 +434,13 @@ class dataMapping {
               }
               confirmTransData.reasonOfFailure = reasonOfFailure;
       
-              console.log(JSON.stringify(confirmTransData));
+              logger.debug(JSON.stringify(confirmTransData));
               return { confirmTransData };
           }
         }
         catch(err){
-          console.log('error -> getIBFTOutgoingConfirmMapping');
-          console.log(err);
+          logger.debug('error -> getIBFTOutgoingConfirmMapping');
+          logger.debug(err);
           return null;
         }
     }
@@ -450,7 +450,7 @@ class dataMapping {
       try { 
         logger.info({ event: 'Entered function', functionName: 'getIBFTMobileOutgoingInitMapping in class dataMapping'});
         // logger.info('Inside the Data Mapping function-> getIBFTOutgoingInitMapping');
-        console.log(data);
+        logger.debug(data);
         if (data.Result.ResultCode == 0) {
   
              initTransData.transactionObjective = data.CustomObject.PurposeOfRemittance;
@@ -502,8 +502,8 @@ class dataMapping {
              initTransData.reversalStatus = ''; 
              initTransData.reasonOfFailure = '';
   
-            console.log("contextData");
-            console.log(JSON.stringify(initTransData));
+            logger.debug("contextData");
+            logger.debug(JSON.stringify(initTransData));
            return { initTransData };
         } else {
 
@@ -572,14 +572,14 @@ class dataMapping {
           initTransData.reversalStatus = reversalStatus;
           initTransData.reasonOfFailure = reasonOfFailure;
 
-         console.log("contextData");
-         console.log(JSON.stringify(initTransData));
+         logger.debug("contextData");
+         logger.debug(JSON.stringify(initTransData));
         return { initTransData };
         }
       }
       catch(err){
-        console.log('error -> getIBFTOutgoingInitMapping');
-        console.log(err);
+        logger.debug('error -> getIBFTOutgoingInitMapping');
+        logger.debug(err);
         return null;
       }
     }
@@ -588,7 +588,7 @@ class dataMapping {
         let confirmTransData = {};
         try { 
           logger.info({ event: 'Entered function', functionName: 'getIBFTMobileOutgoingConfirmMapping in class dataMapping'});
-          console.log(data);
+          logger.debug(data);
          
           if (data.Result.ResultCode == 0) {
     
@@ -623,7 +623,7 @@ class dataMapping {
 
             confirmTransData.stan =  data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'senderTransactionID';})?.Value || '';
 
-            console.log(JSON.stringify(confirmTransData));
+            logger.debug(JSON.stringify(confirmTransData));
             return { confirmTransData };
           } else {
             confirmTransData.transactionIDEasyPaisa = data?.Result?.ResultParameters?.ResultParameter?.find((param) => {return param.Key == 'receiverFinancialID';})?.Value || '';
@@ -677,13 +677,13 @@ class dataMapping {
             }
             confirmTransData.reasonOfFailure = reasonOfFailure;
 
-            console.log(JSON.stringify(confirmTransData));
+            logger.debug(JSON.stringify(confirmTransData));
             return { confirmTransData };
           }
         }
         catch(err){
-          console.log('error -> getIBFTOutgoingConfirmMapping');
-          console.log(err);
+          logger.debug('error -> getIBFTOutgoingConfirmMapping');
+          logger.debug(err);
           return null;
         }
     }  

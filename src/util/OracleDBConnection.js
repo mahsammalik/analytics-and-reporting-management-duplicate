@@ -12,10 +12,10 @@ class DatabaseConn {
         try {
 
             let connection;
-            console.log(`Opening Connection to the oracle db with below config`);
+            logger.debug(`Opening Connection to the oracle db with below config`);
             console.dir(dbConfig);
             connection = await oracledb.getConnection(dbConfig);
-            console.log('Obtained connection ! ');
+            logger.debug('Obtained connection ! ');
 
             const result = await connection.execute(`BEGIN
                    PMCLDB.fetchcustomeraccountstatement(:inloginid, :infromdate, :intodate, :outcursor, :outresponsecode);
@@ -28,7 +28,7 @@ class DatabaseConn {
                     outresponsecode: { dir: oracledb.BIND_OUT, type: oracledb.STRING, maxSize: 80 }
                 });
 
-            console.log("resultArrayFormat", result)
+            logger.debug("resultArrayFormat", result)
 
             const resultSet = result.outBinds.outcursor;
             let rows = await resultSet.getRows(1000); // get numRows rows at a time
@@ -50,7 +50,7 @@ class DatabaseConn {
                 let sumBalance = 0.00;
                 let sumCredit = 0.00;
                 let sumDebit = 0.00;
-                // console.log();
+                // logger.debug();
                 rows.forEach((row) => {
                     sumDebit += parseFloat(row[4]);
                     sumCredit += parseFloat(row[5]);

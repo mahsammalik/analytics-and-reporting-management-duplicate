@@ -46,8 +46,8 @@ class excelExportController {
   }
 
   getResponse(responsePayload) {
-    console.log('_______________ Get Response Called ________________');
-    console.log(responsePayload);
+    logger.debug('_______________ Get Response Called ________________');
+    logger.debug(responsePayload);
 
     try {
       let updatedResponse = {};
@@ -60,7 +60,7 @@ class excelExportController {
       return updatedResponse;
 
     } catch(error) {
-      console.log(error);
+      logger.debug(error);
       return {
         "success":false,
         "message_en": "System internal server error"

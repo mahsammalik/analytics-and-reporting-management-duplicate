@@ -12,14 +12,14 @@ class taxStatementService {
     }
 
     async sendTaxStatement(payload, res) {
-        console.log("email pdf");
+        logger.debug("email pdf");
         const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-        // console.log("the output of changing database" + data);
+        // logger.debug("the output of changing database" + data);
         if (data === 'Database Error') return "Database Error";
 
         try {
 
-            console.log(`Array Format statement ${JSON.stringify(data)}`);
+            logger.debug(`Array Format statement ${JSON.stringify(data)}`);
             const accountData = {
                 headers: ['Trx ID', 'Trx DateTime', 'MSISDN', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,

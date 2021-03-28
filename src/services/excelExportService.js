@@ -215,26 +215,26 @@ class ExcelExportService {
       };
 
     //   const response = dataMapping.getIBFTOutgoingInitMapping(initBody);
-    //   console.log(response);
+    //   logger.debug(response);
 
     //   const response = dataMapping.getIBFTOutgoingConfirmMapping(
     //     confirmBody
     //   );
-    //   console.log(response);
+    //   logger.debug(response);
 
     //   const db2response = await DB2Connection.addOutgoingTransaction(
     //     response.initTransData
     //   );
-    //   console.log(db2response);
+    //   logger.debug(db2response);
 
     //   const db2response = await DB2Connection.updateOutgoingTransaction(
     //     response.confirmTransData
     //   );
-    //   console.log(db2response);
+    //   logger.debug(db2response);
 
       // const response = await DB2Connection.getIncomingTransaction();
       const getIncomingTransactionObjects = await DB2Connection.getIncomingTransactions(req.params.startDate, req.params.endDate);
-      console.log(JSON.stringify(getIncomingTransactionObjects));
+      logger.debug(JSON.stringify(getIncomingTransactionObjects));
 
       if (getIncomingTransactionObjects == null) {
         clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
@@ -262,7 +262,7 @@ class ExcelExportService {
     try {
 
       const getOutgoingTransactionObjects = await DB2Connection.getOutgoingTransactions(req.params.startDate, req.params.endDate);
-      console.log(JSON.stringify(getOutgoingTransactionObjects));
+      logger.debug(JSON.stringify(getOutgoingTransactionObjects));
 
       if (getOutgoingTransactionObjects == null) {
         clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
@@ -402,7 +402,7 @@ class ExcelExportService {
       await workbook.csv.write(res);
       res.status(200).end();
     } catch (error) {
-        console.log(error);
+        logger.debug(error);
         logger.error({ event: 'Error thrown', functionName: 'csvExport in class ExcelExportService', 'arguments': data, 'error': error });
         logger.info({ event: 'Exited function', functionName: 'csvExport' });
         const clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
@@ -530,7 +530,7 @@ class ExcelExportService {
       await workbook.csv.write(res);
       res.status(200).end();
     } catch (error) {
-        console.log(error);
+        logger.debug(error);
         logger.error({ event: 'Error thrown', functionName: 'csvExport in class ExcelExportService', 'arguments': data, 'error': error });
         logger.info({ event: 'Exited function', functionName: 'csvExport' });
         const clientResponse = await responseCodeHandler.getResponseCode(config.responseCode.useCases.easyPaisaIBFT.internal, "");
@@ -539,8 +539,8 @@ class ExcelExportService {
   }
 
   getResponse(responsePayload) {
-    console.log('_______________ Get Response Called ________________');
-    console.log(responsePayload);
+    logger.debug('_______________ Get Response Called ________________');
+    logger.debug(responsePayload);
 
     try {
       let updatedResponse = {};
@@ -553,7 +553,7 @@ class ExcelExportService {
       return updatedResponse;
 
     } catch(error) {
-      console.log(error);
+      logger.debug(error);
       return {
         "success": false,
         "message_en": "System internal server error"

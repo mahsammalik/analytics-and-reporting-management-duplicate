@@ -47,8 +47,8 @@ const taxStatementTemplate = accountData => {
 
     try {
 
-        console.log(`payload ${JSON.stringify(accountData.payload)}`);
-        console.log(`account data ${JSON.stringify(accountData.data)}`);
+        logger.debug(`payload ${JSON.stringify(accountData.payload)}`);
+        logger.debug(`account data ${JSON.stringify(accountData.data)}`);
 
         const numberInWords = numberConverter.toWords(11110).charAt(0).toUpperCase() + numberConverter.toWords(11110).slice(1);
         const accountDetails = `<div class="headerTable">

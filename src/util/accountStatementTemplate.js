@@ -51,7 +51,7 @@ const accountStatementTemplate = accountData => {
 		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
 		const pageSize = 8;
 
-		// console.log(JSON.stringify(accountData.payload));
+		// logger.debug(JSON.stringify(accountData.payload));
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date of Issue: </b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</div>
@@ -126,7 +126,7 @@ const accountStatementTemplate = accountData => {
 
 			// if (accountData.data.length <= pageSize) {
 			//     slicedArray = accountData.data;
-			//     console.log(slicedArray);
+			//     logger.debug(slicedArray);
 			// } else {
 			slicedArray = accountData.data.map((item, index) => {
 				return index % pageSize === 0 ? accountData.data.slice(index, index + pageSize) : null;

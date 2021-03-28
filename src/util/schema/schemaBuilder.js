@@ -29,8 +29,8 @@ function compileDefinitions(ajv, swagger) {
 function handleBodyEntry(schemaObject, field) {
 
     const localSchema = _.cloneDeep(schemaObject);
-    // console.log('localSchema', localSchema);
-    // console.log('schemaObject', schemaObject);
+    // logger.debug('localSchema', localSchema);
+    // logger.debug('schemaObject', schemaObject);
     if (!localSchema.required.includes('body')) {
         localSchema.required.push('body');
     }
@@ -129,7 +129,7 @@ function compileRequestSchema(ajv, swagger) {
 // buildSchemaValidator builds schema from swagger file
 const buildSchemaValidator = (swagger) => {
     try {
-        // console.log('hello buildSchemaValidator', swagger);
+        // logger.debug('hello buildSchemaValidator', swagger);
         const ajv = new Ajv({
             allErrors: true,
             formats: {
@@ -146,7 +146,7 @@ const buildSchemaValidator = (swagger) => {
         return ajv;
     } catch (err) {
         // if we can't parse schemas, fail fast.
-        // console.log('err', err);
+        // logger.debug('err', err);
         logger.error(err);
         return err;
         // return process.exit(1);

@@ -36,7 +36,7 @@ class Customer {
     //       return next();
     //     }
     //     post.slug = slugify(post.title, "_");
-    //     console.log('set slug', post.slug);
+    //     logger.debug('set slug', post.slug);
     //     return next();
     //   },
     //   function (err) {

@@ -40,15 +40,15 @@ describe('test account Statement Controller', () => {
 
 
         res.on('end', () => {
-            console.log(res._getData());
+            logger.debug(res._getData());
             done();
         });
         res.on('send', () => {
-            console.log(res._getData());
+            logger.debug(res._getData());
             done();
         });
         await accountStatement.calculateAccountStatement(req, res, next);
-        // console.log('accountStmt', res.json());
+        // logger.debug('accountStmt', res.json());
         expect(res.locals.response).toBe(true);
         // expect(res.statusCode).toBe(200);
 

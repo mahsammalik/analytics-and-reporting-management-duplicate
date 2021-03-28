@@ -11,12 +11,12 @@ class Cache {
 
     async _getCacheInstance(cacheName) {
         try {
-            console.log(cacheName, "_getCacheInstance cacheName", CACHE_SERVER_PORT, CACHE_SERVER)
+            logger.debug(cacheName, "_getCacheInstance cacheName", CACHE_SERVER_PORT, CACHE_SERVER)
             if (this.pool.cacheName) {
-                console.log(`Found an existing cache pool for ${cacheName}`)
+                logger.debug(`Found an existing cache pool for ${cacheName}`)
                 return this.pool.cacheName
             }
-            console.log(`Did not find an existing cache pool for ${cacheName} , try to set new connection wish me luck `)
+            logger.debug(`Did not find an existing cache pool for ${cacheName} , try to set new connection wish me luck `)
             const client = await infinispan.client({
                 port: CACHE_SERVER_PORT,
                 host: CACHE_SERVER,
@@ -33,7 +33,7 @@ class Cache {
             return client;
         }
         catch (err) {
-            console.log(err, "_getCacheInstance error")
+            logger.debug(err, "_getCacheInstance error")
         }
     }
 
@@ -59,11 +59,11 @@ class Cache {
     async getValue(key, cacheName) {
         let client;
         try {
-            console.log(cacheName, " cacheName getValue")
+            logger.debug(cacheName, " cacheName getValue")
             client = await this._getCacheInstance(cacheName);
-            console.log(client, "client getValue")
+            logger.debug(client, "client getValue")
             let value = await client.get(key);
-            console.log(value, "value getValue")
+            logger.debug(value, "value getValue")
             logger.info({ event: 'printing value for key ' + key + ' is ' + value });
             await client.disconnect();
             return value;

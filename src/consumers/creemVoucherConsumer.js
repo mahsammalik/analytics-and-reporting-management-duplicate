@@ -15,18 +15,18 @@ class Subscriber {
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
                 logger.info({ event: 'Entered function', functionName: 'setConsumer in class subscriber' });
-                console.log("message: ", msg)
+                logger.debug("message: ", msg)
 
                 if (msg.topic === config.kafkaBroker.topics.queryTrans_creemVoucher){
-                    console.log('*********** Init Trans Creem Vouchers *****************');
+                    logger.debug('*********** Init Trans Creem Vouchers *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
-                        console.log(JSON.stringify(payload));
+                        logger.debug(JSON.stringify(payload));
                         
                         // TODO: DB2 Table has to be created before calling insert function
                         //await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.COMMON_EVENT_TICKET, payload);
-                        //console.log(response);
+                        //logger.debug(response);
                     } catch (error) {
                         logger.error({ event: 'Error thrown', functionName: 'setConsumer in class subscriber - init trans Creem Vouchers', error: { message: error.message, stack: error.stack } });
                         logger.info({ event: 'Exited function', functionName: 'setConsumer in class subscriber - init trans Creem Vouchers' });

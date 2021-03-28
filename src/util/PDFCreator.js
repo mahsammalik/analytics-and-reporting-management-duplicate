@@ -10,10 +10,10 @@ const createPDF = async(templateDetails) => {
         // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
         // fs.writeFile(`${fileName}.html`, templateDetails.template, (err, data) => {
         //     if (err) throw err;
-        //     console.log('html created');
+        //     logger.debug('html created');
         //     pdf.create(templateDetails.template, options).toFile(`${fileName}.pdf`, (err, res) => {
         //         if (err) return err;
-        //         console.log(res);
+        //         logger.debug(res);
         //         return res;
         //     });
         // });

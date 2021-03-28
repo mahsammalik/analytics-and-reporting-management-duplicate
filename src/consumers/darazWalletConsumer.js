@@ -10,7 +10,7 @@ class Processor {
     async processDarazWalletConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processDarazWalletConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
@@ -36,7 +36,7 @@ class Processor {
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.userEmail = '';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

@@ -30,7 +30,7 @@ class DatabaseConn {
                 // stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -48,7 +48,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -63,7 +63,7 @@ class DatabaseConn {
                 stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID]);
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -78,7 +78,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -94,7 +94,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -110,7 +110,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -126,7 +126,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -142,7 +142,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -159,7 +159,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -175,7 +175,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -191,7 +191,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -207,7 +207,7 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 conn.close(function(err) {});
-                console.log("insert done");
+                logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -227,7 +227,7 @@ class DatabaseConn {
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
-            // console.log();
+            // logger.debug();
             resultArrayFormat.forEach((row) => {
                 sumDebit += parseFloat(row[row.length - 3]);
                 sumCredit += parseFloat(row[row.length - 2]);
@@ -235,7 +235,7 @@ class DatabaseConn {
             });
             resultArrayFormat.push(["Total", "", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
-            // console.log("the result of database" + concatenatResult);
+            // logger.debug("the result of database" + concatenatResult);
             result.closeSync();
             stmt.closeSync();
             conn.close(function(err) {});
@@ -259,7 +259,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close();
-            // console.log(`the resulted array ${JSON.stringify(arrayResult)}`);
+            // logger.debug(`the resulted array ${JSON.stringify(arrayResult)}`);
 
             logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn' });
             return arrayResult;
@@ -281,7 +281,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function(err) {});
-            // console.log('the resulted array ' + arrayResult);
+            // logger.debug('the resulted array ' + arrayResult);
             return arrayResult;
 
         } catch (err) {
@@ -301,7 +301,7 @@ class DatabaseConn {
             // result.closeSync();
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             return;
 
         } catch (err) {
@@ -321,7 +321,7 @@ class DatabaseConn {
             // result.closeSync();
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             return;
 
         } catch (err) {
@@ -341,7 +341,7 @@ class DatabaseConn {
             ]);
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             logger.info({ event: 'Existed function', functionName: 'addIncomingTransaction in class DatabaseConn' });
             return true;
         } catch (error) {
@@ -364,7 +364,7 @@ class DatabaseConn {
             ]);
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             logger.info({ event: 'Existed function', functionName: 'addOutgoingTransaction in class DatabaseConn' });
             return true;
 
@@ -377,14 +377,14 @@ class DatabaseConn {
 
     async updateIncomingTransaction(dataPayload) {
         logger.info({ event: 'Entered function', functionName: 'updateIncomingTransaction in class DatabaseConn' });
-        console.log(dataPayload);
+        logger.debug(dataPayload);
         try {
             let conn = await open(cn);
             const stmt = conn.prepareSync(`UPDATE ${schema}.COMMON_INCOMMING_IBFT SET TRXID_JAZZCASH = ?, FINID_EASYPAISA = ?, TRANS_OBJECTIVE = ?, TRX_DATE = ?, TRX_TIME = ?, TRX_STATUS = ?, FEE = ?, FED = ?, CURRENT_BALANCE = ?, FAILURE_REASON = ? WHERE TRXID_EASYPAISA = ?;`);
             stmt.executeSync([dataPayload.transactionIDEasyJazzcash, dataPayload.financialIDEasyPaisa, dataPayload.paymentPurpose, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.currentBalance, dataPayload.reasonOfFailure, dataPayload.transactionIDEasyPaisa]);
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             logger.info({ event: 'Exited function', functionName: 'updateIncomingTransaction in class DatabaseConn' });
             return true;
         } catch (error) {
@@ -396,7 +396,7 @@ class DatabaseConn {
 
     async updateOutgoingTransaction(dataPayload) {
         logger.info({ event: 'Entered function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
-        console.log(dataPayload);
+        logger.debug(dataPayload);
         try {
             let conn = await open(cn);
 
@@ -412,7 +412,7 @@ class DatabaseConn {
            
             stmt.closeSync();
             conn.close(function(err) {});
-            console.log("insert done");
+            logger.debug("insert done");
             logger.info({ event: 'Exited function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
             return true;
         } catch (error) {

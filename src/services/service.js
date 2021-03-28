@@ -25,7 +25,7 @@ class Service {
             try {
                 query._id = new mongoose.mongo.ObjectId(query._id);
             } catch (error) {
-                console.log("not able to generate mongoose id with content", query._id);
+                logger.debug("not able to generate mongoose id with content", query._id);
             }
         }
 
@@ -60,7 +60,7 @@ class Service {
                     item
                 };
         } catch (error) {
-            console.log("error", error);
+            logger.debug("error", error);
             return {
                 error: true,
                 statusCode: 500,

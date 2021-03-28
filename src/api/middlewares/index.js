@@ -10,3 +10,5 @@ export { default as schemaValidatorMW }
 from './schemaValidatorMW';
 export { default as auditLoggerMW }
 from './auditLoggerMW';
+export { default as logRequestMW }
+from './logRequestMW';
