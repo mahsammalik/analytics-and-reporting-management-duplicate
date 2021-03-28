@@ -10,7 +10,7 @@ class Processor {
     async processCreateCardPINConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processCreateCardPINConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
@@ -35,7 +35,7 @@ class Processor {
                 initTransData.suplCardNum = 0;
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

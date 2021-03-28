@@ -11,7 +11,7 @@ const dirName = `${path.dirname(__dirname)}/public/assets`;
  */
 const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel }) => {
 	logger.info({ event: 'Entered function', functionName: 'accountStatementEmailTemplate' });
-	console.log("accountStatementEmailTemplate details: ", title, customerName, accountNumber, statementPeriod, accountLevel)
+	logger.debug("accountStatementEmailTemplate details: ", title, customerName, accountNumber, statementPeriod, accountLevel)
 	try {
 		const htmlString = `
 		<html>

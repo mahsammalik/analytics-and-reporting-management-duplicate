@@ -24,7 +24,7 @@ describe('Unit test accountStatementService', () => {
         expect(response).toBe(true);
     });
     it('should fail in creating an account statement CSV', async() => {
-        console.log(moment(faker.date.between('1990', '2000')).format('YYYY-MM-DD'));
+        logger.debug(moment(faker.date.between('1990', '2000')).format('YYYY-MM-DD'));
         const payload = {
             msisdn: faker.phone.phoneNumber(),
             start_date: moment(faker.date.between('1990', '2000')).format('YYYY-MM-DD'),

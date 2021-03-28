@@ -132,23 +132,23 @@ class ResponseCodeHandler {
                 message_ur: config.responseCode.default.message,
                 data: {}
             };
-            console.log(response, " cacheresponseObj getResponseCode", code)
+            logger.debug(response, " cacheresponseObj getResponseCode", code)
 
             if (!code || _.isEmpty(code)) {
                 return response;
             }
-            console.log(" cacheresponseObj BEFORE getResponseCode", config.cache.responseCodeCache)
+            logger.debug(" cacheresponseObj BEFORE getResponseCode", config.cache.responseCodeCache)
 
             //Get Response Code Object From Cache
             let cacheresponseObj = await cache.getValue(code, config.cache.responseCodeCache);
-            console.log(cacheresponseObj, " cacheresponseObj getResponseCode")
+            logger.debug(cacheresponseObj, " cacheresponseObj getResponseCode")
             if (!cacheresponseObj) { //If not found in cache get Response Code from Master Data Microservice
                 logger.debug({ event: 'Entered !cacheresponseObj block', functionName: 'getResponseCode in class responseCodeHandler' });
-                console.log(RESPCODE_SERVICE_URL, "RESPCODE_SERVICE_URL getResponseCode")
+                logger.debug(RESPCODE_SERVICE_URL, "RESPCODE_SERVICE_URL getResponseCode")
                 const url = RESPCODE_SERVICE_URL;
-                console.log(url)
+                logger.debug(url)
                 let axiosResp = await axios.get(url);
-                console.log(axiosResp, " axiosResp getResponseCode")
+                logger.debug(axiosResp, " axiosResp getResponseCode")
                 if (axiosResp && axiosResp.status == 200) {
                     let resp = axiosResp.data;
                     if (resp && resp.success) {

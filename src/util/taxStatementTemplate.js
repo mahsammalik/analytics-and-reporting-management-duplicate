@@ -47,8 +47,8 @@ const taxStatementTemplate = accountData => {
 
 	try {
 
-		console.log(`payload ${JSON.stringify(accountData.payload)}`);
-		console.log(`account data ${JSON.stringify(accountData.data)}`);
+		logger.debug(`payload ${JSON.stringify(accountData.payload)}`);
+		logger.debug(`account data ${JSON.stringify(accountData.data)}`);
 
 		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
 			return a + b;
@@ -58,7 +58,7 @@ const taxStatementTemplate = accountData => {
 		}, 0) || 0;
 		const totalTax = Number.parseFloat(WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
-		console.log("TAX:  ", taxInWords, totalTax)
+		logger.debug("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>20-Aug-2020</div>

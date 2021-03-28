@@ -10,7 +10,7 @@ class Processor {
     async processFoodOrderingConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processFoodOrderingConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
@@ -41,7 +41,7 @@ class Processor {
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

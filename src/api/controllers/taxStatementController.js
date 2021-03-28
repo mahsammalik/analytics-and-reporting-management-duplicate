@@ -26,14 +26,14 @@ class taxStatementController {
         }
         if (!queryValidationResponse.success) {
             const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
-            console.log(queryValidationResponse);
+            logger.debug(queryValidationResponse);
             return res.status(422).send(responseCodeForAccountStatementQuery);
         }
         const metadataHeaders = req.headers['x-meta-data'];
         const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
         const userProfile = await getUserProfile(req.headers);
         logger.debug({ userProfile });
-        console.log(metadata," metadata")
+        logger.debug(metadata," metadata")
         let payload = {
             msisdn: req.headers['x-msisdn'],
             start_date: req.query.start_date,
@@ -60,7 +60,7 @@ class taxStatementController {
         //    responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
         //    res.status(500).send(responseCodeForAccountStatementQuery);
         // }else if (response == 'Error in sending email'){
-        //   console.log("enter the correct conditiion")
+        //   logger.debug("enter the correct conditiion")
         //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
         //   res.status(422).send(responseCodeForAccountStatementQuery);
         // }  else if (response == 'Email send Succefull'){

@@ -10,7 +10,7 @@ class Processor {
     async processDoorstepCashinConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processDoorstepCashinConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             initTransData.date = data?.tx_createdAt || null;
@@ -28,7 +28,7 @@ class Processor {
             initTransData.riderMsisdn = Number(data?.bookmeLastSentPayload?.data?.partner?.mobile_no || '0');             
             initTransData.channel = data?.channel || 'Mobile';
 
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if (process.env.NODE_ENV === 'development') {

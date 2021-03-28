@@ -13,15 +13,15 @@ class taxStatementService {
     }
 
     async sendTaxStatement(payload, res) {
-        console.log("email pdf", payload);
+        logger.debug("email pdf", payload);
         try {
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
-            console.log("the output of changing database " + data);
+            logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
 
             const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, payload.end_date);
 
-            console.log(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+            logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
 
             payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
@@ -54,7 +54,7 @@ class taxStatementService {
                 type: 'base64',
                 embedImage: false
             }];
-            console.log("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
             if (payload.email) {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                 const attachment = [{

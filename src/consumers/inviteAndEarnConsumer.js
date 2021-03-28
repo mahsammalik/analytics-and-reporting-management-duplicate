@@ -10,7 +10,7 @@ class Processor {
     async processInviteAndEarnConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processInviteAndEarnConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
@@ -40,7 +40,7 @@ class Processor {
                 initTransData.reqChannel = '';
                 initTransData.reqStatus = isConfirm ? 'Completed' : 'Pending';
                 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

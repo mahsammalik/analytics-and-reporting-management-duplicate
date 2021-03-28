@@ -10,7 +10,7 @@ class Processor {
     async processSendMoneyToBankConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processSendMoneyToBankConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
 
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
@@ -71,7 +71,7 @@ class Processor {
                 initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
                 initTransData.channel = data.Header.SubChannel;
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if(JSON.stringify(initTransData) !== '{}')
@@ -83,7 +83,7 @@ class Processor {
                     await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.OUTGOING_IBFT, initTransData);
                 }
             }
-            //console.log(response);
+            //logger.debug(response);
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processSendMoneyToBankConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);

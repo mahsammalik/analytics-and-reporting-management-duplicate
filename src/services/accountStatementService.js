@@ -18,24 +18,24 @@ class accountStatementService {
     async sendEmailCSVFormat(payload) {
         try {
 
-            console.log('-----payload sendEmailCSVFormat---', payload);
+            logger.debug('-----payload sendEmailCSVFormat---', payload);
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
-            console.log("CHECK DB2 Account Statement CSV: ", db2Data);
+            logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
             // if (resp.status === 200) {
             // const response = db2Data;
-            // console.log("CHECK CsV Oracle Account Statement: ", resp.data);
-            // console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
+            // logger.debug("CHECK CsV Oracle Account Statement: ", resp.data);
+            // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             // const { data, success, message } = response;
             // if (success) {
             let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + db2Data).toString('base64');
-            console.log(`csvData ${csvData}`, db2Data);
+            logger.debug(`csvData ${csvData}`, db2Data);
 
             const emailData = [{
                 'key': 'customerName',
@@ -91,7 +91,7 @@ class accountStatementService {
 
         try {
 
-            console.log('-----payload sendEmailPDFFormat---', payload);
+            logger.debug('-----payload sendEmailPDFFormat---', payload);
             logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
@@ -101,8 +101,8 @@ class accountStatementService {
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
             //     const response = resp.data;
-            //     console.log("CHECK Oracle Account Statement: ", resp.data)
-            //     console.log(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
+            //     logger.debug("CHECK Oracle Account Statement: ", resp.data)
+            //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
             //     const { data, success, message } = response;
             // if (success) {
             if (db2Data.length > 0)
@@ -126,7 +126,7 @@ class accountStatementService {
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
 
-            console.log(`pdfFile ${pdfFile}`, db2Data);
+            logger.debug(`pdfFile ${pdfFile}`, db2Data);
             const emailData = [{
                 'key': 'customerName',
                 'value': payload.merchantName

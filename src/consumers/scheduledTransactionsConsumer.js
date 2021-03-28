@@ -10,7 +10,7 @@ class Processor {
     async processScheduledTransactionsConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processScheduledTransactionsConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.initiatorMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
@@ -38,7 +38,7 @@ class Processor {
                 initTransData.repeatTransDuration = data?.CustomObject?.txnFrequency || '';
                 initTransData.channel = data?.Header?.SubChannel || '';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

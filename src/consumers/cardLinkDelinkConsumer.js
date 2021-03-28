@@ -10,7 +10,7 @@ class Processor {
     async processCardLinkDelinkConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processCardLinkDelinkConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             initTransData.transDate = data.txnDateTime;
@@ -20,7 +20,7 @@ class Processor {
             initTransData.usecase = data.usecase;
             initTransData.retrieveRef = Number.isNaN(Number(data?.txnRefNo || '0')) ? 0 : Number(data?.txnRefNo || '0');
 
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {

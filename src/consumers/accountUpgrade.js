@@ -10,7 +10,7 @@ class Processor {
     async processAccountUpgradeConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processAccountUpgradeConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.transType === 'UpgradeSuccess') {
                 initTransData.date = data.txnDateTime.includes('.') ? data.txnDateTime.split('.')[0] : data.txnDateTime;
@@ -41,7 +41,7 @@ class Processor {
                 initTransData.personalName = data?.nadraResponse?.return?.ApiResponse?.error?.result?.nameEn || '';
                 initTransData.businessName = '';
             }
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {

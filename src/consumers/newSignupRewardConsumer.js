@@ -10,7 +10,7 @@ class Processor {
     async processNewSignupRewardConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processNewSignupRewardConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
@@ -28,7 +28,7 @@ class Processor {
                 initTransData.postingStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.channel = data.Header.SubChannel;
                 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

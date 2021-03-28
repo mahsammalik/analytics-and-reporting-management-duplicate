@@ -10,7 +10,7 @@ class Processor {
     async processPayoneerTransConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processPayoneerTransConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             initTransData.msisdn = Number(data?.msisdn || '0');
@@ -29,7 +29,7 @@ class Processor {
             initTransData.channel = data?.channel || 'Mobile';
             initTransData.TID = Number(data?.paymentID || '0');
 
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if (process.env.NODE_ENV === 'development') {

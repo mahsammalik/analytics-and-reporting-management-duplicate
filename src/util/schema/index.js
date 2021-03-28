@@ -13,9 +13,9 @@ import schemaBuilder from './schemaBuilder';
 const parseYAMLToJSON = (yamlFilePath) => {
     try {
         const schemaBuffer = fs.readFileSync(yamlFilePath);
-        // console.log('schemaBuffer', schemaBuffer);
+        // logger.debug('schemaBuffer', schemaBuffer);
         const schemaString = schemaBuffer.toString();
-        // console.log('schemaString', schemaString);
+        // logger.debug('schemaString', schemaString);
         return YAML.parse(schemaString);
     } catch (e) {
         logger.error(e);
@@ -43,20 +43,20 @@ class Schema {
     // _matchRoute matches a url/method pair against the schemas loaded into the validator
     _matchRoute(url, method, statusCode = '') {
         const schemas = this.validator._schemas;
-        // console.log('schemas', schemas);
+        // logger.debug('schemas', schemas);
         const type = `${statusCode || ''}${method}${url}`;
-        // console.log('type', type);
+        // logger.debug('type', type);
         const keys = Object.keys(schemas);
-        // console.log('keys', keys);
+        // logger.debug('keys', keys);
         const schemaName = keys.find(key => type.match(key));
-        // console.log('schemaName', schemaName);
+        // logger.debug('schemaName', schemaName);
         if (!schemaName) {
             return null;
         }
         try {
             return this.validator.getSchema(schemaName);
         } catch (err) {
-            // console.log('errrrr', err);
+            // logger.debug('errrrr', err);
             logger.error(err);
             return err;
         }
@@ -84,9 +84,9 @@ class Schema {
     validate(req, res) {
         // res.status is undefined on inbound requests and defined on outbound requests
         const schema = this._matchRoute(req.originalUrl, req.method, res.statusCode);
-        // console.log('req.originalUrl', req.originalUrl);
-        // console.log('req.methodl', req.method);
-        // console.log('res.statusCode', res.statusCode);
+        // logger.debug('req.originalUrl', req.originalUrl);
+        // logger.debug('req.methodl', req.method);
+        // logger.debug('res.statusCode', res.statusCode);
         if (!schema) {
             // assume response validation
             if (res.statusCode) {
@@ -107,20 +107,20 @@ class Schema {
                 req.method,
                 schema.schema.$id
             );
-            // console.log('req.body', req.body);
+            // logger.debug('req.body', req.body);
             valid = schema({
                 body: req.body,
                 headers: req.headers,
                 query: req.query,
                 path
             });
-            // console.log('valid', valid);
+            // logger.debug('valid', valid);
         } else {
             // outbound request
             valid = schema(res.body);
         }
         if (!valid) {
-            // console.log('schema.errors', schema.errors);
+            // logger.debug('schema.errors', schema.errors);
 
             return { success: false, error: new InvalidParameterError('See Errors', schema.errors) };
             // return next ? next(error) : error;

@@ -10,7 +10,7 @@ class Processor {
     async processMovieTicketsConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processMovieTicketsConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
@@ -43,7 +43,7 @@ class Processor {
             initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
             initTransData.channel = data?.CustomObject?.channel || 'Mobile';
 
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if (process.env.NODE_ENV === 'development') {

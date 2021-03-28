@@ -10,7 +10,7 @@ class Processor {
     async processCareemVoucherConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processCareemVoucherConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
@@ -28,7 +28,7 @@ class Processor {
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.channel = data.Header.SubChannel;
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

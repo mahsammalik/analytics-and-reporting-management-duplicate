@@ -10,7 +10,7 @@ class Processor {
     async processDVDCConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processDVDCConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
@@ -33,7 +33,7 @@ class Processor {
                 initTransData.cashInTransTime = null,
                 initTransData.channel = data?.Header?.SubChannel || '';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

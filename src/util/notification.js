@@ -37,7 +37,7 @@ class Notification {
                     pushNotificationReqBody
                 )
                 .then((response) => {
-                    // console.log(response);
+                    // logger.debug(response);
                     return true;
                 })
                 .catch((error) => {
@@ -83,12 +83,12 @@ class Notification {
                 emailReqBody.template = Template;
                 emailReqBody.data = Data;
             }
-            // console.log('printing email');
-            // console.log(emailReqBody);
+            // logger.debug('printing email');
+            // logger.debug(emailReqBody);
             return await axios
                 .post(NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
                 .then((response) => {
-                    console.log('Email Sent', response);
+                    logger.debug('Email Sent', response);
                     return true;
                 })
                 .catch((error) => {

@@ -10,7 +10,7 @@ class Processor {
     async processFoodOrderingConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processFoodOrderingConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             initTransData.id = data?.CustomObject?.orderId || '';
@@ -28,7 +28,7 @@ class Processor {
             initTransData.transStatus = isConfirm ? 'Completed' : 'Pending';
             initTransData.channel = data?.CustomObject?.channel || 'Mobile';
 
-            console.log(JSON.stringify(initTransData));
+            logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if (process.env.NODE_ENV === 'development') {

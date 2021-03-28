@@ -10,7 +10,7 @@ class Processor {
     async processDonationConsumer(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processDonationConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
@@ -33,7 +33,7 @@ class Processor {
                 }
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

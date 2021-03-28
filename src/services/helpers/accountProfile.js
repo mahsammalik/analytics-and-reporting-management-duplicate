@@ -54,12 +54,12 @@ const getUserProfile = headers => {
 		};
 
 		return axios.get(userProfileURL, { headers: headerFields }).then(result => {
-			console.log(result, "   result IN PROFILE CALL")
+			logger.debug(result, "   result IN PROFILE CALL")
 			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
 			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
 			return profile
 		}).catch(error => {
-			console.log("ERROR IN PROFILE CALL: ", headerFields, error)
+			logger.debug("ERROR IN PROFILE CALL: ", headerFields, error)
 			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 			return {};
 		});

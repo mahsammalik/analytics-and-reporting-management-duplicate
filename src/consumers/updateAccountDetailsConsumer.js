@@ -10,7 +10,7 @@ class Processor {
     async processUpdateAccountDetailsConsumer(data) {
         try {
             logger.info({ event: 'Entered function', functionName: 'processUpdateAccountDetailsConsumer in class Processor' });
-            //console.log(data);
+            //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
@@ -28,7 +28,7 @@ class Processor {
                 initTransData.channel = data?.Header?.SubChannel || '';
                 initTransData.useCase = data?.Header?.UseCase || '';
 
-                console.log(JSON.stringify(initTransData));
+                logger.debug(JSON.stringify(initTransData));
             }
 
             if (JSON.stringify(initTransData) !== '{}') {

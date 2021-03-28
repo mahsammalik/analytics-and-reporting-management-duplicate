@@ -57,7 +57,7 @@ class Broker {
     _ConnectConsumer(topicsArray) {
         try {
             const consumer = new Kafka.KafkaConsumer(config.kafkaBroker.consumerConfig);
-            console.log(topicsArray);
+            logger.debug(topicsArray);
             logger.debug({ topicsArray });
 
             // logging all errors
