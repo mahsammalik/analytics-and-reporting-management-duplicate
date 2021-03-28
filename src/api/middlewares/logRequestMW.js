@@ -19,7 +19,12 @@ const logRequestMW = (req, res, next) => {
         if (requestHeaders['x-mpin']) {
             requestHeaders['x-mpin'] = '****';
         }
-        logger.info(requestHeaders);
+        httpContext.set('requestObj',{msisdn,requestID,URL});         
+
+       logger.log({message:'Incoming Request Headers',level:'info',msisdn:msisdn,requestID:requestID,URL:originalUrl,headers:requestHeaders}); 
+       if(req.body)    
+       logger.log({message:'Incoming Request Payload',level:'info',msisdn:msisdn,requestID:requestID,URL:originalUrl,payload:req.body});  
+
 
         next();
     } catch (error) {

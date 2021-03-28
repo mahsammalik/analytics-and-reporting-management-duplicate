@@ -3,6 +3,8 @@ import { createLogger, format, transports } from 'winston';
 import stringify from 'json-stringify-safe';
 const { combine, timestamp, label, printf } = format;
 const PRODUCTION_LOG_LEVEL = process.env.PRODUCTION_LOG_LEVEL || 'debug';
+const MASKING_KEYS = process.env.MASKING_KEYS || "password, pin";
+
 const customFormat = printf((info) => {
     const logObj = httpContext.get('logObj') || null;
     info = Object.assign(info, logObj);
@@ -10,10 +12,26 @@ const customFormat = printf((info) => {
     if (process.env.NODE_ENV === 'development') {
         log = `[${info.label}] ${info.timestamp} ${stringify(info, null, '...')}`;
     } else {
-        log = `[${info.label}] ${info.timestamp} ${stringify(info)}`;
+        //if object contains sensitive property ( i.e. key value matches pin, mpin, password, CVV , credit card etc etc , NADRA, CNIC , Mother's name ), **** 
+        log = `${stringify(info)}`;
+        log = maskInput(log);
+    }
+    if (info instanceof Error) {
+        log = `[ERROR:] [${info.label}] ${info.timestamp} ${stringify(info.message)} ${stringify(info.stack)} ${stringify(info)}`
     }
     return log;
 });
+
+const maskInput = (strLog) => {
+    let sensitiveKeys = MASKING_KEYS ? MASKING_KEYS.split(/[\s,]+/) : [];
+    for (let key of sensitiveKeys) {
+        let keyToFind = `"${key}":`;
+        let regex = new RegExp(`${keyToFind}"[^"]+"`, 'gmi');
+        strLog = strLog.replace(regex, `${keyToFind}"*****"`);
+    }
+    return strLog;
+}
+
 const logger = createLogger({
     format: combine(
         label({ label: 'Analytics&Reporting_MS' }),
