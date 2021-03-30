@@ -219,7 +219,9 @@
                 "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
 
                 "payoneer_transaction": "PM_Mobile_PayoneerTransaction_Success",
-                "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success"
+                "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
+
+                "display_QR": "AccountManagement_DisplayQR_Success"
             }
         },
         "cache": {

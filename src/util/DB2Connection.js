@@ -425,6 +425,20 @@ class DatabaseConn {
             }
         }
 
+        if (tableName === config.reportingDBTables.DISPLAY_QR) {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MERCH_MSISDN, TILL_NUM, NOTIFIER_1, NOTIFIER_2, NOTIFIER_3, NOTIFIER_4, NOTIFIER_5, CHANNEL, QR_TYPE, MERCH_CAT_CODE) 
+                VALUES(${data.MerchantMSISDN}, ${data.TillNumber}, '${data.MoblieNumber1}', '${data.MoblieNumber2}', '${data.MoblieNumber3}', '${data.MoblieNumber4}', '${data.MoblieNumber5}', '${data.channel}', '${data.qrType}', '${data.MerchantCategoryCode}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function (err) { });
+                logger.debug("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
