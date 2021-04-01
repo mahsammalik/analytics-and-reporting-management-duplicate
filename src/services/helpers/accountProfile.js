@@ -2,6 +2,7 @@ import axios from 'axios';
 import { logger } from '/util/';
 
 const userProfileURL = process.env.USER_PROFILE_URL || config.externalServices.accountManagementAPI.userProfileURL;
+const userGetProfileidentityinformationURL = process.env.USER_PROFILE_URL || config.externalServices.accountManagementAPI.usergetProfileidentityinformationURL;
 
 /**
  * 
@@ -53,8 +54,14 @@ const getUserProfile = headers => {
 			'X-APP-Version': headers['x-app-version'] || '',
 		};
 
-		return axios.get(userProfileURL, { headers: headerFields }).then(result => {
+		return axios.get(userProfileURL, { headers: headerFields }).then(async result => {
 			logger.debug(result, "   result IN PROFILE CALL")
+			logger.debug("BEFORE userGetProfileidentityinformationURL", res)
+			logger.info({ event: 'Entered function', functionName: 'userGetProfileidentityinformationURL', userGetProfileidentityinformationURL });
+
+			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
+			logger.debug("userGetProfileidentityinformationURL", res);
+			logger.info({ event: 'Exited function', functionName: 'userGetProfileidentityinformationURL', res });
 			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
 			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
 			return profile

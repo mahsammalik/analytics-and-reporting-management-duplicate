@@ -14,7 +14,8 @@
                 "responseCodeURL": "http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes"
             },
             "accountManagementAPI": {
-                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile"
+                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile",
+                "usergetProfileidentityinformationURL": "http://account-management-microservice:3000/rest/api/v1/account/getprofileidentityinformation"
             },
             "NotificationService": {
                 "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
@@ -108,17 +109,14 @@
                 "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
                 "InitTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Init_Failed",
                 "ConfirmTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Confirm_Failed",
-                
                 "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
                 "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
                 "InitTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Init_Failed",
                 "ConfirmTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Confirm_Failed",
-                
                 "InitTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Init_Passed",
                 "ConfirmTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Confirm_Passed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Init_Passed",
                 "ConfirmTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Confirm_Passed",
-                
                 "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
                 "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
@@ -267,7 +265,7 @@
                 "2": "Premium Business"
             }
         },
-        "reportingDBTables" : {
+        "reportingDBTables": {
             "APP_SIGNUP": "APP_SIGNUP",
             "BUS_TICKET": "BUS_TICKET",
             "CARD_BLOCK": "CARD_BLOCK",
