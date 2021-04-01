@@ -122,14 +122,16 @@ const getUserProfile = headers => {
 
 		return axios.get(userProfileURL, { headers: headerFields }).then(async result => {
 			logger.debug(result, "   result IN PROFILE CALL")
-			logger.debug("BEFORE userGetProfileidentityinformationURL", res)
+
 			logger.info({ event: 'Entered function', functionName: 'userGetProfileidentityinformationURL', userGetProfileidentityinformationURL });
 
 			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
 			logger.debug("userGetProfileidentityinformationURL", res);
-			logger.info({ event: 'Exited function', functionName: 'userGetProfileidentityinformationURL', res: res.data });
+			logger.info({
+				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL', res, levels, TrustLevel: res.data.data.TrustLevel
+			});
 			const accLevel = result.data.data.level || '';
-			if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
+			if (res.data.success && res.data && res.data.data && res.data.data.TrustLevel) {
 				accLevel = levels[res.data.data.TrustLevel].levelDesc
 				logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
 			}
