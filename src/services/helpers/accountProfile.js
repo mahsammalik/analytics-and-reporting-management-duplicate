@@ -3,6 +3,72 @@ import { logger } from '/util/';
 
 const userProfileURL = process.env.USER_PROFILE_URL || config.externalServices.accountManagementAPI.userProfileURL;
 const userGetProfileidentityinformationURL = process.env.USER_PROFILE_URL || config.externalServices.accountManagementAPI.usergetProfileidentityinformationURL;
+const levels = {
+	"10": {
+		"level": "L0",
+		"levelDesc": "LO Mobilink Customer"
+	},
+	"15": {
+		"level": "L0",
+		"levelDesc": "L0 Standard OMNO Customer"
+	},
+	"14": {
+		"level": "L0",
+		"levelDesc": "L0 Corporate OMNO Customer"
+	},
+	"11": {
+		"level": "L1",
+		"levelDesc": "Ll Mobilink Customer"
+	},
+	"12": {
+		"level": "L1",
+		"levelDesc": "Ll Standard OMNO Customer"
+	},
+	"16": {
+		"level": "L1",
+		"levelDesc": "L1 Corporate OMNO Customer"
+	},
+	"18": {
+		"level": "L2",
+		"levelDesc": "L2 Corporate OMNO Customer"
+	},
+	"20": {
+		"level": "L2",
+		"levelDesc": "L2 Mobilink Customer"
+	},
+	"21": {
+		"level": "L2",
+		"levelDesc": "L2 Standard OMNO Customer"
+	},
+	"76": {
+		"level": "M0",
+		"levelDesc": "M0"
+	},
+	"77": {
+		"level": "M1",
+		"levelDesc": "M1"
+	},
+	"78": {
+		"level": "M2",
+		"levelDesc": "M2"
+	},
+	"1": {
+		"level": "M0",
+		"levelDesc": "M0 Merchant"
+	},
+	"2": {
+		"level": "M1",
+		"levelDesc": "M1 Merchant"
+	},
+	"3": {
+		"level": "M2",
+		"levelDesc": "M2 Merchant"
+	},
+	"69": {
+		"level": "M0",
+		"levelDesc": "Merchant"
+	}
+}
 
 /**
  * 
@@ -61,10 +127,17 @@ const getUserProfile = headers => {
 
 			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
 			logger.debug("userGetProfileidentityinformationURL", res);
-			logger.info({ event: 'Exited function', functionName: 'userGetProfileidentityinformationURL', res });
-			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: result.data.data.level || '' } : {};
+			logger.info({ event: 'Exited function', functionName: 'userGetProfileidentityinformationURL', res: res.data });
+			const accLevel = result.data.data.level || '';
+			if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
+				accLevel = levels[res.data.data.TrustLevel].levelDesc
+				logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
+			}
+
+			logger.info({ event: 'AccountLevel', functionName: 'userGetProfileidentityinformationURL', res: accLevel });
+			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: accLevel } : {};
 			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
-			return profile
+			return profile;
 		}).catch(error => {
 			logger.debug("ERROR IN PROFILE CALL: ", headerFields, error)
 			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
