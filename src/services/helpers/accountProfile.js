@@ -130,7 +130,7 @@ const getUserProfile = headers => {
 			logger.info({
 				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL', res, levels, TrustLevel: res.data.data.TrustLevel
 			});
-			const accLevel = result.data.data.level || '';
+			let accLevel = result.data.data.level || '';
 			if (res.data.success && res.data && res.data.data && res.data.data.TrustLevel) {
 				accLevel = levels[res.data.data.TrustLevel].levelDesc
 				logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
