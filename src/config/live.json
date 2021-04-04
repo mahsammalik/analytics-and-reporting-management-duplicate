@@ -14,7 +14,8 @@
                 "responseCodeURL": "http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes"
             },
             "accountManagementAPI": {
-                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile"
+                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile",
+                "usergetProfileidentityinformationURL": "http://account-management-microservice:3000/rest/api/v1/account/getprofileidentityinformation"
             },
             "NotificationService": {
                 "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
@@ -122,7 +123,86 @@
                 "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
                 "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
-                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed"
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed",
+
+                "initTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
+
+                "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
+                "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",
+                "initTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Init_Passed",
+                "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
+
+                "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
+                "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
+                "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
+                "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed",
+
+                "initTrans_BusTicket": "ESB_Mobile_BusTickets_Init_Passed",
+                "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
+
+                "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_eVouchers_Confirm_Passed",
+
+                "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
+                "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
+
+                "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
+
+                "initTrans_Donation" : "ESB_Mobile_Donation_Init_Passed",
+                "confirmTrans_Donation": "ESB_Mobile_Payment_Confirm_Passed",
+
+                "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
+                "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed",
+
+                "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
+                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed",
+
+                "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed",
+
+                "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
+                "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
+                "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
+                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
+
+                "initTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Init_Passed",
+                "confirmTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Confirm_Passed",
+                
+                "initTrans_signupReward": "ESB_Mobile_SignupReward_Init_Passed",
+                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
+
+                "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
+
+                "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed",
+                "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
+                "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
+                "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
+                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink",
+                
+                "initTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Init_Passed",
+                "confirmTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Confirm_Passed",
+                "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
+                "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
+                "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+
+                "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
+                "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
+
+                "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
+
+                "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed",
+                
+                "intTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Init_Passed",
+                "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
+                "payoneer_transaction": "PM_Mobile_PayoneerTransaction_Success",
+                "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
+
+                "display_QR": "AccountManagement_DisplayQR_Success"
             }
         },
         "cache": {
@@ -267,7 +347,7 @@
                 "2": "Premium Business"
             }
         },
-        "reportingDBTables" : {
+        "reportingDBTables": {
             "APP_SIGNUP": "APP_SIGNUP",
             "BUS_TICKET": "BUS_TICKET",
             "CARD_BLOCK": "CARD_BLOCK",
