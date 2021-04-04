@@ -8,7 +8,7 @@ eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrd
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
-payoneerTransProcessor, displayQRProcessor} from '/consumers/'
+payoneerTransProcessor, displayQRProcessor, onboardingProcessor} from '/consumers/'
 
 //let instance = null;
 
@@ -77,6 +77,7 @@ class Subscriber {
                 config.kafkaBroker.topics.payoneer_registration,
                 config.kafkaBroker.topics.payoneer_transaction,
                 config.kafkaBroker.topics.display_QR,
+                config.kafkaBroker.topics.merchant_onboarding,
              ]);    
             //this.setConsumer();
             //return instance;
@@ -1104,6 +1105,19 @@ class Subscriber {
                         logger.debug(JSON.stringify(payload));
                         
                         await displayQRProcessor.processDisplayQRConsumer(payload);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.merchant_onboarding){
+                    logger.debug('*********** Merchant Onboarding *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug(JSON.stringify(payload));
+                        
+                        await onboardingProcessor.processOnboardingConsumer(payload);
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)

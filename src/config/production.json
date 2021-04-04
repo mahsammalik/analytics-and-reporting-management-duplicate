@@ -221,7 +221,8 @@
                 "payoneer_transaction": "PM_Mobile_PayoneerTransaction_Success",
                 "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
 
-                "display_QR": "AccountManagement_DisplayQR_Success"
+                "display_QR": "AccountManagement_DisplayQR_Success",
+                "merchant_onboarding": "Merchant_Onboarding_Success"
             }
         },
         "cache": {
