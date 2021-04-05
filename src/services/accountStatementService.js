@@ -115,7 +115,10 @@ class accountStatementService {
                 })
             const accountData = {
                 headers: ["Transaction ID", "Date", "Transaction Type", "Channel", "Description", "Amount debited", "Amount credited", "Running balance\n"],
-                data: db2Data,
+                data: db2Data.sort(function (a, b) {
+                    var dateA = new Date(a[1]), dateB = new Date(b[1]);
+                    return dateA - dateB;
+                }),
                 payload
 
             };
