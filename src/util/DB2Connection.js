@@ -439,6 +439,22 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if (tableName === config.reportingDBTables.ONBOARDING) {
+            try {
+                let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (APP_DOWNLOAD_DATE, OS, FIRST_OPEN_DATE, MERCHANT_ID, IMEI, APP_VERSION, DEVICE_MODEL, CHANNEL, ACTIVITY_DATE, ACTIVITY_TIME, MERCHANT_MSISDN, NEW_USER, ACC_LEVEL_FOR_NEW, ACCOUNT_STATUS, ACC_LEVEL_FOR_EXISTING, SIGNUP_DATE, SIGNUP_STEP, VERIFY_MODE, REGSITER_REQUEST, WALLET_REG_DATE, REG_STATUS, PERSONAL_NAME, BUSINESS_NAME, CRM_STATUS, REWARD_AMOUNT, REWARD_POST_DATE) 
+                VALUES('${data.Date_of_App_Download}', '${data.OS}', '${data.Date_of_First_Open}', '${data.Login_Merchant_ID}', ${data.IMEI_Number}, '${data.App_Version}', '${data.Device_Model}', '${data.Channel}', '${data.Activity_Date}', '${data.Activity_Time}', ${data.Merchant_MSISDN}, '${data.New_Existing_User}', 
+                '${data.Account_Level}', '${data.Consumer_Account_Status}', '${data.Account_Level_For_existing_User}', '${data.Date_of_Sign_up}', '${data.Sign_up_Step}', '${data.Verification_Mode}', '${data.Regsitration_request}', '${data.Wallet_Registration_Date}', '${data.Registration_Status}', '${data.Personal_Name}', '${data.Business_Name}', '${data.CRM_Status}', ${data.Reward_Amount}, '${data.Reward_posting_Date}');`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function (err) { });
+                logger.debug("insert done");
+            } catch (err) {
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {

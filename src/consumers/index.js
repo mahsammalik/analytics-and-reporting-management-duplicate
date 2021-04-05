@@ -23,3 +23,4 @@ export {default as doorstepCashinProcessor} from './doorstepCashinConsumer';
 export {default as payoneerRegProcessor} from './payoneerRegistrationConsumer';
 export {default as payoneerTransProcessor} from './payoneerTransactionConsumer';
 export {default as displayQRProcessor } from './displayQRConsumer';
+export {default as onboardingProcessor } from './onboardingConsumer';
