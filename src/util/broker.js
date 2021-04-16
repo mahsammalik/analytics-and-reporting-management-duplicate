@@ -57,11 +57,25 @@ class Broker {
 
     _ConnectConsumer(topicsArray) {
         try {
-            let consumerConfig = config.kafkaBroker.consumerConfig;
-            if (CONSUMER_GROUP_ID) {
-                consumerConfig["group.id"] = CONSUMER_GROUP_ID;
-            }
-            const consumer = new Kafka.KafkaConsumer(consumerConfig);
+            // let consumerConfig = config.kafkaBroker.consumerConfig;
+            // if (CONSUMER_GROUP_ID) {
+            //     consumerConfig["group.id"] = CONSUMER_GROUP_ID;
+            // }
+            const consumer = new Kafka.KafkaConsumer({
+                "debug":config.kafkaBroker.consumerConfig.debug,
+                "client.id": config.kafkaBroker.consumerConfig.client_id,
+                "group.id": CONSUMER_GROUP_ID,
+                "metadata.broker.list": config.kafkaBroker.consumerConfig.metadata_broker_list,
+                "security.protocol": config.kafkaBroker.consumerConfig.security_protocol,
+                "sasl.mechanisms": config.kafkaBroker.consumerConfig.sasl_mechanisms,
+                "ssl.ca.location": config.kafkaBroker.consumerConfig.ssl_ca_location,
+                "sasl.username": config.kafkaBroker.consumerConfig.sasl_username,
+                "sasl.password": config.kafkaBroker.consumerConfig.sasl_password,
+                "enable.ssl.certificate.verification": false,
+                "enable.auto.commit": true,
+                "broker.version.fallback": config.kafkaBroker.consumerConfig.broker_version_fallback,  // still needed with librdkafka 0.11.5
+                "log.connection.close" : false,
+              },{"auto.offset.reset": config.kafkaBroker.consumerConfig.auto_offset_reset});
             logger.debug(topicsArray);
             logger.debug({ topicsArray });
 
