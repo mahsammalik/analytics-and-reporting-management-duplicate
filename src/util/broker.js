@@ -2,6 +2,7 @@ import Kafka from 'node-rdkafka';
 import path from 'path';
 import { logger } from '/util/';
 const brokers = process.env.KAFKA_BOOTSTRAP_SERVERS || config.kafkaBroker.brokers;
+const CONSUMER_GROUP_ID = process.env.CONSUMER_GROUP_ID;
 
 class Broker {
     constructor(topicsArray) {
@@ -56,7 +57,11 @@ class Broker {
 
     _ConnectConsumer(topicsArray) {
         try {
-            const consumer = new Kafka.KafkaConsumer(config.kafkaBroker.consumerConfig);
+            let consumerConfig = config.kafkaBroker.consumerConfig;
+            if (CONSUMER_GROUP_ID) {
+                consumerConfig["group.id"] = CONSUMER_GROUP_ID;
+            }
+            const consumer = new Kafka.KafkaConsumer(consumerConfig);
             logger.debug(topicsArray);
             logger.debug({ topicsArray });
 
