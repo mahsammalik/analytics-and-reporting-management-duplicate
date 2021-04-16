@@ -10,6 +10,7 @@ cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
 payoneerTransProcessor, displayQRProcessor, onboardingProcessor} from '/consumers/'
 
+const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
 
 class Subscriber {
@@ -107,6 +108,12 @@ class Subscriber {
         logger.debug("SET COnsumer Called")
         this.event.addConsumerOnDataEvent(async function (msg) {
             try {
+                if(KAFKA_DRAIN_CHECK == "true"){
+
+                    logger.info({debugMessage: "KAFKA DRAIN CHECK TRUE", topic : msg.topic, msgOffset: msg.offset, partition : msg.partition})
+                    return;
+                }
+
                 logger.info({ event: 'Entered function', functionName: `setConsumer in class subscriber ${msg.topic}` });
                 logger.debug(`============PROCESSING MESSAGE FROM KAFKA TOPIC ${msg.topic}======================`)
 
