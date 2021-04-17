@@ -85,6 +85,11 @@ spec:
       value: info
     - name: NODE_ENV
       value: live
+    - name: CONSUMER_GROUP_ID
+      valueFrom:
+        configMapKeyRef:
+          name: consumer-groups
+          key: CONSUMER_GROUP_ANALYTICS
   expose: true
   livenessProbe:
     failureThreshold: 12

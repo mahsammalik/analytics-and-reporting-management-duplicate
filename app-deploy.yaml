@@ -81,6 +81,11 @@ spec:
       value: http://notification-microservice.jazzcash-microservices-dev:3000/rest/api/v1/notification/email
     - name: KAFKA_DRAIN_CHECK
       value: 'false'
+    - name: CONSUMER_GROUP_ID
+      valueFrom:
+        configMapKeyRef:
+          name: consumer-groups
+          key: CONSUMER_GROUP_ANALYTICS  
   expose: true
   livenessProbe:
     failureThreshold: 12
