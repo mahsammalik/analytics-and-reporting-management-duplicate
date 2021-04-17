@@ -6,6 +6,8 @@ import responseCodeHandler from '../../util/responseCodeHandler';
 import { logger, mappedMetaData } from '/util/';
 import getUserProfile from '../../services/helpers/accountProfile';
 
+const accStmtResponseCodes = config.responseCode.useCases.accountStatement;
+
 class taxStatementController {
 
     constructor(service) {
@@ -14,20 +16,17 @@ class taxStatementController {
     }
 
     async calculateTaxStatement(req, res, next) {
-        const headersValidationResponse = validations.verifySchema(
-            schema.REQUEST_HEADER_SCHEMA,
-            req.headers
-        );
-        const queryValidationResponse = validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+        const headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
+        const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
 
         if (!headersValidationResponse.success) {
-            const responseCodeForAccountStatementHeader = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, headersValidationResponse);
-            return res.status(422).send(responseCodeForAccountStatementHeader);
+            const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
+            return res.status(422).send(badHeader);
         }
         if (!queryValidationResponse.success) {
-            const responseCodeForAccountStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.missing_required_parameters, queryValidationResponse);
+            const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
-            return res.status(422).send(responseCodeForAccountStatementQuery);
+            return res.status(422).send(badQueryParam);
         }
         const metadataHeaders = req.headers['x-meta-data'];
         const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
