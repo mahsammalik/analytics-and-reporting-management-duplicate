@@ -36,7 +36,7 @@ class Processor {
                     await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CAREEM_VOUCHER, initTransData);
                 }
                 else {
-                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.CAREEM_VOUCHER, initTransData);
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.CAREEM_VOUCHER, initTransData);
                 }
             }
         } catch (error) {
