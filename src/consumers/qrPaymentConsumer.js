@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
                 initTransData.consumerBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.custMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {

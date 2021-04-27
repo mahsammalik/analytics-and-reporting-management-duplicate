@@ -24,7 +24,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.bookingID = 0;
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.cnic = '';
                 initTransData.destination = '';
                 initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');

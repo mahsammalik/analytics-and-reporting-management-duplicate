@@ -17,7 +17,7 @@ class Processor {
                 initTransData.action = 'Card Order Tracking';
                 initTransData.cardCategory = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardCategory'; })?.Value || '';
                 initTransData.cardType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => {return param.Key == 'cardType'; })?.Value || '';
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.cnic = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
                 if (initTransData.transactionDate !== '') {

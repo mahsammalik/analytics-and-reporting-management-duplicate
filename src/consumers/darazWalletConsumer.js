@@ -15,7 +15,7 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.balanceBefore = 0;
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.walletEmail = '';
                 initTransData.walletNumber = 0;
                 initTransData.walletOwner = '';

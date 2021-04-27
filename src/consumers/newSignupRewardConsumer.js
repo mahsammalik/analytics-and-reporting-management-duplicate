@@ -26,7 +26,7 @@ class Processor {
                     initTransData.transactionTime = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                 }
                 initTransData.postingStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 
                 logger.debug(JSON.stringify(initTransData));
             }

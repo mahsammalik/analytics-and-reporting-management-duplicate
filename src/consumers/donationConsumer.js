@@ -16,7 +16,7 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.email = data.CustomObject?.email || '';
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.failureReason = '';
                 initTransData.fund = initTransData.amount;
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');

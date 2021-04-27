@@ -15,7 +15,7 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DueAmount'; })?.Value || '0');
                 initTransData.amountDollar = 0;
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'CompanyShortName'; })?.Value || '';                
                 initTransData.email = '';
                 initTransData.failReason = '';

@@ -26,7 +26,7 @@ class Processor {
                 initTransData.msisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == "CustomerMSISDN";})?.Value || '0');
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
 
                 logger.debug(JSON.stringify(initTransData));
             }

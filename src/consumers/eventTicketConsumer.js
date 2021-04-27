@@ -24,7 +24,7 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.city = '';
                 initTransData.cnic = '';
                 initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');

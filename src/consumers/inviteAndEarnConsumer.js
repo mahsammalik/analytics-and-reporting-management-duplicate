@@ -26,7 +26,7 @@ class Processor {
                 if (initTransData.amountPostedTime !== '') {
                     initTransData.amountPostedTime = moment(initTransData.amountPostedTime, 'HHmmss').format('HH:mm:ss');
                 }
-                initTransData.channel = data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.inviteDate = null;
                 initTransData.inviteTime = null;
                 initTransData.inviterMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'CustomerMSISDN'; })?.Value || '0');
