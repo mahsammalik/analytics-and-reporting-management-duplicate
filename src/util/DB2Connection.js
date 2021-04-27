@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
-const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
+//const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
 class DatabaseConn {
 
@@ -401,7 +401,7 @@ class DatabaseConn {
         if (tableName === config.reportingDBTables.PAYON_TRANSACTIONS) {
             try {
                 let conn = await open(cn);
-                const stmt = conn.prepareSync(`select * from ${schema}.${tableName} where TRANS_ID = ?;`);
+                const stmt = conn.prepareSync(`select * from ${schemaName}.${tableName} where TRANS_ID = ?;`);
                 let result = stmt.executeSync([data.TID]);
                 let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
                 // if record does't exist insert new record, otherwise update existing record
