@@ -31,7 +31,7 @@
             "port": 27017,
             "database": "sampledb"
         },
-        "IBMDB2": {
+        "DB2_Jazz": {
             "username": "jcappdb",
             "password": "abcd@123",
             "address": "",
@@ -74,8 +74,8 @@
             "consumerAutoCommit": true,
             "consumerConfig": {
                 "debug": "all",
-                "client_id": "kafka-nodejs-console-sample-consumer--dev19",
-                "group_id": "kafka-nodejs-console-sample-group--dev19",
+                "client_id": "analytics-client",
+                "group_id": "reporting-consumer-group-id",
                 "metadata_broker_list": "kafka-prod-1-kafka-bootstrap-es.apps.pjcocp.jazzcash.com.pk:443",
                 "security_protocol": "sasl_ssl",
                 "sasl_mechanisms": "SCRAM-SHA-512",

@@ -3,8 +3,9 @@ import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 
-const cn = process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
-const schema = config.IBMDB2_Dev.schema;
+const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
+
+const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
 class DatabaseConn {
 
@@ -612,144 +613,7 @@ class DatabaseConn {
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
         }
     }
-
-    async addIncomingTransaction(dataPayload) {
-        logger.info({ event: 'Entered function', functionName: 'addIncomingTransaction in class DatabaseConn' });
-        try {
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`INSERT INTO ${schema}.INCOMMING_IBFT (TRXID_EASYPAISA, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, RECEIVER_MSISDN, RECEIVER_CNIC, RECEIVER_NAME, ID_LEVEL, REGION, CITY, ADDRESS, AMOUNT, TRX_STATUS, REVERSE_STATUS, SENDER_NAME, SENDER_BANK, SENDER_ACCOUNT, REVERSED_TRX_ID, REVERSED_REASON, FAILURE_REASON, FEE, FED, STAN, CURRENT_BALANCE, CHANNEL, FINID_EASYPAISA, TRANS_OBJECTIVE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`);
-            stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDEasyJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.receiverMsisdn, dataPayload.receiverCnic, dataPayload.receiverName, dataPayload.identityLevel, dataPayload.region, dataPayload.city, dataPayload.address, dataPayload.amount, dataPayload.transactionStatus,
-            dataPayload.reversalStatus, dataPayload.senderName, dataPayload.senderBankName, dataPayload.senderAccount, dataPayload.reversedTrasactionID, dataPayload.reversedReason, dataPayload.reasonOfFailure, dataPayload.fee, dataPayload.fed, dataPayload.stan, dataPayload.currentBalance, dataPayload.channel, dataPayload.financialIDEasyPaisa,
-            dataPayload.paymentPurpose
-            ]);
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.debug("insert done");
-            logger.info({ event: 'Existed function', functionName: 'addIncomingTransaction in class DatabaseConn' });
-            return true;
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'addIncomingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'addIncomingTransaction' });
-            return null;
-        }
-    }
-
-    async addOutgoingTransaction(dataPayload) {
-        logger.info({ event: 'Entered function', functionName: 'addOutgoingTransaction in class DatabaseConn' });
-        try {
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`INSERT INTO ${schema}.OUTGOING_IBFT (TRX_OBJECTIVE, TRXID_EASYPAISA, FINID_JAZZCASH, TRXID_JAZZCASH, TRX_DATE, TRX_TIME, BENEFICIARY_NAME, BENEFICIARY_BANK, SENDER_MSISDN, BENEFICIARY_ACCOUNT, SENDER_LEVEL, SENDER_CNIC, RECEIVER_MSISDN, INITIATOR_MSISDN, INITIATOR_CITY, INITIATOR_REGION, SENDER_NAME, AMOUNT, TRX_STATUS, FAILURE_REASON, REVERSAL_STATUS, FEE, FED, COMMISSION, WHT, STAN, CURRENT_BALANCE, CHANNEL) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`);
-            stmt.executeSync([dataPayload.transactionObjective, dataPayload.transactionIDEasyPaisa, dataPayload.financialIDJazzcash, dataPayload.transactionIDJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.beneficiaryBankAccountTitle, dataPayload.beneficiaryBankName, dataPayload.senderMsisdn, dataPayload.beneficiaryBankAccountNumber, dataPayload.senderLevel, dataPayload.senderCnic, dataPayload.receiverMsisdn, dataPayload.initiatorMsisdn, dataPayload.initiatorCity,
-            dataPayload.initiatorRegion, dataPayload.senderName, dataPayload.amount,
-            dataPayload.transactionStatus, dataPayload.reasonOfFailure, dataPayload.reversalStatus, dataPayload.fee, dataPayload.fed,
-            dataPayload.commission, dataPayload.wht, dataPayload.stan,
-            dataPayload.currentBalance, dataPayload.channel
-            ]);
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.debug("insert done");
-            logger.info({ event: 'Existed function', functionName: 'addOutgoingTransaction in class DatabaseConn' });
-            return true;
-
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'addOutgoingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'addOutgoingTransaction' });
-            return null;
-        }
-    }
-
-    async updateIncomingTransaction(dataPayload) {
-        logger.info({ event: 'Entered function', functionName: 'updateIncomingTransaction in class DatabaseConn' });
-        logger.debug(dataPayload);
-        try {
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`UPDATE ${schema}.INCOMMING_IBFT SET TRXID_JAZZCASH = ?, FINID_EASYPAISA = ?, TRANS_OBJECTIVE = ?, TRX_DATE = ?, TRX_TIME = ?, TRX_STATUS = ?, FEE = ?, FED = ?, CURRENT_BALANCE = ?, FAILURE_REASON = ? WHERE TRXID_EASYPAISA = ?;`);
-            stmt.executeSync([dataPayload.transactionIDEasyJazzcash, dataPayload.financialIDEasyPaisa, dataPayload.paymentPurpose, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.currentBalance, dataPayload.reasonOfFailure, dataPayload.transactionIDEasyPaisa]);
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.debug("insert done");
-            logger.info({ event: 'Exited function', functionName: 'updateIncomingTransaction in class DatabaseConn' });
-            return true;
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'updateIncomingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'updateIncomingTransaction' });
-            return null;
-        }
-    }
-
-    async updateOutgoingTransaction(dataPayload) {
-        logger.info({ event: 'Entered function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
-        logger.debug(dataPayload);
-        try {
-            let conn = await open(cn);
-
-            let stmt;
-
-            if (dataPayload.beneficiaryBankAccountTitle) {
-                stmt = conn.prepareSync(`UPDATE ${schema}.OUTGOING_IBFT SET TRXID_EASYPAISA = ?, TRXID_JAZZCASH = ?, TRX_DATE = ?, TRX_TIME = ?, AMOUNT = ?, TRX_STATUS = ?, FEE = ?, FED = ?, COMMISSION = ?, WHT = ?, CURRENT_BALANCE = ?, STAN = ?, BENEFICIARY_NAME = ?, FAILURE_REASON = ?, REVERSAL_STATUS = ? WHERE FINID_JAZZCASH = ?;`);
-                stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.amount, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.commission, dataPayload.wht, dataPayload.currentBalance, dataPayload.stan, dataPayload.beneficiaryBankAccountTitle, dataPayload.reasonOfFailure, dataPayload.reversalStatus, dataPayload.financialIDJazzcash]);
-            } else {
-                stmt = conn.prepareSync(`UPDATE ${schema}.OUTGOING_IBFT SET TRXID_EASYPAISA = ?, TRXID_JAZZCASH = ?, TRX_DATE = ?, TRX_TIME = ?, AMOUNT = ?, TRX_STATUS = ?, FEE = ?, FED = ?, COMMISSION = ?, WHT = ?, CURRENT_BALANCE = ?, STAN = ?, FAILURE_REASON = ?, REVERSAL_STATUS = ? WHERE FINID_JAZZCASH = ?;`);
-                stmt.executeSync([dataPayload.transactionIDEasyPaisa, dataPayload.transactionIDJazzcash, dataPayload.transactionDate, dataPayload.transactionTime, dataPayload.amount, dataPayload.transactionStatus, dataPayload.fee, dataPayload.fed, dataPayload.commission, dataPayload.wht, dataPayload.currentBalance, dataPayload.stan, dataPayload.reasonOfFailure, dataPayload.reversalStatus, dataPayload.financialIDJazzcash]);
-            }
-
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.debug("insert done");
-            logger.info({ event: 'Exited function', functionName: 'updateOutgoingTransaction in class DatabaseConn' });
-            return true;
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'updateOutgoingTransaction in class DatabaseConn', 'arguments': dataPayload, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'updateOutgoingTransaction' });
-            return null;
-        }
-    }
-
-    async getIncomingTransactions(startDate, endDate) {
-        logger.info({ event: 'Entered function', functionName: 'getIncomingTransactions in class DatabaseConn' });
-        try {
-
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from ${schema}.INCOMMING_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
-            let result = stmt.executeSync([startDate, endDate]);
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-
-            result.closeSync();
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.info({ event: 'Exited function', functionName: 'getIncomingTransactions in class DatabaseConn' });
-
-            return resultArrayFormat;
-
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'getIncomingTransactions in class DatabaseConn', 'arguments': { startDate, endDate }, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'getIncomingTransactions' });
-            return null;
-        }
-    }
-
-    async getOutgoingTransactions(startDate, endDate) {
-        logger.info({ event: 'Entered function', functionName: 'getOutgoingTransactions in class DatabaseConn' });
-        try {
-
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from ${schema}.OUTGOING_DIRECT_IBFT WHERE TRX_DATE BETWEEN ? AND ?;`);
-            let result = stmt.executeSync([startDate, endDate]);
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-
-            result.closeSync();
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.info({ event: 'Exited function', functionName: 'getOutgoingTransactions in class DatabaseConn' });
-
-            return resultArrayFormat;
-
-        } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'getOutgoingTransactions in class DatabaseConn', 'arguments': { startDate, endDate }, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'getOutgoingTransactions' });
-            return null;
-        }
-    }
+   
 
 }
 

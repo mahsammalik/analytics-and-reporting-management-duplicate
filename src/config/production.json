@@ -51,6 +51,16 @@
             "port": 50000,
             "protocol": "TCPIP"
         },
+        "DB2_Jazz": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.124",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
         "IBMDB2_Test": {
             "username": "jcapprepdb",
             "password": "repdb@1234",
@@ -95,7 +105,7 @@
             "consumerConfig": {
                 "debug": "all",
                 "client_id": "analytics-client",
-                "group_id": "kafka-nodejs-console-sample-group--dev4191",
+                "group_id": "reporting-consumer-group-id",
                 "metadata_broker_list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
                 "security_protocol": "sasl_ssl",
                 "sasl_mechanisms": "SCRAM-SHA-512",
