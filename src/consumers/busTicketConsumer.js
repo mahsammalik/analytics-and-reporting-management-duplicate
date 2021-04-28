@@ -43,6 +43,8 @@ class Processor {
                 initTransData.failureReason = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.travelDate = null;
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

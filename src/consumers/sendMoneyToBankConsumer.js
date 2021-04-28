@@ -70,6 +70,8 @@ class Processor {
                 initTransData.stan = "";
                 initTransData.currentBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

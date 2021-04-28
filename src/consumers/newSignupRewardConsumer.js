@@ -27,7 +27,9 @@ class Processor {
                 }
                 initTransData.postingStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
+
                 logger.debug(JSON.stringify(initTransData));
             }
 

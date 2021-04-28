@@ -45,6 +45,8 @@ class Processor {
                 initTransData.tipAmount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TIP Amount'; })?.Value || '0');
                 initTransData.transAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

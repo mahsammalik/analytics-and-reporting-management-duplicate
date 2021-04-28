@@ -40,7 +40,9 @@ class Processor {
                 initTransData.resturantName = data.CustomObject?.resturantName || '';
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
+
                 logger.debug(JSON.stringify(initTransData));
             }
 

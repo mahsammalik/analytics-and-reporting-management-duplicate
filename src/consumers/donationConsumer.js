@@ -32,6 +32,8 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

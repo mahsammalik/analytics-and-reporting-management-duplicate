@@ -47,6 +47,8 @@ class Processor {
                 initTransData.serviceDescriptin = '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.tax_ship_disc_applied = '';
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

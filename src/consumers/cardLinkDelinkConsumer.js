@@ -19,6 +19,8 @@ class Processor {
             initTransData.isDelinkSuccess = data?.isDelinkSuccess || '';
             initTransData.usecase = data.usecase;
             initTransData.retrieveRef = Number.isNaN(Number(data?.txnRefNo || '0')) ? 0 : Number(data?.txnRefNo || '0');
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

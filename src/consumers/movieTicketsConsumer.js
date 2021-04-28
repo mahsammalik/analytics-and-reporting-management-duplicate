@@ -42,6 +42,8 @@ class Processor {
             initTransData.transStatus = isConfirm ? 'Completed' : 'Pending';
             initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
             initTransData.channel = data?.CustomObject?.channel || 'Mobile';
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

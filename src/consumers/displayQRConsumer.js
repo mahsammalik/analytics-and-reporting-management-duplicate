@@ -43,6 +43,8 @@ class Processor {
             initTransData.Amount = Number(data.Amount);
             initTransData.channel = data?.channel || 'Mobile';
             initTransData.qrType = data?.qrType || null;
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

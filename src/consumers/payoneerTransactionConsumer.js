@@ -28,6 +28,8 @@ class Processor {
             initTransData.monetaStatus = data?.txStatus || '';
             initTransData.channel = data?.channel || 'Mobile';
             initTransData.TID = Number(data?.paymentID || '0');
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

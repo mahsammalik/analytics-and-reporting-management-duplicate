@@ -41,6 +41,9 @@ class Processor {
                 initTransData.personalName = data?.nadraResponse?.return?.ApiResponse?.error?.result?.nameEn || '';
                 initTransData.businessName = '';
             }
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
+
             logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {

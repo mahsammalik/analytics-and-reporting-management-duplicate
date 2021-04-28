@@ -35,6 +35,8 @@ class Processor {
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.userEmail = '';
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

@@ -27,6 +27,8 @@ class Processor {
                 initTransData.imei = 0;
                 initTransData.channel = data?.Header?.SubChannel || '';
                 initTransData.useCase = data?.Header?.UseCase || '';
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

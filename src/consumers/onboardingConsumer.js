@@ -49,7 +49,9 @@ class Processor {
             initTransData.Business_Name = data.Business_Name;
             initTransData.CRM_Status = data.CRM_Status;
             initTransData.Reward_Amount = Number(data.Reward_Amount);
-            
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
+
             logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {

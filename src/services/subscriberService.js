@@ -162,6 +162,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await sendMonyToBankProcessor.processSendMoneyToBankConsumer(payload);
@@ -175,6 +177,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await qrPaymentProcessor.processQRPaymentConsumer(payload);
@@ -188,6 +192,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await qrPaymentProcessor.processQRPaymentConsumer(payload, true);
@@ -201,6 +207,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
@@ -214,6 +222,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload, true);
@@ -227,6 +237,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await busTicketProcessor.processBusTicketConsumer(payload);
@@ -240,6 +252,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await busTicketProcessor.processBusTicketConsumer(payload, true);
@@ -253,6 +267,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await eVoucherProcessor.processEVouchersConsumer(payload);
@@ -266,6 +282,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await eVoucherProcessor.processEVouchersConsumer(payload, true);
@@ -279,6 +297,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await eventTicketProcessor.processEventTicketConsumer(payload);
@@ -292,6 +312,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await eventTicketProcessor.processEventTicketConsumer(payload, true);
@@ -305,6 +327,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         //await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
@@ -318,6 +342,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await donationProcessor.processDonationConsumer(payload);
@@ -331,6 +357,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await donationProcessor.processDonationConsumer(payload, true);
@@ -344,6 +372,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await depositVIADebitCardProcessor.processDVDCConsumer(payload);
@@ -357,6 +387,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await depositVIADebitCardProcessor.processDVDCConsumer(payload, true);
@@ -370,6 +402,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await darazVoucherProcessor.processDarazWalletConsumer(payload);
@@ -383,6 +417,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await darazVoucherProcessor.processDarazWalletConsumer(payload, true);
@@ -396,6 +432,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await accountDetailsUpdateProcessor.processUpdateAccountDetailsConsumer(payload);
@@ -409,6 +447,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await requestToPayProcessor.processRequestToPayConsumer(payload);
@@ -422,6 +462,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await requestToPayProcessor.processRequestToPayConsumer(payload, true);
@@ -435,6 +477,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await cardOrderingProcessor.processCardOrderingConsumer(payload);
@@ -448,6 +492,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
@@ -461,6 +507,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         //await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
@@ -474,6 +522,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await cardOrderingProcessor.processCardOrderingConsumer(payload, true);
@@ -487,6 +537,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await newSignupRewardProcessor.processNewSignupRewardConsumer(payload);
@@ -500,6 +552,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await newSignupRewardProcessor.processNewSignupRewardConsumer(payload, true);
@@ -513,6 +567,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await foodOrderingProcessor.processFoodOrderingConsumer(payload);
@@ -526,6 +582,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await foodOrderingProcessor.processFoodOrderingConsumer(payload, true);
@@ -539,6 +597,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await createCardPINProcessor.processCreateCardPINConsumer(payload);
@@ -552,6 +612,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload);
@@ -565,6 +627,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await inviteAndEarnProcessor.processInviteAndEarnConsumer(payload, true);
@@ -578,6 +642,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         payload.usecase = "cardLink";
                         
@@ -592,6 +658,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         payload.usecase = "cardDelink";
                         
@@ -608,6 +676,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
@@ -623,6 +693,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload, true);
@@ -636,6 +708,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         payload.transType = "UpgradeSuccess";
                         await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
@@ -650,6 +724,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         payload.transType = "UpgradeFailure";
                         await accountUpgradeProcessor.processAccountUpgradeConsumer(payload);
@@ -663,6 +739,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await movieTicketsProcessor.processMovieTicketsConsumer(payload);
@@ -676,6 +754,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await movieTicketsProcessor.processMovieTicketsConsumer(payload, true);
@@ -690,6 +770,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await doorstepCashinProcessor.processDoorstepCashinConsumer(payload);
@@ -703,6 +785,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await careemVoucherProcessor.processCareemVoucherConsumer(payload);
@@ -716,6 +800,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await careemVoucherProcessor.processCareemVoucherConsumer(payload, true);
@@ -729,6 +815,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await payoneerRegProcessor.processPayoneerRegConsumer(payload);
@@ -742,6 +830,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await payoneerTransProcessor.processPayoneerTransConsumer(payload);
@@ -755,6 +845,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await displayQRProcessor.processDisplayQRConsumer(payload);
@@ -768,6 +860,8 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
                         await onboardingProcessor.processOnboardingConsumer(payload);

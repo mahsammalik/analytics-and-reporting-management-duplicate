@@ -27,6 +27,8 @@ class Processor {
             initTransData.riderName = data?.bookmeLastSentPayload?.data?.partner?.name || '';
             initTransData.riderMsisdn = Number(data?.bookmeLastSentPayload?.data?.partner?.mobile_no || '0');             
             initTransData.channel = data?.channel || 'Mobile';
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

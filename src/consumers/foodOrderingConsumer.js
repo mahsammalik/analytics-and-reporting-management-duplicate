@@ -27,6 +27,8 @@ class Processor {
             initTransData.resturantName = data?.CustomObject?.transactionObject?.transactionData?.paymentDetails?.companyShortName || '';
             initTransData.transStatus = isConfirm ? 'Completed' : 'Pending';
             initTransData.channel = data?.CustomObject?.channel || 'Mobile';
+            initTransData.topic = data.topic;
+            initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));
 

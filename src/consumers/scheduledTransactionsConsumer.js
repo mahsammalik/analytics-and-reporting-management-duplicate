@@ -37,6 +37,8 @@ class Processor {
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.repeatTransDuration = data?.CustomObject?.txnFrequency || '';
                 initTransData.channel = data?.Header?.SubChannel || '';
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }

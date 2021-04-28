@@ -39,7 +39,9 @@ class Processor {
                 initTransData.reqCategory = '';
                 initTransData.reqChannel = '';
                 initTransData.reqStatus = isConfirm ? 'Completed' : 'Pending';
-                
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
+
                 logger.debug(JSON.stringify(initTransData));
             }
 

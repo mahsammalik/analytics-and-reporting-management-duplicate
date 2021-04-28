@@ -39,6 +39,8 @@ class Processor {
                     initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'BeneficiaryName'; })?.Value || '';                
                     initTransData.status = 'Completed';
                 }
+                initTransData.topic = data.topic;
+                initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
             }
