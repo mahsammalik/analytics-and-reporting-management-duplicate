@@ -75,7 +75,7 @@
             "consumerConfig": {
                 "debug": "all",
                 "client_id": "analytics-client",
-                "group_id": "reporting-consumer-group-id",
+                "group_id": "analytics-reporting-consumer-group-id",
                 "metadata_broker_list": "kafka-prod-1-kafka-bootstrap-es.apps.pjcocp.jazzcash.com.pk:443",
                 "security_protocol": "sasl_ssl",
                 "sasl_mechanisms": "SCRAM-SHA-512",
