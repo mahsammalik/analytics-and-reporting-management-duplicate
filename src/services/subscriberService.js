@@ -858,6 +858,8 @@ class Subscriber {
                 if (msg.topic === config.kafkaBroker.topics.merchant_onboarding){
                     logger.debug('*********** Merchant Onboarding *****************');
                     try {
+                        logger.info(`Found Onboarding record`)
+                        logger.debug(msg)
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
