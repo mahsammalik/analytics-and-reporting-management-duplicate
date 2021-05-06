@@ -8,7 +8,7 @@ eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrd
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
-payoneerTransProcessor, displayQRProcessor, onboardingProcessor} from '/consumers/'
+payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
