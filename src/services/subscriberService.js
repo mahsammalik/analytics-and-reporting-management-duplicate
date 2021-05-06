@@ -867,7 +867,7 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
-                        
+                        logger.debug('calling process onboarding consumer');
                         await onboardingProcessor.processOnboardingConsumer(payload);
                         //logger.debug(response);
                     } catch (error) {

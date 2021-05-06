@@ -56,9 +56,11 @@ class Processor {
 
             if (JSON.stringify(initTransData) !== '{}') {
                 if(process.env.NODE_ENV === 'development') {
+                    logger.debug('calling development insertion')
                     await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.ONBOARDING, initTransData);
                 }
                 else {
+                    logger.debug('calling prod insertion')
                     await DB2Connection.insertTransactionHistory("MERCHANT", config.reportingDBTables.ONBOARDING, initTransData);
                 }
             }
