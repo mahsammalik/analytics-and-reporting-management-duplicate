@@ -868,12 +868,20 @@ class Subscriber {
                         //logger.debug(msg)
                         logger.debug(msg.value)
                         logger.debug('About to JSON.parse(msg.value)')
-                        const payload = JSON.parse(msg.value);
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token e in JSON at position`)) {
+                                logger.error('This is not a valid JSON hence skipping');    
+                                return; 
+                            }
+                        }                        
                         logger.debug('Done parsing')
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
-                        logger.debug('calling process onboarding consumer');
+                        logger.debug('Calling process onboarding consumer with payload ' + JSON.stringify(payload));
                         await onboardingProcessor.processOnboardingConsumer(payload);
                         //logger.debug(response);
                     } catch (error) {
