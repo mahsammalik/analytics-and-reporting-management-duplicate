@@ -12,7 +12,7 @@ accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, new
 foodOrderingProcessor, createCardPINProcessor, inviteAndEarnProcessor, cardLinkDelinkProcessor,
 scheduledTransactionsProcessor, accountUpgradeProcessor, movieTicketsProcessor, doorstepCashinProcessor,
 careemVoucherProcessor, payoneerRegProcessor, payoneerTransProcessor, displayQRProcessor,
-onboardingProcessor} from '/consumers/'
+onboardingProcessor, fallbackFailureProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -114,8 +114,10 @@ const accountStatement = new accountStatementController();
 //     // qrImage value has been truncated (it was too long to tokenize here)
 //     // data = {"TillNumber":"00000242","MerchantMSISDN":"03445304085","MerchantCategoryCode":"7999","TransactionCurrency":"586","CountryCode":"PK","ShopName":"Bubssiness Name 2","CityID":181,"CNIC":"3520255030987","Email":"mhsaad01@hotmail.com","MerchantType":1,"BrandName":"Bubssiness Name 2","BrandAddress":"","BrandArea":"","BrandEmail":"mhsaad01@hotmail.com","BrandCityID":0,"CourierTrackingID":"","MoblieNumber1":"03445304085","MoblieNumber2":"","MoblieNumber3":"","MoblieNumber4":"","MoblieNumber5":"","ReferralNumber":"","isOutletActive":true,"OutletStatus":1,"QRPayload":"0002010102112606000205520479995802PK5917Bubssiness Name 26009Islamabad5303586624202110344530408506110344530408507080000024263044EEE","QRImage":"/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyARCAPsAr4DASIAAhEBAxEB/8QAHw","QRId":null,"Amount":0};
 //     // await displayQRProcessor.processDisplayQRConsumer(data);
-//     data = {"Date_of_App_Download":"","OS":"","Date_of_First_Open":"","Login_Merchant_ID":"923214663734","IMEI_Number":"cda4ac6e1f357b1f","App_Version":"","Device_Model":"android","Channel":"Mobile App","Count_of_Guest_mode_visits":"","Activity_Date":"","Activity_Time":"","Merchant_MSISDN":"923214663734","New_Existing_User":"New","Account_Level":"M0","Consumer_Account_Status":"No","Account_Level_For_existing_User":"","Date_of_Sign_up":"2021-04-01T10:13:44.300Z","Sign_up_Step":"complete","Verification_Mode":"manual","Regsitration_request":"","Wallet_Registration_Date":"","Registration_Status":"active","Personal_Name":"abida fayyaz","Business_Name":"Kohat","CRM_Status":"Jazz","Reward_Amount":"","Reward_posting_Date":"2021-02-16T11:54:25.638Z"};
-//     await onboardingProcessor.processOnboardingConsumer(data);
+//     // data = {"Date_of_App_Download":"","OS":"","Date_of_First_Open":"","Login_Merchant_ID":"923214663734","IMEI_Number":"cda4ac6e1f357b1f","App_Version":"","Device_Model":"android","Channel":"Mobile App","Count_of_Guest_mode_visits":"","Activity_Date":"","Activity_Time":"","Merchant_MSISDN":"923214663734","New_Existing_User":"New","Account_Level":"M0","Consumer_Account_Status":"No","Account_Level_For_existing_User":"","Date_of_Sign_up":"2021-04-01T10:13:44.300Z","Sign_up_Step":"complete","Verification_Mode":"manual","Regsitration_request":"","Wallet_Registration_Date":"","Registration_Status":"active","Personal_Name":"abida fayyaz","Business_Name":"Kohat","CRM_Status":"Jazz","Reward_Amount":"","Reward_posting_Date":"2021-02-16T11:54:25.638Z"};
+//     // await onboardingProcessor.processOnboardingConsumer(data);
+//     data = {"mobile_number":"923005242735","insertion_TS":1621252637777,"failure_reason":"parked reason","topic":"Consumer_Fallback_Failure","msg_offset":"0"};
+//     await fallbackFailureProcessor.processFallbackFailureConsumer(data);
 //     res.status(200).json({message: "Done!"})
 // });
 

@@ -157,7 +157,8 @@
                 "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
                 "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
                 "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
-                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed"
+                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
+                "fallbackFailure": "Consumer_Fallback_Failure"
             }
         },
         "cache": {

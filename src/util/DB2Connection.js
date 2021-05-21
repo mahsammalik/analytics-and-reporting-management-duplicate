@@ -461,6 +461,21 @@ class DatabaseConn {
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             }
         }
+
+        if (tableName === config.reportingDBTables.FALLBACK_FAILURE) {
+            try {
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, INSERT_DATE, CHANNEL, FAILURE_DETAIL, TOP_NAME, MSG_OFFSET) 
+                VALUES(${data.msisdn}, '${data.insertDate}', '${data.channel}', '${data.failureDetail}', '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                conn.close(function (err) { });
+                logger.debug("insert done");
+            } catch (err) {
+                logger.error('Error in fallback failure insertion')
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
