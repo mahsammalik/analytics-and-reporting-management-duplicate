@@ -12,7 +12,7 @@ class Processor {
             logger.info({ event: 'Entered function', functionName: 'processOnboardingConsumer in class Processor' });
             //logger.debug(data);
             let initTransData = {};
-
+            if(data != undefined || data != null) {
             // All dates and time values that are null or empty are set to '0001-01-01' & '00:00:00' to avoid invalid string for timestamp error
             initTransData.Date_of_App_Download = (data.Date_of_App_Download != null && data.Date_of_App_Download != '') ? data.Date_of_App_Download : '0001-01-01';
             initTransData.Activity_Date = (data.Activity_Date != null && data.Activity_Date != '') ? data.Activity_Date : '0001-01-01';
@@ -64,6 +64,7 @@ class Processor {
                     await DB2Connection.insertTransactionHistory("MERCHANT", config.reportingDBTables.ONBOARDING, initTransData);
                 }
             }
+        }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'processOnboardingConsumer in class Processor', error: { message: error.message, stack: error.stack } });
             //throw new Error(error);
