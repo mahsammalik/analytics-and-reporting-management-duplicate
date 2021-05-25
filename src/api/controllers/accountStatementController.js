@@ -91,7 +91,8 @@ class accountStatementController {
                 format: req.query.format,
                 metadata,
                 merchantName: userProfile.businessName || '',
-                accountLevel: userProfile.accountLevel || ''
+                accountLevel: userProfile.accountLevel || '',
+                channel: req.headers['x-channel']
             };
             logger.debug(payload, "payload")
 
