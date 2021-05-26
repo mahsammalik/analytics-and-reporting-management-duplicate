@@ -60,7 +60,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  <img
 			src=${imageSrc}
 			height="216" border="0"
-			style="display:block;border:0px; width:40%; max-width: 165px; height:65px; object-fit: cover; padding-left: 15px; padding-bottom: 25px; min-width: 125px;" />
+			style="display:block;border:0px; width:40%; max-width: 190px; height:86px; object-fit: cover; padding-left: 15px; padding-bottom: 25px; min-width: 125px;" />
 			<p style="
 		  font-family: work-sans Black; font-size:14px;  text-align:left;
 		   font-style: normal;
