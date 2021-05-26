@@ -65,7 +65,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  font-family: work-sans Black; font-size:14px;  text-align:left;
 		   font-style: normal;
 		  font-weight: normal;
-		  font-size: 20px;
+		  font-size: 16px;
 		  line-height: 28px;
 		  color: #FFFFFF;
 		  padding-top: 10px;
