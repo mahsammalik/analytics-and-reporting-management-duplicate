@@ -4,12 +4,10 @@ import {
     createPDF,
     accountStatementTemplate,
     Notification,
-    OracleDBConnection,
 } from '/util/';
 import DB2Connection from '../util/DB2Connection';
-
-import axios from 'axios';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
+import moment from 'moment';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -60,7 +58,7 @@ class accountStatementService {
                     embedImage: false
                 }];
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date || '-') + ' to ' + (payload.end_date || '-')}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(moment(payload.start_date).format('DD MMM YYYY') || '-') + ' to ' + (moment(payload.end_date).format('DD MMM YYYY') || '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
@@ -120,7 +118,6 @@ class accountStatementService {
                     return dateA - dateB;
                 }),
                 payload
-
             };
 
             let pdfFile = await createPDF({
@@ -146,7 +143,7 @@ class accountStatementService {
 
             if (payload.email) {
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date || '-') + ' to ' + (payload.end_date || '-')}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(moment(payload.start_date).format('DD MMM YYYY') || '-') + ' to ' + (moment(payload.end_date).format('DD MMM YYYY') || '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
