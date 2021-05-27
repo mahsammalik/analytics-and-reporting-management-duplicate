@@ -464,6 +464,7 @@ class DatabaseConn {
 
         if (tableName === config.reportingDBTables.FALLBACK_FAILURE) {
             try {
+                let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, INSERT_DATE, CHANNEL, FAILURE_DETAIL, TOP_NAME, MSG_OFFSET) 
                 VALUES(${data.msisdn}, '${data.insertDate}', '${data.channel}', '${data.failureDetail}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
