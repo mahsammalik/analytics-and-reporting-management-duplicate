@@ -216,7 +216,7 @@
         "responseCode": {
             "default": {
                 "code": "G-01",
-                "message": "Internal Server Error"
+                "message": "Oops! We are facing some temporary issue with your request. "
             },
             "useCases": {
                 "accountStatement": {
