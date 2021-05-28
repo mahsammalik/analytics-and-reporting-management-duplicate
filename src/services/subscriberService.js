@@ -22,12 +22,12 @@ class Subscriber {
         this.event = new Broker([
                 config.kafkaBroker.topics.Init_topic,
                 config.kafkaBroker.topics.App_Merchant_Account_Statement,
-                // config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
-                // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
-                // config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
-                // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+                config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
+                config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
+                config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
+                config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
     
-                config.kafkaBroker.topics.initTrans_sendMoney_bank,
+                //config.kafkaBroker.topics.initTrans_sendMoney_bank,
                 config.kafkaBroker.topics.initTrans_qr_payment,
                 config.kafkaBroker.topics.confirmTrans_qr_payment,
                 config.kafkaBroker.topics.initTrans_MobileBundle,
