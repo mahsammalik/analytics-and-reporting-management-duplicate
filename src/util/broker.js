@@ -97,10 +97,11 @@ class Broker {
 
                 consumer.subscribe(topicsArray);
                 // start consuming messages
-                // setInterval(function() {
-                //   consumer.consume(10);
-                // }, 100);
-                consumer.consume();
+                setInterval(function() {
+                   consumer.consume(1);
+                 }, 2000);
+                
+                //consumer.consume(); disabling flowing mode, go for non-flowing mode instead
             });
 
             /*consumer.on('data', function (m) {
