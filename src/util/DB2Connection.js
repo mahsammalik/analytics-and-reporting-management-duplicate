@@ -509,9 +509,10 @@ class DatabaseConn {
             logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
 
             let concatenatResult;
+            const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10);
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
-            let result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
+            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where RIGHT (MSISDN,10) = ? And TRX_DATETIME BETWEEN ? AND ?;`);
+            let result = stmt.executeSync([mobileNumber, startDate, endDate]);
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
             let sumCredit = 0.00;
@@ -552,8 +553,9 @@ class DatabaseConn {
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             const conn = await open(cn);
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
-            const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
+            const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where RIGHT (MSISDN,10) = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
+            const result = stmt.executeSync([mobileNumber, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
             stmt.closeSync();
