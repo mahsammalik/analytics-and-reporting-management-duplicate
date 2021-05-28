@@ -29,11 +29,13 @@ class DatabaseConn {
                 // `);
                 // stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -46,11 +48,13 @@ class DatabaseConn {
                 '${data.transactionStatus}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -60,11 +64,13 @@ class DatabaseConn {
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
                 stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID, data.topic, data.msg_offset]);
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -74,11 +80,13 @@ class DatabaseConn {
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', ${data.msisdn}, '${data.organization}', '${data.transactionStatus}',${data.TID}, '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -89,11 +97,13 @@ class DatabaseConn {
                 VALUES(${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.bookingID}, '${data.channel}', '${data.cnic}', '${data.destination}', '${data.discount}', '${data.email}', ${data.fee}, '${data.gender}', ${data.msisdn}, '${data.origin}', ${data.originPrice}, ${data.price}, '${data.promo}', '${data.seats}', '${data.seatNumber}', '${data.service}', '${data.transactionStatus}', '${data.failureReason}', ${data.TID}, ${data.travelDate}, '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -104,11 +114,13 @@ class DatabaseConn {
                 VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -119,11 +131,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, ${data.walletNumber}, '${data.walletOwner}', '${data.walletEmail}', ${data.balanceBefore}, '${data.promoCode}', ${data.promoCodeAmount}, ${data.actualAmount}, '${data.status}', '${data.failureReason}', ${data.msisdn}, '${data.userEmail}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -134,11 +148,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, '${data.company}', ${data.amountDollar}, '${data.promoCode}', ${data.promoAmount}, ${data.actualAmount}, '${data.status}', '${data.failReason}', ${data.msisdn}, '${data.email}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
 
         }
@@ -150,11 +166,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, ${data.cardNum}, ${data.TID}, ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.retrivalRef}, ${data.cashInTransID}, '${data.cashInTransStatus}', ${data.amount}, ${data.cashInTransTime}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -165,11 +183,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -180,11 +200,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -195,11 +217,13 @@ class DatabaseConn {
                 VALUES(${data.reqDate}, '${data.channel}', '${data.businessName}', '${data.businessLink}', '${data.name}', '${data.email}', ${data.jazzcashAcc}, ${data.businessLogo}, '${data.reqMedium}', '${data.reqType}', '${data.reqItems}', '${data.tax_ship_disc_applied}', ${data.reqID}, ${data.amount}, '${data.serviceDescriptin}', ${data.paymentDueDate}, '${data.docAttached}', '${data.transactionStatus}', ${data.remindersSent}, '${data.payerName}', ${data.mobileNumber}, '${data.emailID}', ${data.extensionRequested}, '${data.paymentChannel}', '${data.existingAcc}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -210,11 +234,13 @@ class DatabaseConn {
                 VALUES('${data.postSignupBonus}', ${data.msisdn}, ${data.amountPosted}, '${data.transactionDate}', '${data.transactionTime}', '${data.postingStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -225,11 +251,13 @@ class DatabaseConn {
                 VALUES('${data.id}', TIMESTAMP_FORMAT('${data.orderDate}','YYYY-MM-DD HH24:MI:SS'), '${data.resturantName}', ${data.amount}, '${data.transStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -240,11 +268,13 @@ class DatabaseConn {
                 VALUES(${data.trackDate}, '${data.action}', ${data.msisdn}, '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -255,11 +285,13 @@ class DatabaseConn {
                 VALUES('${data.action}', ${data.msisdn}, '${data.cnic}', '${data.transactionTime}', '${data.pinCreated}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -270,11 +302,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', ${data.retrieveRef}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -285,11 +319,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -300,11 +336,13 @@ class DatabaseConn {
                 VALUES(${data.inviterMsisdn}, '${data.inviterName}', ${data.receiverMsisdn}, '${data.receiverName}', '${data.reqCategory}', '${data.accountStatus}', '${data.reqStatus}', ${data.acceptDate}, ${data.acceptTime}, '${data.module}', '${data.reqChannel}', '${data.registerChannel}', ${data.amount}, '${data.amountPostedDate}', '${data.amountPostedTime}', '${data.message}', ${data.inviteDate}, ${data.inviteTime}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -315,11 +353,13 @@ class DatabaseConn {
                 VALUES(${data.initiatorMsisdn}, '${data.transType}', ${data.amount}, ${data.receiverMsisdn}, ${data.transFrequency}, '${data.transactionStatus}', '${data.repeatTransDuration}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -330,11 +370,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.nadraResponse}', '${data.fingerprintTime}', '${data.appUserDetails}', '${data.nadraError}', '${data.channel}', ${data.merchMsisdn}, '${data.merchNic}', '${data.personalName}', '${data.businessName}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -345,11 +387,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.bookDate}','YYYY-MM-DD HH24:MI:SS'), TIMESTAMP_FORMAT('${data.movieDate}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.email}', ${data.TID}, '${data.cinema}', '${data.seatClass}', '${data.city}', ${data.seats}, ${data.price}, ${data.revenue}, '${data.transStatus}', ${data.amount}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -360,11 +404,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, '${data.address}', '${data.city}', ${data.lat}, '${data.reqStatus}', ${data.custMsisdn}, '${data.riderName}', ${data.riderMsisdn}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -375,11 +421,13 @@ class DatabaseConn {
                 VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, ${data.msisdn}, ${data.TID}, '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -390,11 +438,13 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -410,19 +460,21 @@ class DatabaseConn {
                     VALUES(${data.msisdn}, '${data.payUsername}', ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.channel}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
-                    conn.close(function (err) { });
+                    //conn.close(function (err) { });
                     logger.debug("insert done");
                 } else {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
-                    conn.close(function (err) { });
+                    //conn.close(function (err) { });
                     logger.debug("Record updated");
                 }
 
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -433,11 +485,13 @@ class DatabaseConn {
                 VALUES(${data.MerchantMSISDN}, ${data.TillNumber}, '${data.MoblieNumber1}', '${data.MoblieNumber2}', '${data.MoblieNumber3}', '${data.MoblieNumber4}', '${data.MoblieNumber5}', '${data.channel}', '${data.qrType}', '${data.MerchantCategoryCode}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -453,12 +507,14 @@ class DatabaseConn {
                 stmt.executeSync();
                 logger.debug('insert query executed')
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Error in onboarding insertion')
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
 
@@ -469,12 +525,14 @@ class DatabaseConn {
                 VALUES(${data.msisdn}, '${data.insertDate}', '${data.channel}', '${data.failureDetail}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
-                conn.close(function (err) { });
+                //conn.close(function (err) { });
                 logger.debug("insert done");
             } catch (err) {
                 logger.error('Error in fallback failure insertion')
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
             }
         }
     }
