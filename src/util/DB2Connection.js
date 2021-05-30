@@ -626,7 +626,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
-            logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn' });
+            logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
             return concatenatResult;
 
         } catch (err) {
@@ -649,7 +649,7 @@ class DatabaseConn {
             stmt.closeSync();
             conn.close();
 
-            logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn' });
+            logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
             return arrayResult || [];
 
         } catch (error) {
@@ -723,7 +723,7 @@ class DatabaseConn {
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
         }
     }
-   
+
 
 }
 
