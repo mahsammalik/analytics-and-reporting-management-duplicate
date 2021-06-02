@@ -75,8 +75,8 @@ const accountStatementTemplate = accountData => {
 			return htmlString;
 		} else {
 			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplate' });
-			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 1]).toFixed(2);
-			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 1]).toFixed(2);
+			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 1] / 100).toFixed(2);
+			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 1] / 100).toFixed(2);
 			let creditTransactions = 0;
 			let debitTransactions = 0;
 			let totalCredit = 0;
@@ -89,8 +89,8 @@ const accountStatementTemplate = accountData => {
 				if (parseFloat(number[number.length - 3]) > parseFloat(0))
 					debitTransactions++;
 			});
-			totalCredit = parseFloat(totalCredit).toFixed(2);
-			totalDebit = parseFloat(totalDebit).toFixed(2);
+			totalCredit = parseFloat(totalCredit / 100).toFixed(2);
+			totalDebit = parseFloat(totalDebit / 100).toFixed(2);
 			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
@@ -149,7 +149,7 @@ const accountStatementTemplate = accountData => {
 				if (item[0] !== '') {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
-						let column = row.map((col, ind) => { return ind > 5 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(col).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`; });
+						let column = row.map((col, ind) => { return ind > 5 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`; });
 						column = column.join().replace(/,/g, '');
 						return `<tr style="font-size: 7pt;">${column}</tr>`;
 					});

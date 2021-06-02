@@ -620,7 +620,7 @@ class DatabaseConn {
                 sumCredit += parseFloat(row[row.length - 2]);
                 sumBalance += parseFloat(row[row.length - 1]);
             });
-            resultArrayFormat.push(["Total", "", "", "", "", sumDebit.toFixed(2), sumCredit.toFixed(2), sumBalance.toFixed(2)]);
+            resultArrayFormat.push(["Total", "", "", "", "", (parseFloat(sumDebit) / 100).toFixed(2), (parseFloat(sumCredit) / 100).toFixed(2), (parseFloat(sumBalance) / 100).toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
             logger.debug("the result of database" + concatenatResult, resultArrayFormat);
             result.closeSync();
