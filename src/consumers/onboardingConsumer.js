@@ -19,7 +19,7 @@ class Processor {
             initTransData.Date_of_First_Open = (data.Date_of_First_Open != null && data.Date_of_First_Open != '') ? data.Date_of_First_Open : '0001-01-01';
             initTransData.Wallet_Registration_Date = (data.Wallet_Registration_Date != null && data.Wallet_Registration_Date != '') ? data.Wallet_Registration_Date : '0001-01-01';
             initTransData.Activity_Time = (data.Activity_Time != null && data.Activity_Time != '') ? data.Activity_Time : '00:00:00';
-            initTransData.Reward_posting_Date = (data.Reward_posting_Date != null && data.Reward_posting_Date != '') ? data.Reward_posting_Date : null;
+            initTransData.Reward_posting_Date = (data.Reward_posting_Date != null && data.Reward_posting_Date != '') ? data.Reward_posting_Date : '0001-01-01';
             if(initTransData.Reward_posting_Date != null) {
                 initTransData.Reward_posting_Date = initTransData.Reward_posting_Date.replace('T', ' ').replace('Z', '');
                 initTransData.Reward_posting_Date = initTransData.Reward_posting_Date.includes('.') ? initTransData.Reward_posting_Date.split('.')[0] : initTransData.Reward_posting_Date;
