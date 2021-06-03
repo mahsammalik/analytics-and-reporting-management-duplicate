@@ -85,12 +85,20 @@ class Notification {
             }
             // logger.debug('printing email');
             // logger.debug(emailReqBody);
-            return await axios
-                .post(NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
-                .then((response) => {
-                    logger.debug('Email Sent', response);
-                    return true;
-                })
+            // axios
+            // .post(
+                
+            //     NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
+            return await axiosaxios({
+                method: 'post',
+                url: NOTIFICATION_SERVICE_URL_EMAIL,
+                data: emailReqBody,
+                maxContentLength: 'Infinity',
+                maxBodyLength: 'Infinity'
+            }).then((response) => {
+                logger.debug('Email Sent', response);
+                return true;
+            })
                 .catch((error) => {
                     logger.error({ event: 'Error thrown ', functionName: 'NOTIFICATION_SERVICE_URL_EMAIL in class Notification', error: { message: error.message, stack: error.stack }, arguments: { To, Subject, HTML, } });
                     logger.info({ event: 'Exited function', functionName: 'NOTIFICATION_SERVICE_URL_EMAIL in class Notification' });
