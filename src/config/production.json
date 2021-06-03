@@ -52,14 +52,12 @@
             "protocol": "TCPIP"
         },
         "DB2_Jazz": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
-            "address": "",
-            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.124",
-            "port": 60000,
-            "protocol": "TCPIP"
+            "DATABASE": "repdb",
+            "HOSTNAME": "10.50.20.124",
+            "PORT": 60000,
+            "PROTOCOL": "TCPIP",
+            "UID": "jcapprepdb",
+            "PWD": "repdb@1234"
         },
         "IBMDB2_Test": {
             "username": "jcapprepdb",
