@@ -21,11 +21,17 @@ logger.debug({ 'event': 'debugging Analytics And Reporting' });
 const app = express();
 
 app.use(compression());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true,
+    parameterLimit: 50000
+}));
 app.use(httpContext.middleware);
 app.use(logRequestMW);
 axiosInterceptor();
 app.use(responseTime());
+
 
 // app.use(auditLoggerMW);
 
