@@ -89,7 +89,7 @@ class Notification {
             // .post(
                 
             //     NOTIFICATION_SERVICE_URL_EMAIL, emailReqBody)
-            return await axiosaxios({
+            return await axios({
                 method: 'post',
                 url: NOTIFICATION_SERVICE_URL_EMAIL,
                 data: emailReqBody,
