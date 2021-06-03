@@ -82,15 +82,15 @@ const accountStatementTemplate = accountData => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			accountData.data.forEach((number) => {
-				totalCredit += parseFloat(number[number.length - 2]) || 0;
-				totalDebit += parseFloat(number[number.length - 3]) || 0;
+				totalCredit += parseFloat(number[number.length - 2] / 100) || 0;
+				totalDebit += parseFloat(number[number.length - 3] / 100) || 0;
 				if (parseFloat(number[number.length - 2]) > parseFloat(0))
 					creditTransactions++;
 				if (parseFloat(number[number.length - 3]) > parseFloat(0))
 					debitTransactions++;
 			});
-			totalCredit = parseFloat(totalCredit / 100).toFixed(2);
-			totalDebit = parseFloat(totalDebit / 100).toFixed(2);
+			totalCredit = parseFloat(totalCredit).toFixed(2);
+			totalDebit = parseFloat(totalDebit).toFixed(2);
 			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
@@ -149,7 +149,9 @@ const accountStatementTemplate = accountData => {
 				if (item[0] !== '') {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
-						let column = row.map((col, ind) => { return ind > 5 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`; });
+						let column = row.map((col, ind) => {
+							return ind > 4 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(+col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`;
+						});
 						column = column.join().replace(/,/g, '');
 						return `<tr style="font-size: 7pt;">${column}</tr>`;
 					});

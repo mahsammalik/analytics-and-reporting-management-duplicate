@@ -131,16 +131,16 @@ const getUserProfile = headers => {
 				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL', res, levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
 			});
 			let accLevel = result.data.data.level || '';
-			logger.info({
-				event: 'accLevel before value', accLevel,
-			});
-			if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
-				accLevel = levels[res.data.data.TrustLevel].levelDesc
-				logger.info({
-					event: 'accLevel after value', accLevel
-				});
-				logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
-			}
+			// logger.info({
+			// 	event: 'accLevel before value', accLevel,
+			// });
+			// if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
+			// 	accLevel = levels[res.data.data.TrustLevel].levelDesc
+			// 	logger.info({
+			// 		event: 'accLevel after value', accLevel
+			// 	});
+			// 	logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
+			// }
 
 			logger.info({ event: 'AccountLevel', functionName: 'userGetProfileidentityinformationURL', res: accLevel });
 			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.firstNameEn + " " + result.data.data.lastNameEn, accountLevel: accLevel } : {};
