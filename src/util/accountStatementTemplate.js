@@ -150,10 +150,10 @@ const accountStatementTemplate = accountData => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind > 4 ? `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${parseFloat(+col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 7pt;"><div style="font-size: 7pt;">${col}</div></td>`;
+							return ind > 4 ? `<td style="font-size: 5pt;"><div style="font-size: 5pt;">${parseFloat(+col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt;">${col}</div></td>`;
 						});
 						column = column.join().replace(/,/g, '');
-						return `<tr style="font-size: 7pt;">${column}</tr>`;
+						return `<tr style="font-size: 5pt;">${column}</tr>`;
 					});
 					page = page.join().replace(/,/g, '');
 					htmlString += `<tbody>${page}</tbody></table><div class="main-section">`;
