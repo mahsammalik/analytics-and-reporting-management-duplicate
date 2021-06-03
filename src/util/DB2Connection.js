@@ -3,7 +3,7 @@ import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 
-const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
+const cn = config.DB2_Jazz // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
 //const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
@@ -641,6 +641,7 @@ class DatabaseConn {
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             const conn = await open(cn);
+            logger.info({ event: 'conn function', functionName: 'getValueArray in class DatabaseConn', conn });
             const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10);
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where RIGHT (MSISDN,10) = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
             const result = stmt.executeSync([mobileNumber, startDate, endDate]);

@@ -32,14 +32,12 @@
             "database": "sampledb"
         },
         "DB2_Jazz": {
-            "username": "jcappdb",
-            "password": "abcd@123",
-            "address": "",
-            "connectionString": "DATABASE=jazzcash;HOSTNAME=10.50.20.160;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.160",
-            "port": 60000,
-            "protocol": "TCPIP"
+            "DATABASE": "jazzcash",
+            "HOSTNAME": "10.50.20.160",
+            "PORT": 60000,
+            "PROTOCOL": "TCPIP",
+            "UID": "jcappdb",
+            "PWD": "abcd@123"
         },
         "winston": {
             "file": {
