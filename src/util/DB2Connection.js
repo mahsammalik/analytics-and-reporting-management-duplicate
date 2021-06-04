@@ -2,6 +2,7 @@ import { open } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
+import MsisdnTransformer from '../util/msisdnTransformer';
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
@@ -638,12 +639,16 @@ class DatabaseConn {
     async getValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
+            
+                let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+                    logger,debug("Updated Msisdn" +mappedMsisdn);
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             const conn = await open(cn);
-            const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10);
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where RIGHT (MSISDN,10) = ? And TRX_DATETIME BETWEEN ? AND ? ;`);
-            const result = stmt.executeSync([mobileNumber, startDate, endDate]);
+          //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const result = stmt.executeSync([ startDate, endDate , customerMobileNumer, mappedMsisdn,]);
+
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
             stmt.closeSync();
