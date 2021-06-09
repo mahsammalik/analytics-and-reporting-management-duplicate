@@ -598,10 +598,12 @@ class DatabaseConn {
             logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
 
             let concatenatResult;
-            const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10);
-            let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where RIGHT (MSISDN,10) = ? And TRX_DATETIME BETWEEN ? AND ?;`);
-            let result = stmt.executeSync([mobileNumber, startDate, endDate]);
+
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            const conn = await open(cn);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const result = stmt.executeSync([ startDate, endDate , customerMobileNumer, mappedMsisdn]);
+
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
             let sumCredit = 0.00;
