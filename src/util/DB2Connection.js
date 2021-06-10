@@ -602,7 +602,7 @@ class DatabaseConn {
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             const conn = await open(cn);
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-            const result = stmt.executeSync([ startDate, endDate , customerMobileNumer, mappedMsisdn]);
+            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
@@ -641,15 +641,15 @@ class DatabaseConn {
     async getValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
-            
-                let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-                    logger.debug("Updated Msisdn" +mappedMsisdn);
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.debug("Updated Msisdn" + mappedMsisdn);
+
             const conn = await open(cn);
-          //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+            //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-            const result = stmt.executeSync([ startDate, endDate , customerMobileNumer, mappedMsisdn]);
+            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
@@ -669,13 +669,21 @@ class DatabaseConn {
     async getTaxValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
-            const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
-            const schemaCon = config.IBMDB2_Test.schema;
-            logger.debug("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, cn, 'statements')
+            // const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
+            // const schemaCon = config.IBMDB2_Test.schema;
+            // logger.debug("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, cn, 'statements')
+
+            // const conn = await open(cn);
+            // const stmt = conn.prepareSync(`select * from statements.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
+            // const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
+
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.debug("Updated Msisdn" + mappedMsisdn);
 
             const conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
-            const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
+            //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             result.closeSync();
             stmt.closeSync();

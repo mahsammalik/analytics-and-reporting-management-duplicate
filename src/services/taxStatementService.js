@@ -58,7 +58,7 @@ class taxStatementService {
             if (payload.email) {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                 const attachment = [{
-                    filename: 'AccountStatement.pdf',
+                    filename: 'TaxStatement.pdf',
                     content: pdfFile,
                     type: 'base64',
                     embedImage: false
