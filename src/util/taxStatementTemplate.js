@@ -1,6 +1,7 @@
 import path from 'path';
 import numberConverter from 'number-to-words';
 import logger from './logger';
+import moment from 'moment';
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
 const htmlHead = `<!DOCTYPE html>
@@ -61,7 +62,7 @@ const taxStatementTemplate = accountData => {
 		logger.debug("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		const accountDetails = `<div class="headerTable">
-		<div><b>Date: </b>20-Aug-2020</div>
+		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
 	</div>
 		</header>
 		<main>
