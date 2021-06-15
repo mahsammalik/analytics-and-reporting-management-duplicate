@@ -571,7 +571,9 @@ class DatabaseConn {
 
         try {
             let conn = await open(cn);
-            const stmt = conn.prepareSync(`select * from statements.ACCOUNTSTATEMENT where MSISDN = ${customerMobileNumer} And date(TRX_DATETIME) <= '${endDate}' order by TRX_DATETIME desc limit 1`);
+
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where date(TRX_DATETIME)  <= '${endDate}' And MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} order by TRX_DATETIME desc limit 1;`);
             let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let updatedBalance = 0.00;
@@ -669,28 +671,21 @@ class DatabaseConn {
     async getTaxValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
-            // const con = "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;";
-            // const schemaCon = config.IBMDB2_Test.schema;
-            // logger.debug("entered getTaxValueArray: ", customerMobileNumer, startDate, endDate, cn, 'statements')
-
-            // const conn = await open(cn);
-            // const stmt = conn.prepareSync(`select * from statements.TAXSTATEMENT where MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?;`);
-            // const result = stmt.executeSync([customerMobileNumer, startDate, endDate]);
-
+      
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
 
             const conn = await open(cn);
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ? OR MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?   ;`);
+            const result = stmt.executeSync([customerMobileNumer, mappedMsisdn, startDate, endDate]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            logger.debug("Exited getTaxValueArray: ", arrayResult)
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) {
                 logger.debug("CONNECTION ERROR: ", err)
             });
-            logger.debug("Exited getTaxValueArray: ", arrayResult)
             return arrayResult;
 
         } catch (err) {
