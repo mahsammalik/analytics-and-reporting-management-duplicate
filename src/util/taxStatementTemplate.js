@@ -90,9 +90,9 @@ const taxStatementTemplate = accountData => {
 		<div>
 			<div>Account Type </div>${accountData.payload.accountLevel || ''}</b>
 		</div>
-		${accountData.payload.metadata.cnic && `<div>
+		${accountData.payload && accountData.payload.metadata && accountData.payload.metadata.cnic ? `<div>
 			<div>CNIC Number </div>${accountData.payload.metadata.cnic || ''}</b>
-		</div>`}
+		</div>`: ''}
 	</div>
 	<div class="taxHeading">
 		<b>
