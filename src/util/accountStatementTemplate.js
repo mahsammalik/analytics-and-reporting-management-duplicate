@@ -30,7 +30,7 @@ const htmlFoot = `<footer>
 </div>
 <div class="copyright">
 	<div class="helpline">
-		<p>Customer Helpline: <b>444</b> | UAN: <b>111-124-444</b></p>
+		<p>Customer Helpline: <b>4444</b> | UAN: <b>111-124-4444</b></p>
 		<b>wwww.jazzcash.com.pk</b>
 	</div>
 	<div class="footerlogo">
@@ -53,11 +53,11 @@ const accountStatementTemplate = accountData => {
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div style="line-height: 1.4;">Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')}</b></div>
+		<div style="line-height: 1.4;">Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MMM-YYYY')}</b></div>
 		<div style="line-height: 1.4;">Account Title: <b>${accountData.payload.merchantName}</b></div>
 		<div style="line-height: 1.4;">Account Number: <b>${accountData.payload.msisdn}</b></div>
 		<div style="line-height: 1.4;">Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
-		<div style="line-height: 1.3;">Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MM-YYYY')}</b></div>
+		<div style="line-height: 1.3;">Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MMM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MMM-YYYY')}</b></div>
 		</div>
 		</header>
 		<main>
@@ -100,21 +100,21 @@ const accountStatementTemplate = accountData => {
 		</div>
 		<div class="statementSummary">
 			<div class="statementBalance">
-				<div>Opening Balance: Rs ${openingBalance}</div>
+				<b>Opening Balance: Rs ${openingBalance ? openingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
 			</div>
 			<div class="statementDetails">
-				<div>Total Credit Amount: <b>Rs. ${totalCredit || 0}</b></div>
-				<div>Total Credit Transactions: <b>${creditTransactions}</b></div>
-				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2) : 0}</b></div>
+				<div>Total Credit Amount: <b>Rs. ${totalCredit ? totalCredit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+				<div>Total Credit Transactions: <b>${creditTransactions ? creditTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>&nbsp;</div>
-				<div>Total Debit Amount: <b>Rs. ${totalDebit}</b></div>
-				<div>Total Debit Transactions: <b>${debitTransactions}</b></div>
-				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2) : 0}</b></div>
-			</div>
-		
-			<div class="statementBalance">
-				<div>Closing Balance: Rs. ${closingBalance}</div>
-			</div>
+				<div>Total Debit Amount: <b>Rs. ${totalDebit ? totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+				<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+			</div >
+
+	<div class="statementBalance">
+		<b>Closing Balance: Rs. ${closingBalance ? closingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
+	</div>
 			
 		</div>`;
 
@@ -137,20 +137,20 @@ const accountStatementTemplate = accountData => {
 			}).filter((item) => { return item; });
 
 			slicedArray.forEach((item, index) => {
-				let pagination = `<div class="section" style="margin-bottom: 5pt;">
-				<div class="heading">
-				<h1 style="margin-right: -55pt;">
-				Statement of Account
-				</h1>
-				<i style="margin: 0 3pt;">${index + 1} of ${slicedArray.length}</i> <b>Page </b> 
-				</div>
+				let pagination = `<div class="section" style="margin-bottom: 5pt;" >
+	<div class="heading">
+		<h1 style="margin-right: -55pt;">
+			Statement of Account
+		</h1>
+		<i style="margin: 0 3pt;">${index + 1} of ${slicedArray.length}</i> <b>Page </b>
+	</div>
 				</div>`;
-				htmlString += `${htmlHead}${accountDetails}${pagination}<div class="main-section">`;
+				htmlString += `${htmlHead} ${accountDetails} ${pagination}<div class="main-section">`;
 				if (item[0] !== '') {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind > 4 ? `<td style="font-size: 5pt;"><div style="font-size: 5pt;">${parseFloat(+col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt;">${col}</div></td>`;
+							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col / 100).toFixed(2)}</td></div>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col}</div></td>`;
 						});
 						column = column.join().replace(/,/g, '');
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
@@ -159,7 +159,7 @@ const accountStatementTemplate = accountData => {
 					htmlString += `<tbody>${page}</tbody></table><div class="main-section">`;
 				}
 
-				htmlString += index === slicedArray.length - 1 ? `${statementSummary}</main>${htmlFoot}` : `</main>${htmlFoot}`;
+				htmlString += index === slicedArray.length - 1 ? `${statementSummary}</main>${htmlFoot} ` : `</main > ${htmlFoot} `;
 
 			});
 			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
@@ -170,7 +170,7 @@ const accountStatementTemplate = accountData => {
 
 		logger.error({ event: 'Error thrown ', functionName: 'accountStatementTemplate', error, accountData });
 		logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
-		throw new Error(`error in account statement template  ${error}`);
+		throw new Error(`error in account statement template  ${error} `);
 	}
 
 

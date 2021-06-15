@@ -103,21 +103,32 @@ class accountStatementService {
             //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
             //     const { data, success, message } = response;
             // if (success) {
-            if (db2Data.length > 0)
+            if (db2Data.length > 0) {
                 db2Data = db2Data.map((dat) => {
                     dat.splice(0, 1);
                     let b = dat[1];
                     dat[1] = dat[0];
                     dat[0] = b;
                     return dat
-                })
-            const accountData = {
-                headers: ["Transaction ID", "Date", "Transaction Type", "Channel", "Description", "Amount debited", "Amount credited", "Running balance\n"],
-                data: db2Data.sort(function (a, b) {
+                }).sort(function (a, b) {
                     var dateA = new Date(a[1]), dateB = new Date(b[1]);
                     return dateA - dateB;
-                }),
-                payload
+                })
+
+                db2Data = db2Data.map(arr => {
+                    let newTransId = arr[0];
+                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+                    arr[1] = newTransId;
+                    arr[4] = arr[4].replace(/[0-9]/g, "*")
+                    return arr;
+                })
+            }
+
+
+            const accountData = {
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
+                data: db2Data,
+                payload: { ...payload, msisdn }
             };
 
             let pdfFile = await createPDF({
