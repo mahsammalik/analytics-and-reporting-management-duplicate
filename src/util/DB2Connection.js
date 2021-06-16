@@ -617,6 +617,9 @@ class DatabaseConn {
                     let b = dat[1];
                     dat[1] = dat[0];
                     dat[0] = b;
+                    dat[dat.length - 3] = dat[dat.length - 3] / 100;
+                    dat[dat.length - 2] = dat[dat.length - 2] / 100;
+                    dat[dat.length - 1] = dat[dat.length - 1] / 100;
                     return dat
                 });
 
@@ -625,7 +628,7 @@ class DatabaseConn {
                 sumCredit += parseFloat(row[row.length - 2]);
                 sumBalance += parseFloat(row[row.length - 1]);
             });
-            resultArrayFormat.push(["Total", "", "", "", "", (parseFloat(sumDebit) / 100).toFixed(2), (parseFloat(sumCredit) / 100).toFixed(2), (parseFloat(sumBalance) / 100).toFixed(2)]);
+            resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
             logger.debug("the result of database" + concatenatResult, resultArrayFormat);
             result.closeSync();
