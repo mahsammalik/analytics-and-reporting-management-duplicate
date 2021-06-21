@@ -5,7 +5,15 @@ import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
+var Pool = require("ibm_db").Pool
+    , pool = new Pool()
+    , cn = cn;
 
+pool.open(cn, function (err, db) {
+    if (err) {
+        return console.log(err);
+    }
+});
 //const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
 class DatabaseConn {
