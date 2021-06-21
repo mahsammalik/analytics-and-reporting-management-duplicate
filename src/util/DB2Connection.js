@@ -5,7 +5,15 @@ import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
+var Pool = require("ibm_db").Pool
+    , pool = new Pool()
+    , cn = cn;
 
+pool.open(cn, function (err, db) {
+    if (err) {
+        return console.log(err);
+    }
+});
 //const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
 class DatabaseConn {
@@ -674,11 +682,11 @@ class DatabaseConn {
     async getTaxValueArray(customerMobileNumer, endDate, startDate) {
 
         try {
-      
+
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
 
-            const conn = await open(cn);
+            const conn = await pool.open(cn)
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ? OR MSISDN = ? And TRX_DATETIME BETWEEN ? AND ?   ;`);
             const result = stmt.executeSync([customerMobileNumer, mappedMsisdn, startDate, endDate]);
