@@ -685,10 +685,10 @@ class DatabaseConn {
 
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
-            logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN ${startDate} AND ${endDate}   ;` })
+            logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}';` })
             const conn = await open(cn)
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN ${startDate} AND ${endDate}   ;`);
+            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}';`);
             const result = stmt.executeSync();
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             logger.debug("Exited getTaxValueArray: ", arrayResult)
