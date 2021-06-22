@@ -18,8 +18,8 @@ class Processor {
                 initTransData.cnic = data.cnic;
                 initTransData.name = data.name;
                 initTransData.crm_status = data.crm_status;
-                initTransData.request_submission_date = moment(data.request_submission_date, 'YYYY-MM-DDTHH:mm:SS').format('DD-MM-YYYY HH:mm:SS');
-                initTransData.request_processing_date = moment(data.request_processing_date, 'YYYY-MM-DDTHH:mm:SS').format('DD-MM-YYYY HH:mm:SS');
+                initTransData.request_submission_date = moment(data.request_submission_date, 'YYYY-MM-DDTHH:mm:SS').format('YYYY-MM-DD');
+                initTransData.request_processing_date = moment(data.request_processing_date, 'YYYY-MM-DDTHH:mm:SS').format('YYYY-MM-DD');
                 initTransData.processed_by = data.processed_by;
                 initTransData.status = data.failure_reason == "" ? "Success" : data.failure_reason.substr(0,15);
                 initTransData.channel = data?.channel || "consumerApp";

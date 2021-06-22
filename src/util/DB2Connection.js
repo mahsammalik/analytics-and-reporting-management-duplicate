@@ -621,7 +621,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("NUMBER", NAME, CNIC, CRMSTATUS, REQ_SUBMIT_DATE, REQ_PROCESSED_BY, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.msisdn}, '${data.name}', '${data.cnic}', '${data.crm_status}', '${data.request_submission_date}', '${data.request_processing_date}', '${data.processed_by}', '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES(${data.msisdn}, '${data.name}', '${data.cnic}', '${data.crm_status}', '${data.request_submission_date}', '${data.processed_by}', '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
