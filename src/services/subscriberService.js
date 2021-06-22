@@ -8,7 +8,8 @@ eVoucherProcessor, accountDetailsUpdateProcessor, requestToPayProcessor, cardOrd
 newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
-payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor, fallbackFailureProcessor} from '/consumers/'
+payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
+fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
@@ -80,7 +81,8 @@ class Subscriber {
                 config.kafkaBroker.topics.payoneer_transaction,
                 config.kafkaBroker.topics.display_QR,
                 config.kafkaBroker.topics.merchant_onboarding,
-                config.kafkaBroker.topics.fallbackFailure
+                config.kafkaBroker.topics.fallbackFailure,
+                config.kafkaBroker.topics.consumer_onboarding
              ]);
 
             //this.setConsumer();
@@ -902,6 +904,27 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug('Calling process fallbackFailure consumer with payload ' + JSON.stringify(payload));
                         await fallbackFailureProcessor.processFallbackFailureConsumer(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.consumer_onboarding){
+                    logger.debug('*********** Consumer Onboarding *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');    
+                                return; 
+                            }
+                        }
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug('Calling process consumerOnboarding consumer with payload ' + JSON.stringify(payload));
+                        await consumerOnboardingProcessor.processConsumerOnboarding(payload);
                     } catch (error) {
                         logger.debug(error)
                     }

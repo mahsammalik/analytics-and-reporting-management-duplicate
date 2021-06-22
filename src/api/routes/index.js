@@ -12,7 +12,7 @@ accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, new
 foodOrderingProcessor, createCardPINProcessor, inviteAndEarnProcessor, cardLinkDelinkProcessor,
 scheduledTransactionsProcessor, accountUpgradeProcessor, movieTicketsProcessor, doorstepCashinProcessor,
 careemVoucherProcessor, payoneerRegProcessor, payoneerTransProcessor, displayQRProcessor,
-onboardingProcessor, fallbackFailureProcessor} from '/consumers/'
+onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/'
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -116,8 +116,10 @@ const accountStatement = new accountStatementController();
 //     // await displayQRProcessor.processDisplayQRConsumer(data);
 //     // data = {"Date_of_App_Download":"","OS":"","Date_of_First_Open":"","Login_Merchant_ID":"923214663734","IMEI_Number":"cda4ac6e1f357b1f","App_Version":"","Device_Model":"android","Channel":"Mobile App","Count_of_Guest_mode_visits":"","Activity_Date":"","Activity_Time":"","Merchant_MSISDN":"923214663734","New_Existing_User":"New","Account_Level":"M0","Consumer_Account_Status":"No","Account_Level_For_existing_User":"","Date_of_Sign_up":"2021-04-01T10:13:44.300Z","Sign_up_Step":"complete","Verification_Mode":"manual","Regsitration_request":"","Wallet_Registration_Date":"","Registration_Status":"active","Personal_Name":"abida fayyaz","Business_Name":"Kohat","CRM_Status":"Jazz","Reward_Amount":"","Reward_posting_Date":"2021-02-16T11:54:25.638Z"};
 //     // await onboardingProcessor.processOnboardingConsumer(data);
-//     data = {"mobile_number":"923005242735","insertion_TS":1621252637777,"failure_reason":"parked reason","topic":"Consumer_Fallback_Failure","msg_offset":"0"};
-//     await fallbackFailureProcessor.processFallbackFailureConsumer(data);
+//     // data = {"mobile_number":"923005242735","insertion_TS":1621252637777,"failure_reason":"parked reason","topic":"Consumer_Fallback_Failure","msg_offset":"0"};
+//     // await fallbackFailureProcessor.processFallbackFailureConsumer(data);
+//     data = {};
+//     await consumerOnboardingProcessor.processConsumerOnboarding(data);
 //     res.status(200).json({message: "Done!"})
 // });
 

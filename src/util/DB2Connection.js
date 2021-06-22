@@ -565,6 +565,25 @@ class DatabaseConn {
                 conn.close(function (err) { });
             }
         }
+
+        if (tableName === config.reportingDBTables.APP_SIGNUP) {
+            let conn = await open(cn);
+            try {
+                // let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (LOGIN_ID, CNIC, REG_STATUS, ACTIVITY_DATE, ACTIVITY_TIME, NEW_EXISTING_USER, WALLET_REG_DATE, APP_VERSION, DEVICE_MODEL, OS, TOP_NAME, MSG_OFFSET) 
+                VALUES(${data.loginID}, '${data.cnic}', '${data.reg_status}', '${data.activity_date}', '${data.activity_time}', '${data.new_existing_user}', '${data.walletRegDate}', '${data.app_version}', '${data.device_model}', '${data.os}', '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                //conn.close(function (err) { });
+                logger.debug("insert done");
+            } catch (err) {
+                logger.error('Error in consumer onboarding insertion')
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {

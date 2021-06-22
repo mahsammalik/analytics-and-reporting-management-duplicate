@@ -234,7 +234,8 @@
 
                 "display_QR": "AccountManagement_DisplayQR_Success",
                 "merchant_onboarding": "Merchant_Onboarding_Success",
-                "fallbackFailure": "Consumer_Fallback_Failure"
+                "fallbackFailure": "Consumer_Fallback_Failure",
+                "consumer_onboarding": "Consumer_Onboarding_Success"
             }
         },
         "cache": {
