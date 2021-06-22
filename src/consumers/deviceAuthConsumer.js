@@ -23,7 +23,7 @@ class Processor {
                 initTransData.imei1 = data.deviceIMEI_1;
                 initTransData.imei1 = data.deviceIMEI_2;
                 initTransData.new_imei = data?.newIMEI || '';
-                initTransData.dateTime = moment(data.registrationTS).format('DD-MM-YYYY HH:mm:SS');
+                initTransData.dateTime = moment(data.registrationTS, 'DD-MM-YYYY HH:mm:SS').format('YYYY-MM-DD HH:mm:SS');
                 initTransData.authAttempted = data.authenticationAttempted? "Yes":"No";
                 initTransData.authSuccess = data.authenticationSuccess? "Yes":"No";
                 initTransData.doUpdate = data.doUpdate;

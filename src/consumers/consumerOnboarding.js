@@ -17,10 +17,10 @@ class Processor {
                 initTransData.loginID = Number(data.LoginID);
                 initTransData.cnic = data.cnic;
                 initTransData.reg_status = data.RegistrationStatus;
-                initTransData.activity_date = moment(data.ActivityDate).format('DD-MM-YYYY');
-                initTransData.activity_time = moment(data.ActivityTime).format('HH:mm:SS');
+                initTransData.activity_date = moment(data.ActivityDate, ["MM-DD-YYYY", "YYYY-MM-DD"]).format('YYYY-MM-DD');
+                initTransData.activity_time = moment(data.ActivityTime, 'HH:mm:SS').format('HH:mm:SS');
                 initTransData.new_existing_user = data.ExistingUser? "Existing":"New";
-                initTransData.walletRegDate = moment(data.WalletRegistrationDate).format('DD-MM-YYYY HH:mm:SS');
+                initTransData.walletRegDate = moment(data.WalletRegistrationDate, 'DD-MM-YYYY HH:mm:SS').format('YYYY-MM-DD HH:mm:SS');
                 initTransData.app_version = data.AppVersion;
                 initTransData.device_model = data.DeviceModel;
                 initTransData.os = data.OS;
