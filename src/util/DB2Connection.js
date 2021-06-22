@@ -584,6 +584,38 @@ class DatabaseConn {
                 conn.close(function (err) { });
             }
         }
+
+        if (tableName === config.reportingDBTables.DEVICE_AUTH) {
+            let conn = await open(cn);
+            try {
+                if(data.doUpdate == false)
+                {
+                    // let conn = await open(cn);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, DEVICE_TYPE, APP_VERSION, CUST_IP, IMEI1, IMEI2, NEW_IMEI, DATE_TIME, AUTH_ATTEMPTED, AUTH_SUCCESS, DEVICE_MAKE, DEVICE_MODEL, TOP_NAME, MSG_OFFSET) 
+                    VALUES(${data.msisdn}, '${data.deviceType}', '${data.app_version}', '${data.cust_ip}', '${data.imei1}', '${data.imei2}', '${data.new_imei}', '${data.dateTime}', '${data.authAttempted}', '${data.authSuccess}', '${data.deviceMake}', '${data.device_model}, '${data.topic}', ${data.msg_offset});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.debug("insert done");
+                }
+                else
+                {
+                    //update last inserted record
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AUTH_SUCCESS = 'Yes' WHERE MSISDN=${data.msisdn} AND DEVICE_TYPE='${data.deviceType}' ORDER BY RECORD_DATE DESC LIMIT 1;`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.debug("update done");                    
+                }
+            } catch (err) {
+                logger.error('Error in device auth insertion')
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
+
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
