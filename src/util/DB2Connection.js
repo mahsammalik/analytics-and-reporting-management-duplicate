@@ -616,6 +616,25 @@ class DatabaseConn {
             }
         }
 
+        if (tableName === config.reportingDBTables.WALLET_REQUEST) {
+            let conn = await open(cn);
+            try {
+                // let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("NUMBER", NAME, CNIC, CRMSTATUS, REQ_SUBMIT_DATE, REQ_PROCESSED_BY, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
+                VALUES(${data.msisdn}, '${data.name}', '${data.cnic}', '${data.crm_status}', '${data.request_submission_date}', '${data.request_processing_date}', '${data.processed_by}', '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                //conn.close(function (err) { });
+                logger.debug("insert done");
+            } catch (err) {
+                logger.error('Error in wallet request insertion')
+                logger.error('Database connection error' + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
+
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
@@ -728,10 +747,10 @@ class DatabaseConn {
 
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
-            logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}';` })
+            logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN ${startDate} AND ${endDate}   ;` })
             const conn = await open(cn)
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}';`);
+            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN ${startDate} AND ${endDate}   ;`);
             const result = stmt.executeSync();
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             logger.debug("Exited getTaxValueArray: ", arrayResult)

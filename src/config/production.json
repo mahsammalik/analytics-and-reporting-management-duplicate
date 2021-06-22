@@ -236,7 +236,8 @@
                 "merchant_onboarding": "Merchant_Onboarding_Success",
                 "fallbackFailure": "Consumer_Fallback_Failure",
                 "consumer_onboarding": "Consumer_Onboarding_Success",
-                "device_authentication": "Device_Registration"
+                "device_authentication": "Device_Registration",
+                "wallet_request": "Consumer_Wallet_Success"
             }
         },
         "cache": {
