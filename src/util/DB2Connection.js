@@ -592,7 +592,7 @@ class DatabaseConn {
                 {
                     // let conn = await open(cn);
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, DEVICE_TYPE, APP_VERSION, CUST_IP, IMEI1, IMEI2, NEW_IMEI, DATE_TIME, AUTH_ATTEMPTED, AUTH_SUCCESS, DEVICE_MAKE, DEVICE_MODEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.msisdn}, '${data.deviceType}', '${data.app_version}', '${data.cust_ip}', '${data.imei1}', '${data.imei2}', '${data.new_imei}', '${data.dateTime}', '${data.authAttempted}', '${data.authSuccess}', '${data.deviceMake}', '${data.device_model}, '${data.topic}', ${data.msg_offset});`);
+                    VALUES(${data.msisdn}, '${data.deviceType}', '${data.app_version}', '${data.cust_ip}', '${data.imei1}', '${data.imei2}', '${data.new_imei}', '${data.dateTime}', '${data.authAttempted}', '${data.authSuccess}', '${data.deviceMake}', '${data.device_model}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
