@@ -25,3 +25,4 @@ export {default as payoneerTransProcessor} from './payoneerTransactionConsumer';
 export {default as displayQRProcessor } from './displayQRConsumer';
 export {default as onboardingProcessor } from './onboardingConsumer';
 export {default as fallbackFailureProcessor} from './fallbackFailureConsumer';
+export {default as consumerOnboardingProcessor} from './consumerOnboarding';
