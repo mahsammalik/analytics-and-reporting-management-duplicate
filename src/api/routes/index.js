@@ -142,4 +142,7 @@ router.get(
     '/ibft/outgoing/:startDate/:endDate', excelExportController.jazzcashOutgoingExport
 );
 
+router.get(
+    '/testingpdf', msisdnParserMW(), accountStatement.calculateAccountStatementTEMPLATE,
+);
 export default router;

@@ -1,7 +1,8 @@
 import { accountStatementService, Subscriber } from '/services/';
 import { logger, mappedMetaData } from '/util/';
 import { getUserProfile } from '/services/helpers/';
-
+import { accountStatementTemplate, createPDF } from '../../util';
+import moment from 'moment';
 class accountStatementController {
 
     async calculateAccountStatement(req, res, next) {
@@ -63,7 +64,65 @@ class accountStatementController {
             return next();
         }
     }
+    async calculateAccountStatementTEMPLATE(req, res, next) {
+        let newdata = []
+        for(let i = 0 ; i <2 ; i ++){
+            newdata.push([
+                "923042227396",
+                "2021-04-06 21:36:27.000000",
+                "10712297927",
+                "Transfer(C2C)",
+                "Customer transfer of funds to another customer - 923079770500",
+                "5000",
+                "0",
+                "490100"
+            ])
+        }
+        let pdfFile = await createPDF({
+            template: accountStatementTemplate({
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
+                data: newdata.map(arr => {
+                    let newTransId = arr[0];
+                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+                    arr[1] = newTransId;
+                    arr[4] = arr[4].replace(/\d(?=\d{4})/g, "*")
+                    return arr;
+                }),
+                payload: {
+                    msisdn: '923462381235',
+                    start_date: '2021-01-15',
+                    end_date: '2021-01-25',
+                    request: 'Email',
+                    email: 'muhammad.saleem2@ibm.com',
+                    subject: 'Hello',
+                    html: '<html></html>',
+                    format: 'pdf',
+                    metadata: {
+                        msisdn: '923462381235',
+                        cnic: '4220106096461',
+                        accountLevel: undefined,
+                        emailAddress: 'muhammad.saleem2@ibm.com',
+                        firstName: 'Omer Saleemmm',
+                        LastName: '',
+                        profileImageURL: '2b880809-c586-4f4b-916c-7ab930e4e4e5.jpg',
+                        customerType: 'customer',
+                        language: undefined,
+                        dateOfBirth: '01221951',
+                        isLoggedInOnce: false,
+                        undefined: 'b75bffa2ffef4e9bf160c25eda22596f'
+                    },
+                    merchantName: ''
 
+                }
+            }),
+            fileName: `Account Statement`
+        });
+        console.log(pdfFile, "pdfFile")
+        
+        // return res.status(200).send({success:true, 'pdf': Buffer.from(pdfFile, 'base64').toString('base64')})
+        return res.status(200).send({success:true})
+
+    }
     async calculateAccountStatementWithoutKafka(req, res, next) {
         try {
             logger.info({ event: 'Entered function', functionName: 'main calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
