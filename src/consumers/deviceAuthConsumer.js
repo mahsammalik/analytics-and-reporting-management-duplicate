@@ -21,7 +21,7 @@ class Processor {
                 initTransData.deviceType = data.deviceType;
                 initTransData.cust_ip = data.ipAddress;
                 initTransData.imei1 = data.deviceIMEI_1;
-                initTransData.imei1 = data.deviceIMEI_2;
+                initTransData.imei2 = data.deviceIMEI_2;
                 initTransData.new_imei = data?.newIMEI || '';
                 initTransData.dateTime = moment(data.registrationTS, 'DD-MM-YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
                 initTransData.authAttempted = data.authenticationAttempted? "Yes":"No";
