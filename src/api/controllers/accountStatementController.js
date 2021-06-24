@@ -66,7 +66,7 @@ class accountStatementController {
     }
     async calculateAccountStatementTEMPLATE(req, res, next) {
         let newdata = []
-        for(let i = 0 ; i <2 ; i ++){
+        for(let i = 0 ; i <400 ; i ++){
             newdata.push([
                 "923042227396",
                 "2021-04-06 21:36:27.000000",

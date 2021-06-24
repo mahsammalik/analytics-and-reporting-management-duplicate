@@ -1,13 +1,5 @@
 
-@font-face {
-    font-family: work-sans-italic;
-    src: url('../fonts/Work_Sans/WorkSans-Italic-VariableFont_wght.ttf');
-  }
 
-  @font-face {
-    font-family: work-sans;
-    src: url('../fonts/Work_Sans/WorkSans-VariableFont_wght.ttf');
-  }
 body {
     font-family: work-sans, work-sans-italic, Helvetica, sans-serif;
     font-size: 12px;
