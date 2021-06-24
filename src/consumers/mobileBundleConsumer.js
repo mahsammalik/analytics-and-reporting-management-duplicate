@@ -25,6 +25,11 @@ class Processor {
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                 }
+                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                if (initTransData.transactionTime !== '') {
+                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                }
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
