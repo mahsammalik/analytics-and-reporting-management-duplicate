@@ -31,7 +31,7 @@ class Processor {
                 initTransData.cashInTransID = 0;
                 initTransData.cashInTransStatus = '';
                 initTransData.cashInTransTime = null,
-                initTransData.channel = data?.Header?.SubChannel || '';
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

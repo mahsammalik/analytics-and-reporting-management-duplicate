@@ -25,7 +25,7 @@ class Processor {
                 }
                 initTransData.transactionStatus = 'Completed';
                 initTransData.imei = 0;
-                initTransData.channel = data?.Header?.SubChannel || '';
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.useCase = data?.Header?.UseCase || '';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);

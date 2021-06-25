@@ -17,7 +17,7 @@ class Processor {
                 initTransData.businessLink = '';
                 initTransData.businessLogo = null,
                 initTransData.businessName = '';
-                initTransData.channel = data?.Header?.SubChannel || '';
+                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.docAttached = '',
                 initTransData.email = '';
                 initTransData.emailID = '';
