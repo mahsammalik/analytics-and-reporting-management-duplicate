@@ -7,16 +7,16 @@ const options = { format: 'A4', orientation: 'portrait', type: 'pdf', };
 const createPDF = async(templateDetails) => {
     try {
         //Comment	for testing HTML Template
-        const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
-        fs.writeFile(`${fileName}.html`, templateDetails.template, (err, data) => {
-            if (err) throw err;
-            logger.debug('html created');
-            pdf.create(templateDetails.template, options).toFile(`${fileName}.pdf`, (err, res) => {
-                if (err) return err;
-                logger.debug(res);
-                return res;
-            });
-        });
+        // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
+        // fs.writeFile(`${fileName}.html`, templateDetails.template, (err, data) => {
+        //     if (err) throw err;
+        //     logger.debug('html created');
+        //     pdf.create(templateDetails.template, options).toFile(`${fileName}.pdf`, (err, res) => {
+        //         if (err) return err;
+        //         logger.debug(res);
+        //         return res;
+        //     });
+        // });
 
 
         logger.info({ event: 'Entered function', functionName: 'createPDF' });
