@@ -7,17 +7,22 @@ const MASKING_KEYS = process.env.MASKING_KEYS || "password, pin";
 
 const customFormat = printf((info) => {
     const logObj = httpContext.get('logObj') || null;
-    info = Object.assign(info, logObj);
+    const infoCopy = Object.assign({},info, logObj);
     let log;
     if (process.env.NODE_ENV === 'development') {
-        log = `[${info.label}] ${info.timestamp} ${stringify(info, null, '...')}`;
+        log = `[${infoCopy.level}] ${infoCopy.timestamp} ${stringify(infoCopy, null, '...')}`;
     } else {
         //if object contains sensitive property ( i.e. key value matches pin, mpin, password, CVV , credit card etc etc , NADRA, CNIC , Mother's name ), **** 
-        log = `${stringify(info)}`;
+        if (info.showDetails) {
+            log = `${stringify(infoCopy)}`;    
+        } else {
+            log = `[${infoCopy.level}] ${infoCopy.timestamp} ${infoCopy.msisdn} ${infoCopy.requestID} ${stringify(infoCopy.message)}`
+        }
+        
         log = maskInput(log);
     }
     if (info instanceof Error) {
-        log = `[ERROR:] [${info.label}] ${info.timestamp} ${stringify(info.message)} ${stringify(info.stack)} ${stringify(info)}`
+        log = `[ERROR:] ${info.timestamp} ${stringify(info.message)} ${stringify(info.stack)} ${stringify(info)}`
     }
     return log;
 });
@@ -34,7 +39,7 @@ const maskInput = (strLog) => {
 
 const logger = createLogger({
     format: combine(
-        label({ label: 'Analytics&Reporting_MS' }),
+        //timestamp({ format: timezoned }),
         timestamp({ format: 'DD-MMM-YYYY HH:mm:ss' }),
         customFormat,
     ),

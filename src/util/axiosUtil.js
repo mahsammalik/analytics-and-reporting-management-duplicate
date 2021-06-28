@@ -11,7 +11,7 @@ const axiosInterceptor = () => {
 
         //logger.log({level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,headers:req.}); 
         if(requestObj){
-          logger.log({message:"Third Party Request ",level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:req.url,axiosMethod:req.method,axiosRequestData:req.data}); 
+          logger.log({message:"Third Party Request ",level:'info',showDetails:true, msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:req.url,axiosMethod:req.method,axiosRequestData:req.data}); 
         }
         //logger.debug({ url: req.url, method: req.method });
         const localPort = Number(LOCAL_PORT_NUMBER);
@@ -29,7 +29,7 @@ const axiosInterceptor = () => {
 
         //logger.log({level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,headers:req.}); 
         if (requestObj) {
-        logger.log({message:"Third Party Response ",level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:response.url,axiosResponseData:response.data}); 
+        logger.log({message:"Third Party Response ",level:'info',showDetails:true, msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:response.url,axiosResponseData:response.data}); 
         }
         return response;
       }, error => {
