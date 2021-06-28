@@ -19,15 +19,15 @@ class Processor {
             initTransData.usdAmount = Number(data?.transferAmount || '0');
             initTransData.exchangeRate = Number(data?.exchangeRate || '0');
             initTransData.currency = data?.currency || '';
-            initTransData.description = data?.txLogs || '';
+            initTransData.description = data?.txMonetaStatusDesc || '';
             initTransData.activityDate = data?.updatedAt || null;
             if(initTransData.activityDate != null) {
                 initTransData.activityDate = initTransData.activityDate.replace('T', ' ').replace('Z', '');
                 initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
             }
-            initTransData.monetaStatus = data?.txStatus || '';
+            initTransData.monetaStatus = data?.txMonetaExpressResponseDesc || '';
             initTransData.channel = data?.channel || 'consumerApp';
-            initTransData.TID = Number(data?.paymentID || '0');
+            initTransData.TID = Number(data?.txID || '0');
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
