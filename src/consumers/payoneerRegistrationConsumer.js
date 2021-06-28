@@ -20,7 +20,7 @@ class Processor {
                 initTransData.activityDate = initTransData.activityDate.replace('T', ' ').replace('Z', '');
                 initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
             }
-            initTransData.channel = data?.channel || 'Mobile';
+            initTransData.channel = data?.channel || 'consumerApp';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 

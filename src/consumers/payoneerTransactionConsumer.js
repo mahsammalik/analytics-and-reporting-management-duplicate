@@ -26,7 +26,7 @@ class Processor {
                 initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
             }
             initTransData.monetaStatus = data?.txStatus || '';
-            initTransData.channel = data?.channel || 'Mobile';
+            initTransData.channel = data?.channel || 'consumerApp';
             initTransData.TID = Number(data?.paymentID || '0');
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
