@@ -601,7 +601,7 @@ class DatabaseConn {
                 else
                 {
                     //update last inserted record
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AUTH_SUCCESS = 'Yes' WHERE MSISDN=${data.msisdn} AND DEVICE_TYPE='${data.deviceType}' ORDER BY RECORD_DATE DESC LIMIT 1;`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AUTH_ATTEMPTED='${data.authAttempted}', AUTH_SUCCESS = 'Yes' WHERE MSISDN=${data.msisdn} AND DEVICE_TYPE='${data.deviceType}' ORDER BY RECORD_DATE DESC LIMIT 1;`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
