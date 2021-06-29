@@ -21,9 +21,9 @@ const logRequestMW = (req, res, next) => {
         }
         httpContext.set('requestObj',{msisdn,requestID,URL});         
 
-       logger.log({message:'Incoming Request Headers',level:'info',msisdn:msisdn,requestID:requestID,URL:originalUrl,headers:requestHeaders}); 
+       logger.log({message:'Incoming Request Headers',level:'info',showDetails:true,msisdn:msisdn,requestID:requestID,URL:originalUrl,headers:requestHeaders}); 
        if(req.body)    
-       logger.log({message:'Incoming Request Payload',level:'info',msisdn:msisdn,requestID:requestID,URL:originalUrl,payload:req.body});  
+       logger.log({message:'Incoming Request Payload',level:'info',showDetails:true,msisdn:msisdn,requestID:requestID,URL:originalUrl,payload:req.body});  
 
 
         next();
