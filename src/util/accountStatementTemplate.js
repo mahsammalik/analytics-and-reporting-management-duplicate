@@ -45,7 +45,7 @@ const accountStatementTemplate = accountData => {
 	</head><body>
 	<header>
 		<div class="headerLogo">
-			<img class="headerLogo-img" src="file://${dirName}/images/${accountData.payload.channel=="consumerApp"?"JazzCash_logo":"jazzcashbusinesslogo"}.png" />
+			<img class="headerLogo-img" src="file://${dirName}/images/${accountData.payload.channel === "consumerApp" ? "JazzCash_logo" : "jazzcashbusinesslogo"}.png" />
 		</div>`;
 	try {
 		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
