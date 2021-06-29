@@ -89,7 +89,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 			<tr>
 			  <td>		
 			  Regards,<br />
-			  JazzCash
+			  JazzCash Business
 			  </td>
 			</tr>
 			</tbody>
@@ -146,7 +146,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  width: 50%;
 		  color: #000000">
 		
-		  <p>Customer Helpline: <b>444</b> | UAN: <b>111-124-444</b></p>
+		  <p>Customer Helpline: <b>4444</b> | UAN: <b>111-124-4444</b></p>
 		  <b>https://www.jazzcash.com.pk/</b>
 		  </div>
 		  <div style="width: 50%;">
