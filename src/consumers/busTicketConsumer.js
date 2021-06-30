@@ -26,23 +26,37 @@ class Processor {
                 initTransData.bookingID = 0;
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.cnic = '';
-                initTransData.destination = '';
+                initTransData.destination = data?.CustomObject?.destinationCityName || '';
                 initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
                 initTransData.email = '';
                 initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Fee'; })?.Value || '0');
                 initTransData.gender = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.origin = '';
+                initTransData.origin = data?.CustomObject?.departureCityName || '';
                 initTransData.originPrice = 0;
                 initTransData.price = 0;
                 initTransData.promo = '';
-                initTransData.seats = '';
+                initTransData.seats = data?.CustomObject?.noOfSeats || '';
                 initTransData.seatNumber = '';
-                initTransData.service = '';
+                initTransData.service = data?.CustomObject?.serviceName || '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.failureReason = '';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.travelDate = null;
+                initTransData.depDate = data?.CustomObject?.departureDate || null;
+                if(initTransData.depDate != null)
+                {
+                	initTransData.depDate = moment(initTransData.depDate, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                }
+                initTransData.depTime = data?.CustomObject?.departureTime || null;
+                if(initTransData.depTime != null)
+                {
+                	initTransData.depTime = moment(initTransData.depTime, 'HH:mm A').format('HH:mm:ss');
+                }
+                if(initTransData.depDate != null && initTransData.depTime != null)
+                {
+                	initTransData.travelDate = initTransData.depDate+" "+initTransData.depTime;
+                }
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
