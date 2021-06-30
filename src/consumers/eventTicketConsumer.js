@@ -25,15 +25,28 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.city = '';
+                initTransData.city = data?.CustomObject?.venue || '';
                 initTransData.cnic = '';
                 initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
-                initTransData.email = '';
-                initTransData.event = '';
+                initTransData.email = data?.CustomObject?.customerEmail || '';
+                initTransData.event = data?.CustomObject?.eventTitle || '';
+                initTransData.eDate = data?.CustomObject?.date || null;
+                initTransData.eTime = data?.CustomObject?.eventTime || null;
+	            if(initTransData.eDate != null)
+                {
+                	initTransData.eDate = moment(initTransData.eDate, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                }
+                if(initTransData.eTime != null)
+                {
+                	initTransData.eTime = moment(initTransData.eTime, 'HH:mm A').format('HH:mm:ss');
+                }
                 initTransData.eventDate = null;
-                initTransData.failReason = '';
+                if(initTransData.eDate != null && initTransData.eTime != null)
+                {
+                	initTransData.eventDate = initTransData.eDate+" "+initTransData.eTime;
+                }                initTransData.failReason = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.numSeats = 0;
+                initTransData.numSeats = Number(data?.CustomObject?.qty || '0');
                 initTransData.partner = '';
                 initTransData.price = 0;
                 initTransData.promoAmount = 0;
