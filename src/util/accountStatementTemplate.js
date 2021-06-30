@@ -5,19 +5,7 @@ import logger from './logger';
 
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-const htmlHead = `<!DOCTYPE html>
-<head>
-	<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Title</title>
-		<link href="file://${dirName}/css/reset.css" rel="stylesheet">
-		<link href="file://${dirName}/css/style.css" rel="stylesheet">
-</head><body>
-<header>
-	<div class="headerLogo">
-		<img class="headerLogo-img" src="file://${dirName}/images/JazzCash_logo.png" />
-	</div>`;
+
 
 const htmlFoot = `<footer>
 <div class="disclaimer">
@@ -46,7 +34,19 @@ const htmlFoot = `<footer>
  * @param {*} accountData
  */
 const accountStatementTemplate = accountData => {
-
+	const htmlHead = `<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<title>Title</title>
+			<link href="file://${dirName}/css/reset.css" rel="stylesheet">
+			<link href="file://${dirName}/css/style.css" rel="stylesheet">
+	</head><body>
+	<header>
+		<div class="headerLogo">
+			<img class="headerLogo-img" src="file://${dirName}/images/${accountData.payload.channel === "consumerApp" ? "JazzCash_logo" : "jazzcashbusinesslogo"}.png" />
+		</div>`;
 	try {
 		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
 		let pageSize = 7;
