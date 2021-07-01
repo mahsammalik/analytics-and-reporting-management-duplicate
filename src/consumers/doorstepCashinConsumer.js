@@ -15,8 +15,7 @@ class Processor {
 
             initTransData.date = data?.tx_createdAt || null;
             if(initTransData.date != null) {
-                initTransData.date = initTransData.date.replace('T', ' ').replace('Z', '');
-                initTransData.date = initTransData.date.includes('.') ? initTransData.date.split('.')[0] : initTransData.date;
+                initTransData.date = moment(initTransData.date).format('YYYY-MM-DD HH:mm:ss');
             }
             initTransData.amount = Number(data?.amount || '0');
             initTransData.address = data?.address || '';

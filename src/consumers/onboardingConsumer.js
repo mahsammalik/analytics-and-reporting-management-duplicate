@@ -21,13 +21,11 @@ class Processor {
             initTransData.Activity_Time = (data.Activity_Time != null && data.Activity_Time != '') ? data.Activity_Time : '00:00:00';
             initTransData.Reward_posting_Date = (data.Reward_posting_Date != null && data.Reward_posting_Date != '') ? data.Reward_posting_Date : '0001-01-01';
             if(initTransData.Reward_posting_Date != null) {
-                initTransData.Reward_posting_Date = initTransData.Reward_posting_Date.replace('T', ' ').replace('Z', '');
-                initTransData.Reward_posting_Date = initTransData.Reward_posting_Date.includes('.') ? initTransData.Reward_posting_Date.split('.')[0] : initTransData.Reward_posting_Date;
+                initTransData.Reward_posting_Date = moment(initTransData.Reward_posting_Date).format('YYYY-MM-DD HH:mm:ss');
             }
             initTransData.Date_of_Sign_up = (data.Date_of_Sign_up != null && data.Date_of_Sign_up != '') ? data.Date_of_Sign_up : null;
             if(initTransData.Date_of_Sign_up != null) {
-                initTransData.Date_of_Sign_up = initTransData.Date_of_Sign_up.replace('T', ' ').replace('Z', '');
-                initTransData.Date_of_Sign_up = initTransData.Date_of_Sign_up.includes('.') ? initTransData.Date_of_Sign_up.split('.')[0] : initTransData.Date_of_Sign_up;
+                initTransData.Date_of_Sign_up = moment(initTransData.Date_of_Sign_up).format('YYYY-MM-DD HH:mm:ss');
             }
             initTransData.OS = data.OS;
             initTransData.Login_Merchant_ID = data.Login_Merchant_ID;

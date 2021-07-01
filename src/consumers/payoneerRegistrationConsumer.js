@@ -17,8 +17,7 @@ class Processor {
             initTransData.payUsername = data?.account_details?.contact?.email || '';
             initTransData.activityDate = data?.createdAt || null;
             if(initTransData.activityDate != null) {
-                initTransData.activityDate = initTransData.activityDate.replace('T', ' ').replace('Z', '');
-                initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
+                initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
             }
             initTransData.channel = data?.channel || 'consumerApp';
             initTransData.topic = data.topic;
