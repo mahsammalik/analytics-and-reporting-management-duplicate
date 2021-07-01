@@ -649,6 +649,24 @@ class DatabaseConn {
             }
         }
 
+        if (tableName === config.reportingDBTables.CARD_BLOCK) {
+            let conn = await open(cn);
+            try {
+                // let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} INSERT INTO COMMON.CARD_BLOCK ("ACTION", MSISDN, "DATE", CARD_NUM, CARD_TYPE, CARD_CAT, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
+                VALUES('${data.action}', ${data.msisdn}, '${data.transactionTime}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                //conn.close(function (err) { });
+                logger.info(`${schemaName}.${tableName}_insert done`);
+            } catch (err) {
+                logger.error('Error in CardBlock insertion')
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {

@@ -9,8 +9,8 @@ newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
 payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
-fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, wallerRequestProcessor} from '/consumers/'
-import walletRequestConsumer from '../consumers/walletRequestConsumer';
+fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
+blockCardProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
@@ -609,7 +609,14 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
-                        await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        if(payload?.Request?.Transaction?.CommandID == 'BlockCard' || payload?.Header?.UseCase == 'blockVisaCard')
+                        {
+                            await blockCardProcessor.processBlockCardConsumer(payload);
+                        }
+                        else if(payload?.Request?.Trnasaction?.CommandID == 'GenerateCardPIN' || payload?.Header?.UseCase == 'createVisaCardPin')
+                        {
+                            await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        }
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
@@ -969,7 +976,7 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug('Calling process walletRequset consumer with payload ' + JSON.stringify(payload));
-                        await walletRequestConsumer.processWalletRequestConsumer(payload);
+                        await walletRequestProcessor.processWalletRequestConsumer(payload);
                     } catch (error) {
                         logger.debug(error)
                     }
