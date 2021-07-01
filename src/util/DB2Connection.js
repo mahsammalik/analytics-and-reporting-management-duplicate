@@ -489,9 +489,10 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`select * from ${schemaName}.${tableName} where TRANS_ID = ?;`);
-                let result = stmt.executeSync([data.TID]);
+                const stmt = conn.prepareSync(`select * from ${schemaName}.${tableName} where TRANS_ID = ${data.TID};`);
+                let result = stmt.executeSync();
                 let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+                logger.info(`${schemaName}.${tableName}_selectQuery executed`);
                 // if record does't exist insert new record, otherwise update existing record
                 if (resultArray.length == 0) {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, PKR_AMOUNT, USD_AMOUNT, EXCHANGE_RATE, CURRENCY, DESCRIPTION, ACTIVITY_DATE, MONETA_STATUS, CHANNEL, TRANS_ID, TOP_NAME, MSG_OFFSET)
@@ -499,12 +500,14 @@ class DatabaseConn {
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insertQuery executed`);
                     logger.debug("insert done");
                 } else {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_updateQuery executed`);
                     logger.debug("Record updated");
                 }
 

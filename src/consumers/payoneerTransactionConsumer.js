@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
 
             initTransData.msisdn = Number(data?.msisdn || '0');
-            initTransData.payUsername = data?.account_details?.contact?.email || '';
+            initTransData.payUsername = data?.payoneerEmail || data?.account_details?.contact?.email || '';
             initTransData.pkrAmount = Number(data?.amountInPKR || '0');
             initTransData.usdAmount = Number(data?.transferAmount || '0');
             initTransData.exchangeRate = Number(data?.exchangeRate || '0');
@@ -31,6 +31,7 @@ class Processor {
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
+            logger.infor("printing payload in processPayoneerTransConsumer: " + JSON.stringify(initTransData));
             logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
