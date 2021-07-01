@@ -32,7 +32,7 @@ class DatabaseConn {
                 // stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
                 logger.error('Database connection error' + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
@@ -52,9 +52,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -69,9 +69,9 @@ class DatabaseConn {
                 stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset]);
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -86,9 +86,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -110,9 +110,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -133,9 +133,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -151,9 +151,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -169,9 +169,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -188,9 +188,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -206,9 +206,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -224,9 +224,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -242,9 +242,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -260,9 +260,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -278,9 +278,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -296,9 +296,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -314,9 +314,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -332,9 +332,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -350,9 +350,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -368,9 +368,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -386,9 +386,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -404,9 +404,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -422,9 +422,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -440,9 +440,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -458,9 +458,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -476,9 +476,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -501,18 +501,18 @@ class DatabaseConn {
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insertQuery executed`);
-                    logger.debug("insert done");
+                    logger.info(`${schemaName}.${tableName}_insert done`);
                 } else {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_updateQuery executed`);
-                    logger.debug("Record updated");
+                    logger.info(`${schemaName}.${tableName}_update done`);
                 }
 
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -528,9 +528,9 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -551,10 +551,10 @@ class DatabaseConn {
                 logger.debug('insert query executed')
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
                 logger.error('Error in onboarding insertion')
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -570,10 +570,10 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
                 logger.error('Error in fallback failure insertion')
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -589,10 +589,10 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
                 logger.error('Error in consumer onboarding insertion')
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -610,7 +610,7 @@ class DatabaseConn {
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
-                    logger.debug("insert done");
+                    logger.info(`${schemaName}.${tableName}_insert done`);
                 }
                 else
                 {
@@ -623,7 +623,7 @@ class DatabaseConn {
                 }
             } catch (err) {
                 logger.error('Error in device auth insertion')
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -639,10 +639,10 @@ class DatabaseConn {
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
-                logger.debug("insert done");
+                logger.info(`${schemaName}.${tableName}_insert done`);
             } catch (err) {
                 logger.error('Error in wallet request insertion')
-                logger.error('Database connection error' + err);
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
                 conn.close(function (err) { });
@@ -792,7 +792,7 @@ class DatabaseConn {
             // result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
-            logger.debug("insert done");
+            logger.info(`${schemaName}.${tableName}_insert done`);
             return;
 
         } catch (err) {
@@ -812,7 +812,7 @@ class DatabaseConn {
             // result.closeSync();
             stmt.closeSync();
             conn.close(function (err) { });
-            logger.debug("insert done");
+            logger.info(`${schemaName}.${tableName}_insert done`);
             return;
 
         } catch (err) {
