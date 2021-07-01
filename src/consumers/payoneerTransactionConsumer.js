@@ -31,7 +31,7 @@ class Processor {
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
-            logger.infor("printing payload in processPayoneerTransConsumer: " + JSON.stringify(initTransData));
+            logger.info("printing payload in processPayoneerTransConsumer: " + JSON.stringify(initTransData));
             logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {
