@@ -608,13 +608,15 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
-                        
+                        logger.info("updateTrans_cardManagement payload parsed : ", JSON.stringify(payload))
                         if(payload?.Request?.Transaction?.CommandID == 'BlockCard' || payload?.Header?.UseCase == 'blockVisaCard')
                         {
+                            logger.info("calling blockCardProcessor.processBlockCardConsumer")
                             await blockCardProcessor.processBlockCardConsumer(payload);
                         }
                         else if(payload?.Request?.Trnasaction?.CommandID == 'GenerateCardPIN' || payload?.Header?.UseCase == 'createVisaCardPin')
                         {
+                            logger.info('calling createCardPINProcessor.processCreateCardPINConsumer')
                             await createCardPINProcessor.processCreateCardPINConsumer(payload);
                         }
                         //logger.debug(response);
