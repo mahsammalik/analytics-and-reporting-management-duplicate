@@ -495,8 +495,8 @@ class DatabaseConn {
                 logger.info(`${schemaName}.${tableName}_selectQuery executed`);
                 // if record does't exist insert new record, otherwise update existing record
                 if (resultArray.length == 0) {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, PKR_AMOUNT, USD_AMOUNT, EXCHANGE_RATE, CURRENCY, DESCRIPTION, ACTIVITY_DATE, MONETA_STATUS, CHANNEL, TRANS_ID, TOP_NAME, MSG_OFFSET)
-                    VALUES(${data.msisdn}, '${data.payUsername}', ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.channel}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, RRN, PKR_AMOUNT, USD_AMOUNT, EXCHANGE_RATE, CURRENCY, DESCRIPTION, ACTIVITY_DATE, MONETA_STATUS, RECEIPT_STATUS, CHANNEL, TRANS_ID, TOP_NAME, MSG_OFFSET)
+                    VALUES(${data.msisdn}, '${data.payUsername}', ${data.TID}, ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.receiptStatus}', '${data.channel}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });

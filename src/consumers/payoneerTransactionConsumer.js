@@ -24,9 +24,10 @@ class Processor {
             if(initTransData.activityDate != null) {
                 initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
             }
-            initTransData.monetaStatus = data?.txMonetaExpressResponseDesc || '';
+            initTransData.monetaStatus = ((data.txMonetaStatusCode != undefined || data.txMonetaStatusCode != null ) ? data.txMonetaStatusCode + "|" : '') + data?.txMonetaExpressResponseDesc || '';
             initTransData.channel = data?.channel || 'consumerApp';
             initTransData.TID = Number(data?.txID || '0');
+            initTransData.receiptStatus = data?.txStatus || '';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
