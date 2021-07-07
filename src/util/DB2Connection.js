@@ -313,7 +313,7 @@ class DatabaseConn {
                 }
                 else if(data.transactionStatus == 'Completed')
                 {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET SET STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID});`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET SET STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TID=${data.TID});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
