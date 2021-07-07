@@ -302,12 +302,23 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRACK_DATE, "ACTION", MSISDN, CNIC, CARD_TYPE, CARD_CAT, ORDER_ID, ORDER_DATE, SUPL_CARD_NUMBER, SUPL_CARD_CNIC, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.trackDate}, '${data.action}', ${data.msisdn}, '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
+                if(data.transactionStatus == 'Pending')
+                {
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRACK_DATE, "ACTION", MSISDN, CNIC, CARD_TYPE, CARD_CAT, ORDER_ID, ORDER_DATE, SUPL_CARD_NUMBER, SUPL_CARD_CNIC, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
+                    VALUES(${data.trackDate}, '${data.action}', ${data.msisdn}, '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+                }
+                else if(data.transactionStatus == 'Completed')
+                {
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET SET STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_update done`);
+                }
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
