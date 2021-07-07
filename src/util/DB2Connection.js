@@ -145,17 +145,28 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', '${data.eventDate}', '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
-                if(data.eventDate == null)
+                if(data.status == 'Pending')
                 {
-                    stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
+                    VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', '${data.eventDate}', '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    if(data.eventDate == null)
+                    {
+                        stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
+                        VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    }
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
                 }
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
+                else if(data.status == 'Completed')
+                {
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET BOOKING_ID='${data.bookingID}', CITY='${data.city}', CNIC='${data.cnic}', PARTNER='${data.partner}', PRICE=${data.price}, PROMO_APPLIED='${data.promoApplied}', STATUS='${data.status}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`); 
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_update done`);
+                }
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
