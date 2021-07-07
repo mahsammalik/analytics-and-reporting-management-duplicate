@@ -503,7 +503,7 @@ class DatabaseConn {
                     logger.info(`${schemaName}.${tableName}_insertQuery executed`);
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 } else {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', RRN=${data.TID}, PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', RECEIPT_STATUS='${data.receiptStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
