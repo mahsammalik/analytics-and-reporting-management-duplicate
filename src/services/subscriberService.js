@@ -42,7 +42,7 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_eventTickets,
                 config.kafkaBroker.topics.queryTrans_creemVoucher,
                 config.kafkaBroker.topics.initTrans_Donation,
-                //config.kafkaBroker.topics.confirmTrans_Donation,
+                config.kafkaBroker.topics.confirmTrans_Donation,
                 config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
                 config.kafkaBroker.topics.confirm_deposit_DVDC,
                 config.kafkaBroker.topics.init_daraz_voucher,
