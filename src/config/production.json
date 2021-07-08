@@ -61,6 +61,16 @@
             "port": 60000,
             "protocol": "TCPIP"
         },
+        "DB2_HCA": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.212",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
         "IBMDB2_Test": {
             "username": "jcapprepdb",
             "password": "repdb@1234",
