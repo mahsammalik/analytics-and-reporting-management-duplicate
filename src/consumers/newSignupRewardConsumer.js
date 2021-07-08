@@ -15,7 +15,7 @@ class Processor {
 
             if (data.Result.ResultCode == 0) {
                 initTransData.postSignupBonus = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = Number(data?.CustomObject?.customerMSISDN || '0');
                 initTransData.amountPosted = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
