@@ -47,6 +47,7 @@ class Processor {
                 initTransData.serviceDescriptin = '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.tax_ship_disc_applied = '';
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
