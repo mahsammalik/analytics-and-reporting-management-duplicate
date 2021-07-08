@@ -39,6 +39,7 @@ class Processor {
                 initTransData.reqCategory = '';
                 initTransData.reqChannel = '';
                 initTransData.reqStatus = isConfirm ? 'Completed' : 'Pending';
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
