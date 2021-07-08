@@ -539,12 +539,23 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (BOOK_DATE, MOVIE_DATE, MSISDN, CNIC, EMAIL, TRANS_ID, CINEMA, SEAT_CLASS, CITY, SEATS, PRICE, REVENUE, TRANS_STATUS, AMOUNT, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(TIMESTAMP_FORMAT('${data.bookDate}','YYYY-MM-DD HH24:MI:SS'), TIMESTAMP_FORMAT('${data.movieDate}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.email}', ${data.TID}, '${data.cinema}', '${data.seatClass}', '${data.city}', ${data.seats}, ${data.price}, ${data.revenue}, '${data.transStatus}', ${data.amount}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
+                if(data.transStatus == 'Pending')
+                {
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (BOOK_DATE, MOVIE_DATE, MSISDN, CNIC, EMAIL, TRANS_ID, CINEMA, SEAT_CLASS, CITY, SEATS, PRICE, REVENUE, TRANS_STATUS, AMOUNT, CHANNEL, TOP_NAME, MSG_OFFSET)
+                    VALUES(TIMESTAMP_FORMAT('${data.bookDate}','YYYY-MM-DD HH24:MI:SS'), TIMESTAMP_FORMAT('${data.movieDate}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.email}', ${data.TID}, '${data.cinema}', '${data.seatClass}', '${data.city}', ${data.seats}, ${data.price}, ${data.revenue}, '${data.transStatus}', ${data.amount}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+                }
+                else if(data.transStatus == 'Completed')
+                {
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_update done`);                    
+                }
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
