@@ -117,7 +117,7 @@ class accountStatementController {
             }),
             fileName: `Account Statement`
         });
-        console.log(pdfFile, "pdfFile")
+     //   console.log(pdfFile, "pdfFile")
         
         // return res.status(200).send({success:true, 'pdf': Buffer.from(pdfFile, 'base64').toString('base64')})
         return res.status(200).send({success:true})

@@ -10,7 +10,7 @@ import { logger } from '/util/';
 
 const msisdnParserMW = (keys) => {
     try {
-        logger.info({ event: 'Entered function', functionName: 'msisdnParserMW', arguments: keys });
+        logger.debug({ event: 'Entered function', functionName: 'msisdnParserMW', arguments: keys });
         return (req, res, next) => {
             const headerMSISDN = 'X-MSISDN'.toLowerCase();
             if (req.headers && req.headers.hasOwnProperty(headerMSISDN)) {
@@ -25,12 +25,12 @@ const msisdnParserMW = (keys) => {
             if (!req.headers[headerMSISDN] || !req.body || !req.query) {
                 throw new Error('Invalid MSISDN in request');
             }
-            logger.info({ event: 'Exited function', functionName: 'msisdnParserMW' });
+            logger.debug({ event: 'Exited function', functionName: 'msisdnParserMW' });
             next();
         };
     } catch (error) {
         logger.error({ event: 'Error thrown', functionName: 'msisdnParserMW', error, request: req, keys: keys, method: req.method });
-        logger.info({ event: 'Exited function', functionName: 'msisdnParser' });
+        logger.debug({ event: 'Exited function', functionName: 'msisdnParser' });
         throw new Error(error);
     }
 

@@ -7,7 +7,7 @@ const CONSUMER_GROUP_ID = process.env.CONSUMER_GROUP_ID || config.kafkaBroker.co
 class Broker {
     constructor(topicsArray) {
 
-        logger.info({ event: 'Event Stream constructor called', functionName: 'constructor in Broker', features: Kafka.features, brokers, topicsArray });
+        logger.debug({ event: 'Event Stream constructor called', functionName: 'constructor in Broker', features: Kafka.features, brokers, topicsArray });
 
         this.producer = this._ConnectProducer();
         this.consumer = this._ConnectConsumer(topicsArray);
@@ -15,7 +15,7 @@ class Broker {
 
 
     _ConnectProducer() {
-        logger.info({ event: '_connectProducer called' });
+        logger.debug({ event: '_connectProducer called' });
         const brokerConfig = {...config.kafkaBroker.producerConfig };
 
         brokerConfig.dr_msg_cb = true; // Enable delivery reports with message payload
@@ -35,7 +35,7 @@ class Broker {
 
         // wait for the ready event before producing
         producer.on('ready', function(arg) {
-            logger.info({ event: 'producer ready' + arg });
+            logger.debug({ event: 'producer ready' + arg });
         });
 
         // log delivery reports
@@ -44,7 +44,7 @@ class Broker {
                 logger.error({ event: 'Delivery failed: %j' + err });
                 // consider retrying
             } else {
-                logger.info({ event: 'Delivery success: %j' + dr });
+                logger.debug({ event: 'Delivery success: %j' + dr });
             }
         });
 
@@ -93,7 +93,7 @@ class Broker {
             var numMessages = config.kafkaBroker.numMessages;
 
             consumer.on('ready', function(arg) {
-                logger.info({ event: `consumer ready`, arg });
+                logger.debug({ event: `consumer ready`, arg });
 
                 consumer.subscribe(topicsArray);
                 // start consuming messages
@@ -109,7 +109,7 @@ class Broker {
 		
 			  // committing offsets every numMessages
 			  if (counter % numMessages === 0) {
-				logger.info('calling commit');
+				logger.debug('calling commit');
 				consumer.commit(m);
 			  }
 		
@@ -122,9 +122,9 @@ class Broker {
 			  if (m.key) m.key = m.key.toString();
 		
 			  // Output the actual message contents
-			  logger.info('data received value');
-			  logger.info(' value is ' + m.value);
-			  logger.info(' Printing topic Name' + m.topic);
+			  logger.debug('data received value');
+			  logger.debug(' value is ' + m.value);
+			  logger.debug(' Printing topic Name' + m.topic);
 		
 			});*/
 
@@ -165,7 +165,7 @@ class Broker {
 
     produceMessage(msg, topicName) {
 
-        logger.info({ event: " About to produce message", function: "produceMessage in Broker" });
+        logger.debug({ event: " About to produce message", function: "produceMessage in Broker" });
         // if partition is set to -1, librdkafka will use the default partitioner
         const partition = -1;
         const value = Buffer.from(JSON.stringify(msg));
@@ -174,7 +174,7 @@ class Broker {
         try {
             this.producer.on('ready', (arg) => {
                 this.producer.produce(topicName, partition, value);
-                logger.info({ event: `producer ready ${arg}` });
+                logger.debug({ event: `producer ready ${arg}` });
             });
 
 
