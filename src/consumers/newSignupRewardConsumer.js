@@ -27,6 +27,7 @@ class Processor {
                 }
                 initTransData.postingStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
