@@ -69,6 +69,7 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
                 config.kafkaBroker.topics.initTrans_cnicPayment,
                 config.kafkaBroker.topics.confirmTrans_cnicPayment,
+                config.kafkaBroker.topics.confirmTrans_scheduledTrans,
                 config.kafkaBroker.topics.accountUpgrade_success,
                 config.kafkaBroker.topics.accountUpgrade_nadraFailure,
                 config.kafkaBroker.topics.accountUpgrade_cpsFailure,
@@ -705,7 +706,8 @@ class Subscriber {
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B ||
                     msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C ||
-                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment){
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment ||
+                    msg.topic == config.kafkaBroker.topics.confirmTrans_scheduledTrans){
                     logger.debug('*********** Confirm Trans Scheduled Transactions *****************');
                     try {
 
