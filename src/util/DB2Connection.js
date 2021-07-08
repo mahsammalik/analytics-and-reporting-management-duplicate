@@ -66,11 +66,22 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset]);
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
+                if(data.transactionStatus == 'Pending')
+                {
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+                    stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+                }
+                else if(data.transactionStatus == 'Completed')
+                {
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_update done`);
+                }
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
