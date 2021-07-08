@@ -698,7 +698,15 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
-                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        if(payload?.CustomObject?.isScheduled == true)
+                        {
+                            logger.info('Calling scheduledTransactionsProcessor.processScheduledTransactionsConsumer')
+                            await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        }
+                        else
+                        {
+                            logger.info('Its not a scheduled transaction, payload: '+ JSON.stringify(data));
+                        }
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
