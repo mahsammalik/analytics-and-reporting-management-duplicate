@@ -819,7 +819,7 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} INSERT INTO COMMON.CARD_BLOCK ("ACTION", MSISDN, "DATE", CARD_NUM, CARD_TYPE, CARD_CAT, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("ACTION", MSISDN, "DATE", CARD_NUM, CARD_TYPE, CARD_CAT, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
                 VALUES('${data.action}', ${data.msisdn}, '${data.transactionTime}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
