@@ -6,7 +6,7 @@ import MsisdnTransformer from '../util/msisdnTransformer';
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
-const connectionhca= config.DB2_HCA.connectionString
+//const connectionhca= config.DB2_HCA.connectionString
 //const schema = config.IBMDB2_Dev.schema; // temp comments: Mudassir not using this at all, need to confirm with Ebad if he is using this and if not remove this variable altogether
 
 class DatabaseConn {
@@ -947,7 +947,7 @@ class DatabaseConn {
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
             logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
-            const conn = await open(connectionhca)
+            const conn = await open(cn)
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;`);
             const result = stmt.executeSync();
