@@ -79,7 +79,7 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 if(data.transactionStatus == 'Pending')
                 {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
                     stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -87,7 +87,7 @@ class DatabaseConn {
                 }
                 else if(data.transactionStatus == 'Completed')
                 {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
