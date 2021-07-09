@@ -496,7 +496,7 @@ class DatabaseConn {
                 }
                 else if(data.reqStatus == 'Completed')
                 {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} REQ_STATUS='${data.reqStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET REQ_STATUS='${data.reqStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
