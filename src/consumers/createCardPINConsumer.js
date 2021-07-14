@@ -45,7 +45,7 @@ class Processor {
                     await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CREATE_CARD_PIN, initTransData);
                 }
                 else {
-                    await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.CREATE_CARD_PIN, initTransData);
+                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.CREATE_CARD_PIN, initTransData);
                 }
             }
         } catch (error) {
