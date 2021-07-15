@@ -35,7 +35,7 @@ const axiosInterceptor = () => {
       }, error => {
         const requestObj = httpContext.get('requestObj') || null;
         if (requestObj) {
-          logger.log({message:"Third Party Response ",level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:error.response?.config?.url,axiosResponseData:error.response?.data});
+          logger.log({message:"Third Party Response ",level:'info',showDetails:true,msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:error.response?.config?.url,axiosResponseData:error.response?.data});
         }
         // handle the response error
         return Promise.reject(error);

@@ -31,6 +31,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

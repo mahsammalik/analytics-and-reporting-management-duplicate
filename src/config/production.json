@@ -61,6 +61,16 @@
             "port": 60000,
             "protocol": "TCPIP"
         },
+        "DB2_HCA": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.212",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
         "IBMDB2_Test": {
             "username": "jcapprepdb",
             "password": "repdb@1234",
@@ -171,7 +181,7 @@
                 "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
 
                 "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
-                "confirmTrans_eVouchers": "ESB_Mobile_eVouchers_Confirm_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_VoucherPayment_Confirm_Passed",
 
                 "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
                 "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
@@ -215,6 +225,7 @@
                 "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
                 "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
                 "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+                "confirmTrans_scheduledTrans": "ESB_Mobile_Payment_Confirm_Passed",
 
                 "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
                 "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",

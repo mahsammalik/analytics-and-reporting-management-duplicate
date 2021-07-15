@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
 
             initTransData.msisdn = Number(data?.msisdn || '0');
-            initTransData.payUsername = data?.account_details?.contact?.email || '';
+            initTransData.payUsername = data?.payoneerEmail || data?.account_details?.contact?.email || '';
             initTransData.pkrAmount = Number(data?.amountInPKR || '0');
             initTransData.usdAmount = Number(data?.transferAmount || '0');
             initTransData.exchangeRate = Number(data?.exchangeRate || '0');
@@ -22,15 +22,16 @@ class Processor {
             initTransData.description = data?.txMonetaStatusDesc || '';
             initTransData.activityDate = data?.updatedAt || null;
             if(initTransData.activityDate != null) {
-                initTransData.activityDate = initTransData.activityDate.replace('T', ' ').replace('Z', '');
-                initTransData.activityDate = initTransData.activityDate.includes('.') ? initTransData.activityDate.split('.')[0] : initTransData.activityDate;
+                initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
             }
-            initTransData.monetaStatus = data?.txMonetaExpressResponseDesc || '';
+            initTransData.monetaStatus = ((data.txMonetaStatusCode != undefined || data.txMonetaStatusCode != null ) ? data.txMonetaStatusCode + "|" : '') + data?.txMonetaExpressResponseDesc || '';
             initTransData.channel = data?.channel || 'consumerApp';
             initTransData.TID = Number(data?.txID || '0');
+            initTransData.receiptStatus = data?.txStatus || '';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
+            logger.info("printing payload in processPayoneerTransConsumer: " + JSON.stringify(initTransData));
             logger.debug(JSON.stringify(initTransData));
 
             if (JSON.stringify(initTransData) !== '{}') {

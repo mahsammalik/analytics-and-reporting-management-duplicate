@@ -23,21 +23,21 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.bookingID = 0;
+                initTransData.bookingID = Number(data?.CustomObject?.bookingId || '0');
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.cnic = '';
+                initTransData.cnic = data?.CustomObject?.cnic || '';
                 initTransData.destination = data?.CustomObject?.destinationCityName || '';
                 initTransData.discount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Discount'; })?.Value || '0');
-                initTransData.email = '';
-                initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Fee'; })?.Value || '0');
+                initTransData.email = data?.CustomObject?.email || '';
+                initTransData.fee = Number(data?.CustomObject?.fee || '0');
                 initTransData.gender = '';
                 initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
                 initTransData.origin = data?.CustomObject?.departureCityName || '';
-                initTransData.originPrice = 0;
-                initTransData.price = 0;
+                initTransData.price = Number(data?.CustomObject?.ticketPrice || '0');
+                initTransData.originPrice = initTransData.price;
                 initTransData.promo = '';
                 initTransData.seats = data?.CustomObject?.noOfSeats || '';
-                initTransData.seatNumber = '';
+                initTransData.seatNumber = (data?.CustomObject?.seatNumbersMale || '') + "  " + (data?.CustomObject?.seatNumbersFemale || '');
                 initTransData.service = data?.CustomObject?.serviceName || '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.failureReason = '';

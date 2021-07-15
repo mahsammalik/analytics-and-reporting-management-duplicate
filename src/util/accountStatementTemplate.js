@@ -107,7 +107,7 @@ const accountStatementTemplate = accountData => {
 				<div>Total Credit Transactions: <b>${creditTransactions ? creditTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>&nbsp;</div>
-				<div>Total Debit Amount: <b>Rs. ${totalDebit ? "-"+totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+				<div>Total Debit Amount: <b>Rs. ${totalDebit ? "-" + totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 			</div >
@@ -150,12 +150,13 @@ const accountStatementTemplate = accountData => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${(parseFloat(+col / 100).toFixed(2)).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</td></div>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col}</div></td>`;
+							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col/ 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
 						});
-						column = column.join().replace(/,/g, '');
+						column = column.join();
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
 					});
-					page = page.join().replace(/,/g, '');
+					page = page.join().replace(/td>,<td/g, 'td><td');
+					page = page.replace(/tr>,<tr/g, 'tr><tr');
 					htmlString += `<tbody>${page}</tbody></table><div class="main-section">`;
 				}
 

@@ -9,8 +9,8 @@ newSignupRewardProcessor, foodOrderingProcessor, createCardPINProcessor,
 cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor,
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
 payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
-fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, wallerRequestProcessor} from '/consumers/'
-import walletRequestConsumer from '../consumers/walletRequestConsumer';
+fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
+blockCardProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
@@ -42,7 +42,7 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_eventTickets,
                 config.kafkaBroker.topics.queryTrans_creemVoucher,
                 config.kafkaBroker.topics.initTrans_Donation,
-                //config.kafkaBroker.topics.confirmTrans_Donation,
+                config.kafkaBroker.topics.confirmTrans_Donation,
                 config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
                 config.kafkaBroker.topics.confirm_deposit_DVDC,
                 config.kafkaBroker.topics.init_daraz_voucher,
@@ -69,6 +69,7 @@ class Subscriber {
                 config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
                 config.kafkaBroker.topics.initTrans_cnicPayment,
                 config.kafkaBroker.topics.confirmTrans_cnicPayment,
+                config.kafkaBroker.topics.confirmTrans_scheduledTrans,
                 config.kafkaBroker.topics.accountUpgrade_success,
                 config.kafkaBroker.topics.accountUpgrade_nadraFailure,
                 config.kafkaBroker.topics.accountUpgrade_cpsFailure,
@@ -608,8 +609,17 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
-                        
-                        await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        logger.info("updateTrans_cardManagement payload parsed : ", JSON.stringify(payload))
+                        if(payload?.Request?.Transaction?.CommandID == 'BlockCard' || payload?.Header?.UseCase == 'blockVisaCard')
+                        {
+                            logger.info("calling blockCardProcessor.processBlockCardConsumer")
+                            await blockCardProcessor.processBlockCardConsumer(payload);
+                        }
+                        else if(payload?.Request?.Trnasaction?.CommandID == 'GenerateCardPIN' || payload?.Header?.UseCase == 'createVisaCardPin')
+                        {
+                            logger.info('calling createCardPINProcessor.processCreateCardPINConsumer')
+                            await createCardPINProcessor.processCreateCardPINConsumer(payload);
+                        }
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
@@ -688,7 +698,15 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
                         
-                        await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        if(payload?.CustomObject?.isScheduled == true)
+                        {
+                            logger.info('Calling scheduledTransactionsProcessor.processScheduledTransactionsConsumer')
+                            await scheduledTransactionsProcessor.processScheduledTransactionsConsumer(payload);
+                        }
+                        else
+                        {
+                            logger.info('Its not a scheduled transaction, payload: '+ JSON.stringify(data));
+                        }
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
@@ -696,7 +714,8 @@ class Subscriber {
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B ||
                     msg.topic === config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C ||
-                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment){
+                    msg.topic === config.kafkaBroker.topics.confirmTrans_cnicPayment ||
+                    msg.topic == config.kafkaBroker.topics.confirmTrans_scheduledTrans){
                     logger.debug('*********** Confirm Trans Scheduled Transactions *****************');
                     try {
 
@@ -969,7 +988,7 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug('Calling process walletRequset consumer with payload ' + JSON.stringify(payload));
-                        await walletRequestConsumer.processWalletRequestConsumer(payload);
+                        await walletRequestProcessor.processWalletRequestConsumer(payload);
                     } catch (error) {
                         logger.debug(error)
                     }
