@@ -14,8 +14,14 @@ class Processor {
             let initTransData = {};
 
             initTransData.msisdn = Number(data?.msisdn || '0');
-            initTransData.payUsername = data?.account_details?.contact?.email || '';
-            initTransData.activityDate = data?.createdAt || null;
+            initTransData.payUsername = (data?.account_details?.contact?.first_name || '') + " " + (data?.account_details?.contact?.last_name || '');
+            initTransData.email = data?.account_details?.contact?.email || '';
+            initTransData.country = data?.account_details?.address?.country || '';
+            initTransData.city = data?.account_details?.address?.city || '';
+            initTransData.zip_code = data?.account_details?.address?.zip_code || '';
+            initTransData.address = (data?.account_details?.address?.address_line_1 || '') + " " + (data?.account_details?.address?.address_line_2 || '');
+            initTransData.status_text = data?.is_active == true ? "ACTIVE" : "IN-ACTIVE";
+              initTransData.activityDate = data?.createdAt || null;
             if(initTransData.activityDate != null) {
                 initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
             }

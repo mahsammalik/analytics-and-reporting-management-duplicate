@@ -637,8 +637,8 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, ACTIVITY_DATE, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(${data.msisdn}, '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PAYON_USERNAME, ACTIVITY_DATE, CHANNEL, TOP_NAME, MSG_OFFSET, EMAIL, COUNTRY, CITY, ZIPCODE, ADDRESS, STATUS_TEXT)
+                VALUES(${data.msisdn}, '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.email}', '${data.country}', '${data.city}', '${data.zip_code}', '${data.address}', '${data.status_text}');`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
