@@ -142,7 +142,7 @@ const accountStatementTemplate = accountData => {
 		<h1 style="margin-right: -55pt;">
 			Statement of Account
 		</h1>
-		<i style="margin: 0 3pt;">${index + 1} of ${slicedArray.length}</i> <b>Page </b>
+		<i style="margin: 0 3pt;font-style: italic;">${index + 1} of ${slicedArray.length}</i> <b style="font-style: italic;">Page </b>
 	</div>
 				</div>`;
 				htmlString += `${htmlHead} ${accountDetails} ${pagination}<div class="main-section">`;
