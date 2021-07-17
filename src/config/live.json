@@ -35,9 +35,9 @@
             "username": "jcappdb",
             "password": "abcd@123",
             "address": "",
-            "connectionString": "DATABASE=jazzcash;HOSTNAME=10.50.20.160;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
             "schema": "COMMON",
-            "hostName": "10.50.20.160",
+            "hostName": "10.50.20.212",
             "port": 60000,
             "protocol": "TCPIP"
         },
