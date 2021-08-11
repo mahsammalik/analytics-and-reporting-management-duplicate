@@ -23,7 +23,7 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.cardNum = 0;
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';

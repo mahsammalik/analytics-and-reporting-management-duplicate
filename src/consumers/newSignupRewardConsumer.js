@@ -16,11 +16,11 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.postSignupBonus = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0';
                 // get msisdn from Request object (if avaialable)
-                initTransData.msisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'CustomerMSISDN'; })?.Value || '0');
+                initTransData.msisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'CustomerMSISDN'; })?.Value || '0';
                 // if msisdn not found in Request object then get it from CustomObject
-                if(initTransData.msisdn === 0)
+                if(initTransData.msisdn === '0')
                 {
-                    initTransData.msisdn = Number(data?.CustomObject?.customerMSISDN || '0');
+                    initTransData.msisdn = data?.CustomObject?.customerMSISDN || '0';
                 }
                 initTransData.amountPosted = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''

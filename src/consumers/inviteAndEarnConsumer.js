@@ -29,7 +29,7 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.inviteDate = null;
                 initTransData.inviteTime = null;
-                initTransData.inviterMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'CustomerMSISDN'; })?.Value || '0');
+                initTransData.inviterMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'CustomerMSISDN'; })?.Value || '0';
                 initTransData.inviterName = '';
                 initTransData.message = '';
                 initTransData.module = '';

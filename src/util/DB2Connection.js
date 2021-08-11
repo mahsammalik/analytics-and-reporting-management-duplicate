@@ -48,7 +48,7 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 if(data.transactionStatus == 'Pending')
                 {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS, TOP_NAME, MSG_OFFSET) VALUES('${data.channel}', '${data.merchantName}', ${data.reverseTID}, '${data.reviews}', ${data.thirdPartTID}, ${data.TID}, ${data.tilPayment}, ${data.tipAmount}, ${data.consumerBalance}, ${data.custMsisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.fee}, ${data.merchAccount}, ${data.merchBalance}, '${data.merchantBank}',
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS, TOP_NAME, MSG_OFFSET) VALUES('${data.channel}', '${data.merchantName}', ${data.reverseTID}, '${data.reviews}', ${data.thirdPartTID}, ${data.TID}, ${data.tilPayment}, ${data.tipAmount}, ${data.consumerBalance}, '${data.custMsisdn}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.fee}, ${data.merchAccount}, ${data.merchBalance}, '${data.merchantBank}',
                     '${data.merchCategoryCode}','${data.merchCategoryType}', ${data.merchID}, 
                     '${data.paidVia}', '${data.qrCode}', '${data.qrType}', '${data.rating}', ${data.transAmount},
                     '${data.transactionStatus}', '${data.topic}', ${data.msg_offset});`);
@@ -107,7 +107,7 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 if(data.transactionStatus == 'Pending')
                 {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', ${data.msisdn}, '${data.organization}', '${data.transactionStatus}',${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', '${data.msisdn}', '${data.organization}', '${data.transactionStatus}',${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -136,12 +136,12 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_DATE, BOOKING_ID, CHANNEL, CNIC, DESTINATION, DISCOUNT, EMAIL, FEE, GENDER, MSISDN, ORIGIN, ORIG_PRICE, PRICE, PROMO, SEATS, SEAT_NUMBER, SERVICE, STATUS, FAILURE_REASON, TRANS_ID, TRAVEL_DATE, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.bookingID}, '${data.channel}', '${data.cnic}', '${data.destination}', '${data.discount}', '${data.email}', ${data.fee}, '${data.gender}', ${data.msisdn}, '${data.origin}', ${data.originPrice}, ${data.price}, '${data.promo}', '${data.seats}', '${data.seatNumber}', '${data.service}', '${data.transactionStatus}', '${data.failureReason}', ${data.TID}, '${data.travelDate}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.bookingID}, '${data.channel}', '${data.cnic}', '${data.destination}', '${data.discount}', '${data.email}', ${data.fee}, '${data.gender}', '${data.msisdn}', '${data.origin}', ${data.originPrice}, ${data.price}, '${data.promo}', '${data.seats}', '${data.seatNumber}', '${data.service}', '${data.transactionStatus}', '${data.failureReason}', ${data.TID}, '${data.travelDate}', '${data.topic}', ${data.msg_offset});`);
                     if(data.travelDate == null)
                     {
                         logger.debug("data.travelDate is null");
                         stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_DATE, BOOKING_ID, CHANNEL, CNIC, DESTINATION, DISCOUNT, EMAIL, FEE, GENDER, MSISDN, ORIGIN, ORIG_PRICE, PRICE, PROMO, SEATS, SEAT_NUMBER, SERVICE, STATUS, FAILURE_REASON, TRANS_ID, TRAVEL_DATE, TOP_NAME, MSG_OFFSET) 
-                        VALUES(${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.bookingID}, '${data.channel}', '${data.cnic}', '${data.destination}', '${data.discount}', '${data.email}', ${data.fee}, '${data.gender}', ${data.msisdn}, '${data.origin}', ${data.originPrice}, ${data.price}, '${data.promo}', '${data.seats}', '${data.seatNumber}', '${data.service}', '${data.transactionStatus}', '${data.failureReason}', ${data.TID}, ${data.travelDate}, '${data.topic}', ${data.msg_offset});`);    
+                        VALUES(${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.bookingID}, '${data.channel}', '${data.cnic}', '${data.destination}', '${data.discount}', '${data.email}', ${data.fee}, '${data.gender}', '${data.msisdn}', '${data.origin}', ${data.originPrice}, ${data.price}, '${data.promo}', '${data.seats}', '${data.seatNumber}', '${data.service}', '${data.transactionStatus}', '${data.failureReason}', ${data.TID}, ${data.travelDate}, '${data.topic}', ${data.msg_offset});`);    
                     }
                     stmt.executeSync();
                     stmt.closeSync();
@@ -171,11 +171,11 @@ class DatabaseConn {
                 if(data.status == 'Pending')
                 {
                     let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', '${data.eventDate}', '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', '${data.eventDate}', '${data.failReason}', '${data.msisdn}', ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     if(data.eventDate == null)
                     {
                         stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
-                        VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', ${data.msisdn}, ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                        VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', ${data.eventDate}, '${data.failReason}', '${data.msisdn}', ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     }
                     stmt.executeSync();
                     stmt.closeSync();
@@ -205,7 +205,7 @@ class DatabaseConn {
                 if(data.status == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", TRANS_ID, DARAZ_WALLET_NUM, DARAZ_WALLET_OWNER, DARAZ_WALLET_EMAIL, BALANCE_BEFORE_TRANS, PROMO_CODE, PROMO_CODE_AMOUNT, ACTUAL_AMOUNT, STATUS, FAILURE_REASON, MSISDN, USER_EMAIL, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, ${data.walletNumber}, '${data.walletOwner}', '${data.walletEmail}', ${data.balanceBefore}, '${data.promoCode}', ${data.promoCodeAmount}, ${data.actualAmount}, '${data.status}', '${data.failureReason}', ${data.msisdn}, '${data.userEmail}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, ${data.walletNumber}, '${data.walletOwner}', '${data.walletEmail}', ${data.balanceBefore}, '${data.promoCode}', ${data.promoCodeAmount}, ${data.actualAmount}, '${data.status}', '${data.failureReason}', '${data.msisdn}', '${data.userEmail}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -234,7 +234,7 @@ class DatabaseConn {
                 if(data.status == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRANS_DATE, TRANS_ID, COMPANY, AMOUNT_DOLLAR, PROMO_CODE, PROMO_AMOUNT, ACTUAL_AMOUNT, STATUS, FAIL_REASON, MSISDN, EMAIL, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, '${data.company}', ${data.amountDollar}, '${data.promoCode}', ${data.promoAmount}, ${data.actualAmount}, '${data.status}', '${data.failReason}', ${data.msisdn}, '${data.email}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.TID}, '${data.company}', ${data.amountDollar}, '${data.promoCode}', ${data.promoAmount}, ${data.actualAmount}, '${data.status}', '${data.failReason}', '${data.msisdn}', '${data.email}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -264,7 +264,7 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, CARD_NUM, CARD_TRANS_ID, TRANS_AMOUNT, TRANS_DATE, TRANS_STATUS, RETRIEVAL_REFERENCE, CASHIN_TRANSID, CASHIN_TRANSTATUS, CASHIN_AMOUNT, CASHIN_TRANSTIME, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.msisdn}, ${data.cardNum}, ${data.TID}, ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.retrivalRef}, ${data.cashInTransID}, '${data.cashInTransStatus}', ${data.amount}, ${data.cashInTransTime}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES('${data.msisdn}', ${data.cardNum}, ${data.TID}, ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.retrivalRef}, ${data.cashInTransID}, '${data.cashInTransStatus}', ${data.amount}, ${data.cashInTransTime}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -291,7 +291,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PIN_CHANGE_DATE, PIN_CHANGE_STATUS, IMEI, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -309,7 +309,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PIN_RESET_DATE, PIN_RESET_STATUS, IMEI, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', ${data.imei}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -329,7 +329,7 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (REQUEST_DATE, CHANNEL, BUSINESS_NAME, BUSINESS_LINK, NAME, EMAIL, JAZZCASH_ACC, BUSINESS_LOGO, REQ_MEDIUM, REQ_TYPE, REQ_ITEMS, TAX_SHIP_DISC_APPLIED, REQ_ID, AMOUNT, SERVICE_DESC, PAYMENT_DUE_DATE, DOC_ATTACH, STATUS, REMINDERS_SENT, PAYER_NAME, MOBILE_NUMBER, EMAIL_ID, EXTENSION_REQUESTED, PAYMENT_CHANNEL, EXISTING_ACCT, PAYMENT_DATE, TOP_NAME, MSG_OFFSET, TRANS_ID) 
-                    VALUES(${data.reqDate}, '${data.channel}', '${data.businessName}', '${data.businessLink}', '${data.name}', '${data.email}', ${data.jazzcashAcc}, ${data.businessLogo}, '${data.reqMedium}', '${data.reqType}', '${data.reqItems}', '${data.tax_ship_disc_applied}', ${data.reqID}, ${data.amount}, '${data.serviceDescriptin}', ${data.paymentDueDate}, '${data.docAttached}', '${data.transactionStatus}', ${data.remindersSent}, '${data.payerName}', ${data.mobileNumber}, '${data.emailID}', ${data.extensionRequested}, '${data.paymentChannel}', '${data.existingAcc}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.topic}', ${data.msg_offset},'${data.TID}');`);
+                    VALUES(${data.reqDate}, '${data.channel}', '${data.businessName}', '${data.businessLink}', '${data.name}', '${data.email}', '${data.jazzcashAcc}', ${data.businessLogo}, '${data.reqMedium}', '${data.reqType}', '${data.reqItems}', '${data.tax_ship_disc_applied}', ${data.reqID}, ${data.amount}, '${data.serviceDescriptin}', ${data.paymentDueDate}, '${data.docAttached}', '${data.transactionStatus}', ${data.remindersSent}, '${data.payerName}', '${data.mobileNumber}', '${data.emailID}', ${data.extensionRequested}, '${data.paymentChannel}', '${data.existingAcc}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.topic}', ${data.msg_offset},'${data.TID}');`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -358,7 +358,7 @@ class DatabaseConn {
                 if(data.postingStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (POST_SIGNUP_BONUS, MSISDN, AMOUNT_POSTED, "DATE", "TIME", POSTING_STATUS, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID) 
-                    VALUES('${data.postSignupBonus}', ${data.msisdn}, ${data.amountPosted}, '${data.transactionDate}', '${data.transactionTime}', '${data.postingStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
+                    VALUES('${data.postSignupBonus}', '${data.msisdn}', ${data.amountPosted}, '${data.transactionDate}', '${data.transactionTime}', '${data.postingStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -405,7 +405,7 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRACK_DATE, "ACTION", MSISDN, CNIC, CARD_TYPE, CARD_CAT, ORDER_ID, ORDER_DATE, SUPL_CARD_NUMBER, SUPL_CARD_CNIC, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.trackDate}, '${data.action}', ${data.msisdn}, '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(${data.trackDate}, '${data.action}', '${data.msisdn}', '${data.cnic}', '${data.cardType}', '${data.cardCategory}', ${data.orderID}, '${data.transactionTime}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -432,7 +432,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("ACTION", CUST_MSISDN, CUST_CNIC, "DATE", PIN_CREATED_BEFORE, CARD_NUM, CARD_TYPE, CARD_CATEGORY, SUPL_CARD_NUM, SUPL_CARD_CNIC, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES('${data.action}', ${data.msisdn}, '${data.cnic}', '${data.transactionTime}', '${data.pinCreated}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.action}', '${data.msisdn}', '${data.cnic}', '${data.transactionTime}', '${data.pinCreated}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.suplCardNum}, '${data.suplCardCnic}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -450,7 +450,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, DELINK_STATUS, RETRIEVE_REF, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', ${data.retrieveRef}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', ${data.retrieveRef}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -468,7 +468,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(${data.msisdn}, TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -488,7 +488,7 @@ class DatabaseConn {
                 if(data.reqStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (INVITER_MSISDN, INVITER_NAME, RECEIVER_NUM, RECEIVER_NAME, REQ_CATEGORY, ACCOUNT_STATUS, REQ_STATUS, ACCEPT_DATE, ACCEPT_TIME, MODULE, REQ_CHANNEL, REGISTR_CHANNEL, AMOUNT_POSTED, AMOUNTPOSTING_DATE, AMOUNTPOSTING_TIME, MESSAGE, INVITE_DATE, INVITE_TIME, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID)
-                    VALUES(${data.inviterMsisdn}, '${data.inviterName}', ${data.receiverMsisdn}, '${data.receiverName}', '${data.reqCategory}', '${data.accountStatus}', '${data.reqStatus}', ${data.acceptDate}, ${data.acceptTime}, '${data.module}', '${data.reqChannel}', '${data.registerChannel}', ${data.amount}, '${data.amountPostedDate}', '${data.amountPostedTime}', '${data.message}', ${data.inviteDate}, ${data.inviteTime}, '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
+                    VALUES('${data.inviterMsisdn}', '${data.inviterName}', '${data.receiverMsisdn}', '${data.receiverName}', '${data.reqCategory}', '${data.accountStatus}', '${data.reqStatus}', ${data.acceptDate}, ${data.acceptTime}, '${data.module}', '${data.reqChannel}', '${data.registerChannel}', ${data.amount}, '${data.amountPostedDate}', '${data.amountPostedTime}', '${data.message}', ${data.inviteDate}, ${data.inviteTime}, '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -517,7 +517,7 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (INITIATOR_MSISDN, TRANS_TYPE, TRANS_AMOUNT, RECEIVER_MSISDN, TRANS_FREQUENCY, TRANS_STATUS, REPEAT_TRANS_DURATION, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID)
-                    VALUES(${data.initiatorMsisdn}, '${data.transType}', ${data.amount}, ${data.receiverMsisdn}, ${data.transFrequency}, '${data.transactionStatus}', '${data.repeatTransDuration}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
+                    VALUES('${data.initiatorMsisdn}', '${data.transType}', ${data.amount}, '${data.receiverMsisdn}', ${data.transFrequency}, '${data.transactionStatus}', '${data.repeatTransDuration}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -544,7 +544,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", CUST_MSISDN, CUST_CNIC, NADRA_RESPONSE, FINGERPRINT_TIME, APPUSER_DETAIL, NADRA_ERROR, CHANNEL, MERCH_MSISDN, MERCH_NIC, PERSONAL_NAME, BIUSINESS_NAME, TOP_NAME, MSG_OFFSET)
-                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.nadraResponse}', '${data.fingerprintTime}', '${data.appUserDetails}', '${data.nadraError}', '${data.channel}', ${data.merchMsisdn}, '${data.merchNic}', '${data.personalName}', '${data.businessName}', '${data.topic}', ${data.msg_offset});`);
+                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), '${data.msisdn}', '${data.cnic}', '${data.nadraResponse}', '${data.fingerprintTime}', '${data.appUserDetails}', '${data.nadraError}', '${data.channel}', '${data.merchMsisdn}', '${data.merchNic}', '${data.personalName}', '${data.businessName}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -564,7 +564,7 @@ class DatabaseConn {
                 if(data.transStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (BOOK_DATE, MOVIE_DATE, MSISDN, CNIC, EMAIL, TRANS_ID, CINEMA, SEAT_CLASS, CITY, SEATS, PRICE, REVENUE, TRANS_STATUS, AMOUNT, CHANNEL, TOP_NAME, MSG_OFFSET)
-                    VALUES(TIMESTAMP_FORMAT('${data.bookDate}','YYYY-MM-DD HH24:MI:SS'), TIMESTAMP_FORMAT('${data.movieDate}','YYYY-MM-DD HH24:MI:SS'), ${data.msisdn}, '${data.cnic}', '${data.email}', ${data.TID}, '${data.cinema}', '${data.seatClass}', '${data.city}', ${data.seats}, ${data.price}, ${data.revenue}, '${data.transStatus}', ${data.amount}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(TIMESTAMP_FORMAT('${data.bookDate}','YYYY-MM-DD HH24:MI:SS'), TIMESTAMP_FORMAT('${data.movieDate}','YYYY-MM-DD HH24:MI:SS'), '${data.msisdn}', '${data.cnic}', '${data.email}', ${data.TID}, '${data.cinema}', '${data.seatClass}', '${data.city}', ${data.seats}, ${data.price}, ${data.revenue}, '${data.transStatus}', ${data.amount}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -591,7 +591,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", AMOUNT, ADDRESS, CITY, LAT_LONG, REQUEST_STATUS, CUST_MSISDN, RIDER_NAME, RIDER_MSISDN, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, '${data.address}', '${data.city}', ${data.lat}, '${data.reqStatus}', ${data.custMsisdn}, '${data.riderName}', ${data.riderMsisdn}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, '${data.address}', '${data.city}', ${data.lat}, '${data.reqStatus}', '${data.custMsisdn}', '${data.riderName}', '${data.riderMsisdn}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -611,7 +611,7 @@ class DatabaseConn {
                 if(data.status == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRANS_DATE, AMOUNT, MSISDN, TRANS_ID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
-                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, ${data.msisdn}, ${data.TID}, '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.amount}, '${data.msisdn}', ${data.TID}, '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -638,7 +638,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PAYON_USERNAME, CREATED_ON, CHANNEL, TOP_NAME, MSG_OFFSET, EMAIL, COUNTRY, CITY, ZIPCODE, ADDRESS, STATUS_TEXT)
-                VALUES(${data.msisdn}, '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.email}', '${data.country}', '${data.city}', '${data.zip_code}', '${data.address}', '${data.status_text}');`);
+                VALUES('${data.msisdn}', '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.email}', '${data.country}', '${data.city}', '${data.zip_code}', '${data.address}', '${data.status_text}');`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -662,14 +662,14 @@ class DatabaseConn {
                 // if record does't exist insert new record, otherwise update existing record
                 if (resultArray.length == 0) {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MOBILE_NUMBER, PAYON_USERNAME, "RRN", PKR_AMOUNT, USD_AMOUNT, EXCHANGE_RATE, CURRENCY, DESCRIPTION, ACTIVITY_DATE, MONETA_STATUS, RECEIPT_STATUS, CHANNEL, TRANS_ID, TOP_NAME, MSG_OFFSET)
-                    VALUES(${data.msisdn}, '${data.payUsername}', ${data.TID}, ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.receiptStatus}', '${data.channel}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
+                    VALUES('${data.msisdn}', '${data.payUsername}', ${data.TID}, ${data.pkrAmount}, ${data.usdAmount}, ${data.exchangeRate}, '${data.currency}', '${data.description}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.monetaStatus}', '${data.receiptStatus}', '${data.channel}', ${data.TID}, '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insertQuery executed`);
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 } else {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER=${data.msisdn}, PAYON_USERNAME='${data.payUsername}', "RRN"=${data.TID}, PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', RECEIPT_STATUS='${data.receiptStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MOBILE_NUMBER='${data.msisdn}', PAYON_USERNAME='${data.payUsername}', "RRN"=${data.TID}, PKR_AMOUNT=${data.pkrAmount}, USD_AMOUNT=${data.usdAmount}, EXCHANGE_RATE=${data.exchangeRate}, CURRENCY='${data.currency}', DESCRIPTION='${data.description}', ACTIVITY_DATE=TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), MONETA_STATUS='${data.monetaStatus}', RECEIPT_STATUS='${data.receiptStatus}', CHANNEL='${data.channel}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -690,7 +690,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MERCH_MSISDN, TILL_NUM, NOTIFIER_1, NOTIFIER_2, NOTIFIER_3, NOTIFIER_4, NOTIFIER_5, CHANNEL, QR_TYPE, MERCH_CAT_CODE, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.MerchantMSISDN}, ${data.TillNumber}, '${data.MoblieNumber1}', '${data.MoblieNumber2}', '${data.MoblieNumber3}', '${data.MoblieNumber4}', '${data.MoblieNumber5}', '${data.channel}', '${data.qrType}', '${data.MerchantCategoryCode}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.MerchantMSISDN}', ${data.TillNumber}, '${data.MoblieNumber1}', '${data.MoblieNumber2}', '${data.MoblieNumber3}', '${data.MoblieNumber4}', '${data.MoblieNumber5}', '${data.channel}', '${data.qrType}', '${data.MerchantCategoryCode}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -710,7 +710,7 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 logger.debug("connection opened");
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (APP_DOWNLOAD_DATE, OS, FIRST_OPEN_DATE, MERCHANT_ID, IMEI, APP_VERSION, DEVICE_MODEL, CHANNEL, ACTIVITY_DATE, ACTIVITY_TIME, MERCHANT_MSISDN, NEW_USER, ACC_LEVEL_FOR_NEW, ACCOUNT_STATUS, ACC_LEVEL_FOR_EXISTING, SIGNUP_DATE, SIGNUP_STEP, VERIFY_MODE, REGSITER_REQUEST, WALLET_REG_DATE, REG_STATUS, PERSONAL_NAME, BUSINESS_NAME, CRM_STATUS, REWARD_AMOUNT, REWARD_POST_DATE, TOP_NAME, MSG_OFFSET) 
-                VALUES('${data.Date_of_App_Download}', '${data.OS}', '${data.Date_of_First_Open}', '${data.Login_Merchant_ID}', ${data.IMEI_Number}, '${data.App_Version}', '${data.Device_Model}', '${data.Channel}', '${data.Activity_Date}', '${data.Activity_Time}', ${data.Merchant_MSISDN}, '${data.New_Existing_User}', 
+                VALUES('${data.Date_of_App_Download}', '${data.OS}', '${data.Date_of_First_Open}', '${data.Login_Merchant_ID}', ${data.IMEI_Number}, '${data.App_Version}', '${data.Device_Model}', '${data.Channel}', '${data.Activity_Date}', '${data.Activity_Time}', '${data.Merchant_MSISDN}', '${data.New_Existing_User}', 
                 '${data.Account_Level}', '${data.Consumer_Account_Status}', '${data.Account_Level_For_existing_User}', '${data.Date_of_Sign_up}', '${data.Sign_up_Step}', '${data.Verification_Mode}', '${data.Regsitration_request}', '${data.Wallet_Registration_Date}', '${data.Registration_Status}', '${data.Personal_Name}', '${data.Business_Name}', '${data.CRM_Status}', ${data.Reward_Amount}, '${data.Reward_posting_Date}', '${data.topic}', ${data.msg_offset});`);
                 logger.debug('insert statement created')
                 stmt.executeSync();
@@ -732,7 +732,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, INSERT_DATE, CHANNEL, FAILURE_DETAIL, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.msisdn}, '${data.insertDate}', '${data.channel}', '${data.failureDetail}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', '${data.insertDate}', '${data.channel}', '${data.failureDetail}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -751,7 +751,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (LOGIN_ID, CNIC, REG_STATUS, ACTIVITY_DATE, ACTIVITY_TIME, NEW_EXISTING_USER, WALLET_REG_DATE, APP_VERSION, DEVICE_MODEL, OS, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.loginID}, '${data.cnic}', '${data.reg_status}', '${data.activity_date}', '${data.activity_time}', '${data.new_existing_user}', '${data.walletRegDate}', '${data.app_version}', '${data.device_model}', '${data.os}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.loginID}', '${data.cnic}', '${data.reg_status}', '${data.activity_date}', '${data.activity_time}', '${data.new_existing_user}', '${data.walletRegDate}', '${data.app_version}', '${data.device_model}', '${data.os}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -772,7 +772,7 @@ class DatabaseConn {
                 {
                     // let conn = await open(cn);
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, DEVICE_TYPE, APP_VERSION, CUST_IP, IMEI1, IMEI2, NEW_IMEI, DATE_TIME, AUTH_ATTEMPTED, AUTH_SUCCESS, DEVICE_MAKE, DEVICE_MODEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES(${data.msisdn}, '${data.deviceType}', '${data.app_version}', '${data.cust_ip}', '${data.imei1}', '${data.imei2}', '${data.new_imei}', '${data.dateTime}', '${data.authAttempted}', '${data.authSuccess}', '${data.deviceMake}', '${data.device_model}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES('${data.msisdn}', '${data.deviceType}', '${data.app_version}', '${data.cust_ip}', '${data.imei1}', '${data.imei2}', '${data.new_imei}', '${data.dateTime}', '${data.authAttempted}', '${data.authSuccess}', '${data.deviceMake}', '${data.device_model}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -801,7 +801,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("NUMBER", NAME, CNIC, CRMSTATUS, REQ_SUBMIT_DATE, REQ_PROCESSED_BY, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                VALUES(${data.msisdn}, '${data.name}', '${data.cnic}', '${data.crm_status}', '${data.request_submission_date}', '${data.processed_by}', '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', '${data.name}', '${data.cnic}', '${data.crm_status}', '${data.request_submission_date}', '${data.processed_by}', '${data.status}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -820,7 +820,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("ACTION", MSISDN, "DATE", CARD_NUM, CARD_TYPE, CARD_CAT, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES('${data.action}', ${data.msisdn}, '${data.transactionTime}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.action}', '${data.msisdn}', '${data.transactionTime}', '${data.cardNum}', '${data.cardType}', '${data.cardCategory}', ${data.TID}, '${data.transactionStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });

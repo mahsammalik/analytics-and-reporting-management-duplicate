@@ -31,7 +31,7 @@ class Processor {
                 initTransData.email = data?.CustomObject?.email || '';
                 initTransData.fee = Number(data?.CustomObject?.fee || '0');
                 initTransData.gender = '';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.origin = data?.CustomObject?.departureCityName || '';
                 initTransData.price = Number(data?.CustomObject?.ticketPrice || '0');
                 initTransData.originPrice = initTransData.price;

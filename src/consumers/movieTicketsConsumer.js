@@ -27,7 +27,7 @@ class Processor {
             if(initTransData.movieDate != null) {
                 initTransData.movieDate = initTransData.movieDate + " " + moment(time, ["h:mm:ssA"]).format("HH:mm:ss");
             }
-            initTransData.msisdn = Number(data?.CustomObject?.msisdn || '0');
+            initTransData.msisdn = data?.CustomObject?.msisdn || '0';
             initTransData.cnic = data?.CustomObject?.cnic || '';
             initTransData.email = data?.CustomObject?.email || '';
             initTransData.TID = Number(data?.Result?.TransactionID || '0');

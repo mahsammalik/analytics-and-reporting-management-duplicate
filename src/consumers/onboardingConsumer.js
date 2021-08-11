@@ -34,7 +34,7 @@ class Processor {
             initTransData.Device_Model = data.Device_Model;
             initTransData.Channel = data.Channel;
             initTransData.Count_of_Guest_mode_visits = data.Count_of_Guest_mode_visits;
-            initTransData.Merchant_MSISDN = Number(data.Merchant_MSISDN);
+            initTransData.Merchant_MSISDN = data.Merchant_MSISDN;
             initTransData.New_Existing_User = data.New_Existing_User;
             initTransData.Account_Level = data.Account_Level;
             initTransData.Consumer_Account_Status = data.Consumer_Account_Status;

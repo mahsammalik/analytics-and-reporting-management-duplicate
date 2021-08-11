@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
             if(data != undefined || data != null)
             {
-                initTransData.msisdn = Number(data.msisdn);
+                initTransData.msisdn = data.msisdn;
                 initTransData.app_version = data.appVersion;
                 initTransData.deviceMake = data.deviceMake;
                 initTransData.device_model = data.deviceModel;

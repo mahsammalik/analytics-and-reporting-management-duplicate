@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
 
             initTransData.TillNumber = Number(data.TillNumber);
-            initTransData.MerchantMSISDN = Number(data.MerchantMSISDN);
+            initTransData.MerchantMSISDN = data.MerchantMSISDN;
             initTransData.MerchantCategoryCode = data.MerchantCategoryCode;
             initTransData.TransactionCurrency = data.TransactionCurrency;
             initTransData.CountryCode = initTransData.CountryCode;

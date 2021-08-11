@@ -13,14 +13,14 @@ class Processor {
             //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
-                initTransData.initiatorMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.receiverMsisdn = 0;
+                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                initTransData.receiverMsisdn = '0';
                 if(data?.Header?.UseCase === 'MoneyTransferC2C') {
-                    initTransData.receiverMsisdn = Number(data?.Header?.Identity?.ReceiverParty?.Identifier || '0');
+                    initTransData.receiverMsisdn = data?.Header?.Identity?.ReceiverParty?.Identifier || '0';
                 } else if(data?.Header?.UseCase === 'MoneyTransferB2B') {
-                    initTransData.receiverMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'OrganizationOwnerMSISDN'; })?.Value || '0');
+                    initTransData.receiverMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'OrganizationOwnerMSISDN'; })?.Value || '0';
                 } else if(data?.Header?.UseCase === 'CNICPayment') {
-                    initTransData.receiverMsisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'ReceiverMSISDN'; })?.Value || '0');
+                    initTransData.receiverMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'ReceiverMSISDN'; })?.Value || '0';
                 }
                 initTransData.transType = data?.Header?.UseCase || '';
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');

@@ -23,8 +23,8 @@ class Processor {
                 initTransData.emailID = '';
                 initTransData.existingAcc = '';
                 initTransData.extensionRequested = 0;
-                initTransData.jazzcashAcc = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
-                initTransData.mobileNumber = 0;
+                initTransData.jazzcashAcc = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                initTransData.mobileNumber = '0';
                 initTransData.name = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'BeneficiaryName'; })?.Value || '';
                 initTransData.payerName = '';
                 initTransData.paymentChannel = '';

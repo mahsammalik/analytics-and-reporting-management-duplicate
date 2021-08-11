@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
             if(data != undefined || data != null)
             {
-                initTransData.msisdn = Number(data.mobile_number);
+                initTransData.msisdn = data.mobile_number;
                 initTransData.failureDetail = data.failure_reason;
                 initTransData.insertDate = moment(data.insertion_TS).format("YYYY-MM-DD HH:mm:ss");
                 initTransData.channel = data?.channel || "Mobile App";

@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
 
             initTransData.transDate = data.txnDateTime;
-            initTransData.msisdn = Number(data?.msisdn || '0');
+            initTransData.msisdn = data?.msisdn || '0';
             initTransData.channel = data?.channel || '';
             initTransData.isDelinkSuccess = data?.isDelinkSuccess || '';
             initTransData.usecase = data.usecase;

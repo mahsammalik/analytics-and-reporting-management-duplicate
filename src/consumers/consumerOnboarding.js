@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
             if(data != undefined || data != null)
             {
-                initTransData.loginID = Number(data.LoginID);
+                initTransData.loginID = data.LoginID;
                 initTransData.cnic = data.cnic;
                 initTransData.reg_status = data.RegistrationStatus;
                 initTransData.activity_date = moment(data.ActivityDate, 'DD-MM-YYYY').format('YYYY-MM-DD');

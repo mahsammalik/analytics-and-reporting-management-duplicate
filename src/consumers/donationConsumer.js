@@ -19,7 +19,7 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.failureReason = '';
                 initTransData.fund = initTransData.amount;
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.organization = data.CustomObject?.orgName || '';
                 initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''

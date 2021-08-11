@@ -15,7 +15,7 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.consumerBalance = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Balance'; })?.Value || '0');
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.custMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.custMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
@@ -26,7 +26,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.fee = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Fee'; })?.Value || '0');
-                initTransData.merchAccount = Number(data?.Header?.Identity?.ReceiverParty?.Identifier || '0');
+                initTransData.merchAccount = data?.Header?.Identity?.ReceiverParty?.Identifier || '0';
                 initTransData.merchBalance = 0;
                 initTransData.merchantBank = data?.CustomObject?.merchantBank || '';
                 initTransData.merchCategoryCode = '';

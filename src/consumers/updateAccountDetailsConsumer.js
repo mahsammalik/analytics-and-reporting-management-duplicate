@@ -13,7 +13,7 @@ class Processor {
             //logger.debug(data);
             let initTransData = {};
             if (data.Result.ResultCode == 0) {
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');

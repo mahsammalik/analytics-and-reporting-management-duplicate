@@ -18,9 +18,9 @@ class Processor {
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.initiatorMsisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0');
+                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.transactionDate !== '') {
                     initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');

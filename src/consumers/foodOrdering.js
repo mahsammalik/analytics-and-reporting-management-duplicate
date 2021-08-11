@@ -15,7 +15,7 @@ class Processor {
 
             if (data.Result.ResultCode == 0) {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.contactNum = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.contactNum = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.deliveryAddress = '';
                 initTransData.deliveryArea = '';
                 initTransData.deliveryCity = '';

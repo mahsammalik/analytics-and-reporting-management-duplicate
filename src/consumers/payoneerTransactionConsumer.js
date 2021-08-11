@@ -13,7 +13,7 @@ class Processor {
             //logger.debug(data);
             let initTransData = {};
 
-            initTransData.msisdn = Number(data?.msisdn || '0');
+            initTransData.msisdn = data?.msisdn || '0';
             initTransData.payUsername = data?.payoneerEmail || data?.account_details?.contact?.email || '';
             initTransData.pkrAmount = Number(data?.amountInPKR || '0');
             initTransData.usdAmount = Number(data?.transferAmount || '0');

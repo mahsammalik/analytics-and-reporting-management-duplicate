@@ -22,9 +22,9 @@ class Processor {
             initTransData.city = data?.city || '';
             initTransData.lat = Number(data?.lat || '0');
             initTransData.reqStatus = data?.bookmeLastSentPayload?.data?.status || '';
-            initTransData.custMsisdn = Number(data?.msisdn || '0');
+            initTransData.custMsisdn = data?.msisdn || '0';
             initTransData.riderName = data?.bookmeLastSentPayload?.data?.partner?.name || '';
-            initTransData.riderMsisdn = Number(data?.bookmeLastSentPayload?.data?.partner?.mobile_no || '0');             
+            initTransData.riderMsisdn = data?.bookmeLastSentPayload?.data?.partner?.mobile_no || '0';             
             initTransData.channel = data?.channel || 'Mobile';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);

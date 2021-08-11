@@ -14,7 +14,7 @@ class Processor {
             let initTransData = {};
             if(data != undefined || data != null)
             {
-                initTransData.msisdn = Number(data.mobile_number);
+                initTransData.msisdn = data.mobile_number;
                 initTransData.cnic = data.cnic;
                 initTransData.name = data.name;
                 initTransData.crm_status = data.crm_status;

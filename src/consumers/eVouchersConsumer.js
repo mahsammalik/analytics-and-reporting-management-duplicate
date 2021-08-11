@@ -19,7 +19,7 @@ class Processor {
                 initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'CompanyShortName'; })?.Value || '';                
                 initTransData.email = '';
                 initTransData.failReason = '';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.promoAmount = 0;
                 initTransData.promoCode = '';
                 initTransData.status = 'Pending';

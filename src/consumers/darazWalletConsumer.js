@@ -29,7 +29,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.failureReason = '';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.promoCode = '';
                 initTransData.promoCodeAmount = 0;
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';

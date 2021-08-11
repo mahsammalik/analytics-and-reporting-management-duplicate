@@ -46,7 +46,7 @@ class Processor {
                 	initTransData.eventDate = initTransData.eDate+" "+initTransData.eTime;
                 }
                 initTransData.failReason = '';
-                initTransData.msisdn = Number(data?.Header?.Identity?.Initiator?.Identifier || '0');
+                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.numSeats = Number(data?.CustomObject?.qty || '0');
                 initTransData.partner = data?.CustomObject?.partner || '';
                 initTransData.price = Number(data?.CustomObject?.price || '0');

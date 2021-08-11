@@ -14,14 +14,14 @@ class Processor {
             let initTransData = {};
             if (data.transType === 'UpgradeSuccess') {
                 initTransData.date = data.txnDateTime.includes('.') ? data.txnDateTime.split('.')[0] : data.txnDateTime;
-                initTransData.msisdn = Number(data.msisdn);
+                initTransData.msisdn = data.msisdn;
                 initTransData.cnic = data.cnic;
                 initTransData.nadraResponse = data?.nadraResponse?.responseStatus || '';
                 initTransData.fingerprintTime = data?.nadraResponse?.sendTime || '';
                 initTransData.appUserDetails = data?.deviceID || '';
                 initTransData.nadraError = data?.nadraResponse?.return?.ApiResponse?.error?.errorDescriptions?.string || '';
                 initTransData.channel = data?.channel || '';
-                initTransData.merchMsisdn = Number(data?.nadraResponse?.msisdn || '0');
+                initTransData.merchMsisdn = data?.nadraResponse?.msisdn || '0';
                 initTransData.merchNic = data?.nadraResponse?.cnicNo || '';
                 initTransData.personalName = data?.nadraResponse?.nameEn || '';
                 initTransData.businessName = '';
@@ -29,14 +29,14 @@ class Processor {
             else // case of CPS Failure or Nadra Failure
             {
                 initTransData.date = data.txnDateTime.includes('.') ? data.txnDateTime.split('.')[0] : data.txnDateTime;
-                initTransData.msisdn = Number(data.msisdn);
+                initTransData.msisdn = data.msisdn;
                 initTransData.cnic = data.cnic;
                 initTransData.nadraResponse = data?.nadraResponse?.return?.ApiResponse?.error?.result?.responseStatus || '';
                 initTransData.fingerprintTime = data?.nadraResponse?.return?.ApiResponse?.error?.result?.sendTime || '';
                 initTransData.appUserDetails = data?.deviceID || '';
                 initTransData.nadraError = data?.nadraResponse?.return?.ApiResponse?.error?.errorDescriptions?.string || '';
                 initTransData.channel = data?.channel || '';
-                initTransData.merchMsisdn = Number(data?.nadraResponse?.return?.ApiResponse?.error?.result?.msisdn || '0');
+                initTransData.merchMsisdn = data?.nadraResponse?.return?.ApiResponse?.error?.result?.msisdn || '0';
                 initTransData.merchNic = data?.nadraResponse?.return?.ApiResponse?.error?.result?.cnicNo || '';
                 initTransData.personalName = data?.nadraResponse?.return?.ApiResponse?.error?.result?.nameEn || '';
                 initTransData.businessName = '';

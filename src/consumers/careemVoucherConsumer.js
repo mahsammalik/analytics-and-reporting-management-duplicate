@@ -23,7 +23,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.amount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DueAmount'; })?.Value || '0');
-                initTransData.msisdn = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == "CustomerMSISDN";})?.Value || '0');
+                initTransData.msisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == "CustomerMSISDN";})?.Value || '0';
                 initTransData.TID = Number(data?.Result?.TransactionID || '0');
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
