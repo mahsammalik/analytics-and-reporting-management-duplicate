@@ -18,7 +18,7 @@ class Processor {
             initTransData.channel = data?.channel || '';
             initTransData.isDelinkSuccess = data?.isDelinkSuccess || '';
             initTransData.usecase = data.usecase;
-            initTransData.retrieveRef = Number.isNaN(Number(data?.txnRefNo || '0')) ? 0 : Number(data?.txnRefNo || '0');
+            initTransData.retrieveRef = data?.txnRefNo || '';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
