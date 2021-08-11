@@ -19,7 +19,8 @@ class Processor {
             initTransData.usdAmount = Number(data?.transferAmount || '0');
             initTransData.exchangeRate = Number(data?.exchangeRate || '0');
             initTransData.currency = data?.currency || '';
-            initTransData.description = data?.txMonetaStatusDesc || '';
+            initTransData.description = data.txPayoneerChargeStatus ? 'Payoneer Charge Success' : 'Payoneer Charge Failure';
+            initTransData.description += " | Payment ID: " + data?.paymentID || '';
             initTransData.activityDate = data?.updatedAt || null;
             if(initTransData.activityDate != null) {
                 initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
