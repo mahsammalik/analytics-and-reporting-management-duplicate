@@ -705,7 +705,7 @@ class Subscriber {
                         }
                         else
                         {
-                            logger.info('Its not a scheduled transaction, payload: '+ JSON.stringify(data));
+                            logger.info('Its not a scheduled transaction, payload: '+ JSON.stringify(payload));
                         }
                         //logger.debug(response);
                     } catch (error) {
