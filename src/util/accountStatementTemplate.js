@@ -29,6 +29,38 @@ const htmlFoot = `<footer>
 </footer>
 </body>
 </html>`;
+
+/**
+ * Returns formated number like 1st, 2nd, 3rd, 4th
+ * @param {*} day 
+ * @returns 
+ */
+const nth = day => {
+	if(day > 3 && day < 21)
+	{
+		return day + "th";
+	}
+
+	switch (day % 10) {
+        case 1:
+            return day + "st";
+        case 2:
+            return day + "nd";
+        case 3:
+            return day + "rd";
+        default:
+            return day + "th";
+    }
+}
+
+/**
+ * format date like 15th August, 2021
+ * @param {*} date 
+ */
+const formatEnglishDate = date => {
+	return nth(date.format("DD")) + " " + date.format("MMMM") + ", " + date.format("YYYY");
+}
+
 /**
  * 
  * @param {*} accountData
@@ -57,7 +89,7 @@ const accountStatementTemplate = accountData => {
 		<div style="line-height: 1.4;">Account Title: <b>${accountData.payload.merchantName}</b></div>
 		<div style="line-height: 1.4;">Account Number: <b>${accountData.payload.msisdn}</b></div>
 		<div style="line-height: 1.4;">Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
-		<div style="line-height: 1.3;">Statement Period: <b>${moment(accountData.payload.start_date).format('DD-MMM-YYYY')} - ${moment(accountData.payload.end_date).format('DD-MMM-YYYY')}</b></div>
+		<div style="line-height: 1.3;">Statement Period: <b>${formatEnglishDate(accountData.payload.start_date)} - ${formatEnglishDate(accountData.payload.end_date)}</b></div>
 		</div>
 		</header>
 		<main>

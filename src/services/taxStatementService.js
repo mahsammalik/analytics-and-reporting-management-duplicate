@@ -6,6 +6,37 @@ import {
 import Notification from '../util/notification';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 
+/**
+ * Returns formated number like 1st, 2nd, 3rd, 4th
+ * @param {*} day 
+ * @returns 
+ */
+ const nth = day => {
+	if(day > 3 && day < 21)
+	{
+		return day + "th";
+	}
+
+	switch (day % 10) {
+        case 1:
+            return day + "st";
+        case 2:
+            return day + "nd";
+        case 3:
+            return day + "rd";
+        default:
+            return day + "th";
+    }
+}
+
+/**
+ * format date like 15th August, 2021
+ * @param {*} date 
+ */
+const formatEnglishDate = date => {
+	return nth(date.format("DD")) + " " + date.format("MMMM") + ", " + date.format("YYYY");
+}
+
 class taxStatementService {
     constructor() {
         this.sendTaxStatement = this.sendTaxStatement.bind(this);
@@ -63,7 +94,7 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date || '-') + ' to ' + (payload.end_date || '-')}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",

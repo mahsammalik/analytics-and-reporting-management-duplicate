@@ -11,6 +11,37 @@ import moment from 'moment';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
+/**
+ * Returns formated number like 1st, 2nd, 3rd, 4th
+ * @param {*} day 
+ * @returns 
+ */
+ const nth = day => {
+	if(day > 3 && day < 21)
+	{
+		return day + "th";
+	}
+
+	switch (day % 10) {
+        case 1:
+            return day + "st";
+        case 2:
+            return day + "nd";
+        case 3:
+            return day + "rd";
+        default:
+            return day + "th";
+    }
+}
+
+/**
+ * format date like 15th August, 2021
+ * @param {*} date 
+ */
+const formatEnglishDate = date => {
+	return nth(date.format("DD")) + " " + date.format("MMMM") + ", " + date.format("YYYY");
+}
+
 class accountStatementService {
 
     async sendEmailCSVFormat(payload) {
@@ -58,7 +89,7 @@ class accountStatementService {
                     embedImage: false
                 }];
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(moment(payload.start_date).format('DD MMM YYYY') || '-') + ' to ' + (moment(payload.end_date).format('DD MMM YYYY') || '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
@@ -154,7 +185,7 @@ class accountStatementService {
 
             if (payload.email) {
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(moment(payload.start_date).format('DD MMM YYYY') || '-') + ' to ' + (moment(payload.end_date).format('DD MMM YYYY') || '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",

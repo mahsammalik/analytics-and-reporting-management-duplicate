@@ -71,7 +71,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  padding-top: 10px;
 		  padding-left: 25px;
 		  display: ${customerName ? 'block' : 'none'};
-		  ">Dear <b style="font-size: 24px;"> ${customerName ? customerName.trim() : ''},</b></p>
+		  ">Dear <b> ${customerName ? customerName.trim() : ''},</b></p>
 			</td>
 		  </tr>
 		  <tr>
