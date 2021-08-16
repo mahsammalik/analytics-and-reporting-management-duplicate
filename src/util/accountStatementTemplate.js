@@ -85,11 +85,11 @@ const accountStatementTemplate = accountData => {
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div style="line-height: 1.4;">Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MMM-YYYY')}</b></div>
-		<div style="line-height: 1.4;">Account Title: <b>${accountData.payload.merchantName}</b></div>
-		<div style="line-height: 1.4;">Account Number: <b>${accountData.payload.msisdn}</b></div>
-		<div style="line-height: 1.4;">Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
-		<div style="line-height: 1.3;">Statement Period: <b>${formatEnglishDate(accountData.payload.start_date)} - ${formatEnglishDate(accountData.payload.end_date)}</b></div>
+		<div style="line-height: 1.9;">Date of Issue: <b>${moment(accountData.payload.start_date).format('DD-MMM-YYYY')}</b></div>
+		<div style="line-height: 1.9;">Account Title: <b>${accountData.payload.merchantName}</b></div>
+		<div style="line-height: 1.9;">Account Number: <b>${accountData.payload.msisdn}</b></div>
+		<div style="line-height: 1.9;">Account Type: <b>${accountData.payload.metadata.accountLevel || accountData.payload.accountLevel || ''}</b></div>
+		<div style="line-height: 1.8;">Statement Period: <b>${formatEnglishDate(accountData.payload.start_date)} - ${formatEnglishDate(accountData.payload.end_date)}</b></div>
 		</div>
 		</header>
 		<main>
