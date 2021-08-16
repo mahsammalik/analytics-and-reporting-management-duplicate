@@ -58,7 +58,7 @@ const nth = day => {
  * @param {*} date 
  */
 const formatEnglishDate = date => {
-	return nth(date.format("DD")) + " " + date.format("MMMM") + ", " + date.format("YYYY");
+	return nth(moment(date).format("DD")) + " " + moment(date).format("MMMM") + ", " + moment(date).format("YYYY");
 }
 
 /**
