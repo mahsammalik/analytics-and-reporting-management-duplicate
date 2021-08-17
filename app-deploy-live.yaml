@@ -90,10 +90,6 @@ spec:
         configMapKeyRef:
           name: consumer-groups
           key: CONSUMER_GROUP_ANALYTICS
-    - name: POD_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
   expose: true
   livenessProbe:
     failureThreshold: 12
