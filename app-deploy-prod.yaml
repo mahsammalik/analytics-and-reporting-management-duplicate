@@ -90,6 +90,10 @@ spec:
       value: debug
     - name: NODE_ENV
       value: production
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name  
   expose: true
   livenessProbe:
     failureThreshold: 12
