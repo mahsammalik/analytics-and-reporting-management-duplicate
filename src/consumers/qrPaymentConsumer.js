@@ -34,7 +34,7 @@ class Processor {
                 initTransData.merchID = Number(data?.CustomObject?.merchantTillID || '0');
                 initTransData.merchantName = data?.CustomObject?.merchantName || '';
                 initTransData.paidVia = data?.CustomObject?.paidVia || '';
-                initTransData.qrCode = data?.CustomObject?.qrCode || '';
+                initTransData.qrCode = data?.CustomObject?.qrString || data?.CustomObject?.qrCode || '';
                 initTransData.qrType = data?.CustomObject?.qrType || '';
                 initTransData.rating = '';
                 initTransData.reverseTID = 0;
