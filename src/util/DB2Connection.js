@@ -150,7 +150,7 @@ class DatabaseConn {
                 }
                 else if(data.transactionStatus == 'Completed')
                 {
-                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET BOOKING_ID=${data.bookingID}, CNIC='${data.cnic}', EMAIL='${data.email}', FEE=${data.fee}, ORIG_PRICE=${data.originPrice}, PRICE=${data.price}, SEAT_NUMBER='${data.seatNumber}', STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET BOOKING_ID='${data.bookingID}', CNIC='${data.cnic}', EMAIL='${data.email}', FEE=${data.fee}, ORIG_PRICE=${data.originPrice}, PRICE=${data.price}, SEAT_NUMBER='${data.seatNumber}', STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID=${data.TID};`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });

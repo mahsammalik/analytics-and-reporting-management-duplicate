@@ -23,7 +23,7 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.bookingID = Number(data?.CustomObject?.bookingId || '0');
+                initTransData.bookingID = data?.CustomObject?.bookingId || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.cnic = data?.CustomObject?.cnic || '';
                 initTransData.destination = data?.CustomObject?.destinationCityName || '';
@@ -37,7 +37,7 @@ class Processor {
                 initTransData.originPrice = initTransData.price;
                 initTransData.promo = '';
                 initTransData.seats = data?.CustomObject?.noOfSeats || '';
-                initTransData.seatNumber = (data?.CustomObject?.seatNumbersMale || '') + "  " + (data?.CustomObject?.seatNumbersFemale || '');
+                initTransData.seatNumber = "M "+(data?.CustomObject?.seatNumbersMale || '') + " F " + (data?.CustomObject?.seatNumbersFemale || '');
                 initTransData.service = data?.CustomObject?.serviceName || '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.failureReason = '';
