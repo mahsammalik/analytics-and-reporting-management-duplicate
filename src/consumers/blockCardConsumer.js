@@ -29,7 +29,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.transactionStatus = 'Completed';
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

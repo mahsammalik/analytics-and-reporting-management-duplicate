@@ -13,7 +13,7 @@ class Processor {
             //logger.debug(data);
             let initTransData = {};
 
-            initTransData.TillNumber = Number(data.TillNumber);
+            initTransData.TillNumber = data.TillNumber;
             initTransData.MerchantMSISDN = data.MerchantMSISDN;
             initTransData.MerchantCategoryCode = data.MerchantCategoryCode;
             initTransData.TransactionCurrency = data.TransactionCurrency;

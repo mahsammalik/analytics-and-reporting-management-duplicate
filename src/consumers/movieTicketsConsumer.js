@@ -30,7 +30,7 @@ class Processor {
             initTransData.msisdn = data?.CustomObject?.msisdn || '0';
             initTransData.cnic = data?.CustomObject?.cnic || '';
             initTransData.email = data?.CustomObject?.email || '';
-            initTransData.TID = Number(data?.Result?.TransactionID || '0');
+            initTransData.TID = data?.Result?.TransactionID || '0';
             initTransData.cinema = data?.CustomObject?.moviePurchaseDetails?.venue || '';
             initTransData.seatClass = data?.CustomObject?.moviePurchaseDetails?.class || '';
             // limit seatClass length due to column length

@@ -25,7 +25,7 @@ class Processor {
                 }
                 initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.cardNum = 0;
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.retrivalRef = 0;
                 initTransData.cashInTransID = 0;

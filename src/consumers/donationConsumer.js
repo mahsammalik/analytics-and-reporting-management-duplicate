@@ -31,7 +31,7 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

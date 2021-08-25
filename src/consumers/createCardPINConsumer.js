@@ -33,7 +33,7 @@ class Processor {
                 initTransData.transactionStatus = 'Completed';
                 initTransData.suplCardCnic = '';
                 initTransData.suplCardNum = 0;
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

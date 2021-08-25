@@ -33,7 +33,7 @@ class Processor {
                 initTransData.promoCode = '';
                 initTransData.promoCodeAmount = 0;
                 initTransData.status = isConfirm ? 'Completed' : 'Pending';
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.userEmail = '';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);

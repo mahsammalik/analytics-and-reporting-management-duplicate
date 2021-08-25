@@ -27,7 +27,7 @@ class Processor {
             }
             initTransData.monetaStatus = ((data.txMonetaStatusCode != undefined || data.txMonetaStatusCode != null ) ? data.txMonetaStatusCode + "|" : '') + data?.txMonetaExpressResponseDesc || '';
             initTransData.channel = data?.channel || 'consumerApp';
-            initTransData.TID = Number(data?.txID || '0');
+            initTransData.TID = data?.txID || '0';
             initTransData.receiptStatus = data?.txStatus || '';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);

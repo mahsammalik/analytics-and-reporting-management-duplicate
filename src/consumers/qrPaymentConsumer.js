@@ -31,7 +31,7 @@ class Processor {
                 initTransData.merchantBank = data?.CustomObject?.merchantBank || '';
                 initTransData.merchCategoryCode = '';
                 initTransData.merchCategoryType = '';
-                initTransData.merchID = Number(data?.CustomObject?.merchantTillID || '0');
+                initTransData.merchID = data?.CustomObject?.merchantTillID || '0';
                 initTransData.merchantName = data?.CustomObject?.merchantName || '';
                 initTransData.paidVia = data?.CustomObject?.paidVia || '';
                 initTransData.qrCode = data?.CustomObject?.qrString || data?.CustomObject?.qrCode || '';
@@ -40,7 +40,7 @@ class Processor {
                 initTransData.reverseTID = 0;
                 initTransData.reviews = '';
                 initTransData.thirdPartTID = 0;
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.tilPayment = 0;
                 initTransData.tipAmount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TIP Amount'; })?.Value || '0');
                 initTransData.transAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');

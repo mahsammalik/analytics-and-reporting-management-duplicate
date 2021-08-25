@@ -32,7 +32,7 @@ class Processor {
                 initTransData.transactionStatus = isConfirm? 'Completed' : 'Pending';
                 initTransData.suplCardCnic = '';
                 initTransData.suplCardNum = 0;
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.trackDate = null;
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);

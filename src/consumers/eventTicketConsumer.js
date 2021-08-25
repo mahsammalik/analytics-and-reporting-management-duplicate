@@ -59,7 +59,7 @@ class Processor {
                 initTransData.revenue = 0;
                 initTransData.seatClass = '';
                 initTransData.status = isConfirm ? "Completed" : "Pending";
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 

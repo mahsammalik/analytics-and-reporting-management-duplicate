@@ -41,7 +41,7 @@ class Processor {
                 initTransData.service = data?.CustomObject?.serviceName || '';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.failureReason = '';
-                initTransData.TID = Number(data?.Result?.TransactionID || '0');
+                initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.travelDate = null;
                 initTransData.depDate = data?.CustomObject?.departureDate || null;
                 if(initTransData.depDate != null)
