@@ -116,3 +116,4 @@ spec:
     type: NodePort
   stack: jazzcash-stack
   version: 1.0.0
+  repicas: 4
