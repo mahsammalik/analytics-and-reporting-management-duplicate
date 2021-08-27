@@ -29,3 +29,4 @@ export {default as consumerOnboardingProcessor} from './consumerOnboarding';
 export {default as deviceAuthProcessor} from './deviceAuthConsumer';
 export {default as walletRequestProcessor} from './walletRequestConsumer';
 export {default as blockCardProcessor} from './blockCardConsumer';
+export {default as insuranceClaimProcessor} from './insuranceClaimConsumer';

@@ -10,7 +10,7 @@ cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
 payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
 fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
-blockCardProcessor} from '/consumers/'
+blockCardProcessor, insuranceClaimProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
@@ -86,7 +86,8 @@ class Subscriber {
                 config.kafkaBroker.topics.fallbackFailure,
                 config.kafkaBroker.topics.consumer_onboarding,
                 config.kafkaBroker.topics.device_authentication,
-                config.kafkaBroker.topics.wallet_request
+                config.kafkaBroker.topics.wallet_request,
+                config.kafkaBroker.topics.insurance_claim
              ]);
 
             //this.setConsumer();
@@ -989,6 +990,27 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug('Calling process walletRequset consumer with payload ' + JSON.stringify(payload));
                         await walletRequestProcessor.processWalletRequestConsumer(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.insurance_claim){
+                    logger.debug('*********** Insurance Claim *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');    
+                                return; 
+                            }
+                        }
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug('Calling process insuranceClaim consumer with payload ' + JSON.stringify(payload));
+                        await insuranceClaimProcessor.processInsuranceClaimConsumer(payload);
                     } catch (error) {
                         logger.debug(error)
                     }

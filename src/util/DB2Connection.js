@@ -833,6 +833,25 @@ class DatabaseConn {
                 conn.close(function (err) { });
             }
         }
+
+        if (tableName === config.reportingDBTables.INSURANCE_CLAIM) {
+            let conn = await open(cn);
+            try {
+                // let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", JAZZCASH_ACCT_NUM, JAZZCASH_ACCT_TITLE, CLAIM_DESC, CHANNEL, TOP_NAME, MSG_OFFSET)
+                VALUES(TIMESTAMP_FORMAT('${data.date}','YYYY-MM-DD HH24:MI:SS'), '${data.msisdn}', '${data.title}', '${data.description}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                //conn.close(function (err) { });
+                logger.info(`${schemaName}.${tableName}_insert done`);
+            } catch (err) {
+                logger.error('Error in InsuranceClaim insertion')
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
