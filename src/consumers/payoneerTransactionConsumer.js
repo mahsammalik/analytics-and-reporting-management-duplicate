@@ -14,7 +14,8 @@ class Processor {
             let initTransData = {};
 
             initTransData.msisdn = data?.msisdn || '0';
-            initTransData.payUsername = data?.payoneerEmail || data?.account_details?.contact?.email || '';
+            initTransData.payUsername = data?.username || '';
+            initTransData.custLevel = data?.customerLevel || '';
             initTransData.pkrAmount = Number(data?.amountInPKR || '0');
             initTransData.usdAmount = Number(data?.transferAmount || '0');
             initTransData.exchangeRate = Number(data?.exchangeRate || '0');
