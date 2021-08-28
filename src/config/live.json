@@ -397,7 +397,8 @@
             "CARD_LINKING": "CARD_LINKING",
             "CARD_DELINK": "CARD_DELINK",
             "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
-            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE"
+            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE",
+            "PAYON_LOGIN": "PAYON_LOGIN"
         }
     }
 }

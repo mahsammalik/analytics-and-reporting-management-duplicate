@@ -852,6 +852,25 @@ class DatabaseConn {
                 conn.close(function (err) { });
             }
         }
+
+        if (tableName === config.reportingDBTables.PAYON_LOGIN) {
+            let conn = await open(cn);
+            try {
+                // let conn = await open(cn);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, JAZZCASH_EMAIL, PAYON_EMAIL, "DATE", CHANNEL, TOP_NAME, MSG_OFFSET)
+                VALUES('${data.msisdn}', '${data.email}', '${data.payEmail}', '${data.activityDate}', '${data.channel}' '${data.topic}', ${data.msg_offset});`);
+                stmt.executeSync();
+                stmt.closeSync();
+                //conn.close(function (err) { });
+                logger.info(`${schemaName}.${tableName}_insert done`);
+            } catch (err) {
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
+
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {

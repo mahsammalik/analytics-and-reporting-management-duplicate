@@ -10,7 +10,7 @@ cardLinkDelinkProcessor, scheduledTransactionsProcessor, accountUpgradeProcessor
 movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
 payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
 fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
-blockCardProcessor, insuranceClaimProcessor} from '/consumers/'
+blockCardProcessor, insuranceClaimProcessor, payoneerLoginProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
@@ -848,6 +848,8 @@ class Subscriber {
                         logger.debug(JSON.stringify(payload));
                         
                         await payoneerRegProcessor.processPayoneerRegConsumer(payload);
+                        // call login process for login report
+                        await payoneerLoginProcessor.processPayoneerLoginConsumer(payload);
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
