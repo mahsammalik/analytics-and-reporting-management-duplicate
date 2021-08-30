@@ -21,7 +21,7 @@ class Processor {
                 initTransData.request_submission_date = moment(data.request_submission_date, 'YYYY-MM-DDTHH:mm:ss').format('YYYY-MM-DD');
                 initTransData.request_processing_date = moment(data.request_processing_date, 'YYYY-MM-DDTHH:mm:ss').format('YYYY-MM-DD');
                 initTransData.processed_by = data.processed_by;
-                initTransData.status = data.failure_reason == "" ? "Success" : data.failure_reason.substr(0,15);
+                initTransData.status = data?.status || '';
                 initTransData.channel = data?.channel || "consumerApp";
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
