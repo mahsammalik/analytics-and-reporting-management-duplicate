@@ -858,7 +858,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, JAZZCASH_EMAIL, PAYON_EMAIL, "DATE", CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES('${data.msisdn}', '${data.email}', '${data.payEmail}', '${data.activityDate}', '${data.channel}' '${data.topic}', ${data.msg_offset});`);
+                VALUES('${data.msisdn}', '${data.email}', '${data.payEmail}', '${data.activityDate}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
