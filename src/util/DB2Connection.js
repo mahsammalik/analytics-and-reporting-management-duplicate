@@ -876,9 +876,13 @@ class DatabaseConn {
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
 
         try {
+            logger.info(`Step 01 a : Obtaining latest account balance`)
             let conn = await open(cn);
 
+            logger.info(`Obtained connection`)
+
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.info(`Step 02 b: mappedMSISDN `)
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where date(TRX_DATETIME)  <= '${endDate}' And MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} order by TRX_DATETIME desc limit 1;`);
             let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
@@ -890,7 +894,8 @@ class DatabaseConn {
 
             result.closeSync();
             stmt.closeSync();
-            conn.close(function (err) {logger.error(err) });
+            conn.close(function (err) { if (err) { logger.error(err) } });
+            logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
             return updatedBalance;
 
         } catch (err) {
@@ -995,8 +1000,9 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) {
-                logger.error("CONNECTION ERROR: ", err)
-                logger.error(err)
+                if (err) {
+                    logger.error(err)    
+                }                
             });
             return arrayResult;
 
