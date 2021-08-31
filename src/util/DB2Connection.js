@@ -890,11 +890,12 @@ class DatabaseConn {
 
             result.closeSync();
             stmt.closeSync();
-            conn.close(function (err) { });
+            conn.close(function (err) {logger.error(err) });
             return updatedBalance;
 
         } catch (err) {
             logger.error('Database connection error' + err);
+            logger.error(err);
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
         }
     }
@@ -994,7 +995,8 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             conn.close(function (err) {
-                logger.debug("CONNECTION ERROR: ", err)
+                logger.error("CONNECTION ERROR: ", err)
+                logger.error(err)
             });
             return arrayResult;
 

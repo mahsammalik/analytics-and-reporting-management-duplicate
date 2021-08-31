@@ -1,6 +1,7 @@
 import DB2Connection from '../util/DB2Connection';
 import {
     createPDF,
+    logger,
     taxStatementTemplate
 } from '../util/';
 import Notification from '../util/notification';
@@ -49,8 +50,11 @@ class taxStatementService {
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
+            logger.info(`Step 01: Obtained Tax Values array`)
 
             const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, payload.end_date);
+
+            logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
 
             logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
 
@@ -65,6 +69,7 @@ class taxStatementService {
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
+            logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
@@ -102,9 +107,11 @@ class taxStatementService {
                 });
 
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                logger.info(`Step 04: Sent email `)
             }
             else {
                 throw new Error(`Email Not provided`);
+                logger.error(`Email not provided`)
             }
 
             // myDoc.table(table0, {
@@ -114,6 +121,7 @@ class taxStatementService {
             // myDoc.end();
         } catch (err) {
             logger.error({ event: 'Error in pdf Creation' + err });
+            logger.error(err)
             return "PDF creation error";
         }
     }
