@@ -75,41 +75,53 @@ class taxStatementController {
 
 
     async calculateTaxStatement2(req, res, next) {
-        const headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
-        const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+        try {
+            logger.info({ event: 'Entered function', functionName: 'calculateTaxStatement2 in class taxStatementController', request: req.url, header: req.headers, query: req.query });
 
-        if (!headersValidationResponse.success) {
-            const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
-            return res.status(422).send(badHeader);
+            const headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
+            const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+
+            if (!headersValidationResponse.success) {
+                const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
+                return res.status(422).send(badHeader);
+            }
+            if (!queryValidationResponse.success) {
+                const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
+                logger.debug(queryValidationResponse);
+                return res.status(422).send(badQueryParam);
+            }
+            const metadataHeaders = req.headers['x-meta-data'];
+            const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+            const userProfile = await getUserProfile(req.headers);
+            logger.debug({ userProfile });
+            logger.debug(metadata," metadata")
+            let payload = {
+                msisdn: req.headers['x-msisdn'],
+                start_date: req.query.start_date,
+                end_date: req.query.end_date,
+                request: req.query.requestType,
+                email: req.query.email || metadata.emailAddress,
+                subject: 'Hello',
+                html: '<html></html>',
+                format: req.query.format,
+                metadata,
+                merchantName: userProfile.businessName || '',
+                accountLevel: userProfile.accountLevel || ''
+
+            };
+
+            res.locals.response = await this.taxStatementService.sendTaxStatementNew(payload, res);
+            logger.info({ event: 'Exited function', functionName: 'calculateTaxStatement2 in class taxStatementController' });
+            next();
+
+        } catch (error) {
+            logger.error({ event: 'Error thrown', functionName: 'calculateTaxStatement2 in class taxStatementController', 'error': { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, query: req.query });
+
+            logger.info({ event: 'Exited function', functionName: 'calculateTaxStatement2 in class taxStatementController' });
+
+            res.locals.response = false;
+            next();
         }
-        if (!queryValidationResponse.success) {
-            const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
-            logger.debug(queryValidationResponse);
-            return res.status(422).send(badQueryParam);
-        }
-        const metadataHeaders = req.headers['x-meta-data'];
-        const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-        const userProfile = await getUserProfile(req.headers);
-        logger.debug({ userProfile });
-        logger.debug(metadata," metadata")
-        let payload = {
-            msisdn: req.headers['x-msisdn'],
-            start_date: req.query.start_date,
-            end_date: req.query.end_date,
-            request: req.query.requestType,
-            email: req.query.email || metadata.emailAddress,
-            subject: 'Hello',
-            html: '<html></html>',
-            format: req.query.format,
-            metadata,
-            merchantName: userProfile.businessName || '',
-            accountLevel: userProfile.accountLevel || ''
-
-        };
-
-        res.locals.response = await this.taxStatementService.sendTaxStatementNew(payload, res);
-        next();
-
         //   const responseCodeForTaxStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");;
         //   res.status(200).json(responseCodeForTaxStatementQuery);
 
