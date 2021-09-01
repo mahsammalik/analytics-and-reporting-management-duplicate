@@ -6,6 +6,7 @@ import {
 } from '../util/';
 import Notification from '../util/notification';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
+import moment from 'moment';
 
 /**
  * Returns formated number like 1st, 2nd, 3rd, 4th
