@@ -874,10 +874,10 @@ class DatabaseConn {
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, endDate) {
+        let conn = await open(cn);
 
         try {
             logger.info(`Step 01 a : Obtaining latest account balance`)
-            let conn = await open(cn);
 
             logger.info(`Obtained connection`)
 
@@ -894,7 +894,6 @@ class DatabaseConn {
 
             result.closeSync();
             stmt.closeSync();
-            conn.close(function (err) { if (err) { logger.error(err) } });
             logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
             return updatedBalance;
 
@@ -902,6 +901,8 @@ class DatabaseConn {
             logger.error('Database connection error' + err);
             logger.error(err);
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+        } finally {
+            conn.close(function (err) { if (err) { logger.error(err) } });
         }
     }
 
