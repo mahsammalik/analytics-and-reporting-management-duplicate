@@ -71,11 +71,6 @@ spec:
   applicationImage: image-registry.openshift-image-registry.svc:5000/m11s/analytics:v3.3
   createKnativeService: false
   repicas: 4
-  resources:
-    limits:
-      cpu: 300m
-    requests:
-      cpu: 200m
   env:
     - name: CACHE_SERVER
       value: datagrid.datagrid-tests
