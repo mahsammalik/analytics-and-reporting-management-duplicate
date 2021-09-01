@@ -1,4 +1,6 @@
 import DB2Connection from '../util/DB2Connection';
+import { open } from 'ibm_db';
+const connectionString = config.DB2_Jazz.connectionString
 import {
     createPDF,
     logger,
@@ -44,6 +46,96 @@ class taxStatementService {
         this.sendTaxStatement = this.sendTaxStatement.bind(this);
         this.populateDataBase = this.populateDataBase.bind(this);
     }
+
+
+    async sendTaxStatementNew(payload, res) {
+        logger.debug("email pdf", payload);
+        try {
+            let conn = await open(connectionString);
+            const data = await DB2Connection.getTaxValueArrayWithConn(payload.msisdn, payload.end_date, payload.start_date,conn);
+            logger.debug("the output of changing database " + data);
+            if (data === 'Database Error') return "Database Error";
+            logger.info(`Step 01: Obtained Tax Values array`)
+
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValueWithConn(payload.msisdn, payload.end_date,conn);
+
+            logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
+
+            logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+
+            payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
+            const accountData = {
+                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
+                data,
+                payload
+            };
+            const htmlTemplate = taxStatementTemplate(accountData);
+            let pdfFile = await createPDF({
+                template: htmlTemplate,
+                fileName: `Tax Statement`
+            });
+            logger.info(`Step 03: Obtained htmlTemplate for tax`)
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            const emailData = [{
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
+            ];
+            const attachment = [{
+                filename: 'Tax Certificate.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
+            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                const attachment = [{
+                    filename: 'TaxStatement.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
+                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                logger.info(`Step 04: Sent email `)
+            }
+            else {
+                throw new Error(`Email Not provided`);
+                logger.error(`Email not provided`)
+            }
+
+            // myDoc.table(table0, {
+            //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
+            //     prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
+            // });
+            // myDoc.end();
+        } catch (err) {
+            logger.error({ event: 'Error in pdf Creation' + err });
+            logger.error(err)
+            return "PDF creation error";
+        }finally {
+            logger.info('Executing finally ');
+            conn.close(function (err) { if (err) { logger.error(err) } });
+        }
+        
+    }
+
+
 
     async sendTaxStatement(payload, res) {
         logger.debug("email pdf", payload);

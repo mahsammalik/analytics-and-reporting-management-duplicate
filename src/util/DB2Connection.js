@@ -906,6 +906,37 @@ class DatabaseConn {
         }
     }
 
+    async getLatestAccountBalanceValueWithConn(customerMobileNumer, endDate,conn) {
+     
+        try {
+            logger.info(`Step 01 a : Obtaining latest account balance`)
+
+            logger.info(`Obtained connection`)
+
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.info(`Step 02 b: mappedMSISDN `)
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where date(TRX_DATETIME)  <= '${endDate}' And MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} order by TRX_DATETIME desc limit 1;`);
+            let result = stmt.executeSync();
+            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            let updatedBalance = 0.00;
+
+            resultArrayFormat.forEach((row) => {
+                updatedBalance = row[row.length - 1];
+            });
+
+            result.closeSync();
+            stmt.closeSync();
+            logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
+            return updatedBalance;
+
+        } catch (err) {
+            logger.error('Database connection error' + err);
+            logger.error(err);
+            throw err;
+           // return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+        } 
+    }
+
 
     async getValue(customerMobileNumer, endDate, startDate) {
 
@@ -1012,6 +1043,32 @@ class DatabaseConn {
             });
         }
     }
+
+    async getTaxValueArrayWithConn(customerMobileNumer, endDate, startDate,conn) {
+        try {
+
+            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.debug("Updated Msisdn" + mappedMsisdn);
+            logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
+            //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+            const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;`);
+            const result = stmt.executeSync();
+            const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            logger.debug("Exited getTaxValueArray: ", arrayResult)
+            result.closeSync();
+            stmt.closeSync();
+            return arrayResult;
+
+        } catch (err) {
+            logger.error('Database connection error' + err);
+            throw err;
+        }
+    }
+
+
+
+
+
 
     async addAccountStatement(msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance) {
 

@@ -133,7 +133,9 @@ router.get(
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
 );
-
+router.get(
+    '/tax2', msisdnParserMW(), taxStatementController.calculateTaxStatement2, responseCodeMW,
+);
 router.get(
     '/ibft/incoming/:startDate/:endDate', excelExportController.jazzcashIncomingExport
 );
