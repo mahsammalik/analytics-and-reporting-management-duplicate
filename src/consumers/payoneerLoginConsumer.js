@@ -16,7 +16,7 @@ class Processor {
             initTransData.msisdn = data?.msisdn || '0';
             initTransData.payEmail = data?.account_details?.contact?.email || '';
             initTransData.email = data?.account_details?.jazzEmail || '';
-            initTransData.activityDate = moment(data?.data?.consented_on).format('YYYY-MM-DD HH:mm:ss');
+            initTransData.activityDate = moment.unix(data?.data?.consented_on).format('YYYY-MM-DD HH:mm:ss');
             initTransData.channel = data?.channel || 'consumerApp';
             initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
