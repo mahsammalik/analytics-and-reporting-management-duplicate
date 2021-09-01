@@ -13,6 +13,7 @@ class taxStatementController {
     constructor(service) {
         this.taxStatementService = service;
         this.calculateTaxStatement = this.calculateTaxStatement.bind(this);
+        this.calculateTaxStatement2 = this.calculateTaxStatement2.bind(this);
     }
 
     async calculateTaxStatement(req, res, next) {
