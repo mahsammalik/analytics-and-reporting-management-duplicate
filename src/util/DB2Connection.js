@@ -997,7 +997,7 @@ class DatabaseConn {
 
             const conn = await open(cn);
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where TRX_DATETIME BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
