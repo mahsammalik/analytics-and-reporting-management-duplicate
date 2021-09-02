@@ -1110,6 +1110,16 @@ class DatabaseConn {
         }
     }
 
+    // for test_db2 route to test get balance query
+    async getBalance(req, res) {
+        let msisdn = req.headers['x-msisdn'];
+        let end_date = req.query.end_date;
+
+        logger.inf("Calling getLatestAccountBalanceValue function");
+        let balance = await getLatestAccountBalanceValue(msisdn, end_date);
+        logger.info("balance returned : ", balance);
+        res.status(200).send();
+    }
 
 }
 

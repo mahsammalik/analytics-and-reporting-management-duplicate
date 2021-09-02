@@ -147,4 +147,8 @@ router.get(
 router.get(
     '/testingpdf', msisdnParserMW(), accountStatement.calculateAccountStatementTEMPLATE,
 );
+
+router.get(
+    '/test_db2', msisdnParserMW(), DB2Connection.getBalance
+);
 export default router;
