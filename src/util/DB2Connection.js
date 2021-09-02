@@ -1115,8 +1115,8 @@ class DatabaseConn {
         let msisdn = req.headers['x-msisdn'];
         let end_date = req.query.end_date;
 
-        logger.inf("Calling getLatestAccountBalanceValue function");
-        let balance = await getLatestAccountBalanceValue(msisdn, end_date);
+        logger.info("Calling getLatestAccountBalanceValue function");
+        let balance = await this.getLatestAccountBalanceValue(msisdn, end_date);
         logger.info("balance returned : ", balance);
         res.status(200).send();
     }
