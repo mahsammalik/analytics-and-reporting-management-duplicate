@@ -26,7 +26,11 @@ class Processor {
                 initTransData.activityDate = moment(initTransData.activityDate).format('YYYY-MM-DD HH:mm:ss');
             }
             initTransData.channel = data?.channel || 'consumerApp';
-            initTransData.topic = data.topic;
+            initTransData.cust_level = data?.account_details?.customerLevel || '';
+            initTransData.status = 'In-Progress';
+            initTransData.payoutType = data?.account_details?.type || '';
+            initTransData.jcEmail = data?.account_details?.jazzEmail || '';
+              initTransData.topic = data.topic;
             initTransData.msg_offset = Number(data.msg_offset);
 
             logger.debug(JSON.stringify(initTransData));

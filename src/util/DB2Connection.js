@@ -637,8 +637,8 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PAYON_USERNAME, CREATED_ON, CHANNEL, TOP_NAME, MSG_OFFSET, EMAIL, COUNTRY, CITY, ZIPCODE, ADDRESS, STATUS_TEXT)
-                VALUES('${data.msisdn}', '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.email}', '${data.country}', '${data.city}', '${data.zip_code}', '${data.address}', '${data.status_text}');`);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PAYON_USERNAME, CREATED_ON, CHANNEL, TOP_NAME, MSG_OFFSET, EMAIL, COUNTRY, CITY, ZIPCODE, ADDRESS, STATUS_TEXT, CUST_LEVEL, CUST_JAZCASH_EMAIL, STATUS, PAYOUT_TYPE)
+                VALUES('${data.msisdn}', '${data.payUsername}', TIMESTAMP_FORMAT('${data.activityDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.email}', '${data.country}', '${data.city}', '${data.zip_code}', '${data.address}', '${data.status_text}', '${data.cust_level}', '${data.jcEmail}', '${data.status}', '${data.payoutType}');`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
