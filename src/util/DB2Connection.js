@@ -906,15 +906,15 @@ class DatabaseConn {
         }
     }
 
-    async getLatestAccountBalanceValueWithConn(customerMobileNumer, endDate,conn) {
+    async getLatestAccountBalanceValueWithConn(customerMobileNumer, mappedMsisdn, endDate,conn) {
      
         try {
             logger.info(`Step 01 a : Obtaining latest account balance`)
 
             logger.info(`Obtained connection`)
 
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            logger.info(`Step 02 b: mappedMSISDN `);
+            // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            // logger.info(`Step 02 b: mappedMSISDN `);
 
             var query = `Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`;
             logger.info('QUERU '+query);
@@ -1052,11 +1052,11 @@ class DatabaseConn {
         }
     }
 
-    async getTaxValueArrayWithConn(customerMobileNumer, endDate, startDate,conn) {
+    async getTaxValueArrayWithConn(customerMobileNumer, mappedMsisdn, endDate, startDate,conn) {
         try {
 
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            logger.debug("Updated Msisdn" + mappedMsisdn);
+            // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            // logger.debug("Updated Msisdn" + mappedMsisdn);
             logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);

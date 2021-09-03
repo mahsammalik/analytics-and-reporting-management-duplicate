@@ -9,6 +9,7 @@ import {
 import Notification from '../util/notification';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
+import MsisdnTransformer from '../util/msisdnTransformer';
 
 /**
  * Returns formated number like 1st, 2nd, 3rd, 4th
@@ -51,13 +52,25 @@ class taxStatementService {
     async sendTaxStatementNew(payload, res) {
         logger.debug("email pdf", payload);
         try {
+            
+            let mappedMSISDN = payload.msisdn;
+            if(payload.msisdn.startsWith('03'))
+            {
+                mappedMSISDN = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'international'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            }
+            else
+            {
+                mappedMSISDN = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            }
+            logger.info(`Step 02 b: mappedMSISDN: `, mappedMSISDN);
+
             let conn = await open(connectionString);
-            const data = await DB2Connection.getTaxValueArrayWithConn(payload.msisdn, payload.end_date, payload.start_date,conn);
+            const data = await DB2Connection.getTaxValueArrayWithConn(payload.msisdn, mappedMSISDN, payload.end_date, payload.start_date,conn);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
             logger.info(`Step 01: Obtained Tax Values array`)
 
-            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValueWithConn(payload.msisdn, payload.end_date,conn);
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValueWithConn(payload.msisdn, mappedMSISDN, payload.end_date,conn);
 
             logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
 
