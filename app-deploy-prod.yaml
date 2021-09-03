@@ -60,7 +60,6 @@ metadata:
     vcs-type: git
     vendor: Kabanero
     version: 0.4.8
-
   creationTimestamp: null
   labels:
     image.opencontainers.org/title: analytics
