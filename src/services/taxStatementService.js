@@ -145,12 +145,12 @@ class taxStatementService {
     async sendTaxStatement(payload, res) {
         logger.debug("email pdf", payload);
         try {
-            const data = await DB2Connection.getTaxValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
-            logger.info(`Step 01: Obtained Tax Values array`)
 
-            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, payload.end_date);
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
 
             logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
 
