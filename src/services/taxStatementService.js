@@ -53,15 +53,7 @@ class taxStatementService {
         logger.debug("email pdf", payload);
         try {
             
-            let mappedMSISDN = payload.msisdn;
-            if(payload.msisdn.startsWith('03'))
-            {
-                mappedMSISDN = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'international'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            }
-            else
-            {
-                mappedMSISDN = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            }
+            let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.info(`Step 02 b: mappedMSISDN: `, mappedMSISDN);
 
             let conn = await open(connectionString);
