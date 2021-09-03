@@ -12,6 +12,7 @@ import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
 import DB2Connection from './util/DB2Connection';
+import { open } from 'ibm_db';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -53,12 +54,26 @@ app.use((err, req, res, next) => {
 app.get('/test_db', async (req, res) => {
     let msisdn = req.headers['x-msisdn'];
     let end_date = req.query.end_date;
+    const connectionString = config.DB2_Jazz.connectionString;
+    let conn=null;
+    try{
+    conn = await open(connectionString);
 
     logger.info("Calling DB2 getLatestAccountBalanceValue function ", msisdn, end_date);
-    let balance = await DB2Connection.getLatestAccountBalanceValue(msisdn, end_date);
+    let balance = await DB2Connection.getLatestAccountBalanceValueWithConn(msisdn, end_date,conn);
     logger.info("Returned latest balance: ", balance);
 
     res.status(200).send();
+    }
+    catch(e)
+    {
+        logger.error('Exception '+e);
+    }
+    finally{
+        logger.info('Executing Finally ');
+        conn.close(function (err) { if (err) { logger.error(err) } });
+    }
+    
 });
 
 module.exports = () => app;
