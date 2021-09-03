@@ -11,6 +11,7 @@ import { Subscriber } from '/services/';
 import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
+import DB2Connection from './util/DB2Connection';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -47,6 +48,17 @@ app.use((err, req, res, next) => {
         message: err.message,
         errors: err.errors,
     });
+});
+
+app.get('/test_db', (req, res) => {
+    let msisdn = req.headers['x-msisdn'];
+    let end_date = req.query.end_date;
+
+    logger.info("Calling DB2 getLatestAccountBalanceValue function ", msisdn, end_date);
+    let balance = await DB2Connection.getLatestAccountBalanceValue(msisdn, end_date);
+    logger.info("Returned latest balance: ", balance);
+
+    res.status(200).send();
 });
 
 module.exports = () => app;
