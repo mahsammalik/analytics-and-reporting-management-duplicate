@@ -43,14 +43,14 @@ metadata:
     s2i.io/scripts-url: image:///usr/libexec/s2i
     s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
     stack.appsody.dev/authors: Jahangir Khalid <>
-    stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.4
+    stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.5
     stack.appsody.dev/created: '2020-09-22T20:56:51+05:00'
     stack.appsody.dev/description: Express web framework for Node.js
     stack.appsody.dev/documentation: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/README.md
     stack.appsody.dev/licenses: Apache-2.0
     stack.appsody.dev/revision: 413f3cfe884a164073571036b4988d87c905911d-modified
     stack.appsody.dev/source: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/image
-    stack.appsody.dev/tag: dev.local/appsody/jazzcash-appsody-stack:0.4.8
+    stack.appsody.dev/tag: dev.local/appsody/jazzcash-appsody-stack:0.5.0
     stack.appsody.dev/title: Node.js Express
     stack.appsody.dev/url: https://github.com/JazzCash/jazzcash-appsody-stack
     summary: Image for Kabanero Node.js Express development
@@ -59,12 +59,12 @@ metadata:
     vcs-ref: a6b3970d86fb885d9c20445676a2f31aa9bedf0b
     vcs-type: git
     vendor: Kabanero
-    version: 0.4.8
+    version: 0.5.0
   creationTimestamp: null
   labels:
     image.opencontainers.org/title: analytics
     stack.appsody.dev/id: jazzcash-appsody-stack
-    stack.appsody.dev/version: 0.4.8
+    stack.appsody.dev/version: 0.5.0
   name: analytics
   namespace: m11s
 spec:
