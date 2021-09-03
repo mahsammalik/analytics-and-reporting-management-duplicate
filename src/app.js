@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.get('/test_db', (req, res) => {
+app.get('/test_db', async (req, res) => {
     let msisdn = req.headers['x-msisdn'];
     let end_date = req.query.end_date;
 
