@@ -917,7 +917,7 @@ class DatabaseConn {
             logger.info(`Step 02 b: mappedMSISDN `);
 
             var query = `Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`;
-            logger.infor('QUERU '+query);
+            logger.info('QUERU '+query);
             var result = conn.queryResultSync(query);
             //const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`);
             logger.info(`Step 03 b: prepareSynced Success `)
@@ -933,7 +933,7 @@ class DatabaseConn {
             // });
 
             result.closeSync();
-            stmt.closeSync();
+           // stmt.closeSync();
             logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
             return updatedBalance;
 
