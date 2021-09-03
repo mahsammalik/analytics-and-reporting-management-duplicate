@@ -919,7 +919,10 @@ class DatabaseConn {
             let result = await stmt.executeSync();
             //let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
            // let updatedBalance = 0.00;
+            logger.info('After prepare sync connection');
+
             let updatedBalance = result.fetchAllSync();
+            logger.info('updated Balance'+updatedBalance);
             // resultArrayFormat.forEach((row) => {
             //     updatedBalance = row[row.length - 1];
             // });
