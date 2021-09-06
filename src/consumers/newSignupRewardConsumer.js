@@ -31,7 +31,7 @@ class Processor {
                 if (initTransData.transactionTime !== '') {
                     initTransData.transactionTime = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                 }
-                initTransData.postingStatus = isConfirm ? 'Completed' : 'Pending';
+                initTransData.postingStatus = 'Completed';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.topic = data.topic;
