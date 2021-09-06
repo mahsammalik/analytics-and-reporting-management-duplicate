@@ -14,6 +14,9 @@ const axiosInterceptor = () => {
       if (reqDataCopy && reqDataCopy.attachments) { // This is done to avoid lenghty base 64 encoded values of emails attachments to be printed while making calls to the Notification service for emails
         delete reqDataCopy.attachments;
       }
+      if (reqDataCopy && reqDataCopy.data && Array.isArray(reqDataCopy.data)) {
+        reqDataCopy.data = reqDataCopy.data.filter(o=>!(o.key && o.key=="htmlTemplate")) // Remove htmlTemplate as its noisy for logs
+      }
 
         //logger.log({level:'info',msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,headers:req.}); 
         if(requestObj){
