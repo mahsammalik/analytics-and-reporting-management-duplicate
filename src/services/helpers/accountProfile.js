@@ -128,7 +128,7 @@ const getUserProfile = headers => {
 			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
 			logger.debug("userGetProfileidentityinformationURL", res);
 			logger.info({
-				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL', res, levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
+				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL',levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
 			});
 			let accLevel = result.data.data.level || '';
 			// logger.info({
