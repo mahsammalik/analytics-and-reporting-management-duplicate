@@ -891,7 +891,7 @@ class DatabaseConn {
             result.closeSync();
             stmt.closeSync();
             // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
-            return updatedBalance;
+            return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
 
         } catch (err) {
             logger.error('Database connection error' + err);
@@ -935,7 +935,7 @@ class DatabaseConn {
             result.closeSync();
            // stmt.closeSync();
             logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
-            return updatedBalance;
+            return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
 
         } catch (err) {
             logger.error('Database connection error' + err);
