@@ -23,13 +23,20 @@ class Processor {
                     const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
-                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.cardNum = 0;
+                // get msisdn from Request object (if avaialable)
+                initTransData.msisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'CustomerMSISDN'; })?.Value || '0';
+                // if msisdn not found in Request object then get it from CustomObject
+                if(initTransData.msisdn === '0')
+                {
+                    initTransData.msisdn = data?.CustomObject?.customerMSISDN || '0';
+                }
+                initTransData.cardNum = data?.CustomObject?.maskedCardNo || '0';
                 initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.retrivalRef = 0;
+                initTransData.retrivalRef = data?.CustomObject?.txnRefNo || '';
                 initTransData.cashInTransID = 0;
-                initTransData.cashInTransStatus = '';
+                initTransData.cashInTransStatus = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'IsSuccess'; })?.Value || false;
+                initTransData.cashInTransStatus = initTransData.cashInTransStatus == true ? 'Completed' : ''
                 initTransData.cashInTransTime = null,
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.topic = data.topic;
