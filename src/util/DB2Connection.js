@@ -264,7 +264,7 @@ class DatabaseConn {
                 if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, CARD_NUM, CARD_TRANS_ID, TRANS_AMOUNT, TRANS_DATE, TRANS_STATUS, RETRIEVAL_REFERENCE, CASHIN_TRANSID, CASHIN_TRANSTATUS, CASHIN_AMOUNT, CASHIN_TRANSTIME, CHANNEL, TOP_NAME, MSG_OFFSET) 
-                    VALUES('${data.msisdn}', '${data.cardNum}', '${data.TID}', ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', '${data.retrivalRef}', ${data.cashInTransID}, '${data.cashInTransStatus}', ${data.amount}, ${data.cashInTransTime}, '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                    VALUES('${data.msisdn}', '${data.cardNum}', '${data.TID}', ${data.amount}, TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.transactionStatus}', '${data.retrivalRef}', '${data.cashInTransID}', '${data.cashInTransStatus}', ${data.amount}, TIMESTAMP_FORMAT('${data.cashInTransTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });

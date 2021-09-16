@@ -34,10 +34,10 @@ class Processor {
                 initTransData.TID = data?.Result?.TransactionID || '0';
                 initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
                 initTransData.retrivalRef = data?.CustomObject?.txnRefNo || '';
-                initTransData.cashInTransID = 0;
+                initTransData.cashInTransID = initTransData.TID;
                 initTransData.cashInTransStatus = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'IsSuccess'; })?.Value || false;
                 initTransData.cashInTransStatus = initTransData.cashInTransStatus == true ? 'Completed' : ''
-                initTransData.cashInTransTime = null,
+                initTransData.cashInTransTime = initTransData.transactionTime,
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
