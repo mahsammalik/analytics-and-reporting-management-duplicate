@@ -101,6 +101,17 @@ spec:
   monitoring:
     labels:
       k8s-app: jazzcash-project
+  resourceConstraints:
+    limits:
+      memory: 512Mi
+      cpu: '0.3'
+    requests:
+      memory: 56Mi
+      cpu: '120m'
+  autoscaling:
+    maxReplicas: 10
+    minReplicas: 2
+    targetCPUUtilizationPercentage: 75
   readinessProbe:
     failureThreshold: 12
     httpGet:
