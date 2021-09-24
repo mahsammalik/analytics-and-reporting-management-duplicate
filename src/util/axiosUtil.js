@@ -22,6 +22,9 @@ const axiosInterceptor = () => {
         if(requestObj){
           logger.log({message:"Third Party Request ",level:'info',showDetails:true, msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:req.url,axiosMethod:req.method,axiosRequestData:reqDataCopy}); 
         }
+        else {
+          logger.log({ message: "Third Party Request without requestObj defined", level: 'info', showDetails: true, axiosURL: req.url, axiosMethod: req.method, axiosRequestData: req.data });
+        }
         //logger.debug({ url: req.url, method: req.method });
         const localPort = Number(LOCAL_PORT_NUMBER);
         if (logObj && logObj.requestID && req.url.indexOf(localPort) !== -1) {

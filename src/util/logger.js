@@ -1,6 +1,7 @@
 import httpContext from 'express-http-context';
 import { createLogger, format, transports } from 'winston';
-import stringify from 'json-stringify-safe';
+// import stringify from 'json-stringify-safe';
+import stringify from 'fast-safe-stringify';
 const { combine, timestamp, label, printf } = format;
 const PRODUCTION_LOG_LEVEL = process.env.PRODUCTION_LOG_LEVEL || 'debug';
 const MASKING_KEYS = process.env.MASKING_KEYS || "password, pin";
