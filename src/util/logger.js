@@ -23,7 +23,7 @@ const customFormat = printf((info) => {
         log = maskInput(log);
     }
     if (info instanceof Error) {
-        log = `[ERROR:] ${info.timestamp} ${stringify(info.message)} ${stringify(info.stack)} ${stringify(info)}`
+        log = `[ERROR:] ${info.timestamp} ${infoCopy.msisdn} ${infoCopy.requestID} ${stringify(info.message)} ${stringify(info.stack)}}`
     }
     return log;
 });
