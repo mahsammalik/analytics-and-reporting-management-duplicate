@@ -1,7 +1,8 @@
 import { logger } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import moment from 'moment';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
+// const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
+const SCHEMA = "COMMON"
 
 class Processor {
 
@@ -48,9 +49,15 @@ class Processor {
                 return param.Key == 'ChannelCode';
             })?.Value || '0';
 
-            confirmData.status = 'Complete';
+            confirmData.completionStatus = 'Complete';
 
             if (JSON.stringify(confirmData) !== '{}') {
+
+                logger.info({
+                    event: 'cashtogood redeem data to be inserted in db2',
+                    functionName: 'processCashToGoodRedeemConsumer in class Processor',
+                    data: confirmData
+                });
 
                 if (process.env.NODE_ENV === 'development') {
                     await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.CASHTOGOOD_REDEEM, confirmData);
