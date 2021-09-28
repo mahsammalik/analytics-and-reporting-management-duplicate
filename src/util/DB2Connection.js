@@ -449,8 +449,8 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, DELINK_STATUS, RETRIEVE_REF, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', '${data.retrieveRef}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, RETRIEVE_REF, CHANNEL, TOP_NAME, MSG_OFFSET)
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.retrieveRef}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
@@ -467,8 +467,8 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, CHANNEL, TOP_NAME, MSG_OFFSET)
-                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.topic}', ${data.msg_offset});`);
+                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, DELINK_STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
+                VALUES('${data.msisdn}', TIMESTAMP_FORMAT('${data.transDate}','YYYY-MM-DD HH24:MI:SS'), '${data.isDelinkSuccess}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });
