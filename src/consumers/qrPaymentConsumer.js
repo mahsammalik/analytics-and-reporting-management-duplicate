@@ -29,10 +29,10 @@ class Processor {
                 initTransData.merchAccount = data?.Header?.Identity?.ReceiverParty?.Identifier || '0';
                 initTransData.merchBalance = 0;
                 initTransData.merchantBank = data?.CustomObject?.merchantBank || '';
-                initTransData.merchCategoryCode = '';
+                initTransData.merchCategoryCode = data?.CustomObject?.mcc || '';
                 initTransData.merchCategoryType = '';
-                initTransData.merchID = data?.CustomObject?.merchantTillID || '0';
-                initTransData.merchantName = data?.CustomObject?.merchantName || '';
+                initTransData.merchID = initTransData.merchAccount;
+                initTransData.merchantName = data?.CustomObject?.merchantDetails?.name || data?.CustomObject?.merchantName || '';
                 initTransData.paidVia = data?.CustomObject?.paidVia || '';
                 initTransData.qrCode = data?.CustomObject?.qrString || data?.CustomObject?.qrCode || '';
                 initTransData.qrType = data?.CustomObject?.qrType || '';
