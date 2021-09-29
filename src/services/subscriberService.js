@@ -11,7 +11,8 @@ import {
     movieTicketsProcessor, doorstepCashinProcessor, careemVoucherProcessor, payoneerRegProcessor,
     payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
     fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
-    blockCardProcessor, insuranceClaimProcessor, payoneerLoginProcessor, cashToGoodProcessor, cashToGoodRedeemProcessor
+    blockCardProcessor, insuranceClaimProcessor, payoneerLoginProcessor, cashToGoodProcessor, cashToGoodRedeemProcessor,
+    multiPaymentQrPaymentProcessor, cashToGoodRefundProcessor
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
@@ -92,7 +93,9 @@ class Subscriber {
             config.kafkaBroker.topics.insurance_claim,
 
             config.kafkaBroker.topics.cashToGoodConfirm,
-            config.kafkaBroker.topics.cashToGoodConfirmRedeem
+            config.kafkaBroker.topics.cashToGoodConfirmRedeem,
+            config.kafkaBroker.topics.multipayment_qr_payment_passed,
+            config.kafkaBroker.topics.cashToGoodRefund,
 
         ]);
 
@@ -1064,6 +1067,54 @@ class Subscriber {
 
                     logger.info('Calling process cashToGood redeem consumer with payload ' + JSON.stringify(payload));
                     await cashToGoodRedeemProcessor.processCashToGoodRedeemConsumer(payload);
+
+                }
+                if (msg.topic === config.kafkaBroker.topics.multipayment_qr_payment_passed) {
+
+                    let payload = null;
+
+                    try {
+
+                        payload = JSON.parse(msg.value);
+
+                    }
+                    catch (jsonParsingError) {
+
+                        if (jsonParsingError.message.includes(`Unexpected token`)) {
+                            logger.error('This is not a valid JSON hence skipping');
+                            return;
+                        }
+                    }
+
+                    payload.topic = msg.topic;
+                    payload.msg_offset = msg.offset;
+
+                    logger.info('Calling process multipayment_qr_payment_passed consumer with payload ' + JSON.stringify(payload));
+                    await multiPaymentQrPaymentProcessor.processMultiPaymentQrPaymentConsumer(payload);
+
+                }
+                if (msg.topic === config.kafkaBroker.topics.cashToGoodRefund) {
+
+                    let payload = null;
+
+                    try {
+
+                        payload = JSON.parse(msg.value);
+
+                    }
+                    catch (jsonParsingError) {
+
+                        if (jsonParsingError.message.includes(`Unexpected token`)) {
+                            logger.error('This is not a valid JSON hence skipping');
+                            return;
+                        }
+                    }
+
+                    payload.topic = msg.topic;
+                    payload.msg_offset = msg.offset;
+
+                    logger.info('Calling process cashToGoodRefund consumer with payload ' + JSON.stringify(payload));
+                    await cashToGoodRefundProcessor.processCashToGoodRefundConsumer(payload);
 
                 }
             } catch (error) {

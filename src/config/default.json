@@ -169,8 +169,10 @@
                 "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
                 "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
                 "fallbackFailure": "Consumer_Fallback_Failure",
-                "cashToGoodConfirm" : "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
-                "cashToGoodConfirmRedeem" : "ESB_Mobile_CashToGoodRedeem_Confirm_Passed"
+                "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
+                "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
+                "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
             }
         },
         "cache": {
@@ -358,8 +360,8 @@
             "CARD_DELINK": "COMMON_CARD_DELINK",
             "SCHEDULED_TRANSACTIONS": "COMMON_SCHEDULED_TRANSACTIONS",
             "ACCOUNT_UPGRADE": "COMMON_ACCOUNT_UPGRADE",
-            "CASHTOGOOD" : "CASHTOGOOD",
-            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM"
+            "CASHTOGOOD": "CASHTOGOOD",
+            "CASHTOGOOD_REDEEM": "CASHTOGOOD_REDEEM"
         }
     }
 }

@@ -907,34 +907,65 @@ class DatabaseConn {
 
             try {
 
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} 
-                (
-                    senderMsisdn,
-                    txID,
-                    txEndDate, 
-                    txEndTime, 
-                    amount,
-                    chCode,
-                    completionStatus
-                )
+                let stmt = "";
 
-                VALUES
-                (
-                    '${data.senderMsisdn}',
-                    '${data.txID}', 
-                    '${data.txEndDate}',
-                    '${data.txEndTime}', 
-                    '${data.amount}',
-                    '${data.chCode}',
-                    '${data.completionStatus}'
+                if (data.multiPaymentQrpayment) {
 
-                );`
-                );
+                    stmt = conn.prepareSync(`
+                            UPDATE ${schemaName}.${tableName} 
+                            SET
+                                qrPaymentTransactionId='${data.qrPaymentTransactionId}',
+                                depositTransactionId='${data.depositTransactionId}'
+
+                            WHERE
+                                redeemTransactionId='${data.redeemTransactionId}'
+                            `
+                    );
+
+                } else if (data.cashToGoodRefund) {
+
+                    stmt = conn.prepareSync(`
+                        UPDATE ${schemaName}.${tableName} 
+                        SET
+                            refundTransactionId='${data.refundTransactionId}'
+
+                        WHERE
+                            redeemTransactionId='${data.redeemTransactionId}'
+                        `
+                    );
+
+                } else {
+
+                    stmt = conn.prepareSync(`
+                    INSERT INTO ${schemaName}.${tableName} 
+                    (
+                        senderMsisdn,
+                        redeemTransactionId,
+                        txEndDate, 
+                        txEndTime, 
+                        amount,
+                        chCode,
+                        completionStatus
+                    )
+
+                    VALUES
+                    (
+                        '${data.senderMsisdn}',
+                        '${data.redeemTransactionId}', 
+                        '${data.txEndDate}',
+                        '${data.txEndTime}', 
+                        '${data.amount}',
+                        '${data.chCode}',
+                        '${data.completionStatus}'
+
+                    );`
+                    );
+                }
 
                 stmt.executeSync();
                 stmt.closeSync();
 
-                logger.info(`${schemaName}.${tableName}_insert done`);
+                logger.info(`${schemaName}.${tableName}_${data.multiPaymentQrpayment || data.cashToGoodRefund ? 'update' : 'insert'} done`);
 
             } catch (err) {
 
@@ -946,6 +977,7 @@ class DatabaseConn {
             }
 
         }
+
 
     }
 

@@ -33,3 +33,5 @@ export { default as insuranceClaimProcessor } from './insuranceClaimConsumer';
 export { default as payoneerLoginProcessor } from './payoneerLoginConsumer';
 export { default as cashToGoodProcessor } from './cashToGoodConsumer';
 export { default as cashToGoodRedeemProcessor } from './cashToGoodRedeemConsumer';
+export { default as cashToGoodRefundProcessor } from './cashToGoodRefundConsumer';
+export { default as multiPaymentQrPaymentProcessor } from './multiPaymentQrPaymentConsumer';
