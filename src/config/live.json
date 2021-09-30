@@ -212,8 +212,10 @@
                 "wallet_request": "Consumer_Wallet_Success",
                 "insurance_claim": "claims",
 
-                "cashToGoodConfirm" : "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
-                "cashToGoodConfirmRedeem" : "ESB_Mobile_CashToGoodRedeem_Confirm_Passed"
+                "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
+                "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
+                "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
             }
         },
         "cache": {
