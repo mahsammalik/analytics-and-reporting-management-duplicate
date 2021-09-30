@@ -99,7 +99,7 @@ class Broker {
                 // start consuming messages
                 setInterval(function() {
                    consumer.consume(1);
-                 }, 2000);
+                 }, 1000);
                 
                 //consumer.consume(); disabling flowing mode, go for non-flowing mode instead
             });
