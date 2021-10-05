@@ -135,6 +135,13 @@ class accountStatementService {
             //     const { data, success, message } = response;
             // if (success) {
             if (db2Data.length > 0) {
+                // if description column is null then replace it with HTML hidden space
+                db2Data = db2Data.map(arr => {
+                    if(arr[5] == null)
+                        arr[5] = '&#8203';  // &#8203 for HTML hidden space
+                    return arr;
+                });
+        
                 db2Data = db2Data.map((dat) => {
                     dat.splice(0, 1);
                     let b = dat[1];
