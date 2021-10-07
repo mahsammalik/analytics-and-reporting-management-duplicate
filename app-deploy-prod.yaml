@@ -92,7 +92,7 @@ spec:
     - name: NODE_ENV
       value: production
     - name: KAFKA_TOPICS_CONSUME_INTERVAL
-      value: 1000
+      value: '1000'
   expose: true
   livenessProbe:
     failureThreshold: 12
