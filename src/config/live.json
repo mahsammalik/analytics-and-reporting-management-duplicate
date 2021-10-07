@@ -68,6 +68,7 @@
             "brokers": "kafka:9092",
             "topicName": "jazz-topic",
             "pollInterval": 100,
+            "topics_consume_interval": 1000,
             "consumerGroupID": "test-consumer",
             "commit-msgs-after": 1,
             "numMessages": 1,

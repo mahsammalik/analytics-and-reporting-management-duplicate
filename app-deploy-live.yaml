@@ -90,6 +90,8 @@ spec:
         configMapKeyRef:
           name: consumer-groups
           key: CONSUMER_GROUP_ANALYTICS
+    - name: KAFKA_TOPICS_CONSUME_INTERVAL
+      value: 1000
   expose: true
   livenessProbe:
     failureThreshold: 12
