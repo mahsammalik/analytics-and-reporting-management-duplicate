@@ -18,6 +18,8 @@ import {
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
 //let instance = null;
 
+let instance = null;
+
 class Subscriber {
 
     constructor() {
@@ -1124,7 +1126,13 @@ class Subscriber {
         });
     }
 
-
+    static getInstance() {
+        if(!instance) {
+            instance = new Subscriber();
+        }
+    
+        return instance;
+       }
 }
 
 export default Subscriber;
