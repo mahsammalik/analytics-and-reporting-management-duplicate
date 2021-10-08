@@ -246,7 +246,7 @@ class DatabaseConn {
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
                 else if (data.status == 'Completed') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET COMPANY='${data.company}', ACTUAL_AMOUNT=${data.actualAmount}, STATUS='${data.status}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AMOUNT_DOLLAR='${data.amountDollar}', COMPANY='${data.company}', ACTUAL_AMOUNT=${data.actualAmount}, STATUS='${data.status}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
