@@ -35,8 +35,10 @@ class Processor {
                 initTransData.TID = data?.Result?.TransactionID || '0';
 
                 if(isConfirm) {
-                    initTransData.actualAmount = Number(data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                    initTransData.company = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'BeneficiaryName'; })?.Value || '';                
+                    initTransData.actualAmount = Number(data?.amount || '0');
+                    initTransData.company = data?.serviceName || '';
+                    initTransData.amountDollar = data?.denominations || '';
+                    initTransData.TID = data?.txID || '-1';
                     initTransData.status = 'Completed';
                 }
                 initTransData.topic = data.topic;

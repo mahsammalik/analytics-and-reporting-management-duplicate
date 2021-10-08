@@ -141,7 +141,7 @@
                 "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
 
                 "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
-                "confirmTrans_eVouchers": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_rxDetails_updateTrans_Passed",
 
                 "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
                 "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
