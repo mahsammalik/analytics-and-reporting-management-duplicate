@@ -97,6 +97,8 @@ class Subscriber {
             config.kafkaBroker.topics.multipayment_qr_payment_passed,
             config.kafkaBroker.topics.cashToGoodRefund,
 
+            config.kafkaBroker.topics.bus_ticket_thirdparty_failure
+
         ]);
 
         //this.setConsumer();
@@ -1116,6 +1118,36 @@ class Subscriber {
                     logger.info('Calling process cashToGoodRefund consumer with payload ' + JSON.stringify(payload));
                     await cashToGoodRefundProcessor.processCashToGoodRefundConsumer(payload);
 
+                }
+                if (msg.topic === config.kafkaBroker.topics.bus_ticket_thirdparty_failure) {
+                    logger.debug('*********** BusTicket Third Party Failure *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');
+                                return;
+                            }
+                        }
+                        let data = {};
+                        data.cnic = payload?.cnic || '';
+                        data.email = payload?.email || '';
+                        data.seatNums = "M "+(payload?.seatNumbersMale || '') + " F " + (payload?.seatNumbersFemale || '');
+                        data.ticketPrice =  Number(payload?.ticketPrice || '0');
+                        data.totalPrice = Number(payload?.totalPrice || '0');
+                        data.fee = Number(payload?.fee || '0');
+                        data.bookingId = payload?.bookingId || '';
+                        data.failReson = payload?.failureReason?.data?.message || '';
+                        data.TID = payload?.transID || '-1';
+                        data.isFailedTrans = true;
+                        
+                        await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.BUS_TICKET, data);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
                 }
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
