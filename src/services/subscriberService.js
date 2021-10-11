@@ -1140,7 +1140,7 @@ class Subscriber {
                         data.totalPrice = Number(payload?.totalPrice || '0');
                         data.fee = Number(payload?.fee || '0');
                         data.bookingId = payload?.bookingId || '';
-                        data.failReson = payload?.failureReason?.data?.message || '';
+                        data.failReson = payload?.failureReason?.message || '';
                         data.TID = payload?.transID || '-1';
                         data.isFailedTrans = true;
                         
