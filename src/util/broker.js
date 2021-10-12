@@ -175,10 +175,13 @@ class Broker {
         logger.debug({ value });
 
         try {
-            this.producer.on('ready', (arg) => {
+            // this.producer.on('ready', (arg) => {
                 this.producer.produce(topicName, partition, value);
-                logger.debug({ event: `producer ready ${arg}` });
-            });
+                // logger.debug({ event: `producer ready ${arg}` });
+            }catch (err) {
+                logger.error('Production failed: %j' + err);
+                logger.error({event: 'Error thrown - Production failed', functionName: 'Broker.produceMessage', err: { message: err.message, stack: err.stack }});
+              }
 
 
         } catch (error) {
