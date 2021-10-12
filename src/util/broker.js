@@ -1,6 +1,5 @@
 import Kafka from 'node-rdkafka';
 import path from 'path';
-import { config } from 'process';
 import { logger } from '/util/';
 const brokers = process.env.KAFKA_BOOTSTRAP_SERVERS || config.kafkaBroker.brokers;
 const CONSUMER_GROUP_ID = process.env.CONSUMER_GROUP_ID || config.kafkaBroker.consumerConfig.group_id;
