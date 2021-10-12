@@ -19,7 +19,8 @@ class Broker {
 
     _ConnectProducer() {
         logger.debug({ event: '_connectProducer called' });
-        const brokerConfig = {...config.kafkaBroker.producerConfig };
+        const brokerConfig = config.kafkaBroker.producerConfig ;
+
 
         brokerConfig.dr_msg_cb = true; // Enable delivery reports with message payload
         const producer = new Kafka.Producer(brokerConfig);
