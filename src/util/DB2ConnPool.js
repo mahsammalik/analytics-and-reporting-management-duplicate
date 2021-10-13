@@ -1,5 +1,5 @@
 import { Pool } from "ibm_db";
-import { logger } from './logger';
+import logger from './logger';
 const conStr = config.DB2_Jazz.connectionString
 const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
 
