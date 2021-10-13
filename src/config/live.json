@@ -39,7 +39,8 @@
             "schema": "COMMON",
             "hostName": "10.50.20.212",
             "port": 60000,
-            "protocol": "TCPIP"
+            "protocol": "TCPIP",
+            "maxPoolSize": 30
         },
         "winston": {
             "file": {

@@ -3,7 +3,9 @@ import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
+import DB2ConnectionPool from './DB2ConnPool';
 
+let pool = DB2ConnectionPool.getInstance();
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
 //const connectionhca= config.DB2_HCA.connectionString
@@ -726,7 +728,7 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.APP_SIGNUP) {
-            let conn = await open(cn);
+            let conn = pool.conn;
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (LOGIN_ID, CNIC, REG_STATUS, ACTIVITY_DATE, ACTIVITY_TIME, NEW_EXISTING_USER, WALLET_REG_DATE, APP_VERSION, DEVICE_MODEL, OS, TOP_NAME, MSG_OFFSET) 
@@ -740,7 +742,7 @@ class DatabaseConn {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
             } finally {
-                conn.close(function (err) { });
+                conn.closeSync();
             }
         }
 
