@@ -11,7 +11,7 @@ class DB2ConnectionPool
     {
         this.pool = new Pool({maxPoolSize: maxPoolSize});
         try {
-            this.conn = pool.openSync(conStr);
+            this.conn = this.pool.openSync(conStr);
         } catch(error) {
             logger.error("Unable to open connection,", error);
             throw new Error(error);
