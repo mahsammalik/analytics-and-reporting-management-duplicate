@@ -16,5 +16,7 @@ export { default as responseCodeHandler }
 from './responseCodeHandler';
 export { default as Broker }
 from './broker';
+export {default as BrokerReward}
+from './brokerReward'
 export { default as mappedMetaData }
 from './mapMetaData';
