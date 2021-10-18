@@ -374,20 +374,18 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                if (data.postingStatus == 'Pending') {
+                const stmt = conn.prepareSync(`SELECT * FROM ${schemaName}.${tableName} WHERE TRANS_ID = '${data.TID}';`);
+                let result = stmt.executeSync();
+                let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+                logger.info(`${schemaName}.${tableName}_selectQuery executed`);
+                // if record does't exist insert new record, otherwise update existing record
+                if (resultArray.length == 0) {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (POST_SIGNUP_BONUS, MSISDN, AMOUNT_POSTED, "DATE", "TIME", POSTING_STATUS, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID) 
                     VALUES('${data.postSignupBonus}', '${data.msisdn}', ${data.amountPosted}, '${data.transactionDate}', '${data.transactionTime}', '${data.postingStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done`);
-                }
-                else if (data.postingStatus == 'Completed') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET POSTING_STATUS='${data.postingStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
-                    stmt.executeSync();
-                    stmt.closeSync();
-                    //conn.close(function (err) { });
-                    logger.info(`${schemaName}.${tableName}_update done`);
                 }
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
