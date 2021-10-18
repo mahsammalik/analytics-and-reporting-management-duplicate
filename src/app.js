@@ -42,7 +42,7 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-const rewardSubscriber = new Subscriber();
+const rewardSubscriber = new RewardSubscriber();
 rewardSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
