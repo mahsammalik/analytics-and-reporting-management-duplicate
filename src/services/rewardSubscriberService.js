@@ -13,7 +13,7 @@ class RewardSubscriber {
         // if (!instance) {
         //     instance = this;
 
-        this.event = new Broker([
+        this.event = new BrokerReward([
             config.kafkaBroker.topics.initTrans_signupReward,
             config.kafkaBroker.topics.confirmTrans_signupReward,
         ]);
