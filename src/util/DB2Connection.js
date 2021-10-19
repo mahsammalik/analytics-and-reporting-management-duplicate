@@ -422,17 +422,23 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.NEW_SIGNUP_REWARD) {
+            logger.info("a: Entered block NEW_SIGNUP_REWARD");
             let conn = await open(cn);
+            logger.info("b: Connection opened");
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`SELECT * FROM ${schemaName}.${tableName} WHERE TRANS_ID = '${data.TID}';`);
+                logger.info("c: Select statement prepared")
                 let result = stmt.executeSync();
+                logger.info("d: Select statement executed")
                 let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
                 logger.info(`${schemaName}.${tableName}_selectQuery executed`);
                 // if record does't exist insert new record, otherwise update existing record
                 if (resultArray.length == 0) {
+                    logger.info("e: 0 record found, going to insert new record")
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (POST_SIGNUP_BONUS, MSISDN, AMOUNT_POSTED, "DATE", "TIME", POSTING_STATUS, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID) 
                     VALUES('${data.postSignupBonus}', '${data.msisdn}', ${data.amountPosted}, '${data.transactionDate}', '${data.transactionTime}', '${data.postingStatus}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
+                    logger.info("f: Insert statement prepared")
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
