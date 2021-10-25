@@ -3,6 +3,8 @@ import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
+import DB2ConnectionPool from './DB2ConnPool'
+let conPool = DB2ConnectionPool.getInstance();
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
@@ -24,7 +26,13 @@ class DatabaseConn {
         });
 
         if (tableName === config.reportingDBTables.OUTGOING_IBFT) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 //let conn = await open(cn);
                 // const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} 
@@ -54,7 +62,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.QR_PAYMENT) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -83,7 +97,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.MOBILE_BUNDLE) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -109,7 +129,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DONATION) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -135,7 +161,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.BUS_TICKET) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -167,7 +199,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.EVENT_TICKET) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.status == 'Pending') {
@@ -198,7 +236,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DARAZ_WALLET) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.status == 'Pending') {
@@ -225,7 +269,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.EVOUCHER) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.status == 'Pending') {
@@ -253,7 +303,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DEPOSIT_VIA_CARD) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -280,7 +336,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CHANGE_MPIN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PIN_CHANGE_DATE, PIN_CHANGE_STATUS, IMEI, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -298,7 +360,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.RESET_MPIN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PIN_RESET_DATE, PIN_RESET_STATUS, IMEI, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -316,7 +384,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.REQUEST_TO_PAY) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -344,7 +418,13 @@ class DatabaseConn {
 
         if (tableName === config.reportingDBTables.NEW_SIGNUP_REWARD) {
             logger.info("a: Entered block NEW_SIGNUP_REWARD");
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             logger.info("b: Connection opened");
             try {
                 // let conn = await open(cn);
@@ -374,7 +454,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.FOOD_DELIVERY) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (ID, ORDER_DATE, RESTAURANT_NAME, TRANS_AMOUNT, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -392,7 +478,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DEBIT_CARD_TRACK) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -419,7 +511,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CREATE_CARD_PIN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("ACTION", CUST_MSISDN, CUST_CNIC, "DATE", PIN_CREATED_BEFORE, CARD_NUM, CARD_TYPE, CARD_CATEGORY, SUPL_CARD_NUM, SUPL_CARD_CNIC, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -437,7 +535,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CARD_LINKING) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, RETRIEVE_REF, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -455,7 +559,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CARD_DELINK) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, TRANS_DATE, DELINK_STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -473,7 +583,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.INVITEANDEARN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.reqStatus == 'Pending') {
@@ -500,7 +616,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.SCHEDULED_TRANSACTIONS) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transactionStatus == 'Pending') {
@@ -527,7 +649,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.ACCOUNT_UPGRADE) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", CUST_MSISDN, CUST_CNIC, NADRA_RESPONSE, FINGERPRINT_TIME, APPUSER_DETAIL, NADRA_ERROR, CHANNEL, MERCH_MSISDN, MERCH_NIC, PERSONAL_NAME, BIUSINESS_NAME, TOP_NAME, MSG_OFFSET)
@@ -545,7 +673,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.MOVIE_TICKET) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.transStatus == 'Pending') {
@@ -572,7 +706,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DOORSTEP_CASHIN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", AMOUNT, ADDRESS, CITY, LAT_LONG, REQUEST_STATUS, CUST_MSISDN, RIDER_NAME, RIDER_MSISDN, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -590,7 +730,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CAREEM_VOUCHER) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 if (data.status == 'Pending') {
@@ -617,7 +763,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.PAYON_REG_LINK) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, PAYON_USERNAME, CREATED_ON, CHANNEL, TOP_NAME, MSG_OFFSET, EMAIL, COUNTRY, CITY, ZIPCODE, ADDRESS, STATUS_TEXT, CUST_LEVEL, CUST_JAZCASH_EMAIL, STATUS, PAYOUT_TYPE)
@@ -635,7 +787,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.PAYON_TRANSACTIONS) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`select * from ${schemaName}.${tableName} where TRANS_ID = '${data.TID}';`);
@@ -669,7 +827,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DISPLAY_QR) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MERCH_MSISDN, TILL_NUM, NOTIFIER_1, NOTIFIER_2, NOTIFIER_3, NOTIFIER_4, NOTIFIER_5, CHANNEL, QR_TYPE, MERCH_CAT_CODE, TOP_NAME, MSG_OFFSET) 
@@ -688,7 +852,13 @@ class DatabaseConn {
 
         if (tableName === config.reportingDBTables.ONBOARDING) {
             logger.debug("Entered block Onboarding insertion")
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 logger.debug("connection opened");
@@ -711,7 +881,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.FALLBACK_FAILURE) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, INSERT_DATE, CHANNEL, FAILURE_DETAIL, TOP_NAME, MSG_OFFSET) 
@@ -730,7 +906,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.APP_SIGNUP) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (LOGIN_ID, CNIC, REG_STATUS, ACTIVITY_DATE, ACTIVITY_TIME, NEW_EXISTING_USER, WALLET_REG_DATE, APP_VERSION, DEVICE_MODEL, OS, TOP_NAME, MSG_OFFSET) 
@@ -749,7 +931,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.DEVICE_AUTH) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 if (data.doUpdate == false) {
                     // let conn = await open(cn);
@@ -778,7 +966,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.WALLET_REQUEST) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("NUMBER", NAME, CNIC, CRMSTATUS, REQ_SUBMIT_DATE, REQ_PROCESSED_BY, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET) 
@@ -797,7 +991,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CARD_BLOCK) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("ACTION", MSISDN, "DATE", CARD_NUM, CARD_TYPE, CARD_CAT, TID, STATUS, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -816,7 +1016,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.INSURANCE_CLAIM) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} ("DATE", JAZZCASH_ACCT_NUM, JAZZCASH_ACCT_TITLE, CLAIM_DESC, CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -835,7 +1041,13 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.PAYON_LOGIN) {
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             try {
                 // let conn = await open(cn);
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, JAZZCASH_EMAIL, PAYON_EMAIL, "DATE", CHANNEL, TOP_NAME, MSG_OFFSET)
@@ -854,8 +1066,14 @@ class DatabaseConn {
 
         if (tableName === config.reportingDBTables.CASHTOGOOD) {
 
-            let conn = await open(cn);
-
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
+            
             try {
 
                 const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} 
@@ -907,8 +1125,14 @@ class DatabaseConn {
 
         if (tableName === config.reportingDBTables.CASHTOGOOD_REDEEM) {
 
-            let conn = await open(cn);
-
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
+            
             try {
 
                 let stmt = "";
@@ -986,8 +1210,14 @@ class DatabaseConn {
     }
 
     async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
-        let conn = await open(cn);
-
+        // get connection from connection pool
+        let conn = conPool.getConnection();
+        // if connection is null then open it using connection string
+        if(!conn)
+        {
+            conn = await open(cn);
+        }
+        
         try {
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             // logger.info(`Step 02 b: mappedMSISDN `)
@@ -1065,7 +1295,13 @@ class DatabaseConn {
             let concatenatResult;
 
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            const conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
@@ -1114,7 +1350,13 @@ class DatabaseConn {
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             logger.debug("Updated Msisdn" + mappedMsisdn);
 
-            const conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
@@ -1136,7 +1378,13 @@ class DatabaseConn {
 
     //Tax Statemet 
     async getTaxValueArray(customerMobileNumer, mappedMsisdn, endDate, startDate) {
-        const conn = await open(cn)
+        // get connection from connection pool
+        let conn = conPool.getConnection();
+        // if connection is null then open it using connection string
+        if(!conn)
+        {
+            conn = await open(cn);
+        }
         try {
 
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
@@ -1188,7 +1436,13 @@ class DatabaseConn {
 
         try {
 
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             const stmt = conn.prepareSync("INSERT INTO ${schema}.ACCOUNTSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TRANSACTION_TYPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE) VALUES(?,?,?,?,?,?,?,?,?);");
             stmt.executeSync([msisdn, trxDateTime, trxId, transactionType, channel, description, amountDebited, amountCredited, runningBalance]);
             // return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
@@ -1208,7 +1462,13 @@ class DatabaseConn {
 
         try {
 
-            let conn = await open(cn);
+            // get connection from connection pool
+            let conn = conPool.getConnection();
+            // if connection is null then open it using connection string
+            if(!conn)
+            {
+                conn = await open(cn);
+            }
             const stmt = conn.prepareSync("INSERT INTO ${schema}.TAXSTATEMENT (MSISDN, TRX_DATETIME, TRX_ID, TAX_DEDUCTED, SALES_TAX, INCOME_TAX, WITHHOLDING_TAX, FEE, COMMISSION) VALUES('', '', '', '', '', '', '', '', '');");
             stmt.executeSync([msisdn, trxDateTime, trxId, taxDeducted, salesTax, incomeTax, withHoldigTax, fee, comission]);
             // return result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
