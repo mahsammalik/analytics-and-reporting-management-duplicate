@@ -97,6 +97,8 @@ spec:
           key: CONSUMER_GROUP_ANALYTICS_REWARD
     - name: KAFKA_TOPICS_CONSUME_INTERVAL
       value: '300'
+    - name: DB2ConnMaxPoolSize
+      value: '30'
   expose: true
   livenessProbe:
     failureThreshold: 12
