@@ -18,17 +18,6 @@ class DB2ConnectionPool
         }
         return instance;
     }
-
-    getConnection() {
-        let conn = null;
-        try {
-            conn = this.pool.openSync(conStr);
-        } catch(error) {
-            logger.error("Unable to open connection,", error);
-            throw new Error(error);
-        }
-        return conn;
-    }
 }
 
 export default DB2ConnectionPool;
