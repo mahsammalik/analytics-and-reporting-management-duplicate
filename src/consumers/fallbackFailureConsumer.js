@@ -17,7 +17,7 @@ class Processor {
                 initTransData.msisdn = data.mobile_number;
                 initTransData.failureDetail = data.failure_reason;
                 initTransData.insertDate = moment(data.insertion_TS).format("YYYY-MM-DD HH:mm:ss");
-                initTransData.channel = data?.channel || "Mobile App";
+                initTransData.channel = data?.channel || "consumerApp";
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
