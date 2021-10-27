@@ -1142,7 +1142,7 @@ class Subscriber {
                         data.fee = Number(payload?.fee || '0');
                         data.bookingId = payload?.bookingId || '';
                         data.failReson = payload?.failureReason?.message || '';
-                        data.TID = payload?.transID || '-1';
+                        data.TID = payload?.transactionID || '-1';
                         data.isFailedTrans = true;
                         
                         await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.BUS_TICKET, data);
