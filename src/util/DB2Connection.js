@@ -181,10 +181,10 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 if(data?.isFailedTrans)
                 {
-                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', EVENT_DATE='${data.eventDate}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', EVENT='${data.eventName}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', EVENT_DATE='${data.eventDate}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
                     if(data.eventDate == null)
                     {
-                        stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
+                        stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', EVENT='${data.eventName}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
                     }
                     stmt.executeSync();
                     stmt.closeSync();
