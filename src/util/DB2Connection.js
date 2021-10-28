@@ -179,6 +179,19 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
+                if(data?.isFailedTrans)
+                {
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', EVENT_DATE='${data.eventDate}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
+                    if(data.eventDate == null)
+                    {
+                        stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET CNIC='${data.cnic}', EMAIL='${data.email}', NUMBER_OF_SEATS=${data.seats}, CITY='${data.city}', PROMO_APPLIED='${data.promoApplied}', PARTNER='${data.partner}', STATUS='Failed', FAIL_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
+                    }
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_failedTrans_update done`);
+                }
+
                 if (data.status == 'Pending') {
                     let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BOOKING_ID, BOOK_DATE, CHANNEL, CITY, CNIC, DISCOUNT, EMAIL, EVENT, EVENT_DATE, FAIL_REASON, MSISDN, NUMBER_OF_SEATS, PARTNER, PRICE, PROMO_AMOUNT, PROMO_APPLIED, REVENUE, SEAT_CLASS, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) 
                     VALUES(${data.amount}, '${data.bookingID}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.channel}', '${data.city}', '${data.cnic}', ${data.discount}, '${data.email}', '${data.event}', '${data.eventDate}', '${data.failReason}', '${data.msisdn}', ${data.numSeats}, '${data.partner}', ${data.price}, ${data.promoAmount}, '${data.promoApplied}', ${data.revenue}, '${data.seatClass}', '${data.status}', '${data.TID}', '${data.topic}', ${data.msg_offset});`);
