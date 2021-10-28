@@ -140,7 +140,7 @@ class DatabaseConn {
                 // let conn = await open(cn);
                 if(data?.isFailedTrans)
                 {
-                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET BOOKING_ID='${data.bookingId}', CNIC='${data.cnic}', EMAIL='${data.email}', FEE=${data.fee}, ORIG_PRICE=${data.ticketPrice}, PRICE=${data.totalPrice}, SEAT_NUMBER='${data.seatNums}', STATUS='Failed' WHERE TRANS_ID='${data.TID}';`);
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET BOOKING_ID='${data.bookingId}', CNIC='${data.cnic}', EMAIL='${data.email}', FEE=${data.fee}, ORIG_PRICE=${data.ticketPrice}, PRICE=${data.totalPrice}, SEAT_NUMBER='${data.seatNums}', STATUS='Failed', FAILURE_REASON='${data.failReson}' WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
