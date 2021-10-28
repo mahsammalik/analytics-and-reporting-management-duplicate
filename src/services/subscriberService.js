@@ -1216,7 +1216,7 @@ class Subscriber {
                         }
                         let data = {};
                         data.failReson = payload?.failureReason?.msg || '';
-                        data.TID = payload?.txID || '-1';
+                        data.TID = payload?.transactionID || '-1';
                         data.email = payload?.email || '';
                         data.cnic = payload?.cnic || '';
                         data.eventDate = payload?.eventDate || null;
@@ -1224,6 +1224,7 @@ class Subscriber {
                         data.city = payload?.city || '';
                         data.seats = Number(payload?.noOfSeats || '0');
                         data.promoApplied = payload?.promoApplied || '';
+                        data.eventName = payload?.eventName || '';
                         data.isFailedTrans = true;
                         
                         await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVENT_TICKET, data);
