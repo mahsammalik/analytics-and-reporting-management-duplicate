@@ -98,7 +98,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashToGoodRefund,
 
             config.kafkaBroker.topics.bus_ticket_thirdparty_failure,
-            config.kafkaBroker.topics.daraz_wallet_thirdparty_failure
+            config.kafkaBroker.topics.daraz_wallet_thirdparty_failure,
+            config.kafkaBroker.topics.eVoucher_thirdparty_failure
 
         ]);
 
@@ -1169,6 +1170,32 @@ class Subscriber {
                         data.isFailedTrans = true;
                         
                         await DB2Connection.insertTransactionHistory("CONSUMER", config.reportingDBTables.DARAZ_WALLET, data);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.eVoucher_thirdparty_failure) {
+                    logger.debug('*********** eVoucher Third Party Failure *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');
+                                return;
+                            }
+                        }
+                        let data = {};
+                        data.failReson = payload?.failureReason?.data?.SoapProductPurchaseResponse?.header?.resultDescription || '';
+                        data.TID = payload?.txID || '-1';
+                        data.email = payload?.email || '';
+                        data.denominations = Number(payload?.denominations || '0') == NaN ? 0 : Number(payload?.denominations || '0');
+                        data.company = payload?.serviceName || '';
+                        data.isFailedTrans = true;
+                        
+                        await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVOUCHER, data);
                     } catch (error) {
                         logger.debug(error)
                     }

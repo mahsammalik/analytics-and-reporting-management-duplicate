@@ -246,6 +246,15 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
+                if (data.isFailedTrans)
+                {
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET COMPANY='${data.company}', AMOUNT_DOLLAR=${data.denominations}, EMAIL='${data.email}', FAIL_REASON='${data.failReson}', STATUS='Failed' WHERE TRANS_ID='${data.TID}';`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_failedTrans_update done`);
+                }
+
                 if (data.status == 'Pending') {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (TRANS_DATE, TRANS_ID, COMPANY, AMOUNT_DOLLAR, PROMO_CODE, PROMO_AMOUNT, ACTUAL_AMOUNT, STATUS, FAIL_REASON, MSISDN, EMAIL, CHANNEL, TOP_NAME, MSG_OFFSET) 
                     VALUES(TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.TID}', '${data.company}', ${data.amountDollar}, '${data.promoCode}', ${data.promoAmount}, ${data.actualAmount}, '${data.status}', '${data.failReason}', '${data.msisdn}', '${data.email}', '${data.channel}', '${data.topic}', ${data.msg_offset});`);
