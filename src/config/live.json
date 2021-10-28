@@ -220,7 +220,8 @@
                 
                 "bus_ticket_thirdparty_failure": "Bus_Ticket_ThirdParty_Confirm_Failed",
                 "daraz_wallet_thirdparty_failure": "Daraz_Wallet_ThirdParty_Confirm_Failed",
-                "eVoucher_thirdparty_failure": "E_Voucher_ThirdParty_Confirm_Failed"
+                "eVoucher_thirdparty_failure": "E_Voucher_ThirdParty_Confirm_Failed",
+                "event_ticket_thirdparty_failure": "Event_Ticket_ThirdParty_Confirm_Failed"
             }
         },
         "cache": {
