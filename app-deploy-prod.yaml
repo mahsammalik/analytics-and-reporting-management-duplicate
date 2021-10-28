@@ -68,6 +68,19 @@ metadata:
   name: analytics
   namespace: m11s
 spec:
+  initContainers:
+    - command:
+        - cp
+        - '-r'
+        - /opt/appdynamics/.
+        - /opt/appdynamics-nodejs
+      image: 'image-registry.openshift-image-registry.svc:5000/m11s/nodejs-agent:21'
+      imagePullPolicy: IfNotPresent
+      name: appd-agent-attach-nodejs
+      resources: {}
+      volumeMounts:
+        - mountPath: /opt/appdynamics-nodejs
+          name: appd-agent-repo-nodejs  
   applicationImage: image-registry.openshift-image-registry.svc:5000/m11s/analytics:v3.3
   createKnativeService: false
   repicas: 4
@@ -93,6 +106,34 @@ spec:
       value: production
     - name: KAFKA_TOPICS_CONSUME_INTERVAL
       value: '1000'
+    - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+      value: 02c73921-64f6-4047-a380-59d470638a5f
+    - name: APPDYNAMICS_CONTROLLER_HOST_NAME
+      value: app-uat-proxy1.jazz.com.pk
+    - name: APPDYNAMICS_AGENT_REUSE_NODE_NAME
+      value: 'true'
+    - name: APPDYNAMICS_CONTROLLER_PORT
+      value: '443'
+    - name: APPDYNAMICS_CONTROLLER_SSL_ENABLED
+      value: 'true'
+    - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+      value: customer1
+    - name: APPDYNAMICS_AGENT_APPLICATION_NAME
+      value: m11s
+    - name: NODE_OPTIONS
+      value: '--require /opt/appdynamics-nodejs/shim.js'
+    - name: APPDYNAMICS_AGENT_TIER_NAME
+      valueFrom:
+       fieldRef:
+         fieldPath: metadata.namespace
+    - name: APPDYNAMICS_AGENT_REUSE_NODE_NAME_PREFIX
+      valueFrom:
+       fieldRef:
+         fieldPath: metadata.name
+    - name: APPDYNAMICS_AGENT_NODE_NAME
+      valueFrom:
+       fieldRef:
+         fieldPath: metadata.name
   expose: true
   livenessProbe:
     failureThreshold: 12
@@ -112,6 +153,15 @@ spec:
     initialDelaySeconds: 5
     periodSeconds: 2
     timeoutSeconds: 1
+  volumeMounts:
+    - mountPath: /opt/appdynamics-nodejs
+      name: appd-agent-repo-nodejs
+    - mountPath: /opt/appdynamics-nodejs/shim.js
+      name: appd-agent-configs-nodejs-custom-configmap
+      subPath: shim.js
+    - mountPath: /opt/appdynamics-nodejs/custom-ssl.pem
+      name: appd-cert
+      subPath: custom-ssl.pem
   service:
     annotations:
       prometheus.io/scrape: 'true'
@@ -119,3 +169,14 @@ spec:
     type: NodePort
   stack: jazzcash-stack
   version: 1.0.0
+  volumes:
+    - emptyDir: {}
+      name: appd-agent-repo-nodejs
+    - configMap:
+        defaultMode: 420
+        name: custom-configmap
+      name: appd-agent-configs-nodejs-custom-configmap
+    - name: appd-cert
+      secret:
+        defaultMode: 420
+        secretName: appd-cert
