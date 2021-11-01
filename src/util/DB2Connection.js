@@ -112,6 +112,24 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
+                if(data?.isFailedTrans && data?.isFailedInit)
+                {
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', '${data.msisdn}', '${data.organization}', 'Failed','${data.TID}', '${data.topic}', ${data.msg_offset});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_FailedTrans_insert done`);
+                }
+
+                if(data?.isFailedTrans && data?.isFailedConfirm)
+                {
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET FAIL_REASON='${data.failureReason}', STATUS='Failed', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_FailedTrans_update done`);
+                }
+                
                 if (data.transactionStatus == 'Pending') {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, CHANNEL, "DATE", EMAIL, FAIL_REASON, FUND, MSISDN, ORGANIZATION, STATUS, TRANS_ID, TOP_NAME, MSG_OFFSET) VALUES(${data.amount}, '${data.channel}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), '${data.email}', '${data.failureReason}', '${data.fund}', '${data.msisdn}', '${data.organization}', '${data.transactionStatus}','${data.TID}', '${data.topic}', ${data.msg_offset});`);
                     stmt.executeSync();
