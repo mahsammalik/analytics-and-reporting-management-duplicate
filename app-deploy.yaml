@@ -43,7 +43,7 @@ metadata:
     s2i.io/scripts-url: image:///usr/libexec/s2i
     s2i.openshift.io/scripts-url: image:///usr/libexec/s2i
     stack.appsody.dev/authors: Jahangir Khalid <>
-    stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.5
+    stack.appsody.dev/configured: dev.local/appsody/jazzcash-appsody-stack:0.4
     stack.appsody.dev/created: '2020-09-22T20:56:51+05:00'
     stack.appsody.dev/description: Express web framework for Node.js
     stack.appsody.dev/documentation: https://github.com/JazzCash/jazzcash-appsody-stack/tree/master/README.md

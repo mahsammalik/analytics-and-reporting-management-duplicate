@@ -108,6 +108,7 @@
             "brokers": "kafka:9092",
             "topicName": "jazz-topic",
             "pollInterval": 100,
+            "topics_consume_interval": 300,
             "consumerGroupID": "test-consumer",
             "commit-msgs-after": 1,
             "numMessages": 1,
@@ -249,7 +250,12 @@
                 "consumer_onboarding": "Consumer_Onboarding_Success",
                 "device_authentication": "Device_Registration",
                 "wallet_request": "Consumer_Wallet_Success",
-                "insurance_claim": "claims"
+                "insurance_claim": "claims",
+
+                "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
+                "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
+                "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
             }
         },
         "cache": {
@@ -437,7 +443,9 @@
             "CARD_DELINK": "CARD_DELINK",
             "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
             "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE",
-            "PAYON_LOGIN": "PAYON_LOGIN"
+            "PAYON_LOGIN": "PAYON_LOGIN",
+            "CASHTOGOOD" : "CASHTOGOOD",
+            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM"
         }
     }
 }

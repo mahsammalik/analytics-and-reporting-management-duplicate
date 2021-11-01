@@ -90,6 +90,8 @@ spec:
         configMapKeyRef:
           name: consumer-groups
           key: CONSUMER_GROUP_ANALYTICS
+    - name: KAFKA_TOPICS_CONSUME_INTERVAL
+      value: '300'
   expose: true
   livenessProbe:
     failureThreshold: 12
@@ -101,6 +103,17 @@ spec:
   monitoring:
     labels:
       k8s-app: jazzcash-project
+  resourceConstraints:
+    limits:
+      memory: 512Mi
+      cpu: '0.3'
+    requests:
+      memory: 56Mi
+      cpu: '120m'
+  autoscaling:
+    maxReplicas: 10
+    minReplicas: 2
+    targetCPUUtilizationPercentage: 75
   readinessProbe:
     failureThreshold: 12
     httpGet:

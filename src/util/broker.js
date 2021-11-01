@@ -3,11 +3,13 @@ import path from 'path';
 import { logger } from '/util/';
 const brokers = process.env.KAFKA_BOOTSTRAP_SERVERS || config.kafkaBroker.brokers;
 const CONSUMER_GROUP_ID = process.env.CONSUMER_GROUP_ID || config.kafkaBroker.consumerConfig.group_id;
+const CONSUME_INTERVAL = Number(process.env.KAFKA_TOPICS_CONSUME_INTERVAL) || config.kafkaBroker.topics_consume_interval
 
 class Broker {
     constructor(topicsArray) {
 
         logger.debug({ event: 'Event Stream constructor called', functionName: 'constructor in Broker', features: Kafka.features, brokers, topicsArray });
+        logger.info({ event: 'Event Stream constructor called', functionName: 'constructor in Broker', message: `Consumer will consume messages in interval: ${CONSUME_INTERVAL} ms}`});
 
         this.producer = this._ConnectProducer();
         this.consumer = this._ConnectConsumer(topicsArray);
@@ -99,7 +101,7 @@ class Broker {
                 // start consuming messages
                 setInterval(function() {
                    consumer.consume(1);
-                 }, 2000);
+                 }, CONSUME_INTERVAL);
                 
                 //consumer.consume(); disabling flowing mode, go for non-flowing mode instead
             });

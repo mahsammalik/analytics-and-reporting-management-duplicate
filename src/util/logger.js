@@ -1,6 +1,7 @@
 import httpContext from 'express-http-context';
 import { createLogger, format, transports } from 'winston';
-import stringify from 'json-stringify-safe';
+// import stringify from 'json-stringify-safe';
+import stringify from 'fast-safe-stringify';
 const { combine, timestamp, label, printf } = format;
 const PRODUCTION_LOG_LEVEL = process.env.PRODUCTION_LOG_LEVEL || 'debug';
 const MASKING_KEYS = process.env.MASKING_KEYS || "password, pin";
@@ -22,7 +23,7 @@ const customFormat = printf((info) => {
         log = maskInput(log);
     }
     if (info instanceof Error) {
-        log = `[ERROR:] ${info.timestamp} ${stringify(info.message)} ${stringify(info.stack)} ${stringify(info)}`
+        log = `[ERROR:] ${info.timestamp} ${infoCopy.msisdn} ${infoCopy.requestID} ${stringify(info.message)} ${stringify(info.stack)}}`
     }
     return log;
 });
