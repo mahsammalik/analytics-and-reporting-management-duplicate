@@ -83,7 +83,7 @@ spec:
           name: appd-agent-repo-nodejs  
   applicationImage: image-registry.openshift-image-registry.svc:5000/m11s/analytics:v3.3
   createKnativeService: false
-  repicas: 4
+  replicas: 4
   env:
     - name: CACHE_SERVER
       value: datagrid.datagrid-tests
