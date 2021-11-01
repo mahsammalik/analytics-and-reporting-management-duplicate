@@ -100,7 +100,9 @@ class Subscriber {
             config.kafkaBroker.topics.bus_ticket_thirdparty_failure,
             config.kafkaBroker.topics.daraz_wallet_thirdparty_failure,
             config.kafkaBroker.topics.eVoucher_thirdparty_failure,
-            config.kafkaBroker.topics.event_ticket_thirdparty_failure
+            config.kafkaBroker.topics.event_ticket_thirdparty_failure,
+            config.kafkaBroker.topics.donation_init_failed,
+            config.kafkaBroker.topics.donation_confirm_failed
 
         ]);
 
@@ -1228,6 +1230,48 @@ class Subscriber {
                         data.isFailedTrans = true;
                         
                         await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.EVENT_TICKET, data);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.donation_init_failed) {
+                    logger.debug('*********** Donation Init Failure *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');
+                                return;
+                            }
+                        }
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+
+                        await donationProcessor.processDonationConsumer(payload);                        
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.donation_confirm_failed) {
+                    logger.debug('*********** Donation Confirm Failure *****************');
+                    try {
+                        let payload = null;
+                        try {
+                            payload = JSON.parse(msg.value);
+                        }
+                        catch (jsonParsingError) {
+                            if (jsonParsingError.message.includes(`Unexpected token`)) {
+                                logger.error('This is not a valid JSON hence skipping');
+                                return;
+                            }
+                        }
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+
+                        await donationProcessor.processDonationConsumer(payload, true);                        
                     } catch (error) {
                         logger.debug(error)
                     }
