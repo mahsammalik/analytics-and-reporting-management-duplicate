@@ -22,6 +22,14 @@ class Processor {
                 initTransData.request_processing_date = moment(data.request_processing_date, 'YYYY-MM-DDTHH:mm:ss').format('YYYY-MM-DD');
                 initTransData.processed_by = data.processed_by;
                 initTransData.status = data?.status || '';
+                if(initTransData.status != '')
+                {
+                    initTransData.status += data?.failure_reason != '' ? " | "+data?.failure_reason : "";
+                }
+                else
+                {
+                    initTransData.status = data?.failure_reason || '';
+                }
                 initTransData.channel = data?.channel || "consumerApp";
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
