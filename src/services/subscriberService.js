@@ -1156,6 +1156,11 @@ class Subscriber {
                         let payload = null;
                         try {
                             payload = JSON.parse(msg.value);
+                            // if failureReason object exists and is stringified then parse it
+                            if(payload.failureReason?.success)
+                            {
+                                payload.failureReason = JSON.parse(payload.failureReason);
+                            }
                         }
                         catch (jsonParsingError) {
                             if (jsonParsingError.message.includes(`Unexpected token`)) {
