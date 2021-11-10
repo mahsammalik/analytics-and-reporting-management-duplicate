@@ -125,7 +125,9 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
+            logger.info("--- Calling getValueArray function ---I");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            logger.info("--- After getValueArray ---II", db2Data);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
@@ -169,11 +171,14 @@ class accountStatementService {
                 payload: { ...payload, msisdn }
             };
 
+            logger.info("--- Calling createPDF function ---III");
             let pdfFile = await createPDF({
                 template: accountStatementTemplate(accountData),
                 fileName: `Account Statement`
             });
+            logger.info("--- After createPDF function ---IV");
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            logger.info("--- pdfFile buffer created ---V");
 
             logger.debug(`pdfFile ${pdfFile}`, db2Data);
             const emailData = [{
@@ -191,7 +196,7 @@ class accountStatementService {
             ];
 
             if (payload.email) {
-
+                logger.info("--- Calling accountStatementEmailTemplate function ---VI");
                 let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
@@ -205,6 +210,7 @@ class accountStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
+                logger.info("--- Sending email ---VII");
                 return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
                 //     }
                 //     else {

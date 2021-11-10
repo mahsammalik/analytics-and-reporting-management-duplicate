@@ -1108,14 +1108,16 @@ class DatabaseConn {
 
             logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            logger.info({msisdn: customerMobileNumer, mappedMsisdn: mappedMsisdn});
             logger.debug("Updated Msisdn" + mappedMsisdn);
 
             const conn = await open(cn);
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?;`);
+            const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            logger.info("DB: Data fetched from db");
             result.closeSync();
             stmt.closeSync();
             conn.close();
