@@ -10,7 +10,8 @@ class EmailHandler {
  async sendEmail(From, To,Subject,HTML,Attachments, res) {
     try {
       //Attachmet should be array having two properties like this Attachments: [{"path": 'ww.googl.com/image.jpg', "embadImage": true}]
-	  logger.debug("enter the service");	
+	  logger.debug("enter the service");
+    logger.info({ event: 'Entered function', functionName: 'sendEmail in EmailHandler' });
 	  let emailReqBody = {
         "from": (From!="") ? From : "no-reply@JazzCash.com.pk",
         "to": To,

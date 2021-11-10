@@ -120,12 +120,18 @@ const getUserProfile = headers => {
 			'X-APP-Version': headers['x-app-version'] || '',
 		};
 
+		logger.info("--- Before calling get profile from account-management ---A");
 		return axios.get(userProfileURL, { headers: headerFields }).then(async result => {
-			logger.debug(result, "   result IN PROFILE CALL")
+			logger.debug(result, "   result IN PROFILE CALL");
+			logger.info("--- After calling get profile from account-management ---B");
+			logger.info(result);
 
 			logger.info({ event: 'Entered function', functionName: 'userGetProfileidentityinformationURL', userGetProfileidentityinformationURL });
 
+			logger.info("--- Before calling get profileIdentity from account-management ---C");
 			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
+			logger.info("--- After calling get profileIdentity from account-management ---D");
+			logger.info(res);
 			logger.debug("userGetProfileidentityinformationURL", res);
 			logger.info({
 				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL',levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
@@ -144,6 +150,8 @@ const getUserProfile = headers => {
 
 			logger.info({ event: 'AccountLevel', functionName: 'userGetProfileidentityinformationURL', res: accLevel });
 			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.businessDetails.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
+			logger.info("--- After making simplified profile ---E");
+			logger.info(profile);
 			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
 			return profile;
 		}).catch(error => {

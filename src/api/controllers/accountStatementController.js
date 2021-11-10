@@ -132,7 +132,10 @@ class accountStatementController {
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+            logger.info("--- Before getUserProfile ---1");
             const userProfile = await getUserProfile(req.headers);
+            logger.info("--- After getUserProfile ---2");
+            logger.info("getUserProfile Response: " + userProfile);
             logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA")
 
             logger.debug({ userProfile });
@@ -154,7 +157,9 @@ class accountStatementController {
                 channel: req.headers['x-channel']
             };
             logger.debug(payload, "payload")
+            logger.info("Payload constructed: "+ payload);
 
+            logger.info("--- Calling accountStatementService ---3");
             const accountStatement = new accountStatementService();
             if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
             else await accountStatement.sendEmailCSVFormat(payload);
