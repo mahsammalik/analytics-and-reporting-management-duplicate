@@ -44,6 +44,7 @@ spec:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
+      replicas: 1 
       containers:
         - name:  analytics-microservice
           image: image-registry.openshift-image-registry.svc:5000/jc-microservices/analytics-microservice:latest
