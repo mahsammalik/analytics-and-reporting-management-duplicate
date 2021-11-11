@@ -63,7 +63,7 @@ spec:
           - name: KAFKA_DRAIN_CHECK
             value: 'false'    
           - name: PRODUCTION_LOG_LEVEL
-            value: info
+            value: debug
           - name: NODE_ENV
             value: live
           - name: CONSUMER_GROUP_ID
