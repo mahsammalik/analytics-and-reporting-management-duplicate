@@ -64,13 +64,7 @@ spec:
           - name: NODE_ENV
             value: production
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300' 
-              valueFrom:
-                configMapKeyRef:
-                  name: consumer-groups
-                  key: CONSUMER_GROUP_ANALYTICS
-            - name: KAFKA_TOPICS_CONSUME_INTERVAL
-              value: '1000'
+            value: '300' '
           readinessProbe:
             failureThreshold: 12
             httpGet:
