@@ -2,10 +2,10 @@ kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
   name: analytics-microservice
-  namespace: jc-microservices
+  namespace: jc-pre-prod-microservices
   labels:
     app: analytics-microservice
-    app.kubernetes.io/part-of: jc-microservices
+    app.kubernetes.io/part-of: jc-pre-prod-microservices
     monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
@@ -28,7 +28,7 @@ spec:
           - analytics-microservice
         from:
           kind: ImageStreamTag
-          namespace: jc-microservices
+          namespace: jc-pre-prod-microservices
           name: 'analytics-microservice:latest'
   revisionHistoryLimit: 10
   test: false
@@ -47,18 +47,13 @@ spec:
     spec:
       containers:
         - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/jc-microservices/analytics-microservice:latest
+          image: image-registry.openshift-image-registry.svc:5000/jc-pre-prod-microservices/analytics-microservice:latest
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
           - name: CACHE_SERVER
-            value: datagrid.datagrid-tests
-          - name: CONSUMER_GROUP_ID
-            valueFrom:
-              configMapKeyRef:
-                name: consumer-groups
-                key: CONSUMER_GROUP_ANALYTICS
+            value: datagrid.datagrid-prod
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -68,11 +63,16 @@ spec:
           - name: KAFKA_DRAIN_CHECK
             value: 'false'    
           - name: PRODUCTION_LOG_LEVEL
-            value: debug
+            value: info
           - name: NODE_ENV
-            value: production
+            value: live
+          - name: CONSUMER_GROUP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'  
+      value: '300'
           readinessProbe:
             failureThreshold: 12
             httpGet:
