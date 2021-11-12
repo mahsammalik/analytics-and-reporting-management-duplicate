@@ -97,7 +97,7 @@ class Broker {
             consumer.on('ready', function(arg) {
                 logger.debug({ event: `consumer ready`, arg });
 
-                // consumer.subscribe(topicsArray);
+                consumer.subscribe(topicsArray);
                 // start consuming messages
                 setInterval(function() {
                    consumer.consume(1);
