@@ -18,9 +18,11 @@ class taxStatementController {
 
     async calculateTaxStatement(req, res, next) {
         let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
-        let headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
+        let headersValidationResponse;
         if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
             headersValidationResponse = validations.verifySchema(schema.USSD_HEADER_SCHEMA, req.headers);
+        }else{
+            headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
         }
         if (!headersValidationResponse.success) {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
