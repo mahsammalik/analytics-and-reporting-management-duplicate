@@ -43,11 +43,17 @@ const axiosInterceptor = () => {
         if (requestObj) {
         logger.log({message:"Third Party Response ",level:'info',showDetails:true, msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:response.url,axiosResponseData:response.data}); 
         }
+        else {
+          logger.log({message:"Third Party Response without requestObj",level:'info',showDetails:true, axiosURL:response.url,axiosResponseData:response.data}); 
+        }
         return response;
       }, error => {
         const requestObj = httpContext.get('requestObj') || null;
         if (requestObj) {
-          logger.log({message:"Third Party Response ",level:'info',showDetails:true,msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:error.response?.config?.url,axiosResponseData:error.response?.data});
+          logger.log({message:"Error: Third Party Response ",level:'info',showDetails:true,msisdn:requestObj.msisdn,requestID:requestObj.requestID,URL:requestObj.originalUrl,axiosURL:error.response?.config?.url,axiosResponseData:error.response?.data});
+        }
+        else {
+          logger.log({message:"Error: Third Party Response without requestObj ",level:'info',showDetails:true,axiosURL:error.response?.config?.url,axiosResponseData:error.response?.data});
         }
         // handle the response error
         return Promise.reject(error);
