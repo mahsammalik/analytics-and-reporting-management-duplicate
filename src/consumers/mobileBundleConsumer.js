@@ -1,7 +1,7 @@
 import { logger, Broker } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import moment from 'moment';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
+const SCHEMA = "COMMON"
 
 class Processor {
 
@@ -39,12 +39,7 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, initTransData);
-                }
-                else {
-                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.MOBILE_BUNDLE, initTransData);
-                }
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, initTransData);
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'mobileBundleConsumerProcessor in class Processor', error: { message: error.message, stack: error.stack } });
@@ -61,7 +56,7 @@ class Processor {
             if (data.Result.ResultCode == 0) {
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
-                initTransData.bundleType = '';
+                initTransData.bundleType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'offerIDDAID'; })?.Value || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
@@ -89,12 +84,7 @@ class Processor {
             }
 
             if (JSON.stringify(initTransData) !== '{}') {
-                if(process.env.NODE_ENV === 'development') {
-                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.MOBILE_BUNDLE_ZONG, initTransData);
-                }
-                else {
-                    await DB2Connection.insertTransactionHistory("COMMON", config.reportingDBTables.MOBILE_BUNDLE_ZONG, initTransData);
-                }
+                await DB2Connection.insertTransactionHistory(SCHEMA, config.reportingDBTables.MOBILE_BUNDLE, initTransData);
             }
         } catch (error) {
             logger.error({ event: 'Error thrown ', functionName: 'mobileBundleConsumerProcessorZong in class Processor', error: { message: error.message, stack: error.stack } });
