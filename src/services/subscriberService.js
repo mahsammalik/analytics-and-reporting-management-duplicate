@@ -96,6 +96,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashToGoodConfirmRedeem,
             config.kafkaBroker.topics.multipayment_qr_payment_passed,
             config.kafkaBroker.topics.cashToGoodRefund,
+            config.kafkaBroker.topics.initTrans_MobileBundleZong,
+            config.kafkaBroker.topics.confirmTrans_MobileBundleZong
 
         ]);
 
@@ -250,7 +252,37 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.initTrans_BusTicket) {
+                if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundleZong){
+                    logger.debug('*********** Init Trans Mobile Bundle Zong*****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+                        
+                        await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundleZong){
+                    logger.debug('*********** Confirm Trans Mobile Bundle Zong*****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+                        
+                        await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload, true);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_BusTicket){
                     logger.debug('*********** Init Trans Bus Ticket *****************');
                     try {
 
