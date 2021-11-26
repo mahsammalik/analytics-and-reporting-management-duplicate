@@ -876,6 +876,23 @@ class DatabaseConn {
             }
         }
 
+        if (tableName === config.reportingDBTables.CASHBACK_REDEEM) {
+            let conn = await open(cn);
+            try {
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (ID, MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CREATEDON, CHANNEL, MSG_OFFSET) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+                    stmt.executeSync([data.id, data.msisdn, data.rewardType, data.expiryDate, data.amount, data.rewardsDescription, data.campaignCode, data.campaignName, data.status, data.createdOn, data.channel, data.msg_offset]);
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+    
+            } catch (err) {
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
+
         if (tableName === config.reportingDBTables.CASHTOGOOD) {
 
             let conn = await open(cn);
