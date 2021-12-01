@@ -70,7 +70,7 @@ spec:
           - name: PRODUCTION_LOG_LEVEL
             value: debug
           - name: NODE_ENV
-            value: production
+            value: qa-merchant
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
             value: '300'  
           readinessProbe:
