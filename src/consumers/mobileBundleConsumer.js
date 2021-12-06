@@ -10,7 +10,7 @@ class Processor {
     async mobileBundleConsumerProcessor(data, isConfirm = false) {
         try {
             logger.info({ event: 'Entered function', functionName: 'mobileBundleConsumerProcessor in class Processor' });
-            //logger.debug(data);
+            logger.debug('***********data*********',data);
             let initTransData = {};
 
         if (data.Result.ResultCode == 0) {
