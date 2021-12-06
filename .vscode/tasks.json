@@ -4,7 +4,7 @@
     {
       "label": "Appsody: run enviornment with Jazz Cash Docker network",
       "type": "shell",
-      "command": "appsody debug --network masterdata-microservice_default -p 3002:3000 -p 9249:9229 -p 8081:8080 --docker-options '--env KAFKA_BOOTSTRAP_SERVERS=kafka:9092'",
+      "command": "appsody run --network analytics-and-reporting-management_default --docker-options '--env KAFKA_BOOTSTRAP_SERVERS=kafka:9092'",
       "group": "build",
       "problemMatcher": []
     },
