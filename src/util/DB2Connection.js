@@ -94,15 +94,14 @@ class DatabaseConn {
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
                 else if (data.transactionStatus == 'Completed') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=${ data?.typeOfTransaction ?data?.typeOfTransaction:''} WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS='${ data?.typeOfTransaction ?data?.typeOfTransaction:''}' WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_update done`);
                 }
                 else if (data.transactionStatus == 'refundPending') {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, DISCOUNTED, TYPE_OF_TRANS, TRANS_ID_REV,TRANS_ID_B_REV, SUBSCRIPTION, BUNDLE_AMOUNT, INCENTIVE_AMOUNT, INCENTIVE_AMOUNT_PARTNER, MSISDN_B) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                    stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data?.discounted ?data?.discounted:false, data?.typeOfTransaction ?data?.typeOfTransaction:'', data?.TIDReversal? data?.TIDReversal:'', data?.TIDBReversal ?data?.TIDBReversal:'', data?.subscription ? data?.subscription :'',data?.bundleAmount ? data?.bundleAmount:'', data?.incentiveAmount ? data?.incentiveAmount:'',data?.MsisdnB ]);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS='${ data?.typeOfTransaction ?data?.typeOfTransaction:''}', TRANS_ID_REV='${data?.TIDReversal? data?.TIDReversal:''}', TRANS_ID_B_REV='${data?.TIDBReversal ?data?.TIDBReversal:''}',SUBSCRIPTION='${ data?.subscription ? data?.subscription :''}', BUNDLE_AMOUNT=${data?.bundleAmount ? data?.bundleAmount:0}, INCENTIVE_AMOUNT=${data?.incentiveAmount ? data?.incentiveAmount:0}, MSISDN_B='${data?.MsisdnB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert refund done`);
@@ -115,15 +114,19 @@ class DatabaseConn {
                     logger.info(`${schemaName}.${tableName}_update refund done`);
                 }
                 else if ((data.transactionStatus == 'Completed' || data.transactionStatus == 'refundPending' ||data.transactionStatus == 'refundCompleted') && data.transactionStatusB =='Completed' ) {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, DISCOUNTED, TRANS_ID_B, SUBSCRIPTION, BUNDLE_AMOUNT, INCENTIVE_AMOUNT, INCENTIVE_AMOUNT_PARTNER, MSISDN_B, TYPE_OF_TRANS,TRANS_STATUS_B) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                    stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.discounted,data.TIDB, data.subscription, data.bundleAmount, data.incentiveAmount, data.incentiveAmountByPartner, data.MsisdnB, data.typeOfTransaction, data.transactionStatusB]);
+
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
+                    TRANS_ID_B='${data.TIDB}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
+                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS='${data.typeOfTransaction}', TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done b2b`);
                 }
                 else if ((data.transactionStatus == 'Completed' || data.transactionStatus == 'refundPending' ||data.transactionStatus == 'refundCompleted') && data.transactionStatusB =='Refund' ) {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, DISCOUNTED, TRANS_ID_B, TRANS_ID_B_REV, SUBSCRIPTION, BUNDLE_AMOUNT, INCENTIVE_AMOUNT, INCENTIVE_AMOUNT_PARTNER, MSISDN_B, TYPE_OF_TRANS, TRANS_STATUS_B) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                    stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.discounted, data.TIDB, data.TIDBReversal, data.subscription, data.bundleAmount, data.incentiveAmount, data.incentiveAmountByPartner, data.MsisdnB, data.typeOfTransaction, data.transactionStatusB]);
+
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
+                    TRANS_ID_B='${data.TIDB}',TRANS_ID_B_REV='${data.TIDBReversal}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
+                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS='${data.typeOfTransaction}', TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done b2b refund`);
