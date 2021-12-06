@@ -90,36 +90,39 @@ spec:
         configMapKeyRef:
           name: consumer-groups
           key: CONSUMER_GROUP_ANALYTICS
+    - name: KAFKA_TOPICS_CONSUME_INTERVAL
+      value: '300'
   expose: true
   livenessProbe:
     failureThreshold: 12
     httpGet:
       path: /live
       port: 3000
-    initialDelaySeconds: 5
-    periodSeconds: 2
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 5
   monitoring:
     labels:
       k8s-app: jazzcash-project
   resourceConstraints:
     limits:
       memory: 512Mi
-      cpu: '0.3'
+      cpu: '300m'
     requests:
       memory: 56Mi
       cpu: '120m'
   autoscaling:
-    maxReplicas: 10
-    minReplicas: 2
+    maxReplicas: 15
+    minReplicas: 15
     targetCPUUtilizationPercentage: 75
   readinessProbe:
     failureThreshold: 12
     httpGet:
       path: /ready
       port: 3000
-    initialDelaySeconds: 5
-    periodSeconds: 2
-    timeoutSeconds: 1
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 5
   service:
     annotations:
       prometheus.io/scrape: 'true'
