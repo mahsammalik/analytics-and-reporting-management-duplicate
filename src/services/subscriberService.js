@@ -97,8 +97,9 @@ class Subscriber {
             config.kafkaBroker.topics.multipayment_qr_payment_passed,
             config.kafkaBroker.topics.cashToGoodRefund,
             config.kafkaBroker.topics.initTrans_MobileBundleZong,
-            config.kafkaBroker.topics.confirmTrans_MobileBundleZong
-
+            config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
+            config.kafkaBroker.topics.initTrans_refundMobileBundle,
+            config.kafkaBroker.topics.confirmTrans_refundMobileBundle
         ]);
 
         //this.setConsumer();
@@ -247,6 +248,36 @@ class Subscriber {
                         logger.debug(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload, true);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.initTrans_refundMobileBundle) {
+                    logger.debug('*********** Init Trans Refund Mobile Bundle *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.confirmTrans_refundMobileBundle) {
+                    logger.debug('*********** Confirm Trans Refund Mobile Bundle *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload, true);
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
