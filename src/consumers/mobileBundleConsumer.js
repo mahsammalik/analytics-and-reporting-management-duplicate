@@ -514,7 +514,7 @@ class Processor {
                         initTransData.transactionTime = initTransData.transactionDate + " " + time;
                     }
                     initTransData.TID = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdUser'; })?.Value || '' ;
-                    initTransData.transactionStatus = isConfirm ? 'refundCompleted' : 'refundPending';
+                    initTransData.transactionStatus = 'Completed';
                     initTransData.topic = data.topic;
                     initTransData.msg_offset = Number(data.msg_offset);
                     //new codee discounted 
@@ -554,7 +554,7 @@ class Processor {
                         initTransData.transactionTime = initTransData.transactionDate + " " + time;
                     }
                     initTransData.TID = data?.Result?.TransactionID || '0';
-                    initTransData.transactionStatus = isConfirm ? 'refundCompleted' : 'refundPending';
+                    initTransData.transactionStatus = 'Completed';
                     initTransData.topic = data.topic;
                     initTransData.msg_offset = Number(data.msg_offset);
                     //new codee 
