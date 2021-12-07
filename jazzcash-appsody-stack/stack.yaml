@@ -1,0 +1,9 @@
+name: Node.js Express
+version: 0.4.8
+description: Express web framework for Node.js
+license: Apache-2.0
+language: nodejs
+maintainers:
+  - name: Jahangir Khalid
+    email: jahangir.khalid1@pk.ibm.com
+default-template: simple
