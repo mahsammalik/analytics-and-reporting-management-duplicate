@@ -176,7 +176,7 @@ class Broker {
 
         try {
                 this.producer.produce(topicName, partition, value);
-                logger.debug({ event: `producer ready ${arg}` });
+                logger.inf("message produced")
 
         } catch (error) {
             logger.error({
