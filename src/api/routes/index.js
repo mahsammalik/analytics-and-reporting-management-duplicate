@@ -13,9 +13,17 @@ foodOrderingProcessor, createCardPINProcessor, inviteAndEarnProcessor, cardLinkD
 scheduledTransactionsProcessor, accountUpgradeProcessor, movieTicketsProcessor, doorstepCashinProcessor,
 careemVoucherProcessor, payoneerRegProcessor, payoneerTransProcessor, displayQRProcessor,
 onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/'
+import { Subscriber } from '/services/';
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
+
+let subscriber = new Subscriber();
+router.post('/produce_msg', async (req, res) => {
+    subscriber.event.produceMessage(req.body.msg, req.body.topic);
+    res.status(200).json({message: 'Message produced on ', topic: req.body.topic});
+});
+
 
 /**
  * Use this end point to test insert reporting data into DB

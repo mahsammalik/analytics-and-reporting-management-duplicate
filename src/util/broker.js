@@ -175,11 +175,8 @@ class Broker {
         logger.debug({ value });
 
         try {
-            this.producer.on('ready', (arg) => {
                 this.producer.produce(topicName, partition, value);
                 logger.debug({ event: `producer ready ${arg}` });
-            });
-
 
         } catch (error) {
             logger.error({
