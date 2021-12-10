@@ -552,7 +552,7 @@ class DatabaseConn {
             try {
                 // let conn = await open(cn);
                 if (data.reqStatus == 'Pending') {
-                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (INVITER_MSISDN, INVITER_NAME, RECEIVER_NUM, RECEIVER_NAME, REQ_CATEGORY, ACCOUNT_STATUS, REQ_STATUS, ACCEPT_DATE, ACCEPT_TIME, MODULE, REQ_CHANNEL, REGISTR_CHANNEL, AMOUNT_POSTED, AMOUNTPOSTING_DATE, AMOUNTPOSTING_TIME, MESSAGE, INVITE_DATE, INVITE_TIME, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID)
+                    let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (INVITER_MSISDN, INVITER_NAME, RECEIVER_NUM, RECEIVER_NAME, REQ_CATEGORY, ACCOUNT_STATUS, REQ_STATUS, ACCEPT_DATE, ACCEPT_TIME, MODULE, REQ_CHANNEL, REGISTR_CHANNEL, AMOUNT_POSTED, AMOUNTPOSTING_DATE, AMOUNTPOSTING_TIME, MESSAGE, INVITE_DATE, INVITE_TIME, CHANNEL, TOP_NAME, MSG_OFFSET, TRANS_ID)
                     VALUES('${data.inviterMsisdn}', '${data.inviterName}', '${data.receiverMsisdn}', '${data.receiverName}', '${data.reqCategory}', '${data.accountStatus}', '${data.reqStatus}', '${data.acceptDate}', '${data.acceptTime}', '${data.module}', '${data.reqChannel}', '${data.registerChannel}', ${data.amount}, '${data.amountPostedDate}', '${data.amountPostedTime}', '${data.message}', '${data.inviteDate}', '${data.inviteTime}', '${data.channel}', '${data.topic}', ${data.msg_offset}, '${data.TID}');`);
                     if(data.inviteDate == null || data.acceptDate == null)
                     {
