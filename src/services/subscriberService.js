@@ -99,9 +99,7 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_MobileBundleZong,
             config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
             config.kafkaBroker.topics.cashback_reward_init_passed,
-            config.kafkaBroker.topics.cashback_reward_init_failed,
-            config.kafkaBroker.topics.cashback_reward_init_soap_passed,
-            config.kafkaBroker.topics.cashback_reward_init_soap_failed
+            config.kafkaBroker.topics.cashback_reward_init_failed
 
         ]);
 
@@ -1183,36 +1181,36 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
-                if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
-                    logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
-                    try {
+                // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
+                //     logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
+                //     try {
 
-                        const payload = JSON.parse(msg.value);
-                        payload.topic = msg.topic;
-                        payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                //         const payload = JSON.parse(msg.value);
+                //         payload.topic = msg.topic;
+                //         payload.msg_offset = msg.offset;
+                //         logger.debug(JSON.stringify(payload));
 
-                        await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
-                        //logger.debug(response);
-                    } catch (error) {
-                        logger.debug(error)
-                    }
-                }
-                if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_failed) {
-                    logger.debug('*********** REDEEM CASHBACK INIT SOAP FAILED *****************');
-                    try {
+                //         await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
+                //         //logger.debug(response);
+                //     } catch (error) {
+                //         logger.debug(error)
+                //     }
+                // }
+                // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_failed) {
+                //     logger.debug('*********** REDEEM CASHBACK INIT SOAP FAILED *****************');
+                //     try {
 
-                        const payload = JSON.parse(msg.value);
-                        payload.topic = msg.topic;
-                        payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                //         const payload = JSON.parse(msg.value);
+                //         payload.topic = msg.topic;
+                //         payload.msg_offset = msg.offset;
+                //         logger.debug(JSON.stringify(payload));
 
-                        await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
-                        //logger.debug(response);
-                    } catch (error) {
-                        logger.debug(error)
-                    }
-                }
+                //         await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
+                //         //logger.debug(response);
+                //     } catch (error) {
+                //         logger.debug(error)
+                //     }
+                // }
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);

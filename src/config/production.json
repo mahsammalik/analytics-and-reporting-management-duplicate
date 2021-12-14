@@ -259,9 +259,7 @@
 
 
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
-                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
-                "cashback_reward_init_soap_passed": "ESB_SOAP_CashbackReward_Init_Passed",
-                "cashback_reward_init_soap_failed": "ESB_SOAP_CashbackReward_Init_Failed"
+                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed"
 
 
             }
