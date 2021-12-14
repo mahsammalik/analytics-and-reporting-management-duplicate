@@ -25,7 +25,8 @@ class Processor {
                 }
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.failureReason = '';
+                initTransData.failureReason = data?.isFailedTrans === true ? data?.failReason : '';
+                initTransData.isFailedTrans = data?.isFailedTrans || false;
                 initTransData.rewardType = data?.CustomObject?.rewardsType || null;
                 initTransData.expiryDate = data?.CustomObject?.expiryDate || null;
                 if (initTransData.expiryDate != null) {
@@ -34,7 +35,7 @@ class Processor {
                 initTransData.rewardsDescription = data?.CustomObject?.rewardsDescription || null;
                 initTransData.campaignCode = data?.CustomObject?.campaignCode || null;
                 initTransData.campaignName = data?.CustomObject?.campaignName || null;
-                initTransData.status = 'redeemed';
+                initTransData.status = data?.isFailedTrans === true ? 'failed' : 'redeemed';
                 initTransData.txID = data?.Result?.TransactionID || '0';
                 initTransData.createdOn = data?.CustomObject?.createdOn || null;
                 if (initTransData.createdOn != null) {

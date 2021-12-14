@@ -877,12 +877,26 @@ class DatabaseConn {
         if (tableName === config.reportingDBTables.CASHBACK_REDEEM) {
             let conn = await open(cn);
             try {
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CREATEDON, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
-                    VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', '${data.amount}', '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.createdOn}', '${data.channel}', '${data.msg_offset}', '${data.topic}', ${data.failureReason});`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
+
+                if (data?.isFailedTrans) {
+                    let stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET STATUS='${data.status}', FAILURE_REASON='${data.failureReason}' WHERE TXID='${data.txID}';`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_failedTrans_update done`);
+                }
+                else {
+
+                    const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CREATEDON, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
+                VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', '${data.amount}', '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.createdOn}', '${data.channel}', '${data.msg_offset}', '${data.topic}', ${data.failureReason});`);
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+
+
+                }
+
 
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
