@@ -1,0 +1,452 @@
+{
+    "config": {
+        "App": {
+            "webServer": {
+                "host": "127.0.0.1",
+                "port": 3000
+            },
+            "restApiEndpoints": {
+                "v1": "/v1/api"
+            }
+        },
+        "externalServices": {
+            "masterDataAPI": {
+                "responseCodeURL": "http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes"
+            },
+            "accountManagementAPI": {
+                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile",
+                "usergetProfileidentityinformationURL": "http://account-management-microservice:3000/rest/api/v1/account/getprofileidentityinformation"
+            },
+            "NotificationService": {
+                "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
+                "emailNotificationUrl": "http://notification-microservice-jazzcash-microservices-dev.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/notification/email",
+                "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
+            },
+            "oracleAccountManagement": {
+                "oracleAccountManagementURL": "http://oracle-account-management-git-oracle-account-management.apps.tjcocp.jazz.com.pk/getaccountstatement"
+            }
+        },
+        "mongodb": {
+            "host": "mongodb",
+            "port": 27017,
+            "database": "sampledb"
+        },
+        "IBMDB2": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=repdb;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.124",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
+        "IBMDB2_Dev": {
+            "username": "hqx82030",
+            "password": "mfdv73-dd65gz41p",
+            "address": "",
+            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=hqx82030;PWD=mfdv73-dd65gz41p;",
+            "schema": "HQX82030",
+            "hostName": "dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net",
+            "port": 50000,
+            "protocol": "TCPIP"
+        },
+        "DB2_Jazz": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.124",
+            "port": 60000,
+            "protocol": "TCPIP",
+            "maxPoolSize": 30
+        },
+        "DB2_HCA": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.212",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
+        "IBMDB2_Test": {
+            "username": "jcapprepdb",
+            "password": "repdb@1234",
+            "address": "",
+            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "schema": "COMMON",
+            "hostName": "10.50.20.124",
+            "port": 60000,
+            "protocol": "TCPIP"
+        },
+        "winston": {
+            "file": {
+                "level": "info",
+                "filename": "./logs/app.log",
+                "handleExceptions": "true",
+                "json": true,
+                "maxsize": 5242880,
+                "maxFiles": 5,
+                "colorize": "false"
+            },
+            "console": {
+                "development": {
+                    "level": "debug",
+                    "handleExceptions": true,
+                    "json": true
+                },
+                "production": {
+                    "level": "info",
+                    "handleExceptions": true,
+                    "json": true
+                }
+            }
+        },
+        "kafkaBroker": {
+            "brokers": "kafka:9092",
+            "topicName": "jazz-topic",
+            "pollInterval": 100,
+            "topics_consume_interval": 300,
+            "consumerGroupID": "test-consumer",
+            "commit-msgs-after": 1,
+            "numMessages": 1,
+            "consumerAutoCommit": true,
+            "consumerConfig": {
+                "debug": "all",
+                "client_id": "analytics-client",
+                "group_id": "analytics-reporting-consumer-group-id3",
+                "metadata_broker_list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
+                "security_protocol": "sasl_ssl",
+                "sasl_mechanisms": "SCRAM-SHA-512",
+                "ssl_ca_location": "/project/user-app/dist/util/estest-cert.pem",
+                "sasl_username": "testkafka",
+                "sasl_password": "C2yxplFZJtmZ",
+                "enable_ssl_certificate.verification": false,
+                "enable_auto_commit": true,
+                "broker_version_fallback": "0.10.2.1",
+                "log_connection_close": false,
+                "auto_offset_reset": "smallest"
+            },
+            "producerConfig": {
+                "bootstrap.servers": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
+                "security.protocol": "sasl_ssl",
+                "sasl.mechanisms": "SCRAM-SHA-512",
+                "ssl.ca.location": "/project/user-app/dist/util/estest-cert.pem",
+                "sasl.username": "testkafka",
+                "sasl.password": "C2yxplFZJtmZ",
+                "enable.ssl.certificate.verification": false,
+                "broker.version.fallback": "0.10.0",
+                "log.connection.close": false
+            },
+            "topics": {
+                "Init_topic": "Init_topic",
+                "App_Consumer_Audit_Log": "App_Consumer_Audit_Log",
+                "App_Merchant_Audit_Log": "App_Merchant_Audit_Log",
+                "App_Admin_Audit_Log": "App_Admin_Audit_Log",
+                "App_Merchant_Account_Statement": "App_Merchant_Account_Statement",
+                "InitTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Init_Passed",
+                "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
+                "InitTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Init_Failed",
+                "ConfirmTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Confirm_Failed",
+                
+                "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
+                "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
+                "InitTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Init_Failed",
+                "ConfirmTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Confirm_Failed",
+                
+                "InitTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Init_Passed",
+                "ConfirmTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Confirm_Passed",
+                "InitTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Init_Passed",
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Confirm_Passed",
+                
+                "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
+                "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
+                "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
+                "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed",
+
+                "initTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
+
+                "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
+                "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",
+                "initTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Init_Passed",
+                "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
+
+                "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
+                "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
+                "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
+                "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed",
+
+                "initTrans_BusTicket": "ESB_Mobile_BusTickets_Init_Passed",
+                "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
+
+                "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
+                "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
+                "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
+
+                "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
+
+                "initTrans_Donation" : "ESB_Mobile_Donation_Init_Passed",
+                "confirmTrans_Donation": "ESB_Mobile_Payment_Confirm_Passed",
+
+                "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
+                "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed",
+
+                "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
+                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed",
+
+                "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed",
+
+                "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
+                "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
+                "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
+                "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
+
+                "initTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Init_Passed",
+                "confirmTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Confirm_Passed",
+                
+                "initTrans_signupReward": "ESB_Mobile_SignupReward_Init_Passed",
+                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
+
+                "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
+
+                "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed",
+                "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
+                "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
+                "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
+                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink",
+                
+                "initTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Init_Passed",
+                "confirmTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Confirm_Passed",
+                "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
+                "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
+                "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+                "confirmTrans_scheduledTrans": "ESB_Mobile_Payment_Confirm_Passed",
+
+                "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
+                "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
+
+                "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
+
+                "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed",
+                
+                "intTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Init_Passed",
+                "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
+                "payoneer_transaction": "PM_Mobile_PayoneerTransaction_Success",
+                "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
+
+                "display_QR": "AccountManagement_DisplayQR_Success",
+                "merchant_onboarding": "Merchant_Onboarding_Success",
+                "fallbackFailure": "Consumer_Fallback_Failure",
+                "consumer_onboarding": "Consumer_Onboarding_Success",
+                "device_authentication": "Device_Registration",
+                "wallet_request": "Consumer_Wallet_Success",
+                "insurance_claim": "claims",
+
+                "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
+                "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
+                "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
+            }
+        },
+        "cache": {
+            "server": "datagrid",
+            "port": 11222,
+            "cacheName": "jazzcash",
+            "responseCodeCache": "ResponseCodeCache"
+        },
+        "responseCode": {
+            "default": {
+                "code": "G-01",
+                "message": "Oops! We are facing some temporary issue with your request. "
+            },
+            "useCases": {
+                "accountStatement": {
+                    "success": "AR-AS-T03",
+                    "invalid": "AR-AS-T01",
+                    "missing_required_parameters": "AR-AS-T02",
+                    "date_invalid": "AR-AS-T04",
+                    "database_connection": "AR-AS-T05",
+                    "email_problem": "AR-AS-T08",
+                    "pdf_internal_error": "AR-AS-T06"
+                },
+                "contactIntegration": {
+                    "success": "AM-CI-T01",
+                    "invalid": "AM-CI-T02"
+                },
+                "changeMPIN": {
+                    "success": "AM-CMP-T01",
+                    "invalid": "AM-CMP-T02",
+                    "data_not_found": "AM-CMP-T04",
+                    "device_unauthentic": "AM-CMP-T03",
+                    "cps": "AM-CMP-CPS-"
+                },
+                "generateOTPForMPIN": {
+                    "success": "AM-RMP-T02",
+                    "invalid": "AM-RMP-T07",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
+                },
+                "verifyOTPForMPIN": {
+                    "success": "AM-RMP-T01",
+                    "invalid": "AM-RMP-T06",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08"
+                },
+                "resetMPIN": {
+                    "success": "AM-RMP-T04",
+                    "invalid": "AM-RMP-T05",
+                    "data_not_found": "AM-RMP-T09",
+                    "device_unauthentic": "AM-RMP-T08",
+                    "cps": "AM-RMP-CPS-"
+                },
+                "profile": {
+                    "cps": "AM-PR-CPS-",
+                    "success_profile": "AM-PR-T36",
+                    "success_email": "AM-PR-T37",
+                    "success_image_upload": "AM-PR-T38",
+                    "fail_profile": "AM-PR-T35",
+                    "invalid": "AM-PR-T34",
+                    "esb": "AM-PR-T02",
+                    "internal": "AM-PR-T01"
+                },
+                "limits": {
+                    "cps": "AM-AL-CPS-",
+                    "success": "AM-AL-T35",
+                    "invalid": "AM-AL-T34",
+                    "esb": "AM-AL-T02",
+                    "internal": "AM-AL-T01"
+                },
+                "favouritList": {
+                    "cps": "AM-FL-CPS-",
+                    "success": "AM-FL-T35",
+                    "invalid": "AM-FL-T34",
+                    "esb": "AM-FL-T02",
+                    "internal": "AM-FL-T01",
+                    "error": "AM-FL-T39",
+                    "notFound": "AM-FL-T38"
+                },
+                "balance": {
+                    "cps": "AM-AB-CPS-",
+                    "success": "AM-AB-T35",
+                    "invalid": "AM-AB-T34",
+                    "esb": "AM-AB-T02",
+                    "internal": "AM-AB-T01"
+                },
+                "easyPaisaIBFT": {
+                    "success": "PT-IFT-T01",
+                    "invalid": "PT-IFT-T62",
+                    "transactionError": "PT-IFT-T02",
+                    "blocked": "PT-IFT-T03",
+                    "internal": "PT-IFT-T41",
+                    "userNotExist": "PT-IFT-T04",
+                    "blockedOrInactive": "PT-IFT-T06",
+                    "limitsBreached": "PT-IFT-T07",
+                    "imdNotFound": "PT-IFT-T63",
+                    "senderTransactionIDNotFound": "PT-IFT-T64",
+                    "transactionIdDuplicated": "PT-IFT-T65",
+                    "authenticationError": "PT-IFT-T61"
+                }
+            },
+            "transactionType": {
+                "c2C": "C2C",
+                "bank": "BA",
+                "CNIC": "CNIC"
+            }
+        },
+        "profiles": {
+            "l0": "L0",
+            "l1": "Basic Business",
+            "l2": "Premium Business"
+        },
+        "metadata": {
+            "mapping": {
+                "a": "msisdn",
+                "b": "cnic",
+                "c": "accountLevel",
+                "d": "emailAddress",
+                "e": "firstName",
+                "f": "LastName",
+                "g": "profileImageURL",
+                "h": "customerType",
+                "i": "language",
+                "j": "dateOfBirth",
+                "k": "isLoggedInOnce"
+            },
+            "customerType": {
+                "1": "customer",
+                "2": "merchant"
+            },
+            "language": {
+                "1": "english",
+                "2": "urdu"
+            },
+            "isLoggedInOnce": {
+                "1": true,
+                "2": false
+            },
+            "accountLevel": {
+                "0": "L0",
+                "1": "Basic Business",
+                "2": "Premium Business"
+            }
+        }, 
+        "reportingDBTables" : {
+            "APP_SIGNUP": "APP_SIGNUP",
+            "BUS_TICKET": "BUS_TICKET",
+            "CARD_BLOCK": "CARD_BLOCK",
+            "CAREEM_VOUCHER": "CAREEM_VOUCHER",
+            "CHANGE_MPIN": "CHANGE_MPIN",
+            "DARAZ_WALLET": "DARAZ_WALLET",
+            "DEBIT_CARD_TRACK": "DEBIT_CARD_TRACK",
+            "DEPOSIT_VIA_CARD": "DEPOSIT_VIA_CARD",
+            "DEPOSIT_WITH_SAVED_CARD": "DEPOSIT_WITH_SAVED_CARD",
+            "DEVICE_AUTH": "DEVICE_AUTH",
+            "DISPLAY_QR": "DISPLAY_QR",
+            "DONATION": "DONATION",
+            "DOORSTEP_CASHIN": "DOORSTEP_CASHIN",
+            "EVENT_TICKET": "EVENT_TICKET",
+            "EVOUCHER": "EVOUCHER",
+            "FALLBACK_FAILURE": "FALLBACK_FAILURE",
+            "FOOD_DELIVERY": "FOOD_DELIVERY",
+            "INCOMMING_IBFT": "INCOMMING_IBFT",
+            "INSURANCE_CLAIM": "INSURANCE_CLAIM",
+            "OUTGOING_IBFT": "OUTGOING_IBFT",
+            "INVITEANDEARN": "INVITEANDEARN_T",
+            "MOBILE_BUNDLE": "MOBILE_BUNDLE",
+            "MOVIE_TICKET": "MOVIE_TICKET",
+            "NEW_SIGNUP_REWARD": "NEW_SIGNUP_REWARD",
+            "ONBOARDING": "ONBOARDING",
+            "OUTGOING_IBFT_ORIG": "OUTGOING_IBFT_ORIG",
+            "PAYON_REG_LINK": "PAYON_REG_LINK",
+            "PAYON_TRANSACTIONS": "PAYON_TRANSACTIONS",
+            "PROFILE_CHANGE": "PROFILE_CHANGE",
+            "PROMOCODE_SECTION": "PROMOCODE_SECTION",
+            "QR_PAYMENT": "QR_PAYMENT",
+            "RATING": "RATING",
+            "REQUEST_TO_PAY": "REQUEST_TO_PAY",
+            "RESET_PIN": "RESET_PIN",
+            "RESET_MPIN": "RESET_MPIN",
+            "TRANS_DETAILS": "TRANS_DETAILS",
+            "WALLET_REQUEST": "WALLET_REQUEST",
+            "CREATE_CARD_PIN": "CREATE_CARD_PIN",
+            "CARD_LINKING": "CARD_LINKING",
+            "CARD_DELINK": "CARD_DELINK",
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
+            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE",
+            "PAYON_LOGIN": "PAYON_LOGIN",
+            "CASHTOGOOD" : "CASHTOGOOD",
+            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM"
+        }
+    }
+}
