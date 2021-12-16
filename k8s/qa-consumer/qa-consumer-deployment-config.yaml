@@ -2,10 +2,10 @@ kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
   name: analytics-microservice
-  namespace: jc-microservices
+  namespace: qa-consumer
   labels:
     app: analytics-microservice
-    app.kubernetes.io/part-of: jc-microservices
+    app.kubernetes.io/part-of: qa-consumer
     monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
@@ -28,9 +28,8 @@ spec:
           - analytics-microservice
         from:
           kind: ImageStreamTag
-          namespace: jc-microservices
+          namespace: qa-consumer
           name: 'analytics-microservice:latest'
-  replicas: 1 
   revisionHistoryLimit: 10
   test: false
   selector:
@@ -48,7 +47,7 @@ spec:
     spec:
       containers:
         - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/jc-microservices/analytics-microservice:latest
+          image: image-registry.openshift-image-registry.svc:5000/qa-consumer/analytics-microservice:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -71,7 +70,7 @@ spec:
           - name: PRODUCTION_LOG_LEVEL
             value: debug
           - name: NODE_ENV
-            value: production
+            value: qa-consumer
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
             value: '300'  
           readinessProbe:
