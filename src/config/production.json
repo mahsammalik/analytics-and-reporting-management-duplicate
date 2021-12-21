@@ -59,7 +59,8 @@
             "schema": "COMMON",
             "hostName": "10.50.20.124",
             "port": 60000,
-            "protocol": "TCPIP"
+            "protocol": "TCPIP",
+            "maxPoolSize": 30
         },
         "DB2_HCA": {
             "username": "jcapprepdb",
