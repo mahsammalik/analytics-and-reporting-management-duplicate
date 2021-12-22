@@ -1206,7 +1206,6 @@ class Subscriber {
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         payload.isFailedTrans = true;
-                        payload.failReason = payload?.failureReason?.message || '';
                         logger.debug(JSON.stringify(payload));
 
                         await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
