@@ -25,7 +25,7 @@ class Processor {
                 }
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.failureReason = data?.isFailedTrans === true ? data?.failReason : '';
+                initTransData.failureReason = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'FailedReason'; })?.Value || '';
                 initTransData.isFailedTrans = data?.isFailedTrans || false;
                 initTransData.rewardType = data?.CustomObject?.rewardsType || null;
                 initTransData.expiryDate = data?.CustomObject?.expiryDate || null;
