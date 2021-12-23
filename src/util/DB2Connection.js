@@ -953,9 +953,10 @@ class DatabaseConn {
         }
 
         if (tableName === config.reportingDBTables.CASHBACK_REDEEM) {
+            logger.info("Entered CASHBACK_REDEEM block");
             let conn = await open(cn);
             try {
-
+                    logger.info("Connection opened");
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CREATEDON, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
                 VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.createdOn}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}');`);
                     stmt.executeSync();
