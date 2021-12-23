@@ -12,7 +12,6 @@ class Processor {
             logger.info({ event: 'Entered function', functionName: 'processCashbackRedeemConsumer in class Processor' });
             //logger.debug(data);
             let initTransData = {};
-            if (data.Result.ResultCode == 0) {
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 if (initTransData.transactionDate !== '') {
@@ -37,12 +36,10 @@ class Processor {
                 initTransData.campaignName = data?.CustomObject?.campaignName || null;
                 initTransData.status = data?.isFailedTrans === true ? 'failed' : 'redeemed';
                 initTransData.txID = data?.Result?.TransactionID || '0';
-                initTransData.createdOn = data?.CustomObject?.createdOn || null;
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
                 logger.debug(JSON.stringify(initTransData));
-            }
 
             if (JSON.stringify(initTransData) !== '{}') {
 
