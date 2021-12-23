@@ -30,7 +30,7 @@ class Processor {
                 initTransData.rewardType = data?.CustomObject?.rewardsType || null;
                 initTransData.expiryDate = data?.CustomObject?.expiryDate || null;
                 if (initTransData.expiryDate != null) {
-                    initTransData.expiryDate = moment(initTransData.expiryDate, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                    initTransData.expiryDate = moment(initTransData.expiryDate, 'DD-MM-YY').format('YYYY-MM-DD');
                 }
                 initTransData.rewardsDescription = data?.CustomObject?.rewardsDescription || null;
                 initTransData.campaignCode = data?.CustomObject?.campaignCode || null;
@@ -38,9 +38,6 @@ class Processor {
                 initTransData.status = data?.isFailedTrans === true ? 'failed' : 'redeemed';
                 initTransData.txID = data?.Result?.TransactionID || '0';
                 initTransData.createdOn = data?.CustomObject?.createdOn || null;
-                if (initTransData.createdOn != null) {
-                    initTransData.createdOn = moment(initTransData.createdOn, 'YYYY-MM-DD').format('YYYY-MM-DD');
-                }
                 initTransData.topic = data.topic;
                 initTransData.msg_offset = Number(data.msg_offset);
 
