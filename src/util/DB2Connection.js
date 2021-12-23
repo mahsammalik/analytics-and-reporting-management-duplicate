@@ -959,10 +959,12 @@ class DatabaseConn {
                     logger.info("Connection opened");
                     let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON, TRANS_DATE) 
                 VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}', '${data.transactionTime}');`);
-                    if(data.transactionTime == ''){
-                        stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
-                        VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}');`);        
-                    }
+
+                if(data.transactionTime == ''){
+                    stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
+                    VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}');`);        
+                }
+
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
