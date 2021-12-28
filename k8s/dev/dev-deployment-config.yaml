@@ -30,6 +30,7 @@ spec:
           kind: ImageStreamTag
           namespace: jc-microservices
           name: 'analytics-microservice:latest'
+  replicas: 1 
   revisionHistoryLimit: 10
   test: false
   selector:
