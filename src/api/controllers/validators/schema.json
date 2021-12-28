@@ -76,43 +76,26 @@
             }
         }
     },
-    "REQUEST_HEADER_SCHEMA": {
-        "title": "request headers",
-        "description": "request headers schema",
-        "type": "object",
-        "additionalProperties": true,
-        "required": ["x-app-type", "x-msisdn", "x-channel", "x-device-id", "x-meta-data"],
-        "properties": {
-            "x-app-type": {
-            "type": "string"
-            },
-            "x-msisdn": {
-            "type": "string"
-            },
-            "x-channel": {
-            "type": "string"
-            },
-            "x-device-id": {
-            "type": "string"
-            }
-        }
-    },
-    "USSD_HEADER_SCHEMA": {
-        "title": "request headers",
-        "description": "request headers schema",
-        "type": "object",
-        "additionalProperties": true,
-        "required": [
-          "x-msisdn",
-          "x-channel"
-        ],
-        "properties": {
-            "x-msisdn": {
+        "REQUEST_HEADER_SCHEMA": {
+            "title": "request headers",
+            "description": "request headers schema",
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["x-app-type", "x-msisdn", "x-channel", "x-device-id", "x-meta-data"],
+            "properties": {
+              "x-app-type": {
                 "type": "string"
-            },
-            "x-channel": {
+              },
+              "x-msisdn": {
                 "type": "string"
+              },
+              "x-channel": {
+                "type": "string"
+              },
+              "x-device-id": {
+                "type": "string"
+              }
             }
+          }
         }
-    }
-}
+    
