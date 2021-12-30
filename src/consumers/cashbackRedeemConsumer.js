@@ -23,7 +23,7 @@ class Processor {
                     initTransData.transactionTime = initTransData.transactionDate + " " + time;
                 }
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.msisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                initTransData.msisdn = data?.Header?.Identity?.ReceiverParty?.Identifier || data?.CustomObject?.msisdn || '0';
                 initTransData.failureReason = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'FailedReason'; })?.Value || '';
                 initTransData.isFailedTrans = data?.isFailedTrans || false;
                 initTransData.rewardType = data?.CustomObject?.rewardsType || null;
