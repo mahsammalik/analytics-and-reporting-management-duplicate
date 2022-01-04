@@ -66,13 +66,13 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: KAFKA_TOPICS_CONSUME_INTERVAL
+            value: '300'  
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
-          - name: KAFKA_TOPICS_CONSUME_INTERVAL
-      value: '300'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -104,4 +104,3 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
-
