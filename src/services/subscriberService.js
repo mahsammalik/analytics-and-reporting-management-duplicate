@@ -99,7 +99,7 @@ class Subscriber {
             // config.kafkaBroker.topics.initTrans_MobileBundleZong,
             // config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
             config.kafkaBroker.topics.cashback_reward_init_passed,
-            config.kafkaBroker.topics.cashback_reward_init_failed,
+            config.kafkaBroker.topics.cashback_reward_init_failed
             // config.kafkaBroker.topics.initTrans_refundMobileBundle,
             // config.kafkaBroker.topics.confirmTrans_refundMobileBundle
 
