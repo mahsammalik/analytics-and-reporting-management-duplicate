@@ -42,8 +42,8 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-const rewardSubscriber = new RewardSubscriber();
-rewardSubscriber.setConsumer();
+//const rewardSubscriber = new RewardSubscriber();
+//rewardSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
