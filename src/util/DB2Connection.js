@@ -181,7 +181,7 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                if (data.transactionStatus == 'Pending')
+                if(data.transactionStatus == 'Pending')
                 {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, BUNDLE_VOICE, BUNDLE_SMS, BUNDLE_DATA, RESPONSE_CODE, RESPONSE_DESCRIPTION) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
                     stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.voiceMinutes, data.smsDetails, data.DataDetails, data.responseCode, data.responseDesc]);
@@ -189,7 +189,7 @@ class DatabaseConn {
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
-                else if (data.transactionStatus == 'Completed')
+                else if(data.transactionStatus == 'Completed')
                 {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
@@ -1087,7 +1087,7 @@ class DatabaseConn {
 
     }
 
-    
+
     async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
         // get connection from connection pool
         let conn = conPool.getConnection();
