@@ -35,3 +35,4 @@ export { default as cashToGoodProcessor } from './cashToGoodConsumer';
 export { default as cashToGoodRedeemProcessor } from './cashToGoodRedeemConsumer';
 export { default as cashToGoodRefundProcessor } from './cashToGoodRefundConsumer';
 export { default as multiPaymentQrPaymentProcessor } from './multiPaymentQrPaymentConsumer';
+export { default as cashbackRedeemProcessor } from './cashbackRedeemConsumer';

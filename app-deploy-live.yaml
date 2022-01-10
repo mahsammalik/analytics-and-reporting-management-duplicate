@@ -90,8 +90,15 @@ spec:
         configMapKeyRef:
           name: consumer-groups
           key: CONSUMER_GROUP_ANALYTICS
+    - name: CONSUMER_GROUP_ID_REWARD
+      valueFrom:
+        configMapKeyRef:
+          name: consumer-groups
+          key: CONSUMER_GROUP_ANALYTICS_REWARD
     - name: KAFKA_TOPICS_CONSUME_INTERVAL
-      value: '300'
+      value: '150'
+    - name: DB2ConnMaxPoolSize
+      value: '100'
   expose: true
   livenessProbe:
     failureThreshold: 12
