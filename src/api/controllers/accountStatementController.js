@@ -139,9 +139,6 @@ class accountStatementController {
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
             }
-            logger.debug("req.query");
-            logger.debug(req.query);
-    
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,

@@ -217,11 +217,7 @@
                 "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
-                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
-
-
-                "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
-                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed"
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
 
             }
         },
@@ -412,8 +408,7 @@
             "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE",
             "PAYON_LOGIN": "PAYON_LOGIN",
             "CASHTOGOOD" : "CASHTOGOOD",
-            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
-            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
+            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM"
         }
     }
 }

@@ -75,7 +75,7 @@ class DatabaseConn {
             let conn = await getConnection();
             try {
                 // let conn = await open(cn);
-                if (data.transactionStatus == 'Pending') {
+                if(data.transactionStatus == 'Pending') {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (CHANNEL, MERCH_NAME, REVERS_TID, REVIEWS, THIRDPARTY_TID, TID, TILL_PAYMENT, TIP_AMOUNT, CONSUMER_BALANCE, CUST_MSISDN, "DATE", FEE_AMOUNT, MERCH_ACCOUNT, MERCH_BALANCE, MERCH_BANK, MERCH_CATEGORY_CODE, MERCH_CATEGORY_TYPE, MERCH_ID, PAID_VIA, QR_CODE, QR_TYPE, RATING, TRANS_AMOUNT, TRANS_STATUS, TOP_NAME, MSG_OFFSET) VALUES('${data.channel}', '${data.merchantName}', ${data.reverseTID}, '${data.reviews}', ${data.thirdPartTID}, '${data.TID}', ${data.tilPayment}, ${data.tipAmount}, ${data.consumerBalance}, '${data.custMsisdn}', TIMESTAMP_FORMAT('${data.transactionTime}','YYYY-MM-DD HH24:MI:SS'), ${data.fee}, ${data.merchAccount}, ${data.merchBalance}, '${data.merchantBank}',
                     '${data.merchCategoryCode}','${data.merchCategoryType}', '${data.merchID}', 
                     '${data.paidVia}', '${data.qrCode}', '${data.qrType}', '${data.rating}', ${data.transAmount},
@@ -85,7 +85,7 @@ class DatabaseConn {
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
-                else if (data.transactionStatus == 'Completed') {
+                else if(data.transactionStatus == 'Completed') {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET MERCH_NAME='${data.merchantName}', MERCH_ID='${data.merchID}', PAID_VIA='${data.paidVia}', QR_CODE='${data.qrCode}', TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
@@ -944,32 +944,6 @@ class DatabaseConn {
                 stmt.closeSync();
                 //conn.close(function (err) { });
                 logger.info(`${schemaName}.${tableName}_insert done`);
-            } catch (err) {
-                logger.error(`${schemaName}.${tableName} database connection error` + err);
-                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-            } finally {
-                conn.close(function (err) { });
-            }
-        }
-
-        if (tableName === config.reportingDBTables.CASHBACK_REDEEM) {
-            logger.info("Entered CASHBACK_REDEEM block");
-            let conn = await open(cn);
-            try {
-                    logger.info("Connection opened");
-                    let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON, TRANS_DATE) 
-                VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}', '${data.transactionTime}');`);
-
-                if(data.transactionTime == ''){
-                    stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
-                    VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}');`);        
-                }
-
-                    stmt.executeSync();
-                    stmt.closeSync();
-                    //conn.close(function (err) { });
-                    logger.info(`${schemaName}.${tableName}_insert done`);
-
             } catch (err) {
                 logger.error(`${schemaName}.${tableName} database connection error` + err);
                 return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
