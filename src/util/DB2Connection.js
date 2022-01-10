@@ -1087,7 +1087,7 @@ class DatabaseConn {
 
     }
 
-
+    
     async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
         // get connection from connection pool
         let conn = conPool.getConnection();
