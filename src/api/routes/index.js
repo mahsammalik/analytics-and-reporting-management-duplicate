@@ -12,7 +12,8 @@ accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, new
 foodOrderingProcessor, createCardPINProcessor, inviteAndEarnProcessor, cardLinkDelinkProcessor,
 scheduledTransactionsProcessor, accountUpgradeProcessor, movieTicketsProcessor, doorstepCashinProcessor,
 careemVoucherProcessor, payoneerRegProcessor, payoneerTransProcessor, displayQRProcessor,
-onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/'
+onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/';
+import isTokenValid from '../middlewares/tokenValiadtion';
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
@@ -124,28 +125,28 @@ const accountStatement = new accountStatementController();
 // });
 
 router.get(
-    '/accountwithKakfa', msisdnParserMW(), accountStatement.calculateAccountStatement, responseCodeMW,
+    '/accountwithKakfa', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatement, responseCodeMW,
 );
 
 router.get(
-    '/account', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafka, responseCodeMW,
+    '/account', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatementWithoutKafka, responseCodeMW,
 );
 router.get(
-    '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
+    '/tax', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement, responseCodeMW,
 );
 router.get(
-    '/tax2', msisdnParserMW(), taxStatementController.calculateTaxStatement2, responseCodeMW,
+    '/tax2', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement2, responseCodeMW,
 );
 router.get(
-    '/ibft/incoming/:startDate/:endDate', excelExportController.jazzcashIncomingExport
-);
-
-router.get(
-    '/ibft/outgoing/:startDate/:endDate', excelExportController.jazzcashOutgoingExport
+    '/ibft/incoming/:startDate/:endDate', isTokenValid, excelExportController.jazzcashIncomingExport
 );
 
 router.get(
-    '/testingpdf', msisdnParserMW(), accountStatement.calculateAccountStatementTEMPLATE,
+    '/ibft/outgoing/:startDate/:endDate', isTokenValid, excelExportController.jazzcashOutgoingExport
+);
+
+router.get(
+    '/testingpdf', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatementTEMPLATE,
 );
 
 export default router;
