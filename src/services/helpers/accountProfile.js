@@ -104,7 +104,7 @@ const levels = {
 		"expiryDate": null
 	}
  */
-const getUserProfile = headers => {
+const getUserProfile = async headers => {
 	try {
 
 		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
