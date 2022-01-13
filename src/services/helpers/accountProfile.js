@@ -120,37 +120,13 @@ const getUserProfile = headers => {
 			'X-APP-Version': headers['x-app-version'] || '',
 		};
 
-		return axios.get(userProfileURL, { headers: headerFields }).then(async result => {
-			logger.debug(result, "   result IN PROFILE CALL")
+		const result = await axios.get(userProfileURL, { headers: headerFields });
+		logger.info({ event: 'User Profile Response', functionName: 'getUserProfile', result });
+		let accLevel = result.data.data.level || '';
+		const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.businessDetails.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
+		logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
+		return profile;
 
-			logger.info({ event: 'Entered function', functionName: 'userGetProfileidentityinformationURL', userGetProfileidentityinformationURL });
-
-			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
-			logger.debug("userGetProfileidentityinformationURL", res);
-			logger.info({
-				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL',levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
-			});
-			let accLevel = result.data.data.level || '';
-			// logger.info({
-			// 	event: 'accLevel before value', accLevel,
-			// });
-			// if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
-			// 	accLevel = levels[res.data.data.TrustLevel].levelDesc
-			// 	logger.info({
-			// 		event: 'accLevel after value', accLevel
-			// 	});
-			// 	logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
-			// }
-
-			logger.info({ event: 'AccountLevel', functionName: 'userGetProfileidentityinformationURL', res: accLevel });
-			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.businessDetails.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
-			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
-			return profile;
-		}).catch(error => {
-			logger.debug("ERROR IN PROFILE CALL: ", headerFields, error)
-			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
-			return {};
-		});
 	} catch (error) {
 		logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 		logger.info({ event: 'Exited function', functionName: 'getUserProfile' });
