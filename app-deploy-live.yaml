@@ -98,7 +98,7 @@ spec:
     - name: KAFKA_TOPICS_CONSUME_INTERVAL
       value: '150'
     - name: DB2ConnMaxPoolSize
-      value: '100'
+      value: '60'
   expose: true
   livenessProbe:
     failureThreshold: 12
