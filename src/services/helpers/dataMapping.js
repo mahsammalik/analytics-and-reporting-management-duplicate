@@ -686,7 +686,110 @@ class dataMapping {
           logger.debug(err);
           return null;
         }
-    }  
+    }
+    
+    async getProfileResponse(data) {
+      return {
+        _id: data._id,
+        identityID: data.identityID,
+        level: data.level,
+        msisdn: data.msisdn,
+        cnic: data.cnic,
+        uID: data.uID ? data.uID : data._id,
+        dob: data.dob ? moment(data.dob).format("YYYY-MM-DD") : null,
+        firstNameEn: data.firstNameEn,
+        firstNameUr: data.firstNameUr,
+        lastNameEn: data.lastNameEn,
+        lastNameUr: data.lastNameUr,
+        nickName: data.nickName ? data.nickName : '',
+        email: data.email ? data.email : null,
+        profileImageURL: data.profileImageURL ? data.profileImageURL : null,
+        language: data.language,
+        customerType: data.customerType,
+        firstLoginTS: data.firstLoginTS ? data.firstLoginTS : null,
+        signupBonusTS: data.signupBonusTS ? data.signupBonusTS : null,
+        scope: data.scope,
+        requestToPay: data.requestToPay != null ? data.requestToPay : null,
+        registrationDate: data.registrationDate ? data.registrationDate : null,
+        minorMigrationRequired: data.minorMigrationRequired ? data.minorMigrationRequired: false,
+        accountType: data.accountType ? data.accountType : "",
+        hitCount: data.hitCount ? data.hitCount : null,
+        cnicExpiryschedulerDate: data.cnicExpiryschedulerDate ? data.cnicExpiryschedulerDate : null,
+        cnicExpiry: data.cnicExpiry ? data.cnicExpiry : null
+  
+      };
+    }
+  
+    async getMerchantProfileResponse(data) {
+  
+      let expiryDate = null;
+  
+      if (data.level && data.createTS && data.level.toLowerCase() == 'm0') {
+        expiryDate = moment(data.createTS).add(parseInt(REGISTRATION_EXPIRY_DAYS), 'd');
+        logger.debug({
+          expiryDate
+        });
+      }
+  
+      return {
+        identityID: data.identityID,
+        level: data.level,
+        msisdn: data.msisdn,
+        scope: data.scope,
+        cnic: data.cnic,
+        cnicCRM: data.cnicCRM,
+        uID: data.uID ? data.uID : data._id,
+        dob: data.dob ? moment(data.dob).format("YYYY-MM-DD") : null,
+        firstNameEn: data.firstNameEn,
+        firstNameUr: data.firstNameUr,
+        lastNameEn: data.lastNameEn,
+        lastNameUr: data.lastNameUr,
+        email: data.email ? data.email : null,
+        profileImageURL: data.profileImageURL ? data.profileImageURL : null,
+        businessDetails: {
+          businessName: data.businessDetails.businessName ? data.businessDetails.businessName : null,
+          merchantType: data.businessDetails.merchantType ? data.businessDetails.merchantType : null,
+          businessAddress: data.businessDetails.businessAddress ? data.businessDetails.businessAddress : null,
+          website: data.businessDetails.website ? data.businessDetails.website : null,
+          shortCode: data.businessDetails.shortCode ? data.businessDetails.shortCode : null,
+          operatorID: data.businessDetails.operatorID ? data.businessDetails.operatorID : null,
+          userName: data.businessDetails.userName ? data.businessDetails.userName : null,
+          acceptedTermsAndCondition: data.businessDetails.acceptedTermsAndCondition == null ? false : data.businessDetails.acceptedTermsAndCondition,
+          businessCity: data.businessDetails.businessCity ? data.businessDetails.businessCity : null,
+          expactedMonthlyIncome: data.businessDetails.expactedMonthlyIncome ? data.businessDetails.expactedMonthlyIncome : null,
+          merchantCode: data.businessDetails.merchantCode ? data.businessDetails.merchantCode : null,
+          nearestLandmark: data.businessDetails.nearestLandmark ? data.businessDetails.nearestLandmark : null,
+          businessEmail: data.businessDetails.businessEmail ? data.businessDetails.businessEmail: null,
+          isEmailRequestSubmitted: data.businessDetails.isEmailRequestSubmitted == null ? false : data.businessDetails.isEmailRequestSubmitted, 
+          businessLogo: data.businessDetails.businessLogo ? data.businessDetails.businessLogo: null,
+          longitude: data.businessDetails.longitude ? data.businessDetails.longitude :null,
+          latitude: data.businessDetails.latitude ? data.businessDetails.latitude :null,
+          gpsLocation: data.businessDetails.gpsLocation ? data.businessDetails.gpsLocation :null,
+          businessGpsLocation: data.businessDetails.businessGpsLocation ? data.businessDetails.businessGpsLocation :null
+        },
+        language: data.language ? data.language : null,
+        customerType: data.customerType,
+        firstLoginTS: data.firstLoginTS ? data.firstLoginTS : null,
+        signupBonusTS: data.signupBonusTS ? data.signupBonusTS : null,
+        requestToPay: data.requestToPay != null ? data.requestToPay : null,
+        registrationDate: data.registrationDate ? data.registrationDate : null,
+        expiryDate: expiryDate ? expiryDate : null,
+        registeredVia: data.registeredVia,
+        nadraVerificationID: data.nadraVerificationID,
+        cnicIssueDate: data.cnicIssueDate,
+        motherMaidenName: data.motherMaidenName,
+        addressEn: data.addressEn,
+        birthPlace: data.birthPlace,
+        cnicExpiry: data.cnicExpiry,
+        registrationStage: data.registrationStage,
+        userEnteredMotherMaiden: data.userEnteredMotherMaiden,
+        userEnteredPlaceOfBirth: data.userEnteredPlaceOfBirth,
+        cnicBackUrl: data.cnicBackUrl,
+        cnicFrontUrl: data.cnicFrontUrl,
+        selfieUrl: data.selfieUrl,
+        hitCount: data.hitCount ? data.hitCount : null
+      };
+    }
 
 }
 export default new dataMapping();

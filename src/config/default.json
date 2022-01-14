@@ -179,7 +179,9 @@
             "server": "datagrid",
             "port": 11222,
             "cacheName": "jazzcash",
-            "responseCodeCache": "ResponseCodeCache"
+            "responseCodeCache": "ResponseCodeCache",
+            "UserProfileCache": "UserProfileCache",
+            "url": "http://datagrid:11222/rest/v2/caches/"
         },
         "responseCode": {
             "default": {

@@ -3,6 +3,9 @@ import { logger, mappedMetaData } from '/util/';
 import { getUserProfile } from '/services/helpers/';
 import { accountStatementTemplate, createPDF } from '../../util';
 import moment from 'moment';
+import dataMapping from '../../services/helpers/dataMapping';
+import cache_rest from '../util/cache_rest';
+
 class accountStatementController {
 
     async calculateAccountStatement(req, res, next) {
@@ -15,10 +18,41 @@ class accountStatementController {
 
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             logger.debug(`getting userProfile : `)
-            const userProfile = await getUserProfile(req.headers);
-            logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA", metadataHeaders)
-            logger.debug(`Obtained user profile as follows : `)
-            logger.debug({ userProfile });
+            // const userProfile = await getUserProfile(req.headers);
+            // logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA", metadataHeaders)
+            // logger.debug(`Obtained user profile as follows : `)
+            // logger.debug({ userProfile });
+
+            let data = await cache_rest.getValue(req.headers['x-msisdn'], config.cache.UserProfileCache);
+            logger.info("******** Custoemr Profile Data From Cache**********" + JSON.stringify(data));
+
+            let cacheData = {};
+
+            if (data == null) {
+                logger.info('Cache not found!');
+        
+                // Data not found in cache. Check in mongo...
+               
+              } else {
+                logger.info('Cache found!');
+        
+                //Data found, hence return the response with data...
+                let profileData = data;
+                
+                // logger.debug(profileData);
+                
+        
+                if (profileData.customerType == 'consumer') {
+             
+                  cacheData = await dataMapping.getProfileResponse(profileData);
+                }
+                if (profileData.customerType == 'merchant') {
+                  cacheData = await dataMapping.getMerchantProfileResponse(profileData);
+                }
+        
+              }
+             const profile = cacheData.businessDetails || cacheData ? { businessName: cacheData.businessDetails.businessName || `${cacheData.firstNameEn} ${cacheData.lastNameEn}`, accountLevel: cacheData.level } : {};
+            
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
             }
@@ -32,8 +66,8 @@ class accountStatementController {
                 html: '<html></html>',
                 format: req.query.format,
                 metadata,
-                merchantName: userProfile.businessName || '',
-                accountLevel: userProfile.accountLevel || ''
+                merchantName: profile.businessName || '',
+                accountLevel: profile.accountLevel || ''
             };
             logger.debug(payload, "payload")
             // const subscriber = new Subscriber();
