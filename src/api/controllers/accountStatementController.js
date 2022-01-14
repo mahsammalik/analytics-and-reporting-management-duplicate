@@ -4,7 +4,7 @@ import { getUserProfile } from '/services/helpers/';
 import { accountStatementTemplate, createPDF } from '../../util';
 import moment from 'moment';
 import dataMapping from '../../services/helpers/dataMapping';
-import cache_rest from '../util/cache_rest';
+import cache_rest from '../../../src/util/cache_rest';
 
 class accountStatementController {
 
