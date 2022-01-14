@@ -97,7 +97,7 @@ class CacheRest {
     async getValue(key, cacheName) {
       const url = `${cacheName}/${key}`;
       try {
-        
+        console.log("CACHE_URL>>>> ",CACHE_URL, cacheName, key)        
         const rsp = await this.axiosRequest.get(url);
         return rsp.data;
       } catch (error) {
