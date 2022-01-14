@@ -1,4 +1,4 @@
-import logger from './logger';
+import logger from '../util/logger';
 import axios from 'axios';
 import Agent from 'agentkeepalive';
 
