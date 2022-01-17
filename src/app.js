@@ -42,6 +42,8 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
+global.kafkaSubscriber = subscriber;
+
 const rewardSubscriber = new RewardSubscriber();
 rewardSubscriber.setConsumer();
 

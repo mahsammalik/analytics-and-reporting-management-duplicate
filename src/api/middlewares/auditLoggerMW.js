@@ -15,8 +15,8 @@ const auditLoggerMW = async(req, res, next) => {
         const reqObj = { headers: req.headers, method: req.method, url: req.url, body: req.body, query: req.query, msisdn: req.headers['x-msisdn'], timestamp: new Date() };
 
         logger.info({ event: 'Entered function', functionName: 'auditLoggerMW', reqObj });
-        const subscriber = new Subscriber();
-        await subscriber.event.produceMessage(reqObj, config.kafkaBroker.init_auditLog);
+        //const subscriber = new Subscriber();
+        await kafkaSubscriber.event.produceMessage(reqObj, config.kafkaBroker.init_auditLog);
 
         logger.info({ event: 'Exited function', functionName: 'auditLoggerMW' });
 
