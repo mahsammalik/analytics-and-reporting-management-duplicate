@@ -123,7 +123,7 @@ const getUserProfile = async headers => {
 		const result = await axios.get(userProfileURL, { headers: headerFields });
 		logger.info({ event: 'User Profile Response', functionName: 'getUserProfile', result });
 		let accLevel = result.data.data.level || '';
-		const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.businessDetails.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
+		const profile = result.data.data ? { businessName: result.data.data?.businessDetails?.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
 		logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
 		return profile;
 
