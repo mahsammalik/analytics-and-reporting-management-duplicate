@@ -109,15 +109,12 @@ const getUserProfile = async headers => {
 
 		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
 		const headerFields = {
-			'Content-Type': headers['content-type'] || '',
 			'X-MSISDN': headers['x-msisdn'] || '',
-			'X-META-DATA': headers['x-meta-data'] || '',
 			'X-APP-TYPE': headers['x-app-type'] || '',
-			'x-channel': headers['x-channel'] || '',
-			'x-device-id': headers['x-device-id'] || '',
-			'X-IBM-CLIENT-ID': headers['x-ibm-client-id'] || '',
+			'X-CHANNEL': headers['x-channel'] || '',
+			'X-DEVICE-ID': headers['x-device-id'] || '',
 			'X-IP-ADDRESS': headers['x-ip-address'] || '',
-			'X-APP-Version': headers['x-app-version'] || '',
+			'X-APP-VERSION': headers['x-app-version'] || '',
 		};
 
 		const result = await axios.get(userProfileURL, { headers: headerFields });
