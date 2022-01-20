@@ -111,7 +111,6 @@ const getUserProfile = headers => {
 		const headerFields = {
 			'Content-Type': headers['content-type'] || '',
 			'X-MSISDN': headers['x-msisdn'] || '',
-			'X-META-DATA': headers['x-meta-data'] || '',
 			'X-APP-TYPE': headers['x-app-type'] || '',
 			'x-channel': headers['x-channel'] || '',
 			'x-device-id': headers['x-device-id'] || '',
