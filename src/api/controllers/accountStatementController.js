@@ -131,7 +131,7 @@ class accountStatementController {
 
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:") metadataHeaders = metadataHeaders.replace("a:", "")
 
-            const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+            const metadata = mappedMetaData(metadataHeaders && metadataHeaders !== 'null' ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
             logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA")
 
