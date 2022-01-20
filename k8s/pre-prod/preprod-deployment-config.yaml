@@ -67,7 +67,7 @@ spec:
           - name: NODE_ENV
             value: live
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'  
+            value: '550'  
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
