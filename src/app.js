@@ -7,7 +7,7 @@ import compression from 'compression';
 import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
-import { Subscriber } from '/services/';
+import { Subscriber, RewardSubscriber} from '/services/';
 import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
@@ -42,8 +42,8 @@ app.use(responseTime());
 const subscriber = new Subscriber();
 subscriber.setConsumer();
 
-//const rewardSubscriber = new RewardSubscriber();
-//rewardSubscriber.setConsumer();
+const rewardSubscriber = new RewardSubscriber();
+rewardSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
