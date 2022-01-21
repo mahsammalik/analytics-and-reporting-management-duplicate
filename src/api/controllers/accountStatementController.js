@@ -159,8 +159,8 @@ class accountStatementController {
             logger.debug(payload, "payload")
 
             const accountStatement = new accountStatementService();
-            if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-            else await accountStatement.sendEmailCSVFormat(payload);
+            if (payload.format === 'pdf') accountStatement.sendEmailPDFFormat(payload)
+            else accountStatement.sendEmailCSVFormat(payload);
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
