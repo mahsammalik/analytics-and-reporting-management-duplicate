@@ -83,7 +83,7 @@
                 "sasl_mechanisms": "SCRAM-SHA-512",
                 "ssl_ca_location": "/project/user-app/dist/util/es-cert.pem",
                 "sasl_username": "kafkacreds",
-                "sasl_password": "dwnOWyaVTVeH",
+                "sasl_password": "dwnOWyaVTVe",
                 "enable_ssl_certificate_verification": false,
                 "enable_auto_commit": true,
                 "broker_version_fallback": "0.10.2.1",
@@ -96,7 +96,7 @@
                 "sasl.mechanisms": "SCRAM-SHA-512",
                 "ssl.ca.location": "/project/user-app/dist/util/es-cert.pem",
                 "sasl.username": "kafkacreds",
-                "sasl.password": "dwnOWyaVTVeH",
+                "sasl.password": "dwnOWyaVTVe",
                 "enable.ssl.certificate.verification": false,
                 "broker.version.fallback": "0.10.0",
                 "log.connection.close": false
