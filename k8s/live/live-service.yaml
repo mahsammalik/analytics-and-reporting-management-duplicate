@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: analytics
+  name: analytics-microservice
   namespace:  m11s
   labels:
-    app: analytics
+    app: analytics-microservice
   annotations:
     openshift.io/generated-by: OpenShiftNewApp
 spec:
