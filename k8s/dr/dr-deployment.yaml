@@ -10,7 +10,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Rolling
+    type: RollingUpdate
     rollingParams:
       updatePeriodSeconds: 1
       intervalSeconds: 1
