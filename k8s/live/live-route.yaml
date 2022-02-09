@@ -6,7 +6,7 @@ metadata:
 spec:
   to:
     kind: Service
-    name: analytics-microservice
+    name: analytics
   port:
     targetPort: 3000-tcp
   
