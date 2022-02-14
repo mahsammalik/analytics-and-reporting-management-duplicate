@@ -32,8 +32,9 @@ spec:
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deployment: analytics-microservice
+    matchLabels:
+      app: analytics-microservice
+      deployment: analytics-microservice
   template:
     metadata:
       creationTimestamp: null
