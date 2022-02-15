@@ -66,7 +66,7 @@ class BrokerReward {
             const consumer = new Kafka.KafkaConsumer({
                 "debug":config.kafkaBroker.consumerConfig.debug,
                 "client.id": config.kafkaBroker.consumerConfig.client_id + "-" + os.hostname(),
-                "group.id": CONSUMER_GROUP_ID,
+                "group.id": 'kafka_consumer_distribution',
                 "metadata.broker.list": config.kafkaBroker.consumerConfig.metadata_broker_list,
                 "security.protocol": config.kafkaBroker.consumerConfig.security_protocol,
                 "sasl.mechanisms": config.kafkaBroker.consumerConfig.sasl_mechanisms,
