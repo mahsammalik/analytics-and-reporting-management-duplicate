@@ -39,8 +39,8 @@ app.use(responseTime());
 
 // app.use(schemaValidatorMW);
 
-const subscriber = new Subscriber();
-subscriber.setConsumer();
+// const subscriber = new Subscriber();
+// subscriber.setConsumer();
 
 const rewardSubscriber = new RewardSubscriber();
 rewardSubscriber.setConsumer();

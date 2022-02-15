@@ -15,7 +15,10 @@ class RewardSubscriber {
 
         this.event = new BrokerReward([
             config.kafkaBroker.topics.initTrans_signupReward,
-            config.kafkaBroker.topics.confirmTrans_signupReward,
+            config.kafkaBroker.topics.initTrans_signupReward,
+            config.kafkaBroker.topics.initTrans_signupReward,
+            config.kafkaBroker.topics.initTrans_signupReward,
+            // config.kafkaBroker.topics.confirmTrans_signupReward,
         ]);
 
         //this.setConsumer();
