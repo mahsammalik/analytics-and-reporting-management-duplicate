@@ -4,7 +4,7 @@ import { logger } from '/util/';
 const brokers = process.env.KAFKA_BOOTSTRAP_SERVERS || config.kafkaBroker.brokers;
 const CONSUMER_GROUP_ID = process.env.CONSUMER_GROUP_ID_REWARD || config.kafkaBroker.consumerConfig.group_id;
 const CONSUME_INTERVAL = Number(process.env.KAFKA_TOPICS_CONSUME_INTERVAL) || config.kafkaBroker.topics_consume_interval
-
+const POD_NAME=process.env.POD_NAME || '';
 class BrokerReward {
     constructor(topicsArray) {
 
@@ -65,7 +65,7 @@ class BrokerReward {
             // }
             const consumer = new Kafka.KafkaConsumer({
                 "debug":config.kafkaBroker.consumerConfig.debug,
-                "client.id": config.kafkaBroker.consumerConfig.client_id,
+                "client.id": config.kafkaBroker.consumerConfig.client_id + (POD_NAME != '' ? '-'+POD_NAME : ''),
                 "group.id": CONSUMER_GROUP_ID,
                 "metadata.broker.list": config.kafkaBroker.consumerConfig.metadata_broker_list,
                 "security.protocol": config.kafkaBroker.consumerConfig.security_protocol,
