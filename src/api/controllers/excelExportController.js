@@ -19,7 +19,7 @@ class excelExportController {
         logger.info({ event: 'Exited function', functionName: 'jazzcashIncomingExport in class excelExportController' });
         res.send(response);
       });
-    
+
     } catch (error) {
         logger.error({ event: 'Error thrown', functionName: 'jazzcashIncomingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, query: req.query });
         logger.info({ event: 'Exited function', functionName: 'jazzcashIncomingExport in class excelExportController' });
