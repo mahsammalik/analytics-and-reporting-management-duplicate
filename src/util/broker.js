@@ -98,22 +98,7 @@ class Broker {
             consumer.on('ready', function(arg) {
                 logger.debug({ event: `consumer ready`, arg });
 
-                // consumer.subscribe(topicsArray);
-                for(let i=0;i<topicsArray.length;i++)
-                {
-                    let topic = [topicsArray[i]];
-                    console.log(`Subscribing to topic ${topicsArray[i]}`)
-                    consumer.subscribe(topic);
-                    let subscribedTopics = consumer.subscription();
-                    console.log(`Total subscribed topics thus far are : ${subscribedTopics.length}`)
-                    logger.info(subscribedTopics);
-                    if(subscribedTopics.length >= 2)
-                    {
-                        console.log(`Thats my limit i won't subscribe more than 2 topics`)
-                        console.log(subscribedTopics)
-                        break;
-                    }
-                }
+                consumer.subscribe(topicsArray);
                 // start consuming messages
                 setInterval(function() {
                    consumer.consume(1);

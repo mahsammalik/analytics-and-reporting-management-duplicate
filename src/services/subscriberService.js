@@ -26,7 +26,7 @@ class Subscriber {
         // if (!instance) {
         //     instance = this;
 
-        if(topicsString != undefined || topicsString != '')
+        if(topicsString)
         {
             let topics = topicsString.split(",");
             this.event = new Broker(topics);
