@@ -25,11 +25,11 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-microservice-kafka
         from:
           kind: ImageStreamTag
           namespace: qa-consumer
-          name: 'analytics-microservice:latest'
+          name: 'analytics-microservice-kafka:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
         - name:  analytics-microservice-kafka
-          image: image-registry.openshift-image-registry.svc:5000/qa-consumer/analytics-microservice:latest
+          image: image-registry.openshift-image-registry.svc:5000/qa-consumer/analytics-microservice-kafka:latest
           ports:
             - containerPort: 3000
               protocol: TCP
