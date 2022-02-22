@@ -104,52 +104,25 @@ const levels = {
 		"expiryDate": null
 	}
  */
-const getUserProfile = headers => {
+const getUserProfile = async headers => {
 	try {
 
 		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
 		const headerFields = {
-			'Content-Type': headers['content-type'] || '',
 			'X-MSISDN': headers['x-msisdn'] || '',
 			'X-APP-TYPE': headers['x-app-type'] || '',
-			'x-channel': headers['x-channel'] || '',
-			'x-device-id': headers['x-device-id'] || '',
-			'X-IBM-CLIENT-ID': headers['x-ibm-client-id'] || '',
+			'X-CHANNEL': headers['x-channel'] || '',
+			'X-DEVICE-ID': headers['x-device-id'] || '',
 			'X-IP-ADDRESS': headers['x-ip-address'] || '',
-			'X-APP-Version': headers['x-app-version'] || '',
+			'X-APP-VERSION': headers['x-app-version'] || '',
 		};
 
-		return axios.get(userProfileURL, { headers: headerFields }).then(async result => {
-			logger.debug(result, "   result IN PROFILE CALL")
-
-			logger.info({ event: 'Entered function', functionName: 'userGetProfileidentityinformationURL', userGetProfileidentityinformationURL });
-
-			const res = await axios.get(userGetProfileidentityinformationURL, { headers: headerFields });
-			logger.debug("userGetProfileidentityinformationURL", res);
-			logger.info({
-				event: 'RESPONSE userGetProfileidentityinformationURL', functionName: 'userGetProfileidentityinformationURL',levels, TrustLevel: res.data.data.TrustLevel, check: levels[res.data.data.TrustLevel]
-			});
-			let accLevel = result.data.data.level || '';
-			// logger.info({
-			// 	event: 'accLevel before value', accLevel,
-			// });
-			// if (res.status === 200 && res.data && res.data.data && res.data.data.TrustLevel) {
-			// 	accLevel = levels[res.data.data.TrustLevel].levelDesc
-			// 	logger.info({
-			// 		event: 'accLevel after value', accLevel
-			// 	});
-			// 	logger.info({ event: 'Trustlevel', functionName: 'userGetProfileidentityinformationURL', res: res.data.data.TrustLevel });
-			// }
-
-			logger.info({ event: 'AccountLevel', functionName: 'userGetProfileidentityinformationURL', res: accLevel });
-			const profile = result.data.data.businessDetails || result.data.data ? { businessName: result.data.data.businessDetails.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
-			logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
-			return profile;
-		}).catch(error => {
-			logger.debug("ERROR IN PROFILE CALL: ", headerFields, error)
-			logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
-			return {};
-		});
+		const result = await axios.get(userProfileURL, { headers: headerFields });
+		logger.info({ event: 'User Profile Response', functionName: 'getUserProfile', result });
+		let accLevel = result.data.data.level || '';
+		const profile = result.data.data ? { businessName: result.data.data?.businessDetails?.businessName || `${result.data.data.firstNameEn} ${result.data.data.lastNameEn}`, accountLevel: accLevel } : {};
+		logger.info({ event: 'Exited function', functionName: 'getUserProfile', userProfileURL, profile });
+		return profile;
 	} catch (error) {
 		logger.error({ event: 'Error thrown', functionName: 'getUserProfile', error });
 		logger.info({ event: 'Exited function', functionName: 'getUserProfile' });
