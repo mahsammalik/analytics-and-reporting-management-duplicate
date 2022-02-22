@@ -1199,8 +1199,8 @@ class DatabaseConn {
 
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             let conn = await getConnection();
-            const stmt = conn.prepareSync(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`);
-            const result = stmt.executeSync([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn]);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let sumBalance = 0.00;
