@@ -1,6 +1,6 @@
 import taxStatementService from '../../services/taxStatementService';
 import Controller from './controller';
-import validations from './validators/validations';
+import validations from './validators/validatorEnhanced';
 import schema from './validators/schema.json';
 import responseCodeHandler from '../../util/responseCodeHandler';
 import { logger, mappedMetaData } from '/util/';
@@ -17,8 +17,8 @@ class taxStatementController {
     }
 
     async calculateTaxStatement(req, res, next) {
-        const headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
-        const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+        const headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
+        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
 
         if (!headersValidationResponse.success) {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
@@ -78,8 +78,8 @@ class taxStatementController {
         try {
             logger.info({ event: 'Entered function', functionName: 'calculateTaxStatement2 in class taxStatementController', request: req.url, header: req.headers, query: req.query });
 
-            const headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
-            const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+            const headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
+            const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
 
             if (!headersValidationResponse.success) {
                 const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);

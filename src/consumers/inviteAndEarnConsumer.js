@@ -14,9 +14,18 @@ class Processor {
             let initTransData = {};
 
             if (data.Result.ResultCode == 0) {
-                initTransData.acceptDate = null;
-                initTransData.acceptTime = null;
-                initTransData.accountStatus = '';
+                const acceptedTS = data?.CustomObject?.acceptedTS || null;
+                if(acceptedTS != null)
+                {
+                    initTransData.acceptDate = moment(acceptedTS).format("YYYY-MM-DD");
+                    initTransData.acceptTime = moment(acceptedTS).format("HH:mm:ss");
+                }
+                else
+                {
+                    initTransData.acceptDate = null;
+                    initTransData.acceptTime = null;
+                }
+                initTransData.accountStatus = data?.CustomObject?.accountStatus || '';
                 initTransData.amount = Number(data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.amountPostedDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 if (initTransData.amountPostedDate !== '') {
@@ -27,14 +36,23 @@ class Processor {
                     initTransData.amountPostedTime = moment(initTransData.amountPostedTime, 'HHmmss').format('HH:mm:ss');
                 }
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.inviteDate = null;
-                initTransData.inviteTime = null;
+                const invitationTS = data?.CustomObject?.invitationTS || null;
+                if(invitationTS != null)
+                {
+                    initTransData.inviteDate = moment(invitationTS).format("YYYY-MM-DD");
+                    initTransData.inviteTime = moment(invitationTS).format("HH:mm:ss");
+                }
+                else
+                {
+                    initTransData.inviteDate = null;
+                    initTransData.inviteTime = null;
+                }
                 initTransData.inviterMsisdn = data?.Request?.Transaction?.Parameters?.Parameter?.find((param) => {return param.Key == 'CustomerMSISDN'; })?.Value || '0';
-                initTransData.inviterName = '';
+                initTransData.inviterName = data?.CustomObject?.senderName || '';
                 initTransData.message = '';
                 initTransData.module = '';
                 initTransData.receiverName = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'BeneficiaryName'; })?.Value || ''
-                initTransData.receiverMsisdn = 0;
+                initTransData.receiverMsisdn = data?.CustomObject?.receiverMsisdn || '0';
                 initTransData.registerChannel = '';
                 initTransData.reqCategory = '';
                 initTransData.reqChannel = '';

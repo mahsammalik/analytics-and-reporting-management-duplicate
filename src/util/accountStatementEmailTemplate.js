@@ -25,7 +25,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  <meta charset="UTF-8" />
 		  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		  <link rel="stylesheet" href=url('${dirName}/css/font-awesome.min.css') />
 		
 		  <title>JazzCash</title>
 		  <style type="text/css">
@@ -45,7 +45,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  <div style="margin: 0px; max-width: 600px; margin: auto;">
 		
 		  <table border="0" cellpadding="0" cellspacing="0" align="center"
-		  style="margin:0px auto;width:100%;max-width: 600px; border-bottom:2px solid #B7A3A3;font-family:tahoma,arial;font-size:14px">
+		  style="margin:0px auto;width:100%;max-width: 600px; border-bottom:2px solid #d50810;font-family:tahoma,arial;font-size:14px">
 		  <tbody>
 		  <tr>
 			<td 
@@ -62,29 +62,29 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 			height="216" border="0"
 			style="display:block;border:0px; width:40%; max-width: 190px; height:86px; object-fit: cover; padding-left: 15px; padding-bottom: 25px; min-width: 125px;" />
 			<p style="
-		  font-family: work-sans Black; font-size:14px;  text-align:left;
+		  font-family: 'Work Sans', sans-serif; font-size:14px;  text-align:left;
 		   font-style: normal;
 		  font-weight: normal;
-		  font-size: 16px;
+		  font-size: 18px;
 		  line-height: 28px;
 		  color: #FFFFFF;
 		  padding-top: 10px;
 		  padding-left: 25px;
 		  display: ${customerName ? 'block' : 'none'};
-		  ">Dear <b> ${customerName ? customerName.trim() : ''},</b></p>
+		  ">Dear <b style="letter-spacing: 1px"> ${customerName ? customerName.trim() : ''},</b></p>
 			</td>
 		  </tr>
 		  <tr>
 			<td>
-			<table cellpadding="25" cellspacing="0" border="0">
+			<table cellpadding="25" cellspacing="0" border="0" style="font-family: 'Work Sans', sans-serif;font-weight: lighter;">
 			<tbody>
 			<tr>
-			  <td style="padding-bottom: 0px;">
-			  Your ${title} is attached for<br />
-			  Account number : <b>${accountNumber}</b><br />
-			  Account Type:<b> ${accountLevel}</b><br />
-			  Statement Period: <b>${statementPeriod}</b><br />
-			  </td>
+				<td style="padding-bottom: 0px;">
+					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Your ${title} is attached for :</span><br />
+					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Account number : </span><b>${accountNumber}</b><br />
+					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Account Type:</span><b> ${accountLevel}</b><br />
+					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Statement Period: </span><b>${statementPeriod}</b><br />
+				</td>
 			</tr>
 			<tr>
 			  <td>		
@@ -101,7 +101,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 			<table cellpadding="25" cellspacing="0" border="0">
 			<tbody>
 			<tr>
-			  <td style="font-family: work-sans Black;font-size:11px;text-align:left;color:#727272">
+			  <td style="font-family: 'Work Sans', sans-serif;font-size:11px;text-align:left;color:#727272;font-weight: lighter">
 			  <p><b>Disclaimer:</b></p>
 			  <p>This is a system generated email.</p>
 			  <p>This email (inlcuding any attachments) may contain information that is priviledged and/or
@@ -116,7 +116,6 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 			  system. Mobilink Microfinance Bank does not guarantee that the integrity of this communication has
 			  been maintained nor that this communication is free of viruses, interceptions or interferences.
 			  </p>
-			  <p>Thank you <br> JazzCash</p>
 			  </td>
 			</tr>
 			</tbody>
@@ -135,7 +134,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 		  position: relative !important;
 		  width: 100%;
 		  ">
-		  <div style="font-family: work-sans Black;
+		  <div style="font-family: 'Work Sans', sans-serif;
 		  font-size: 11px;
 		  font-style: normal;
 		  font-weight: 400;

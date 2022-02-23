@@ -39,8 +39,8 @@ class accountStatementController {
             // const subscriber = new Subscriber();
             // await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             const accountStatement = new accountStatementService();
-            if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-            else await accountStatement.sendEmailCSVFormat(payload);
+            if (payload.format === 'pdf') accountStatement.sendEmailPDFFormat(payload)
+            else accountStatement.sendEmailCSVFormat(payload);
 
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
@@ -139,6 +139,9 @@ class accountStatementController {
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
             }
+            logger.debug("req.query");
+            logger.debug(req.query);
+    
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,
@@ -156,8 +159,8 @@ class accountStatementController {
             logger.debug(payload, "payload")
 
             const accountStatement = new accountStatementService();
-            if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-            else await accountStatement.sendEmailCSVFormat(payload);
+            if (payload.format === 'pdf') accountStatement.sendEmailPDFFormat(payload)
+            else accountStatement.sendEmailCSVFormat(payload);
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;

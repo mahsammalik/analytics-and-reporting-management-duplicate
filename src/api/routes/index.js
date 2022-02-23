@@ -12,7 +12,7 @@ accountDetailsUpdateProcessor, requestToPayProcessor, cardOrderingProcessor, new
 foodOrderingProcessor, createCardPINProcessor, inviteAndEarnProcessor, cardLinkDelinkProcessor,
 scheduledTransactionsProcessor, accountUpgradeProcessor, movieTicketsProcessor, doorstepCashinProcessor,
 careemVoucherProcessor, payoneerRegProcessor, payoneerTransProcessor, displayQRProcessor,
-onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/'
+onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from '/consumers/';
 
 const router = express.Router();
 const accountStatement = new accountStatementController();
