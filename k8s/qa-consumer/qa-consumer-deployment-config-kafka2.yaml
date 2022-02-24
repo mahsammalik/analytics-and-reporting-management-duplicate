@@ -1,0 +1,109 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: analytics-microservice-kafka2
+  namespace: qa-consumer
+  labels:
+    app: analytics-microservice-kafka2
+    app.kubernetes.io/part-of: qa-consumer
+    
+spec:
+  replicas: 15
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - analytics-microservice-kafka2
+        from:
+          kind: ImageStreamTag
+          namespace: qa-consumer
+          name: 'analytics-microservice-kafka2:latest'
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: analytics-microservice-kafka2
+    deploymentconfig: analytics-microservice-kafka2
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: analytics-microservice-kafka2
+        deploymentconfig: analytics-microservice-kafka2
+      annotations:
+        openshift.io/generated-by: jenkins-pipeline
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name:  analytics-microservice-kafka2
+          image: image-registry.openshift-image-registry.svc:5000/qa-consumer/analytics-microservice-kafka2:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+          - name: TOPICS
+            value: ESB_Mobile_QRPayment_Init_Passed,ESB_Mobile_QRPayment_Confirm_Passed,ESB_Mobile_BusTickets_Init_Passed,ESB_Mobile_BusTickets_Confirm_Passed,ESB_Mobile_eVouchers_Init_Passed,ESB_Mobile_VoucherPayment_Confirm_Passed,ESB_Mobile_EventTickets_Init_Passed,ESB_Mobile_EventTickets_Confirm_Passed,ESB_Mobile_CareemVoucher_Query_Passed,ESB_Mobile_Donation_Init_Passed,ESB_Mobile_DepositViaDebitCard_Init_Passed,ESB_Mobile_DepositViaDebitCard_Confirm_Passed,ESB_Mobile_DarazVoucher_Init_Passed,ESB_Mobile_DarazVoucher_Confirm_Passed,ESB_Mobile_AccountDetails_Update_Passed,ESB_Mobile_Request2Pay_Init_Passed,ESB_Mobile_Request2Pay_Confirm_Passed,ESB_Mobile_CardOrdering_Init_Passed,ESB_Mobile_CardOrdering_Confirm_Passed,ESB_Mobile_InsuranceSubPayment_Init_Passed,ESB_Mobile_InsuranceSubPayment_Confirm_Passed,ESB_Mobile_FoodOrdering_Init_Passed,ESB_Mobile_FoodOrdering_Confirm_Passed,ESB_Mobile_CardManagement_Update_Passed,ESB_Mobile_InviteAndEarn_Init_Passed,ESB_Mobile_InviteAndEarn_Confirm_Passed,SecureCard_DepositViaDebitCard_CardDelink,SecureCard_DepositViaDebitCard_CardLink,ESB_Mobile_MoneyTransferB2B_Init_Passed,ESB_Mobile_MoneyTransferB2B_Confirm_Passed,ESB_Mobile_MoneyTransferC2C_Init_Passed,ESB_Mobile_MoneyTransferC2C_Confirm_Passed,ESB_Mobile_CNICPayment_Init_Passed,ESB_Mobile_CNICPayment_Confirm_Passed,ESB_Mobile_Payment_Confirm_Passed,AccountManagement_AccountUpgrade_Successful,AccountManagement_AccountUpgrade_Nadra_Failure,AccountManagement_AccountUpgrade_CPS_Failure,ESB_Mobile_MovieTickets_Init_Passed,ESB_Mobile_MovieTickets_Confirm_Passed,MP_Mobile_CashinDoorstep_Failed,MP_Mobile_CashinDoorstep_Passed,ESB_Mobile_VoucherPayment_Init_Passed,ESB_Mobile_VoucherPayment_Confirm_Passed,PM_Mobile_PayoneerRegistration_Success,Merchant_Onboarding_Success,Consumer_Fallback_Failure,Consumer_Wallet_Success,claims,ESB_Mobile_cashToGoodConfirm_Confirm_Passed,ESB_Mobile_CashToGoodRedeem_Confirm_Passed,ESB_Mobile_CashToGoodRefund_Init_Passed,MULTIPAYMENT_QR_PAYMENT_PASSED,ESB_Mobile_CashbackReward_Init_Passed,ESB_Mobile_CashbackReward_Init_Failed
+          - name: CACHE_SERVER
+            value: datagrid.datagrid-tests
+          - name: CONSUMER_GROUP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS
+          - name: ESB_SERVER
+            value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
+          - name: MASTER_DATA_API_GET_RESPCODE_URL
+            value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
+          - name: NOTIFICATION_SERVICE_URL_EMAIL
+            value: http://notification-microservice:3000/rest/api/v1/notification/email
+          - name: KAFKA_DRAIN_CHECK
+            value: 'false'    
+          - name: PRODUCTION_LOG_LEVEL
+            value: debug
+          - name: NODE_ENV
+            value: qa-consumer
+          - name: KAFKA_TOPICS_CONSUME_INTERVAL
+            value: '150'  
+          readinessProbe:
+            failureThreshold: 12
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+          livenessProbe:
+            failureThreshold: 12
+            httpGet:
+              path: /live
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5                                                                      
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: '0.3'
+            requests:
+              memory: 56Mi
+              cpu: '120m'             
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+
