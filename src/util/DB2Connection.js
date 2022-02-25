@@ -1182,7 +1182,7 @@ class DatabaseConn {
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             console.log(arrayResult, 'arrayResult');
 
-            const stmt2 = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`);
+            const stmt2 = conn.prepareSync(`Select RUNNING_BALANCE, FEE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`);
             console.log(stmt2, 'stmt2');
             const result2 = stmt2.executeSync();
             console.log(result2, 'result2');
