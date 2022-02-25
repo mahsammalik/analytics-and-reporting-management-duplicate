@@ -1,5 +1,4 @@
 import logger  from '../../util/logger';
-import mappedMetaData  from '../../util/mapMetaData';
 
 const isTokenValidation= process.env.Token_Validation || 'false';
 
