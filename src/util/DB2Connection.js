@@ -1181,6 +1181,14 @@ class DatabaseConn {
             console.log(result, 'result');
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             console.log(arrayResult, 'arrayResult');
+
+            const stmt2 = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`);
+            console.log(stmt2, 'stmt2');
+            const result2 = stmt2.executeSync();
+            console.log(result2, 'result2');
+            const arrayResult2 = result2.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            console.log(arrayResult2, 'arrayResult2');
+
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
