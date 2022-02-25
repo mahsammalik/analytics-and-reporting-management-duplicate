@@ -13,6 +13,7 @@ const isTokenValid = (req,res,next) =>
             logger.debug("Entered Authorization Flow");
             let metadatamsisdn = req.get('x-user-metadata');
             let msisdn= req.get('X-MSISDN');
+            if (metadatamsisdn && metadatamsisdn.substring(0, 2) === "a:") metadatamsisdn = metadatamsisdn.replace("a:", "")
             let metadata = JSON.parse(metadatamsisdn);
             if (isTokenValidation == 'false'|| !msisdn ) 
             { 
