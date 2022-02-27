@@ -5,6 +5,8 @@ import dataMapping from './helpers/dataMapping';
 import {newSignupRewardProcessor} from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
+let topicsString = process.env.REWARD_TOPICS;
+
 let instance = null;
 
 class RewardSubscriber {
@@ -13,10 +15,15 @@ class RewardSubscriber {
         // if (!instance) {
         //     instance = this;
 
-        this.event = new BrokerReward([
-            config.kafkaBroker.topics.initTrans_signupReward,
-            config.kafkaBroker.topics.confirmTrans_signupReward,
-        ]);
+        if(topicsString)
+        {
+            let topics = topicsString.split(",");
+            this.event = new Broker(topics);
+        }
+        else
+        {
+            this.event = new Broker([]);        
+        }
 
         //this.setConsumer();
         //return instance;
