@@ -1225,7 +1225,7 @@ class DatabaseConn {
             let conn = await getConnection();
             //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
             const stmt = conn.prepareSync(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`);
-            console.log(stmt, 'stmt');
+            console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
             const result = stmt.executeSync([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn]);
             console.log(result, "result")
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
