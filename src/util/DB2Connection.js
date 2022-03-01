@@ -1178,6 +1178,7 @@ class DatabaseConn {
             const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            console.log(arrayResult, "arrayResult")
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
