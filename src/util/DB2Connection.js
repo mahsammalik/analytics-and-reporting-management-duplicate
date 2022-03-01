@@ -1228,8 +1228,8 @@ class DatabaseConn {
             console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
             const result = stmt.executeSync([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn]);
             console.log(result, "result")
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            console.log(resultArrayFormat, "resultArrayFormat")
+            let arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            console.log(arrayResult, "arrayResult")
             result.closeSync();
             stmt.closeSync();
             conn.close();
