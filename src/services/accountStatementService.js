@@ -176,6 +176,9 @@ class accountStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
 
             logger.debug(`pdfFile ${pdfFile}`, db2Data);
+
+            logger.debug(`db2data`, db2Data);
+
             const emailData = [{
                 'key': 'customerName',
                 'value': payload.merchantName
