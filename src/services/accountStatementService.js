@@ -177,7 +177,7 @@ class accountStatementService {
 
             logger.debug(`pdfFile ${pdfFile}`, db2Data);
 
-            logger.debug(`db2data`, db2Data);
+            console.log('db2data', db2Data);
 
             const emailData = [{
                 'key': 'customerName',
