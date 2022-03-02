@@ -18,11 +18,11 @@ class RewardSubscriber {
         if(topicsString)
         {
             let topics = topicsString.split(",");
-            this.event = new Broker(topics);
+            this.event = new BrokerReward(topics);
         }
         else
         {
-            this.event = new Broker([]);        
+            this.event = new BrokerReward([]);        
         }
 
         //this.setConsumer();
