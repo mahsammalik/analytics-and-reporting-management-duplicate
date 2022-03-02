@@ -13,7 +13,11 @@ class BrokerReward {
         logger.info({ event: 'Event Stream constructor called', functionName: 'constructor in BrokerReward', message: `Consumer will consume messages in interval: ${CONSUME_INTERVAL} ms}`});
 
         this.producer = this._ConnectProducer();
-        this.consumer = this._ConnectConsumer(topicsArray);
+        // connect consumer only if there are topics to subscribe
+        if(topicsArray.length != 0)
+        {
+            this.consumer = this._ConnectConsumer(topicsArray);
+        }
     }
 
 
