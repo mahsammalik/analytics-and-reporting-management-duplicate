@@ -156,16 +156,18 @@ class Broker {
         var counter = 0;
         var numMessages = config.kafkaBroker.numMessages;
         let consumer = this.consumer;
+        if(consumer)
+        {
+            consumer.on('data', function(msg) {
 
-        consumer.on('data', function(msg) {
-
-            // // committing offsets every numMessages
-            // if (counter % numMessages === 0) {
-            //   consumer.commit(msg);
-            // }
-            logger.debug({ msg });
-            func(msg);
-        });
+                // // committing offsets every numMessages
+                // if (counter % numMessages === 0) {
+                //   consumer.commit(msg);
+                // }
+                logger.debug({ msg });
+                func(msg);
+            });
+        }
 
 
     }
