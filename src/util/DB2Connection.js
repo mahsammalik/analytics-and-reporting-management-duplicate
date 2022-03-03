@@ -1180,7 +1180,7 @@ class DatabaseConn {
             const result = stmt.executeSync([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn]);
             console.log(result, "result")
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            console.log(arrayResult, "arrayResult")
+            console.log(resultArrayFormat, "resultArrayFormat")
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
