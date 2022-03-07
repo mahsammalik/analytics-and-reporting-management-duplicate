@@ -144,7 +144,7 @@ class accountStatementService {
         }
     }
 
-    async sendEmailPDFMerchant(payload) {
+    async sendEmailPDFMerchant(payload, db2Data) {
 
         try {
 
