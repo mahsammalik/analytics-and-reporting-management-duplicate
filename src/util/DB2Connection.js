@@ -1175,42 +1175,43 @@ class DatabaseConn {
 
             let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             let conn = await getConnection();
-            const stmt = conn.prepareSync(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`);
-            console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
-            const result = stmt.executeSync([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn]);
-            console.log(result, "result")
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            console.log(resultArrayFormat, "resultArrayFormat")
-            let sumBalance = 0.00;
-            let sumCredit = 0.00;
-            let sumDebit = 0.00;
-
-            if (resultArrayFormat.length > 0)
-                resultArrayFormat = resultArrayFormat.map((dat) => {
-                    dat.splice(0, 1);
-                    let b = dat[1];
-                    dat[1] = dat[0];
-                    dat[0] = b;
-                    dat[dat.length - 3] = dat[dat.length - 3] / 100;
-                    dat[dat.length - 2] = dat[dat.length - 2] / 100;
-                    dat[dat.length - 1] = dat[dat.length - 1] / 100;
-                    return dat
+            conn.prepare(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`, (stmt) => {
+                console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
+                stmt.execute([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn], (result) => {
+                    console.log(result, "result")
+                    let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+                    console.log(resultArrayFormat, "resultArrayFormat")
+                    let sumBalance = 0.00;
+                    let sumCredit = 0.00;
+                    let sumDebit = 0.00;
+        
+                    if (resultArrayFormat.length > 0)
+                        resultArrayFormat = resultArrayFormat.map((dat) => {
+                            dat.splice(0, 1);
+                            let b = dat[1];
+                            dat[1] = dat[0];
+                            dat[0] = b;
+                            dat[dat.length - 3] = dat[dat.length - 3] / 100;
+                            dat[dat.length - 2] = dat[dat.length - 2] / 100;
+                            dat[dat.length - 1] = dat[dat.length - 1] / 100;
+                            return dat
+                        });
+        
+                    resultArrayFormat.forEach((row) => {
+                        sumDebit += parseFloat(row[row.length - 3]);
+                        sumCredit += parseFloat(row[row.length - 2]);
+                        sumBalance += parseFloat(row[row.length - 1]);
+                    });
+                    resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+                    concatenatResult = resultArrayFormat.join('\n');
+                    logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+                    result.closeSync();
+                    stmt.closeSync();
+                    conn.close(function (err) { });
+                    logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
+                    return concatenatResult;    
                 });
-
-            resultArrayFormat.forEach((row) => {
-                sumDebit += parseFloat(row[row.length - 3]);
-                sumCredit += parseFloat(row[row.length - 2]);
-                sumBalance += parseFloat(row[row.length - 1]);
             });
-            resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
-            concatenatResult = resultArrayFormat.join('\n');
-            logger.debug("the result of database" + concatenatResult, resultArrayFormat);
-            result.closeSync();
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
-            return concatenatResult;
-
         } catch (err) {
             logger.error('Database connection error' + err);
             return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
