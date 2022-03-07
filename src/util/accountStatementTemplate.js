@@ -114,11 +114,11 @@ const accountStatementTemplate = accountData => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			accountData.data.forEach((number) => {
-				totalCredit += parseFloat(number[number.length - 2] / 100) || 0;
-				totalDebit += parseFloat(number[number.length - 3] / 100) || 0;
-				if (parseFloat(number[number.length - 2]) > parseFloat(0))
-					creditTransactions++;
+				totalCredit += parseFloat(number[number.length - 3] / 100) || 0;
+				totalDebit += parseFloat(number[number.length - 4] / 100) || 0;
 				if (parseFloat(number[number.length - 3]) > parseFloat(0))
+					creditTransactions++;
+				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					debitTransactions++;
 			});
 			totalCredit = parseFloat(totalCredit).toFixed(2);

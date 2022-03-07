@@ -1199,16 +1199,16 @@ class DatabaseConn {
                             let b = dat[1];
                             dat[1] = dat[0];
                             dat[0] = b;
+                            dat[dat.length - 4] = dat[dat.length - 4] / 100;
                             dat[dat.length - 3] = dat[dat.length - 3] / 100;
                             dat[dat.length - 2] = dat[dat.length - 2] / 100;
-                            dat[dat.length - 1] = dat[dat.length - 1] / 100;
                             return dat
                         });
         
                     resultArrayFormat.forEach((row) => {
-                        sumDebit += parseFloat(row[row.length - 3]);
-                        sumCredit += parseFloat(row[row.length - 2]);
-                        sumBalance += parseFloat(row[row.length - 1]);
+                        sumDebit += parseFloat(row[row.length - 4]);
+                        sumCredit += parseFloat(row[row.length - 3]);
+                        sumBalance += parseFloat(row[row.length - 2]);
                     });
                     resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
                     concatenatResult = resultArrayFormat.join('\n');
