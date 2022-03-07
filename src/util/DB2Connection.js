@@ -4,6 +4,8 @@ import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
+import accountStatementService from './../services/accountStatementService';
+
 let conPool = DB2ConnectionPool.getInstance();
 
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
@@ -1166,7 +1168,7 @@ class DatabaseConn {
         }
     }
 
-    async getValue(customerMobileNumer, endDate, startDate) {
+    async getValue(customerMobileNumer, endDate, startDate, payload) {
 
         try {
             logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
@@ -1183,7 +1185,7 @@ class DatabaseConn {
                     return conn.closeSync();
                 }
                 console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
-                stmt.execute([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn], function (err, result) {
+                stmt.execute([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn], async function (err, result) {
                     console.log(result, "result")
                     let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
                     console.log(resultArrayFormat, "resultArrayFormat")
@@ -1215,7 +1217,9 @@ class DatabaseConn {
                     stmt.closeSync();
                     conn.close(function (err) { });
                     logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
-                    return concatenatResult;    
+                    const accountStatement = new accountStatementService();
+                    await accountStatement.sendEmailCSV(payload, concatenatResult)
+                    return concatenatResult;
                 });
             });
         } catch (err) {
