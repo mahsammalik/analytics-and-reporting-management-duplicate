@@ -148,7 +148,6 @@ class accountStatementService {
 
         try {
 
-            let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date, payload);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
