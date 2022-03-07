@@ -1255,7 +1255,7 @@ class DatabaseConn {
         
                     logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
                     const accountStatement = new accountStatementService();
-                    await accountStatement.sendEmailCSVMerchant(payload, arrayResult)
+                    await accountStatement.sendEmailPDFMerchant(payload, arrayResult)
                     return arrayResult || [];    
                 });    
             });
