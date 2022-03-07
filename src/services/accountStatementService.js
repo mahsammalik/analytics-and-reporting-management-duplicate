@@ -49,9 +49,6 @@ class accountStatementService {
 
             if (payload.email) {
                 logger.debug('-----payload sendEmailCSVFormat---', payload);
-                let msisdn = payload.msisdn;
-                if (msisdn.substring(0, 2) === '92')
-                    msisdn = msisdn.replace("92", "0");
                 await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date, payload);
             }
             else {
@@ -68,9 +65,6 @@ class accountStatementService {
             if (payload.email) {
                 logger.debug('-----payload sendEmailPDFFormat---', payload);
                 logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
-                let msisdn = payload.msisdn;
-                if (msisdn.substring(0, 2) === '92')
-                    msisdn = msisdn.replace("92", "0");
                 await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date, payload);
             }
             else {
@@ -86,7 +80,9 @@ class accountStatementService {
 
     async sendEmailCSVMerchant(payload, db2Data) {
         try {
-
+            let msisdn = payload.msisdn;
+            if (msisdn.substring(0, 2) === '92')
+                msisdn = msisdn.replace("92", "0");
             logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
@@ -123,7 +119,7 @@ class accountStatementService {
                 embedImage: false
             }];
 
-            let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+            let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
             emailData.push({
                 key: "htmlTemplate",
@@ -147,7 +143,9 @@ class accountStatementService {
     async sendEmailPDFMerchant(payload, db2Data) {
 
         try {
-
+            let msisdn = payload.msisdn;
+            if (msisdn.substring(0, 2) === '92')
+                msisdn = msisdn.replace("92", "0");
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
@@ -215,7 +213,7 @@ class accountStatementService {
             }
             ];
 
-            let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+            let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
             emailData.push({
                 key: "htmlTemplate",
