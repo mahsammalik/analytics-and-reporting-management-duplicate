@@ -1218,7 +1218,7 @@ class DatabaseConn {
                     conn.close(function (err) { });
                     logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
                     const accountStatement = new accountStatementService();
-                    await accountStatement.sendEmailCSV(payload, concatenatResult)
+                    await accountStatement.sendEmailCSVMerchant(payload, concatenatResult)
                     return concatenatResult;
                 });
             });
@@ -1249,6 +1249,8 @@ class DatabaseConn {
             conn.close();
 
             logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
+            const accountStatement = new accountStatementService();
+            await accountStatement.sendEmailCSVMerchant(payload, arrayResult)
             return arrayResult || [];
 
         } catch (error) {
