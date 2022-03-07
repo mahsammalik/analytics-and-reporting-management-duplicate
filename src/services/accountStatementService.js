@@ -47,11 +47,16 @@ class accountStatementService {
     async sendEmailCSVFormat(payload) {
         try {
 
-            logger.debug('-----payload sendEmailCSVFormat---', payload);
-            let msisdn = payload.msisdn;
-            if (msisdn.substring(0, 2) === '92')
-                msisdn = msisdn.replace("92", "0");
-            await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date, payload);
+            if (payload.email) {
+                logger.debug('-----payload sendEmailCSVFormat---', payload);
+                let msisdn = payload.msisdn;
+                if (msisdn.substring(0, 2) === '92')
+                    msisdn = msisdn.replace("92", "0");
+                await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date, payload);
+            }
+            else {
+                throw new Error(`Email Not provided`);
+            }
         } catch (error) {
             logger.error(error);
             return new Error(`Error mailing csv:${error}`);    
@@ -203,26 +208,21 @@ class accountStatementService {
             }
             ];
 
-            if (payload.email) {
-                logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
-                const attachment = [{
-                    filename: 'AccountStatement.csv',
-                    content: csvData,
-                    type: 'base64',
-                    embedImage: false
-                }];
+            logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
+            const attachment = [{
+                filename: 'AccountStatement.csv',
+                content: csvData,
+                type: 'base64',
+                embedImage: false
+            }];
 
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+            let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
-                emailData.push({
-                    key: "htmlTemplate",
-                    value: emailHTMLContent,
-                });
-                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            }
-            else {
-                throw new Error(`Email Not provided`);
-            }
+            emailData.push({
+                key: "htmlTemplate",
+                value: emailHTMLContent,
+            });
+            return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
             // }
             // else {
             //     return new Error(`Error mailing csv`);
