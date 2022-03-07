@@ -1228,7 +1228,7 @@ class DatabaseConn {
         }
     }
 
-    async getValueArray(customerMobileNumer, endDate, startDate) {
+    async getValueArray(customerMobileNumer, endDate, startDate, payload) {
 
         try {
 
