@@ -51,63 +51,7 @@ class accountStatementService {
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
-            const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
-            logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
-            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
-            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
-            // if (resp.status === 200) {
-            // const response = db2Data;
-            // logger.debug("CHECK CsV Oracle Account Statement: ", resp.data);
-            // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
-            // const { data, success, message } = response;
-            // if (success) {
-            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
-            header = header.join(',');
-            const csvData = new Buffer.from(header + db2Data).toString('base64');
-            logger.debug(`csvData ${csvData}`, db2Data);
-
-            const emailData = [{
-                'key': 'customerName',
-                'value': payload.merchantName
-            },
-            {
-                'key': 'accountNumber',
-                'value': payload.msisdn
-            },
-            {
-                'key': 'statementPeriod',
-                'value': payload.start_date
-            }
-            ];
-
-            if (payload.email) {
-                logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
-                const attachment = [{
-                    filename: 'AccountStatement.csv',
-                    content: csvData,
-                    type: 'base64',
-                    embedImage: false
-                }];
-
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
-
-                emailData.push({
-                    key: "htmlTemplate",
-                    value: emailHTMLContent,
-                });
-                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-            }
-            else {
-                throw new Error(`Email Not provided`);
-            }
-            // }
-            // else {
-            //     return new Error(`Error mailing csv`);
-            // }
-            // }
-            // else {
-            //     return new Error(`Error mailing csv`);
-            // }
+            await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date, payload);
         } catch (error) {
             logger.error(error);
             return new Error(`Error mailing csv:${error}`);    
@@ -225,6 +169,71 @@ class accountStatementService {
             logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
 
             throw new Error(`Error fetching data for account statement:${error}`);
+        }
+    }
+
+    async sendEmailCSV(payload, db2Data) {
+        try {
+
+            logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
+            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date, true);
+            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`)
+            // if (resp.status === 200) {
+            // const response = db2Data;
+            // logger.debug("CHECK CsV Oracle Account Statement: ", resp.data);
+            // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
+            // const { data, success, message } = response;
+            // if (success) {
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance", 'Fee\n'];
+            header = header.join(',');
+            const csvData = new Buffer.from(header + db2Data).toString('base64');
+            logger.debug(`csvData ${csvData}`, db2Data);
+
+            const emailData = [{
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
+            ];
+
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailCSVFormat' });
+                const attachment = [{
+                    filename: 'AccountStatement.csv',
+                    content: csvData,
+                    type: 'base64',
+                    embedImage: false
+                }];
+
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+            }
+            else {
+                throw new Error(`Email Not provided`);
+            }
+            // }
+            // else {
+            //     return new Error(`Error mailing csv`);
+            // }
+            // }
+            // else {
+            //     return new Error(`Error mailing csv`);
+            // }
+        } catch (error) {
+            logger.error(error);
+            return new Error(`Error mailing csv:${error}`);    
         }
     }
 
