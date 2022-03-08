@@ -128,7 +128,7 @@ router.get(
 );
 
 router.get(
-    '/account', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafka, responseCodeMW,
+    '/account', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
 );
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
@@ -146,6 +146,10 @@ router.get(
 
 router.get(
     '/testingpdf', msisdnParserMW(), accountStatement.calculateAccountStatementTEMPLATE,
+);
+
+router.get(
+    '/accountMerchant', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
 );
 
 export default router;

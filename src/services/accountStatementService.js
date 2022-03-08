@@ -3,6 +3,7 @@ import {
     logger,
     createPDF,
     accountStatementTemplate,
+    accountStatementTemplateMerchant,
     Notification,
 } from '/util/';
 import DB2Connection from '../util/DB2Connection';
@@ -44,7 +45,7 @@ const formatEnglishDate = date => {
 
 class accountStatementService {
 
-    async sendEmailCSVFormat(payload) {
+    async sendEmailCSVFormatMerchant(payload) {
         try {
 
             if (payload.email) {
@@ -60,7 +61,7 @@ class accountStatementService {
         }
     }
 
-    async sendEmailPDFFormat(payload) {
+    async sendEmailPDFFormatMerchant(payload) {
         try {
             if (payload.email) {
                 logger.debug('-----payload sendEmailPDFFormat---', payload);
@@ -190,7 +191,7 @@ class accountStatementService {
             };
 
             let pdfFile = await createPDF({
-                template: accountStatementTemplate(accountData),
+                template: accountStatementTemplateMerchant(accountData),
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');

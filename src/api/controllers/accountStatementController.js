@@ -123,7 +123,7 @@ class accountStatementController {
         return res.status(200).send({success:true})
 
     }
-    async calculateAccountStatementWithoutKafka(req, res, next) {
+    async calculateAccountStatementWithoutKafkaMerchant(req, res, next) {
         try {
             logger.info({ event: 'Entered function', functionName: 'main calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
 
@@ -156,8 +156,8 @@ class accountStatementController {
             logger.debug(payload, "payload")
 
             const accountStatement = new accountStatementService();
-            if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormat(payload)
-            else await accountStatement.sendEmailCSVFormat(payload);
+            if (payload.format === 'pdf') await accountStatement.sendEmailPDFFormatMerchant(payload)
+            else await accountStatement.sendEmailCSVFormatMerchant(payload);
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
