@@ -1280,6 +1280,7 @@ class DatabaseConn {
                             dat[dat.length - 4] = dat[dat.length - 4] / 100;
                             dat[dat.length - 3] = dat[dat.length - 3] / 100;
                             dat[dat.length - 2] = dat[dat.length - 2] / 100;
+                            dat[dat.length - 1] = dat[dat.length - 1] / 100;
                             return dat
                         });
         
