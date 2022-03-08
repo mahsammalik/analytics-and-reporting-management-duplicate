@@ -233,7 +233,7 @@ class accountStatementService {
 
             if (payload.email) {
                 logger.debug('-----payload sendEmailCSVFormat---', payload);
-                await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date, payload);
+                await DB2Connection.getValueMerchant(payload.msisdn, payload.end_date, payload.start_date, payload);
             }
             else {
                 throw new Error(`Email Not provided`);
@@ -249,7 +249,7 @@ class accountStatementService {
             if (payload.email) {
                 logger.debug('-----payload sendEmailPDFFormat---', payload);
                 logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
-                await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date, payload);
+                await DB2Connection.getValueArrayMerchant(payload.msisdn, payload.end_date, payload.start_date, payload);
             }
             else {
                 throw new Error(`Email Not provided`);

@@ -209,4 +209,4 @@ const accountStatementTemplateMerchant = accountData => {
 
 };
 
-export default accountStatementTemplate;
+export default accountStatementTemplateMerchant;
