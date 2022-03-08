@@ -128,7 +128,7 @@ router.get(
 );
 
 router.get(
-    '/account', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
+    '/account', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafka, responseCodeMW,
 );
 router.get(
     '/tax', msisdnParserMW(), taxStatementController.calculateTaxStatement, responseCodeMW,
