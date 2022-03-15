@@ -24,6 +24,7 @@ class taxStatementController {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
         }
+        const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
         if (!queryValidationResponse.success) {
             const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
