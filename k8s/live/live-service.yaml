@@ -15,7 +15,7 @@ spec:
       targetPort: 3000
   selector:
     app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    deployment: analytics-microservice
   type: NodePort
   sessionAffinity: None
 status:
