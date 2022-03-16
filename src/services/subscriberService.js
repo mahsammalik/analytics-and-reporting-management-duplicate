@@ -227,13 +227,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle) {
-                    logger.debug('*********** Init Trans Mobile Bundle *****************');
+                    logger.info('*********** Init Trans Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
                         //logger.debug(response);
@@ -242,13 +242,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundle) {
-                    logger.debug('*********** Confirm Trans Mobile Bundle *****************');
+                    logger.info('*********** Confirm Trans Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload, true);
                         //logger.debug(response);
@@ -257,13 +257,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_refundMobileBundle) {
-                    logger.debug('*********** Init Trans Refund Mobile Bundle *****************');
+                    logger.info('*********** Init Trans Refund Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload);
                         //logger.debug(response);
@@ -272,13 +272,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_refundMobileBundle) {
-                    logger.debug('*********** Confirm Trans Refund Mobile Bundle *****************');
+                    logger.info('*********** Confirm Trans Refund Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload, true);
                         //logger.debug(response);
@@ -287,7 +287,7 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundleZong){
-                    logger.debug('*********** Init Trans Mobile Bundle Zong*****************');
+                    logger.info('*********** Init Trans Mobile Bundle Zong*****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -298,17 +298,17 @@ class Subscriber {
                         await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload);
                         //logger.debug(response);
                     } catch (error) {
-                        logger.debug(error)
+                        logger.info(error)
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundleZong){
-                    logger.debug('*********** Confirm Trans Mobile Bundle Zong*****************');
+                    logger.info('*********** Confirm Trans Mobile Bundle Zong*****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload, true);
                         //logger.debug(response);
