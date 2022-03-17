@@ -1,5 +1,5 @@
-kind: DeploymentConfig
-apiVersion: apps.openshift.io/v1
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: analytics-microservice
   namespace: m11s
@@ -9,7 +9,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Rolling
+    type: RollingUpdate
     rollingParams:
       updatePeriodSeconds: 1
       intervalSeconds: 1
@@ -32,14 +32,15 @@ spec:
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    matchLabels:
+      app: analytics-microservice
+      deployment: analytics-microservice
   template:
     metadata:
       creationTimestamp: null
       labels:
         app: analytics-microservice
-        deploymentconfig: analytics-microservice
+        deployment: analytics-microservice
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
