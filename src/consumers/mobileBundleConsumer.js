@@ -127,7 +127,7 @@ class Processor {
                 logger.debug(JSON.stringify(initTransData));
                 }
                 else if( typeRefundB2B== true ){
-                logger.info('***********refund b2b case**************')
+                logger.info('***********refund b2b case discounted**************')
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
