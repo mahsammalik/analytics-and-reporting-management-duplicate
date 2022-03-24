@@ -22,19 +22,18 @@ class Processor {
                 let typeRefundB2B=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'refund_without_confirm_b2b'&& e.Value ==true));    
 
                 if( init_MP == true ){
-                console.log('***********init merchant to payment disocunted**************')           
+                logger.info('***********init merchant to payment disocunted**************')           
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
                 initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.responseCode = data?.Result?.ResultCode || '';
                 initTransData.responseDesc = data?.Result?.ResultDesc || '';
                 if (initTransData.transactionDate !== '') {
@@ -55,14 +54,14 @@ class Processor {
                 logger.debug(JSON.stringify(initTransData));
                 }
                 else if(confirm_MP == true ){
-                console.log('***********confirm merchant to payment disocunted**************')           
+                logger.info('***********confirm merchant to payment disocunted**************')           
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -88,14 +87,14 @@ class Processor {
                 logger.debug(JSON.stringify(initTransData));
                 }
                 else if(typeB2B== true ){
-                console.log('***********b2b case discounted**************')
+                logger.info('***********b2b case discounted**************')
                 initTransData.amount = Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -128,14 +127,14 @@ class Processor {
                 logger.debug(JSON.stringify(initTransData));
                 }
                 else if( typeRefundB2B== true ){
-                console.log('***********refund b2b case**************')
+                logger.info('***********refund b2b case**************')
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -226,7 +225,7 @@ class Processor {
                     let  init_MP_refund=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'init_merchant_to_payment_refund'&& e.Value== true));
                     let  confirm_MP_refund=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'confirm_merchant_to_payment_refund'&& e.Value ==true));
                     if( init_MP == true ){ 
-                    console.log('***********init merchant to payment disocunted**************');  
+                    logger.info('***********init merchant to payment disocunted**************');  
                     initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'offerIDDAID'; })?.Value || '';
@@ -258,7 +257,7 @@ class Processor {
                     logger.debug(JSON.stringify(initTransData));
                     }
                     else if( confirm_MP == true){ 
-                    console.log('***********confirm merchant to payment disocunted**************');  
+                    logger.info('***********confirm merchant to payment disocunted**************');  
                     initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'offerIDDAID'; })?.Value || '';
@@ -291,7 +290,7 @@ class Processor {
                     logger.debug(JSON.stringify(initTransData));
                     }
                     else if(typeB2B == true ){ 
-                    console.log('***********b2b discounted case**************');  
+                    logger.info('***********b2b discounted case**************');  
                     initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'offerIDDAID'; })?.Value || '';
@@ -331,7 +330,7 @@ class Processor {
                     logger.debug(JSON.stringify(initTransData));
                     }
                     else if(typeRefundB2B== true ){ 
-                    console.log('***********b2b refund case discounted**************');  
+                    logger.info('***********b2b refund case discounted**************');  
                     initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'offerIDDAID'; })?.Value || '';
@@ -490,7 +489,7 @@ class Processor {
                     let init_MP_refund=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'init_merchant_to_payment_refund'&& e.Value== true));
                     let confirm_MP_refund=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'confirm_merchant_to_payment_refund'&& e.Value ==true)); 
                     if(init_MP_refund == true){
-                    console.log('*********** init merchant to consumer refund case discounted**************');  
+                    logger.info('*********** init merchant to consumer refund case discounted**************');  
                     initTransData.amount = Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleDiscountedPriceRefund'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.CustomObject?.bundleType || '';
@@ -530,7 +529,7 @@ class Processor {
                     logger.debug(JSON.stringify(initTransData));
                     }
                     else if(confirm_MP_refund == true){
-                    console.log('*********** confirm merchant to consumer refund case discounted**************'); 
+                    logger.info('*********** confirm merchant to consumer refund case discounted**************'); 
                     initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                     initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                     initTransData.bundleType = data?.CustomObject?.bundleType || '';
