@@ -119,7 +119,7 @@ class Processor {
                 initTransData.TIDB= data?.Result?.TransactionID || '0';
                 initTransData.subscription = 'self';
                 initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                 initTransData.incentiveAmountByPartner = Number('0');
                 initTransData.MsisdnB ='';
                 initTransData.typeOfTransaction = 'init_without_confirm_b2b';
@@ -160,7 +160,7 @@ class Processor {
                 initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
                 initTransData.subscription = 'self';
                 initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                 initTransData.incentiveAmountByPartner = Number('0');
                 initTransData.MsisdnB ='';
                 initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
@@ -321,7 +321,7 @@ class Processor {
                     initTransData.TIDB= data?.Result?.TransactionID || '0';
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     initTransData.typeOfTransaction = 'init_without_confirm_b2b';
@@ -362,7 +362,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
@@ -402,7 +402,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2BRefund'; })?.Value || '' ;
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundlePriceTotalRefund'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
     
@@ -523,7 +523,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2BRefund'; })?.Value || '' ;
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundlePriceTotalRefund'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     logger.debug(JSON.stringify(initTransData));
