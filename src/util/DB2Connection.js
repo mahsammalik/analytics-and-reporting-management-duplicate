@@ -183,16 +183,14 @@ class DatabaseConn {
             let conn = await open(cn);
             try {
                 // let conn = await open(cn);
-                if(data.transactionStatus == 'Pending')
-                {
+                if (data.transactionStatus == 'Pending') {
                     const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, BUNDLE_VOICE, BUNDLE_SMS, BUNDLE_DATA, RESPONSE_CODE, RESPONSE_DESCRIPTION) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
                     stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.voiceMinutes, data.smsDetails, data.DataDetails, data.responseCode, data.responseDesc]);
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
-                else if(data.transactionStatus == 'Completed')
-                {
+                else if (data.transactionStatus == 'Completed') {
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
@@ -956,6 +954,32 @@ class DatabaseConn {
             }
         }
 
+        if (tableName === config.reportingDBTables.CASHBACK_REDEEM) {
+            logger.info("Entered CASHBACK_REDEEM block");
+            let conn = await open(cn);
+            try {
+                    logger.info("Connection opened");
+                    let stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON, TRANS_DATE) 
+                VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}', '${data.transactionTime}');`);
+
+                if(data.transactionTime == ''){
+                    stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (MSISDN, REWARDTYPE, EXPIRYDATE, AMOUNT, REWARDDESCRIPTION, CAMPAIGNCODE, CAMPAIGNNAME, STATUS, TXID, CHANNEL, MSG_OFFSET, TOP_NAME, FAILURE_REASON) 
+                    VALUES('${data.msisdn}', '${data.rewardType}', '${data.expiryDate}', ${data.amount}, '${data.rewardsDescription}', '${data.campaignCode}', '${data.campaignName}', '${data.status}', '${data.txID}', '${data.channel}', ${data.msg_offset}, '${data.topic}', '${data.failureReason}');`);        
+                }
+
+                    stmt.executeSync();
+                    stmt.closeSync();
+                    //conn.close(function (err) { });
+                    logger.info(`${schemaName}.${tableName}_insert done`);
+
+            } catch (err) {
+                logger.error(`${schemaName}.${tableName} database connection error` + err);
+                return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+            } finally {
+                conn.close(function (err) { });
+            }
+        }
+
         if (tableName === config.reportingDBTables.CASHTOGOOD) {
 
             let conn = await getConnection();
@@ -1089,7 +1113,7 @@ class DatabaseConn {
 
     }
 
-    
+
     async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
         // get connection from connection pool
         let conn = conPool.getConnection();

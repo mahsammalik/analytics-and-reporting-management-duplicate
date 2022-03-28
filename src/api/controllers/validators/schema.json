@@ -96,6 +96,24 @@
                 "type": "string"
               }
             }
+          },
+          "USSD_HEADER_SCHEMA": {
+              "title": "request headers",
+              "description": "request headers schema",
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "x-msisdn",
+                "x-channel"
+              ],
+              "properties": {
+                  "x-msisdn": {
+                      "type": "string"
+                  },
+                  "x-channel": {
+                      "type": "string"
+                  }
+              }
           }
         }
     
