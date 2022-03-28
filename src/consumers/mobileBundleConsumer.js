@@ -29,12 +29,11 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
                 initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.responseCode = data?.Result?.ResultCode || '';
                 initTransData.responseDesc = data?.Result?.ResultDesc || '';
                 if (initTransData.transactionDate !== '') {
@@ -62,7 +61,7 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -95,7 +94,7 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -120,7 +119,7 @@ class Processor {
                 initTransData.TIDB= data?.Result?.TransactionID || '0';
                 initTransData.subscription = 'self';
                 initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                 initTransData.incentiveAmountByPartner = Number('0');
                 initTransData.MsisdnB ='';
                 initTransData.typeOfTransaction = 'init_without_confirm_b2b';
@@ -128,14 +127,14 @@ class Processor {
                 logger.debug(JSON.stringify(initTransData));
                 }
                 else if( typeRefundB2B== true ){
-                logger.info('***********refund b2b case**************')
+                logger.info('***********refund b2b case discounted**************')
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
@@ -161,7 +160,7 @@ class Processor {
                 initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
                 initTransData.subscription = 'self';
                 initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                 initTransData.incentiveAmountByPartner = Number('0');
                 initTransData.MsisdnB ='';
                 initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
@@ -322,7 +321,7 @@ class Processor {
                     initTransData.TIDB= data?.Result?.TransactionID || '0';
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     initTransData.typeOfTransaction = 'init_without_confirm_b2b';
@@ -363,7 +362,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
@@ -403,7 +402,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2BRefund'; })?.Value || '' ;
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundlePriceTotalRefund'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
     
@@ -524,7 +523,7 @@ class Processor {
                     initTransData.TIDBReversal = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2BRefund'; })?.Value || '' ;
                     initTransData.subscription = 'self';
                     initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundlePriceTotalRefund'; })?.Value || '0');
-                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == ' incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
                     initTransData.incentiveAmountByPartner = Number('0');
                     initTransData.MsisdnB ='';
                     logger.debug(JSON.stringify(initTransData));

@@ -115,21 +115,21 @@ class DatabaseConn {
                     logger.info(`${schemaName}.${tableName}_insert done`);
                 }
                 else if (data.transactionStatus == 'Completed' && data.typeOfTransaction =='confirm_merchant_to_payment') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS='${ data?.typeOfTransaction ?data?.typeOfTransaction:''}' WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}') WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_update done`);
                 }
                 else if (data.typeOfTransaction == 'init_merchant_to_payment_refund') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS='${ data?.typeOfTransaction ?data?.typeOfTransaction:''}', TRANS_ID_REV='${data?.TIDReversal? data?.TIDReversal:''}', TRANS_ID_B_REV='${data?.TIDBReversal ?data?.TIDBReversal:''}',SUBSCRIPTION='${ data?.subscription ? data?.subscription :''}', BUNDLE_AMOUNT=${data?.bundleAmount ? data?.bundleAmount:0}, INCENTIVE_AMOUNT=${data?.incentiveAmount ? data?.incentiveAmount:0}, MSISDN_B='${data?.MsisdnB}'  WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_ID_REV='${data?.TIDReversal? data?.TIDReversal:''}', TRANS_ID_B_REV='${data?.TIDBReversal ?data?.TIDBReversal:''}',SUBSCRIPTION='${ data?.subscription ? data?.subscription :''}', BUNDLE_AMOUNT=${data?.bundleAmount ? data?.bundleAmount:0}, INCENTIVE_AMOUNT=${data?.incentiveAmount ? data?.incentiveAmount:0}, MSISDN_B='${data?.MsisdnB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
                     logger.info(`${schemaName}.${tableName}_insert refund done`);
                 }
                 else if (data.typeOfTransaction == 'confirm_merchant_to_payment_refund') {
-                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=${ data?.typeOfTransaction ?data?.typeOfTransaction:''} WHERE TRANS_ID='${data.TID}';`);
+                    const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -139,7 +139,7 @@ class DatabaseConn {
 
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
                     TRANS_ID_B='${data.TIDB}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
-                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS='${data.typeOfTransaction}', TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
+                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
@@ -149,7 +149,7 @@ class DatabaseConn {
 
                     const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
                     TRANS_ID_B='${data.TIDB}',TRANS_ID_B_REV='${data.TIDBReversal}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
-                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS='${data.typeOfTransaction}', TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
+                    INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
                     stmt.executeSync();
                     stmt.closeSync();
                     //conn.close(function (err) { });
