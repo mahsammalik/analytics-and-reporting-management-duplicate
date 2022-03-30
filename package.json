@@ -75,6 +75,7 @@
         "uuidv4": "^6.1.1",
         "validator": "^13.1.1",
         "winston": "^3.2.1",
+        "winston-daily-rotate-file": "^4.6.1",
         "yamljs": "^0.3.0"
     }
 }
