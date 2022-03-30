@@ -36,7 +36,7 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_qr_payment,
             config.kafkaBroker.topics.confirmTrans_qr_payment,
             config.kafkaBroker.topics.initTrans_MobileBundle,
-            config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
+           // config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
             config.kafkaBroker.topics.confirmTrans_MobileBundle,
             config.kafkaBroker.topics.initTrans_BusTicket,
             config.kafkaBroker.topics.confirmTrans_BusTicket,
