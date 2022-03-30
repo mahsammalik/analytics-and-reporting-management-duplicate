@@ -2,7 +2,7 @@ import _ajv from 'ajv';
 import _ from 'lodash';
 import schema from './schema.json'
 
-const ajv = new _ajv({allErrors:true});
+const ajv = new _ajv({allErrors:true , useDefaults: true});
 
 function getValidator(schemaName){
   let validate = ajv.getSchema(schemaName)
