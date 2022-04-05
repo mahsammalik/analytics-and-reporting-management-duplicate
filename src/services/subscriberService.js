@@ -12,7 +12,7 @@ import {
     payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
     fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
     blockCardProcessor, insuranceClaimProcessor, payoneerLoginProcessor, cashToGoodProcessor, cashToGoodRedeemProcessor,
-    multiPaymentQrPaymentProcessor, cashToGoodRefundProcessor, cashbackRedeemProcessor
+    multiPaymentQrPaymentProcessor, cashToGoodRefundProcessor, cashbackRedeemProcessor, gToPCnicProcessor
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
@@ -102,7 +102,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_passed,
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
-            config.kafkaBroker.topics.confirmTrans_refundMobileBundle
+            config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
+            config.kafkaBroker.topics.GTOP_Init_Passed
 
         ]);
 
@@ -1229,6 +1230,19 @@ class Subscriber {
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
+                    }
+                }
+                if(msg.topic === config.kafkaBroker.topics.GTOP_Init_Passed){
+                    try{
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
+                    }
+                    catch(error){
+                        logget.debug(error);
                     }
                 }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
