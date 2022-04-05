@@ -260,7 +260,9 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
 
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
-                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed"
+                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
+
+                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed"
             }
         },
         "cache": {
@@ -451,7 +453,8 @@
             "PAYON_LOGIN": "PAYON_LOGIN",
             "CASHTOGOOD" : "CASHTOGOOD",
             "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
-            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
+            "CASHBACK_REDEEM" : "CASHBACK_REDEEM",
+            "SPSU": "SPSU_DISBURSEMENTS"
         }
     }
 }
