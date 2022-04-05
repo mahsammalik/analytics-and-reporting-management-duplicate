@@ -1363,6 +1363,50 @@ class DatabaseConn {
         }
     }
 
+    async addRecipientInSpsu(schemaName, tableName, data){
+        let conn = await getConnection();
+        try {
+
+            const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} 
+            (
+                TRANSACTION_ID,
+                TIMESTAMP,
+                CUSTOMER_CNIC,
+                SERVICE_NAME, 
+                FEE,
+                AMOUNT,
+                CHANNEL,
+                TRANSACTION_STATUS
+            )
+
+            VALUES
+            (
+                '${data.TransactionID}',
+                '${data.timestamp}',
+                '${data.customerCnic}', 
+                '${data.serviceName}',
+                '${data.fee}', 
+                '${data.amount}',
+                '${data.channel}',
+                '${data.transactionStatus}'
+            );`
+            );
+
+            stmt.executeSync();
+            stmt.closeSync();
+
+            logger.info(`${schemaName}.${tableName}_insert done`);
+
+        } catch (err) {
+
+            logger.error(`${schemaName}.${tableName} database connection error` + err);
+            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+
+        } finally {
+            conn.close(function (err) { });
+        }
+    }
+
 }
 
 export default new DatabaseConn();
