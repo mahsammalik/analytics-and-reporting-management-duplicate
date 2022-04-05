@@ -1242,7 +1242,7 @@ class Subscriber {
                         await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
                     }
                     catch(error){
-                        logget.debug(error);
+                        logger.debug(error);
                     }
                 }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
