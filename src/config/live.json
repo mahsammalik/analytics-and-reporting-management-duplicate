@@ -224,7 +224,8 @@
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
 
-                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed"
+                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
+                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed"
 
             }
         },

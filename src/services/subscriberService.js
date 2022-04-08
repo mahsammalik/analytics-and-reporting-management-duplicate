@@ -1245,6 +1245,19 @@ class Subscriber {
                         logger.debug(error);
                     }
                 }
+                if(msg.topic === config.kafkaBroker.topics.GTOP_Init_Failed){
+                    try{
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
+                    }
+                    catch(error){
+                        logger.debug(error);
+                    }
+                }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
                 //     logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
                 //     try {
