@@ -174,7 +174,8 @@
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
-                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed"
+                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
+                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed"
             }
         },
         "cache": {

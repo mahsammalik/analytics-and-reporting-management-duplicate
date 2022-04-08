@@ -17,10 +17,7 @@ class Processor {
                 initTransData.channel = data?.Header?.Channel || "App";
                 initTransData.transactionStatus = "Success";
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-
-                if(JSON.stringify(initTransData) !== '{}'){
-                    await DB2Connection.addRecipientInSpsu("COMMON", config.reportingDBTables.SPSU, initTransData);
-                }
+                initTransData.failureReason = "N/A";   
             }
             else if(data.Result.ResultCode != 0){
                 initTransData.TransactionID = data?.Result?.TransactionID || "0";
@@ -33,10 +30,10 @@ class Processor {
                 initTransData.channel = data?.Header?.Channel || "App";
                 initTransData.transactionStatus = "Failed";
                 initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-
-                if(JSON.stringify(initTransData) !== '{}'){
-                    await DB2Connection.addRecipientInSpsu("COMMON", config.reportingDBTables.SPSU, initTransData);
-                }
+                initTransData.failureReason = data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'FailedReason'; })?.Value || "";
+            }
+            if(JSON.stringify(initTransData) !== '{}'){
+                await DB2Connection.addRecipientInSpsu("COMMON", config.reportingDBTables.SPSU, initTransData);
             }
         }
         catch(error){
