@@ -1252,7 +1252,7 @@ class Subscriber {
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
 
-                        await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
+                        await gToPCnicProcessor.processGtoPCnicTransferFailureConsumer(payload);
                     }
                     catch(error){
                         logger.debug(error);
