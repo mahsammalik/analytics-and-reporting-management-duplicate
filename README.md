@@ -16,7 +16,7 @@ Swagger validator validates the incoming request against the swagger 2.0 specifi
 
 ## Use
 
-1.  Install following packages from npm.
+1.  Install following packages from npm
     >     ajv
     >     lodash
     >     validator
