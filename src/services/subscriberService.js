@@ -103,8 +103,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
-            config.kafkaBroker.topics.GTOP_Init_Passed
-
+            config.kafkaBroker.topics.GTOP_Init_Passed,
+            config.kafkaBroker.topics.GTOP_Init_Failed
         ]);
 
         //this.setConsumer();
