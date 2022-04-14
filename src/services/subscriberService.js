@@ -103,7 +103,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
-            config.kafkaBroker.topics.GTOP_Init_Passed
+            config.kafkaBroker.topics.GTOP_Init_Passed,
+            config.kafkaBroker.topics.GTOP_Init_Failed
 
         ]);
 
@@ -1242,7 +1243,20 @@ class Subscriber {
                         await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
                     }
                     catch(error){
-                        logget.debug(error);
+                        logger.debug(error);
+                    }
+                }
+                if(msg.topic === config.kafkaBroker.topics.GTOP_Init_Failed){
+                    try{
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await gToPCnicProcessor.processGtoPCnicTransferFailureConsumer(payload);
+                    }
+                    catch(error){
+                        logger.debug(error);
                     }
                 }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
