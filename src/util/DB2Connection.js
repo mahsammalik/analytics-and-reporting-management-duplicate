@@ -1377,7 +1377,8 @@ class DatabaseConn {
                 AMOUNT,
                 CHANNEL,
                 TRANSACTION_STATUS,
-                FAILURE_REASON
+                FAILURE_REASON,
+                CUSTOMER_MSISDN
             )
 
             VALUES
@@ -1390,7 +1391,8 @@ class DatabaseConn {
                 '${data.amount}',
                 '${data.channel}',
                 '${data.transactionStatus}',
-                '${data.failureReason}'
+                '${data.failureReason}',
+                '${data.customerMsisdn}'
             );`
             );
 
