@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/nodejs-12:1-59
+FROM default-route-openshift-image-registry.apps.tjcocp.jazz.com.pk/openshift/nodejs12-ubi8
 
 USER root
 
