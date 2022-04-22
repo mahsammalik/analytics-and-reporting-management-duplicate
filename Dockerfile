@@ -1,4 +1,4 @@
-FROM default-route-openshift-image-registry.apps.tjcocp.jazz.com.pk/openshift/nodejs-12
+FROM default-route-openshift-image-registry.apps.tjcocp.jazz.com.pk/openshift/nodejs-12:1-50
 
 USER root
 
