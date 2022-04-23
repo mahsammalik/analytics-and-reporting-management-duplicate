@@ -46,9 +46,9 @@ spec:
         sidecar.istio.io/inject: "true"
     spec:
       volumes:
-        - name: imagestore
-          persistentVolumeClaim:
-            claimName: pvc-nfs-microservice
+      - name: imagestore
+        persistentVolumeClaim:
+          claimName: pvc-nfs-microservice
       containers:
         - name:  analytics-microservice
           image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
