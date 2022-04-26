@@ -6,6 +6,7 @@ metadata:
   labels:
     app: analytics-microservice
     app.kubernetes.io/part-of: m11s
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
