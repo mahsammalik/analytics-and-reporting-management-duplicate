@@ -7,7 +7,7 @@ const isTokenValid = (req,res,next) =>
 
     try {
         logger.debug("Entered Token Validation MW");
-        let metadatamsisdn = req.get('x-user-metadata');
+        let metadatamsisdn = req.get('x-meta-data');
         if(metadatamsisdn && metadatamsisdn != 'null'){
             logger.debug("Entered Authorization Flow");
             let msisdn= req.get('X-MSISDN');
