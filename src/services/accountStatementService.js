@@ -62,7 +62,7 @@ class accountStatementService {
             // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             // const { data, success, message } = response;
             // if (success) {
-            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance","Fee\n"];
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Fee, Running balance, Reason Type\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + db2Data).toString('base64');
             logger.debug(`csvData ${csvData}`, db2Data);
@@ -169,7 +169,7 @@ class accountStatementService {
 
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee\n"],
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
