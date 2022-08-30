@@ -1206,14 +1206,17 @@ class DatabaseConn {
             console.log(result, "result");
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
-            logger.debug("stmt ========================>" + stmt);
-            logger.info("stmt =========================>" + stmt);
+            logger.debug("stmt ========================>" + JSON.stringify(stmt));
+            logger.info("stmt =========================>" + JSON.stringify(stmt));
 
-            logger.debug("result ========================>" + result);
-            logger.info("result =========================>" + result);
+            logger.debug("result ========================>" + JSON.stringify(result));
+            logger.info("result =========================>" + JSON.stringify(result));
 
             logger.debug("resultArrayFormat ========================>" + resultArrayFormat);
             logger.info("resultArrayFormat =========================>" + resultArrayFormat);
+
+            logger.debug("arrayResult ========================>" + JSON.stringify(resultArrayFormat));
+            logger.info("arrayResult =========================>" + JSON.stringify(resultArrayFormat));
             
             let sumBalance = 0.00;
             let sumCredit = 0.00;
@@ -1267,15 +1270,18 @@ class DatabaseConn {
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
-            logger.debug("stmt ========================>" + stmt);
-            logger.info("stmt =========================>" + stmt);
+            logger.debug("stmt ========================>" + JSON.stringify(stmt));
+            logger.info("stmt =========================>" + JSON.stringify(stmt));
 
-            logger.debug("result ========================>" + result);
-            logger.info("result =========================>" + result);
+            logger.debug("result ========================>" + JSON.stringify(result));
+            logger.info("result =========================>" + JSON.stringify(result));
 
             logger.debug("arrayResult ========================>" + arrayResult);
             logger.info("arrayResult =========================>" + arrayResult);
-            
+
+            logger.debug("arrayResult ========================>" + JSON.stringify(arrayResult));
+            logger.info("arrayResult =========================>" + JSON.stringify(arrayResult));
+
             result.closeSync();
             stmt.closeSync();
             conn.close();
