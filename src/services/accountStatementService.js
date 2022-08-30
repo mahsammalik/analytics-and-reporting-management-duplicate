@@ -61,7 +61,7 @@ class accountStatementService {
             // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             // const { data, success, message } = response;
             // if (success) {
-            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance","Fee\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + db2Data).toString('base64');
             logger.debug(`csvData ${csvData}`, db2Data);
@@ -126,6 +126,10 @@ class accountStatementService {
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            
+            logger.debug("data ========================>" + db2Data);
+            logger.info("data ========================>" + db2Data);
+
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
             // if (resp.status === 200) {
@@ -164,7 +168,7 @@ class accountStatementService {
 
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };

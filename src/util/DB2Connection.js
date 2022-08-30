@@ -1203,6 +1203,16 @@ class DatabaseConn {
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+            logger.debug("stmt ========================>" + stmt);
+            logger.info("stmt =========================>" + stmt);
+
+            logger.debug("result ========================>" + result);
+            logger.info("result =========================>" + result);
+
+            logger.debug("resultArrayFormat ========================>" + resultArrayFormat);
+            logger.info("resultArrayFormat =========================>" + resultArrayFormat);
+            
             let sumBalance = 0.00;
             let sumCredit = 0.00;
             let sumDebit = 0.00;
@@ -1213,6 +1223,7 @@ class DatabaseConn {
                     let b = dat[1];
                     dat[1] = dat[0];
                     dat[0] = b;
+                    dat[dat.length - 4] = dat[dat.length - 4] / 100;
                     dat[dat.length - 3] = dat[dat.length - 3] / 100;
                     dat[dat.length - 2] = dat[dat.length - 2] / 100;
                     dat[dat.length - 1] = dat[dat.length - 1] / 100;
@@ -1253,6 +1264,15 @@ class DatabaseConn {
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            logger.debug("stmt ========================>" + stmt);
+            logger.info("stmt =========================>" + stmt);
+
+            logger.debug("result ========================>" + result);
+            logger.info("result =========================>" + result);
+
+            logger.debug("arrayResult ========================>" + arrayResult);
+            logger.info("arrayResult =========================>" + arrayResult);
+            
             result.closeSync();
             stmt.closeSync();
             conn.close();
