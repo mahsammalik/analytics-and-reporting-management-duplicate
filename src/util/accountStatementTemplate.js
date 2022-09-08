@@ -107,6 +107,10 @@ const accountStatementTemplate = accountData => {
 			return htmlString;
 		} else {
 			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplate' });
+			console.log(",accountData.data[0] ========================================",accountData.data[0])
+			console.log("1 <> ========================================",accountData.data[0][accountData.data[0].length - 2])
+			console.log("2 <> ========================================",accountData.data[accountData.data.length - 2][accountData.data[0].length - 2])
+
 			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2);
 			const closingBalance = parseFloat(accountData.data[accountData.data.length - 2][accountData.data[0].length - 2] / 100).toFixed(2);
 			let creditTransactions = 0;
@@ -114,6 +118,10 @@ const accountStatementTemplate = accountData => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			accountData.data.forEach((number) => {
+				console.log("number[number.length - 4] +++++++++++++++++++++++++",number[number.length - 4])
+				console.log("number[number.length - 5] +++++++++++++++++++++++++",number[number.length - 5])
+				console.log("creditTransactions +++++++++++++++++++++++++",creditTransactions)
+				console.log("debitTransactions +++++++++++++++++++++++++",debitTransactions)
 				totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
@@ -123,6 +131,9 @@ const accountStatementTemplate = accountData => {
 			});
 			totalCredit = parseFloat(totalCredit).toFixed(2);
 			totalDebit = parseFloat(totalDebit).toFixed(2);
+
+			console.log("TOTAL <> ========================================",totalCredit)
+			console.log("TOTAL <---> ========================================",totalDebit)
 			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
