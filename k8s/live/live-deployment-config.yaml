@@ -79,8 +79,6 @@ spec:
             value: '550'
           - name: DB2ConnMaxPoolSize
             value: '100'
-          - name: Token_Validation
-            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:

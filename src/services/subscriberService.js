@@ -12,7 +12,7 @@ import {
     payoneerTransProcessor, displayQRProcessor, onboardingProcessor, inviteAndEarnProcessor,
     fallbackFailureProcessor, consumerOnboardingProcessor, deviceAuthProcessor, walletRequestProcessor,
     blockCardProcessor, insuranceClaimProcessor, payoneerLoginProcessor, cashToGoodProcessor, cashToGoodRedeemProcessor,
-    multiPaymentQrPaymentProcessor, cashToGoodRefundProcessor, cashbackRedeemProcessor
+    multiPaymentQrPaymentProcessor, cashToGoodRefundProcessor, cashbackRedeemProcessor, gToPCnicProcessor
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
@@ -25,84 +25,86 @@ class Subscriber {
         //     instance = this;
 
         this.event = new Broker([
-            config.kafkaBroker.topics.Init_topic,
-            config.kafkaBroker.topics.App_Merchant_Account_Statement,
-            // config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
-            // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
-            // config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
-            // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
+            // config.kafkaBroker.topics.Init_topic,
+            // config.kafkaBroker.topics.App_Merchant_Account_Statement,
+            // // config.kafkaBroker.topics.InitTrans_IBFT_Incoming,
+            // // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming,
+            // // config.kafkaBroker.topics.InitTrans_IBFT_Incoming_Fail,
+            // // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
 
-            //config.kafkaBroker.topics.initTrans_sendMoney_bank,
-            config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.confirmTrans_qr_payment,
-            config.kafkaBroker.topics.initTrans_MobileBundle,
-            config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
-            config.kafkaBroker.topics.confirmTrans_MobileBundle,
-            config.kafkaBroker.topics.initTrans_BusTicket,
-            config.kafkaBroker.topics.confirmTrans_BusTicket,
-            config.kafkaBroker.topics.initTrans_eVouchers,
-            config.kafkaBroker.topics.confirmTrans_eVouchers,
-            config.kafkaBroker.topics.initTrans_eventTickets,
-            config.kafkaBroker.topics.confirmTrans_eventTickets,
-            config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_Donation,
-            config.kafkaBroker.topics.confirmTrans_Donation,
-            config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
-            config.kafkaBroker.topics.confirm_deposit_DVDC,
-            config.kafkaBroker.topics.init_daraz_voucher,
-            config.kafkaBroker.topics.confirm_daraz_voucher,
-            config.kafkaBroker.topics.update_account_details,
-            config.kafkaBroker.topics.initTrans_mr_payment,
-            config.kafkaBroker.topics.confirmTrans_mr_payment,
-            config.kafkaBroker.topics.initTrans_cardOrdering,
-            config.kafkaBroker.topics.confirmTrans_cardOrdering,
-            config.kafkaBroker.topics.initTrans_InsuranceSubPayment,
-            config.kafkaBroker.topics.confirmTrans_InsuranceSubPayment,
-            // config.kafkaBroker.topics.initTrans_signupReward,
-            // config.kafkaBroker.topics.confirmTrans_signupReward,
-            config.kafkaBroker.topics.initTrans_foodOrdering,
-            config.kafkaBroker.topics.confirmTrans_foodOrdering,
-            config.kafkaBroker.topics.updateTrans_cardManagement,
-            config.kafkaBroker.topics.initTrans_inviteAndEarn,
-            config.kafkaBroker.topics.confirmTrans_inviteAndEarn,
-            config.kafkaBroker.topics.SecureCard_CardDelink,
-            config.kafkaBroker.topics.SecureCard_CardLink,
-            config.kafkaBroker.topics.initTrans_moneyTransfer_B2B,
-            config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B,
-            config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
-            config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
-            config.kafkaBroker.topics.initTrans_cnicPayment,
-            config.kafkaBroker.topics.confirmTrans_cnicPayment,
-            config.kafkaBroker.topics.confirmTrans_scheduledTrans,
-            config.kafkaBroker.topics.accountUpgrade_success,
-            config.kafkaBroker.topics.accountUpgrade_nadraFailure,
-            config.kafkaBroker.topics.accountUpgrade_cpsFailure,
-            config.kafkaBroker.topics.initTrans_movieTickets,
-            config.kafkaBroker.topics.confirmTrans_movieTickets,
-            config.kafkaBroker.topics.doorstepCashin_failed,
-            config.kafkaBroker.topics.doorstepCashin_passed,
-            config.kafkaBroker.topics.intTrans_voucherPayment,
-            config.kafkaBroker.topics.confirmTrans_voucherPayment,
-            config.kafkaBroker.topics.payoneer_registration,
-            config.kafkaBroker.topics.payoneer_transaction,
-            config.kafkaBroker.topics.display_QR,
-            config.kafkaBroker.topics.merchant_onboarding,
-            config.kafkaBroker.topics.fallbackFailure,
-            config.kafkaBroker.topics.consumer_onboarding,
-            config.kafkaBroker.topics.device_authentication,
-            config.kafkaBroker.topics.wallet_request,
-            config.kafkaBroker.topics.insurance_claim,
+            // //config.kafkaBroker.topics.initTrans_sendMoney_bank,
+            // config.kafkaBroker.topics.initTrans_qr_payment,
+            // config.kafkaBroker.topics.confirmTrans_qr_payment,
+            // config.kafkaBroker.topics.initTrans_MobileBundle,
+            // config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
+            // config.kafkaBroker.topics.confirmTrans_MobileBundle,
+            // config.kafkaBroker.topics.initTrans_BusTicket,
+            // config.kafkaBroker.topics.confirmTrans_BusTicket,
+            // config.kafkaBroker.topics.initTrans_eVouchers,
+            // config.kafkaBroker.topics.confirmTrans_eVouchers,
+            // config.kafkaBroker.topics.initTrans_eventTickets,
+            // config.kafkaBroker.topics.confirmTrans_eventTickets,
+            // config.kafkaBroker.topics.queryTrans_creemVoucher,
+            // config.kafkaBroker.topics.initTrans_Donation,
+            // config.kafkaBroker.topics.confirmTrans_Donation,
+            // config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
+            // config.kafkaBroker.topics.confirm_deposit_DVDC,
+            // config.kafkaBroker.topics.init_daraz_voucher,
+            // config.kafkaBroker.topics.confirm_daraz_voucher,
+            // config.kafkaBroker.topics.update_account_details,
+            // config.kafkaBroker.topics.initTrans_mr_payment,
+            // config.kafkaBroker.topics.confirmTrans_mr_payment,
+            // config.kafkaBroker.topics.initTrans_cardOrdering,
+            // config.kafkaBroker.topics.confirmTrans_cardOrdering,
+            // config.kafkaBroker.topics.initTrans_InsuranceSubPayment,
+            // config.kafkaBroker.topics.confirmTrans_InsuranceSubPayment,
+            // // config.kafkaBroker.topics.initTrans_signupReward,
+            // // config.kafkaBroker.topics.confirmTrans_signupReward,
+            // config.kafkaBroker.topics.initTrans_foodOrdering,
+            // config.kafkaBroker.topics.confirmTrans_foodOrdering,
+            // config.kafkaBroker.topics.updateTrans_cardManagement,
+            // config.kafkaBroker.topics.initTrans_inviteAndEarn,
+            // config.kafkaBroker.topics.confirmTrans_inviteAndEarn,
+            // config.kafkaBroker.topics.SecureCard_CardDelink,
+            // config.kafkaBroker.topics.SecureCard_CardLink,
+            // config.kafkaBroker.topics.initTrans_moneyTransfer_B2B,
+            // config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B,
+            // config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
+            // config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
+            // config.kafkaBroker.topics.initTrans_cnicPayment,
+            // config.kafkaBroker.topics.confirmTrans_cnicPayment,
+            // config.kafkaBroker.topics.confirmTrans_scheduledTrans,
+            // config.kafkaBroker.topics.accountUpgrade_success,
+            // config.kafkaBroker.topics.accountUpgrade_nadraFailure,
+            // config.kafkaBroker.topics.accountUpgrade_cpsFailure,
+            // config.kafkaBroker.topics.initTrans_movieTickets,
+            // config.kafkaBroker.topics.confirmTrans_movieTickets,
+            // config.kafkaBroker.topics.doorstepCashin_failed,
+            // config.kafkaBroker.topics.doorstepCashin_passed,
+            // config.kafkaBroker.topics.intTrans_voucherPayment,
+            // config.kafkaBroker.topics.confirmTrans_voucherPayment,
+            // config.kafkaBroker.topics.payoneer_registration,
+            // config.kafkaBroker.topics.payoneer_transaction,
+            // config.kafkaBroker.topics.display_QR,
+            // config.kafkaBroker.topics.merchant_onboarding,
+            // config.kafkaBroker.topics.fallbackFailure,
+            // config.kafkaBroker.topics.consumer_onboarding,
+            // config.kafkaBroker.topics.device_authentication,
+            // config.kafkaBroker.topics.wallet_request,
+            // config.kafkaBroker.topics.insurance_claim,
 
-            config.kafkaBroker.topics.cashToGoodConfirm,
-            config.kafkaBroker.topics.cashToGoodConfirmRedeem,
-            config.kafkaBroker.topics.multipayment_qr_payment_passed,
-            config.kafkaBroker.topics.cashToGoodRefund,
-            config.kafkaBroker.topics.initTrans_MobileBundleZong,
-            config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
-            config.kafkaBroker.topics.cashback_reward_init_passed,
-            config.kafkaBroker.topics.cashback_reward_init_failed,
-            config.kafkaBroker.topics.initTrans_refundMobileBundle,
-            config.kafkaBroker.topics.confirmTrans_refundMobileBundle
+            // config.kafkaBroker.topics.cashToGoodConfirm,
+            // config.kafkaBroker.topics.cashToGoodConfirmRedeem,
+            // config.kafkaBroker.topics.multipayment_qr_payment_passed,
+            // config.kafkaBroker.topics.cashToGoodRefund,
+            // config.kafkaBroker.topics.initTrans_MobileBundleZong,
+            // config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
+            // config.kafkaBroker.topics.cashback_reward_init_passed,
+            // config.kafkaBroker.topics.cashback_reward_init_failed,
+            // config.kafkaBroker.topics.initTrans_refundMobileBundle,
+            // config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
+            // config.kafkaBroker.topics.GTOP_Init_Passed,
+            // config.kafkaBroker.topics.GTOP_Init_Failed
 
         ]);
 
@@ -228,13 +230,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle) {
-                    logger.debug('*********** Init Trans Mobile Bundle *****************');
+                    logger.info('*********** Init Trans Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
                         //logger.debug(response);
@@ -259,13 +261,13 @@ class Subscriber {
                 }
 
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundle) {
-                    logger.debug('*********** Confirm Trans Mobile Bundle *****************');
+                    logger.info('*********** Confirm Trans Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload, true);
                         //logger.debug(response);
@@ -274,13 +276,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_refundMobileBundle) {
-                    logger.debug('*********** Init Trans Refund Mobile Bundle *****************');
+                    logger.info('*********** Init Trans Refund Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload);
                         //logger.debug(response);
@@ -289,13 +291,13 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_refundMobileBundle) {
-                    logger.debug('*********** Confirm Trans Refund Mobile Bundle *****************');
+                    logger.info('*********** Confirm Trans Refund Mobile Bundle *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
 
                         await mobileBundleProcessor.mobileBundleConsumerProcessorRefund(payload, true);
                         //logger.debug(response);
@@ -304,7 +306,7 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundleZong){
-                    logger.debug('*********** Init Trans Mobile Bundle Zong*****************');
+                    logger.info('*********** Init Trans Mobile Bundle Zong*****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
@@ -315,17 +317,17 @@ class Subscriber {
                         await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload);
                         //logger.debug(response);
                     } catch (error) {
-                        logger.debug(error)
+                        logger.info(error)
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundleZong){
-                    logger.debug('*********** Confirm Trans Mobile Bundle Zong*****************');
+                    logger.info('*********** Confirm Trans Mobile Bundle Zong*****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
-                        logger.debug(JSON.stringify(payload));
+                        logger.info(JSON.stringify(payload));
                         
                         await mobileBundleProcessor.mobileBundleConsumerProcessorZong(payload, true);
                         //logger.debug(response);
@@ -1229,6 +1231,32 @@ class Subscriber {
                         //logger.debug(response);
                     } catch (error) {
                         logger.debug(error)
+                    }
+                }
+                if(msg.topic === config.kafkaBroker.topics.GTOP_Init_Passed){
+                    try{
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await gToPCnicProcessor.processGtoPCnicTransferConsumer(payload);
+                    }
+                    catch(error){
+                        logger.debug(error);
+                    }
+                }
+                if(msg.topic === config.kafkaBroker.topics.GTOP_Init_Failed){
+                    try{
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await gToPCnicProcessor.processGtoPCnicTransferFailureConsumer(payload);
+                    }
+                    catch(error){
+                        logger.debug(error);
                     }
                 }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {

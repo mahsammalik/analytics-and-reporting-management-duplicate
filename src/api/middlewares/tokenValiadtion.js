@@ -7,12 +7,10 @@ const isTokenValid = (req,res,next) =>
 
     try {
         logger.debug("Entered Token Validation MW");
-        let metadatamsisdn = req.get('X-META-DATA');
-        logger.info("*** metadatamsisdn ***" + metadatamsisdn);
+        let metadatamsisdn = req.get('x-meta-data');
         if(metadatamsisdn && metadatamsisdn != 'null'){
             logger.debug("Entered Authorization Flow");
             let msisdn= req.get('X-MSISDN');
-            msisdn = msisdn[0] === '0' ? msisdn.replace('0','92'): msisdn;
             if (metadatamsisdn && metadatamsisdn.substring(0, 2) === "a:") metadatamsisdn = metadatamsisdn.replace("a:", "")
             let metadata = JSON.parse(metadatamsisdn);
             if (isTokenValidation == 'false' || !msisdn )
