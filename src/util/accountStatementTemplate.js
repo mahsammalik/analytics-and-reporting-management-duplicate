@@ -111,6 +111,10 @@ const accountStatementTemplate = accountData => {
 			console.log("1 <> ========================================",accountData.data[0][accountData.data[0].length - 2])
 			console.log("2 <> ========================================",accountData.data[accountData.data.length - 2][accountData.data[0].length - 2])
 
+			logger.info(",accountData.data[0] ========================================"+accountData.data[0])
+			logger.info("1 <> ========================================"+accountData.data[0][accountData.data[0].length - 2])
+			logger.info("2 <> ========================================"+accountData.data[accountData.data.length - 2][accountData.data[0].length - 2])
+
 			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2);
 			const closingBalance = parseFloat(accountData.data[accountData.data.length - 2][accountData.data[0].length - 2] / 100).toFixed(2);
 			let creditTransactions = 0;
@@ -122,6 +126,12 @@ const accountStatementTemplate = accountData => {
 				console.log("number[number.length - 5] +++++++++++++++++++++++++",number[number.length - 5])
 				console.log("creditTransactions +++++++++++++++++++++++++",creditTransactions)
 				console.log("debitTransactions +++++++++++++++++++++++++",debitTransactions)
+
+				logger.info("number[number.length - 4] +++++++++++++++++++++++++",number[number.length - 4])
+				logger.info("number[number.length - 5] +++++++++++++++++++++++++",number[number.length - 5])
+				logger.info("creditTransactions +++++++++++++++++++++++++",creditTransactions)
+				logger.info("debitTransactions +++++++++++++++++++++++++",debitTransactions)
+
 				totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
