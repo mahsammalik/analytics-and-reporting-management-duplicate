@@ -1232,9 +1232,9 @@ class DatabaseConn {
                 });
 
             resultArrayFormat.forEach((row) => {
-                sumDebit += parseFloat(row[row.length - 3]);
-                sumCredit += parseFloat(row[row.length - 2]);
-                sumBalance += parseFloat(row[row.length - 1]);
+                sumDebit += parseFloat(row[row.length - 5]);
+                sumCredit += parseFloat(row[row.length - 4]);
+                sumBalance += parseFloat(row[row.length - 2]);
             });
             resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), "" ,parseFloat(sumBalance).toFixed(2)]);
             concatenatResult = resultArrayFormat.join('\n');
