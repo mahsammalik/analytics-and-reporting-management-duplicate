@@ -114,11 +114,11 @@ const accountStatementTemplate = accountData => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			accountData.data.forEach((number) => {
-				totalCredit += parseFloat(number[number.length - 2] / 100) || 0;
-				totalDebit += parseFloat(number[number.length - 3] / 100) || 0;
-				if (parseFloat(number[number.length - 2]) > parseFloat(0))
+				totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
+				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
+				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					creditTransactions++;
-				if (parseFloat(number[number.length - 3]) > parseFloat(0))
+				if (parseFloat(number[number.length - 5]) > parseFloat(0))
 					debitTransactions++;
 			});
 			totalCredit = parseFloat(totalCredit).toFixed(2);
@@ -182,7 +182,7 @@ const accountStatementTemplate = accountData => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col/ 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
+							return (ind > 4 && ind < 9) ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col/ 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
 						});
 						column = column.join();
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
