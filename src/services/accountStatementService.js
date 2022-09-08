@@ -128,8 +128,8 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             
-            logger.debug("data ========================>" + db2Data);
-            logger.info("data ========================>" + db2Data);
+            logger.debug("<<<<<<<data ========================>" + db2Data);
+            logger.info("<<<<<<<data ========================>" + db2Data);
 
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
