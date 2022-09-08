@@ -145,6 +145,7 @@ const accountStatementTemplate = accountData => {
 			console.log("TOTAL <> ========================================",totalCredit)
 			console.log("TOTAL <---> ========================================",totalDebit)
 		
+			
 			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
