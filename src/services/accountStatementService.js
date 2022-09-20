@@ -9,6 +9,7 @@ import {
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
+import { getTransactionType } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -158,13 +159,11 @@ class accountStatementService {
                     let newTransId = arr[0];
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
                     arr[1] = newTransId;
+                    arr[2] = getTransactionType(arr[2]);
                     arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
                     return arr;
                 })
             }
-
-            logger.debug(`db2DataPDF`, db2Data);
-
 
             const accountData = {
                 headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],

@@ -1,4 +1,4 @@
-const accountStatementData = {
+export const accountStatementData = {
     "trxType": {
         "Purchase Payment (PayPak, Visa)": "POS Payment",
         "Auto Debit": "Auto Debit",
