@@ -163,6 +163,8 @@ class accountStatementService {
                 })
             }
 
+            logger.debug(`db2DataPDF`, db2Data);
+
 
             const accountData = {
                 headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
