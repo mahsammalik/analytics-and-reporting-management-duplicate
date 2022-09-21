@@ -125,7 +125,7 @@ class accountStatementService {
             logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
-                msisdn = msisdn.replace("92", "0");
+                msisdn = msisdn?.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
             // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
@@ -157,7 +157,7 @@ class accountStatementService {
                     let newTransId = arr[0];
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
                     arr[1] = newTransId;
-                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+                    arr[4] = arr[4] ? arr[4]?.replace(/\d(?=\d{4})/g, "*") : '';
                     return arr;
                 })
                 logger.debug(db2Data);
