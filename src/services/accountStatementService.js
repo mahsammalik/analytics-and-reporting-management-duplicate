@@ -9,7 +9,7 @@ import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import { getTransactionType } from '../util/accountStatementMapping';
+import { getTransactionChannel, getTransactionType } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -150,7 +150,7 @@ class accountStatementService {
             });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
-                msisdn = msisdn?.replace("92", "0");
+                msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             if (db2Data.length > 0) {
                 // if description column is null then replace it with HTML hidden space
@@ -173,8 +173,9 @@ class accountStatementService {
                 db2Data = db2Data.map(arr => {
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
                     arr[2] = getTransactionType(arr[2]) || '';
+                    arr[3] = getTransactionChannel(arr[3]) || '';
                     arr[1] = arr[0];
-                    arr[4] = arr[4] ? arr[4]?.replace(/\d(?=\d{4})/g, "*") : '';
+                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
                     return arr;
                 })
             }
