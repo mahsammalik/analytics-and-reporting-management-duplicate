@@ -154,15 +154,18 @@ class accountStatementService {
                     var dateA = new Date(a[1]), dateB = new Date(b[1]);
                     return dateA - dateB;
                 })
-                logger.debug(db2Data);
                 db2Data = db2Data.map(arr => {
-                    logger.debug('db2Statemnet', arr);
                     let newTransId = arr[0];
-                    let newTrxType = accountStatementMapping.getTransactionType(arr[2]);
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
                     arr[1] = newTransId;
-                    arr[2] = newTrxType;
                     arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+                    return arr;
+                })
+                logger.debug(db2Data);
+                db2Data = db2Data.map(arr => {
+                    let newTrxType = accountStatementMapping.getTransactionType(arr[2]);
+                    logger.debug('statementDB', newTrxType);
+                    arr[2] = newTrxType;
                     return arr;
                 })
             }
