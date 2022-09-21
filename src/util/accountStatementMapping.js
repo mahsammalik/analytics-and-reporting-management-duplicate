@@ -47,7 +47,7 @@ export const getTransactionDescription = (desc, type, reason, amount, msisdn) =>
         return reason.includes('Insurance Reversal') ? `Insurance Payment Reversal` : desc;
     }else if(type === 'Profit Disburse'){
         return `Savings Profit`
-    }if(type === 'Online Payment'){
+    }else if(type === 'Online Payment'){
         const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
         return `Successful Online Payment Request From JazzCash Account ${account}`
     }else if(type === 'Merchant Payment'){
