@@ -20,3 +20,6 @@ export {default as BrokerReward}
 from './brokerReward'
 export { default as mappedMetaData }
 from './mapMetaData';
+export { default as accountStatementTemplateMerchant }
+from './accountStatementTemplateMerchant';
+export { default as getTransactionType } from './accountStatementMapping';
