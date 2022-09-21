@@ -27,7 +27,7 @@ export const accountStatementData = {
         "Transfer(B2C)": "Money Transfer",
         "Utility Bills Payment": "Utility Bills Payment",
         "Cash out": "Retailer Cash out",
-        "Merchant Payment": "Merchant Payment",
+        "Merchant Payment": "Merchant Payments",
         "Collecting": "UBP Collection",
         "Donation": "Donation",
         "PTS Purchase Payment": "Debit Card Payment",
