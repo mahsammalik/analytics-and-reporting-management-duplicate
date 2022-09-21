@@ -8,7 +8,7 @@ import {
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import accountStatementMapping from '../util/accountStatementMapping';
+import { accountStatementData } from '../util/constants';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -155,16 +155,12 @@ class accountStatementService {
                 })
                 db2Data = db2Data.map(arr => {
                     let newTransId = arr[0];
+                    let newTrxType = accountStatementData.trxType[arr[2]] ?  accountStatementData.trxType[arr[2]] : arr[2];
+                    logger.debug('statementDB', newTrxType);
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+                    arr[2] = newTrxType;
                     arr[1] = newTransId;
                     arr[4] = arr[4] ? arr[4]?.replace(/\d(?=\d{4})/g, "*") : '';
-                    return arr;
-                })
-                logger.debug(db2Data);
-                db2Data = db2Data.map(arr => {
-                    let newTrxType = accountStatementMapping.getTransactionType(arr[2]);
-                    logger.debug('statementDB', newTrxType);
-                    arr[2] = newTrxType;
                     return arr;
                 })
             }
