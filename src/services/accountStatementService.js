@@ -157,7 +157,7 @@ class accountStatementService {
                 db2Data = db2Data.map(arr => {
                     let newTransId = arr[0];
                     let newTrxType = accountStatementData.trxType[arr[2]] ?  accountStatementData.trxType[arr[2]] : arr[2];
-                    logger.debug('statementDB', newTrxType);
+                    logger.debug('statementDB2', newTrxType);
                     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
                     arr[2] = newTrxType;
                     arr[1] = newTransId;
