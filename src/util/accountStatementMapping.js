@@ -2,7 +2,7 @@ import { accountStatementData } from "./constants";
 
 export const getTransactionType = type => {
     const { trxType } = accountStatementData;
-    return trxType[type] ? trxType[type] : trx;
+    return trxType[type] ? trxType[type] : type;
 }
 
 export const getTransactionChannel = (trxChannel, type) => {
