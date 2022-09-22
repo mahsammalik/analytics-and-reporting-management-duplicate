@@ -137,17 +137,12 @@ class accountStatementService {
             //     const { data, success, message } = response;
             // if (success) {
             if (db2Data.length > 0) {
-                // if description column is null then replace it with HTML hidden space
-                db2Data = db2Data.map(arr => {
-                    if(arr[5] == null)
-                        arr[5] = '&#8203';  // &#8203 for HTML hidden space
-                    return arr;
-                });
-
+                
                 db2Data = db2Data.map(arr => {
                     let msisdn = arr[0];
                     let date = arr[1];
                     let trxId = arr[2];
+                    arr[5] = arr[5] === null ? '&#8203' : arr[5];
                     arr.splice(0, 1);
                     arr[0] = moment(date).format('DD-MMM-YYYY HH:mm:ss');
                     arr[1] = trxId;
@@ -157,26 +152,7 @@ class accountStatementService {
                     return arr;
                 })
 
-                logger.debug('StatementAnd', db2Data);
-        
-                // db2Data = db2Data.map((dat) => {
-                //     dat.splice(0, 1);
-                //     let b = dat[1];
-                //     dat[1] = dat[0];
-                //     dat[0] = b;
-                //     return dat
-                // }).sort(function (a, b) {
-                //     var dateA = new Date(a[1]), dateB = new Date(b[1]);
-                //     return dateA - dateB;
-                // })
-                // db2Data = db2Data.map(arr => {
-                //     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
-                //     arr[2] = getTransactionType(arr[2]) || '';
-                //     arr[3] = getTransactionChannel(arr[3], arr[2]) || '';
-                //     arr[1] = arr[0];
-                //     arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
-                //     return arr;
-                // })
+                logger.debug(db2Data);
             }
 
             const accountData = {
