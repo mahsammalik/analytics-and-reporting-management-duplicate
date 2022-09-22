@@ -8,7 +8,7 @@ import {
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import { getTransactionChannel, getTransactionType } from '../util/accountStatementMapping';
+import { getTransactionChannel, getTransactionDescription, getTransactionType } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -142,25 +142,40 @@ class accountStatementService {
                         arr[5] = '&#8203';  // &#8203 for HTML hidden space
                     return arr;
                 });
-        
-                db2Data = db2Data.map((dat) => {
-                    dat.splice(0, 1);
-                    let b = dat[1];
-                    dat[1] = dat[0];
-                    dat[0] = b;
-                    return dat
-                }).sort(function (a, b) {
-                    var dateA = new Date(a[1]), dateB = new Date(b[1]);
-                    return dateA - dateB;
-                })
+
                 db2Data = db2Data.map(arr => {
-                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
-                    arr[2] = getTransactionType(arr[2]) || '';
-                    arr[3] = getTransactionChannel(arr[3]) || '';
-                    arr[1] = arr[0];
-                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+                    let msisdn = arr[0];
+                    let date = arr[1];
+                    let trxId = arr[2];
+                    arr.splice(0, 1);
+                    arr[0] = moment(date).format('DD-MMM-YYYY HH:mm:ss');
+                    arr[1] = trxId;
+                    arr[2] = getTransactionType(arr[2]);
+                    arr[3] = getTransactionChannel(arr[3], arr[2]);
+                    arr[4] = getTransactionDescription(arr[4], arr[2], arr[9], arr[5], msisdn);
                     return arr;
                 })
+
+                logger.debug('StatementAnd', db2Data);
+        
+                // db2Data = db2Data.map((dat) => {
+                //     dat.splice(0, 1);
+                //     let b = dat[1];
+                //     dat[1] = dat[0];
+                //     dat[0] = b;
+                //     return dat
+                // }).sort(function (a, b) {
+                //     var dateA = new Date(a[1]), dateB = new Date(b[1]);
+                //     return dateA - dateB;
+                // })
+                // db2Data = db2Data.map(arr => {
+                //     arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+                //     arr[2] = getTransactionType(arr[2]) || '';
+                //     arr[3] = getTransactionChannel(arr[3], arr[2]) || '';
+                //     arr[1] = arr[0];
+                //     arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+                //     return arr;
+                // })
             }
 
             const accountData = {
