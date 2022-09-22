@@ -12,43 +12,60 @@ export const getTransactionChannel = (trxChannel, type) => {
     return trxChannel === 'API' ? apiChannel : otherChannel;
 }
 
-export const getTransactionDescription = (desc, type, reason, amount, msisdn) => {
-    if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
+const getCompanyNamebySpace = reason => {
+    //Company name starts after second space and continue till 'via' occurs
+    return reason.split(" ").slice(2).join(" ").split("via")[0];
+}
 
+const getCompanyNamebyFor = reason => {
+    //Company name starts after 'for' and continue till 'via' or 'at' occurs 
+    return reason.split(" for")[1].replaceAll("at", "via").split("via")[0];
+}
+
+const getAccountbyMSISDN = msisdn => {
+    return msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+}
+
+const getAccountByDescription = desc => {
+    return desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+}
+
+export const getTransactionDescription = (desc, type, reason, amount, msisdn) => {
+
+    if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
         if(reason.includes('Customer Pay Bill for') || reason.includes('OMNO Customer Pay Bill for')){
-            const companyName = reason.split(' for')[1].split('-')[0];
-            const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+            const companyName = getCompanyNamebyFor(reason);
+            const account = getAccountbyMSISDN(msisdn);
             return `Bill Payment Made to ${companyName} of amount ${amount} from JazzCash Account ${account}`
         }else if(reason.includes('ReadyCash Self Repay')){
             return `ReadyCash loan repayment`
         }else if(reason.includes('Customer Buy Load') || reason.includes('Customer Buys Prepaid Load for') || reason.includes('OMNO Customer Buys Prepaid Load')){
-            const companyName = reason.split(' for')[1].split('-')[0];
+            const companyName = getCompanyNamebyFor(reason);
             return `Mobile Prepaid Load - ${companyName}`;
         }else{
             return desc;
         }
-
     }else if(type === 'Donation'){
 
         if(reason.includes('Customer Donate OR Customer Donation')){
-            const companyName = reason.split(' ').slice(2).join(' ').split('-')[0];
+            const companyName = getCompanyNamebySpace(reason);
             return `Donation at ${companyName}`;
         }else return desc;
 
     }else if(type === 'Transfer(C2C)'){
-        const account = desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountByDescription(desc);
         return `Money transfer to JazzCash account ${account}`;
     }else if(type === 'Transfer(C2B)'){
         return reason.includes('RAAST') ? `Money Transfer via RAAST` : `Money Transfer From JazzCash Account`
     }else if(type === 'Transfer(B2C)'){
-        const account = desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountByDescription(desc);
         return `Payment Received to JazzCash Account ${account}`
     }else if(type === 'Refund Merchant Payment'){
         return reason.includes('Insurance Reversal') ? `Insurance Payment Reversal` : desc;
     }else if(type === 'Profit Disburse'){
         return `Savings Profit`
     }else if(type === 'Online Payment'){
-        const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountbyMSISDN(msisdn);
         return `Successful Online Payment Request From JazzCash Account ${account}`
     }else if(type === 'Merchant Payment'){
         if(reason.includes('Insurance')){
@@ -56,7 +73,7 @@ export const getTransactionDescription = (desc, type, reason, amount, msisdn) =>
         }else if(reason.includes('Bundles')){
             return reason
         }else if(reason.includes('Merchant Payment') || reason.includes('Customer Payment')){
-            const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+            const account = getAccountbyMSISDN(msisdn);
             return `Till Payment from JazzCash Account ${account}`
         }else{
             return desc;
@@ -75,14 +92,14 @@ export const getTransactionDescription = (desc, type, reason, amount, msisdn) =>
         if(reason.includes('Customer Buys Jazz Bundles')){
             return `Prepaid Jazz Bundle Subscription`;
         }else{
-            const account = desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+            const account = getAccountByDescription(desc);
             return `Mobile Prepaid Load - Jazz ${account}`
         }
     }else if(type === 'Incoming IBFT'){
-        const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountbyMSISDN(msisdn);
         return `Amount received to JazzCash Account ${account}`
     }else if(type === 'IBFT Outgoing Customer'){
-        const account = desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountByDescription(desc);
         return `Money sent to ${account}`
     }else if(type === 'IBFT Credit'){
         const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
@@ -90,10 +107,10 @@ export const getTransactionDescription = (desc, type, reason, amount, msisdn) =>
     }else if(type === 'Cash out at Retailer' || type === 'Cash out'){
         return `Money Withdrawal from Retailer`
     }else if(type === 'Cash in at Retailer'){
-        const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountbyMSISDN(msisdn);
         return `Amount Credited to JazzCash Account ${account}`;
     }else if(type === 'Cash in'){
-        const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+        const account = getAccountbyMSISDN(msisdn);
         return `Amount Credited to JazzCash Account ${account}`
     }else if(type === 'Auto Debit'){
         if(reason.includes('Loan Repayment')){
