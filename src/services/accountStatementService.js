@@ -150,6 +150,9 @@ class accountStatementService {
                     arr[3] = getTransactionChannel(arr[3], arr[2]);
                     arr[4] = getTransactionDescription(arr[4], arr[2], arr[9], arr[5], msisdn);
                     return arr;
+                }).sort(function (a, b) {
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
+                    return dateA - dateB;
                 })
 
                 logger.debug(db2Data);
