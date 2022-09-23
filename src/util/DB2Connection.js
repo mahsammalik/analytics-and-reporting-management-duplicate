@@ -1114,7 +1114,7 @@ class DatabaseConn {
 
     async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
         // get connection from connection pool
-        let conn = conPool.getConnection();
+        let conn = await getConnection();
         // if connection is null then open it using connection string
         if(!conn)
         {
@@ -1270,7 +1270,7 @@ class DatabaseConn {
     //Tax Statemet 
     async getTaxValueArray(customerMobileNumer, mappedMsisdn, endDate, startDate) {
         // get connection from connection pool
-        let conn = conPool.getConnection();
+        let conn = await getConnection();
         // if connection is null then open it using connection string
         if(!conn)
         {
