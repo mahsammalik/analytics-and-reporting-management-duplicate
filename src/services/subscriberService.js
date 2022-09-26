@@ -85,7 +85,7 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_voucherPayment,
             config.kafkaBroker.topics.payoneer_registration,
             config.kafkaBroker.topics.payoneer_transaction,
-            config.kafkaBroker.topics.display_QR,
+            //config.kafkaBroker.topics.display_QR,
             config.kafkaBroker.topics.merchant_onboarding,
             config.kafkaBroker.topics.fallbackFailure,
             config.kafkaBroker.topics.consumer_onboarding,
