@@ -137,8 +137,6 @@ class accountStatementService {
             //     const { data, success, message } = response;
             // if (success) {
             if (db2Data.length > 0) {
-                logger.debug('DB2Data');
-                logger.debug(db2Data);
                 db2Data = db2Data.map(arr => {
                     let msisdn = arr[0];
                     let date = arr[1];
