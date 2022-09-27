@@ -153,8 +153,6 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             if (db2Data.length > 0) {
-                logger.debug('DB2Data');
-                logger.debug(db2Data);
                 db2Data = db2Data.map(arr => {
                     let msisdn = arr[0];
                     let date = arr[1];
