@@ -30,7 +30,7 @@ const getAccountByDescription = desc => {
     return desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
 }
 
-export const getTransactionDescription = (desc, type, reason, amount, msisdn) => {
+export const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
 
     if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
         if(reason.includes('Customer Pay Bill for') || reason.includes('OMNO Customer Pay Bill for')){
