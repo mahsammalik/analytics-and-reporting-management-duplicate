@@ -1,4 +1,5 @@
 import { accountStatementData } from "./constants";
+import logger from "./logger";
 
 export const getTransactionType = type => {
     const { trxType } = accountStatementData;
@@ -31,6 +32,8 @@ const getAccountByDescription = desc => {
 }
 
 export const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
+
+    logger.debug({ desc, type, reason, amount, msisdn });
 
     if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
         if(reason.includes('Customer Pay Bill for') || reason.includes('OMNO Customer Pay Bill for')){
