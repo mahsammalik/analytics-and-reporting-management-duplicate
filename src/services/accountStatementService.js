@@ -9,7 +9,7 @@ import {
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import { getTransactionChannel, getTransactionDescription, getTransactionType } from '../util/accountStatementMapping';
+import { getMappedAccountStatement } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -139,18 +139,7 @@ class accountStatementService {
             logger.debug(db2Data);
             if (db2Data.length > 0) {
                 db2Data = db2Data.map(arr => {
-                    let msisdn = arr[0];
-                    let date = arr[1];
-                    let trxId = arr[2];
-                    arr[5] = arr[5] === null ? '&#8203' : arr[5];
-                    arr.splice(0, 1);
-                    arr[0] = moment(date).format('DD-MMM-YYYY HH:mm:ss');
-                    arr[1] = trxId;
-                    arr[2] = getTransactionType(arr[2]);
-                    arr[3] = getTransactionChannel(arr[3], arr[2]);
-                    arr[4] = getTransactionDescription(arr[4], arr[2], arr[9], arr[5], msisdn);
-                    arr.pop();
-                    return arr;
+                    return getMappedAccountStatement(arr);
                 }).sort(function (a, b) {
                     var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
