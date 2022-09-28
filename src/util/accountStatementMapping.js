@@ -130,7 +130,7 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
 } 
 
 export const getMappedAccountStatement = arr => {
-    const [msisdn, date, trxId, trxType, desc, amountDebit, amountCredit, runningBalance, reason] = arr;
+    const [msisdn, date, trxId, trxType, channel, desc, amountDebit, amountCredit, runningBalance, reason] = arr;
     const description = desc === null ? '&#8203' : desc;
     return [
         moment(date).format('DD-MMM-YYYY HH:mm:ss'),
