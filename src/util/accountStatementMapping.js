@@ -1,12 +1,12 @@
 import { accountStatementData } from "./constants";
 import logger from "./logger";
 
-export const getTransactionType = type => {
+const getTransactionType = type => {
     const { trxType } = accountStatementData;
     return trxType[type] ? trxType[type] : type;
 }
 
-export const getTransactionChannel = (trxChannel, type) => {
+const getTransactionChannel = (trxChannel, type) => {
     const { channel, trxType } = accountStatementData;
     const apiChannel = trxType[type] === 'ATM Withdrawal' ? 'Debit Card' : trxChannel;
     const otherChannel = channel[trxChannel] ? channel[trxChannel] : trxChannel;
@@ -31,7 +31,7 @@ const getAccountByDescription = desc => {
     return desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
 }
 
-export const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
+const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
 
     logger.debug({ desc, type, reason, amount, msisdn });
 
@@ -127,3 +127,18 @@ export const getTransactionDescription = (desc = '', type = '', reason = '', amo
         return desc;
     }
 } 
+
+export const getMappedAccountStatement = arr => {
+    const [msisdn, date, trxId, trxType, desc, amountDebit, amountCredit, runningBalance, reason] = arr;
+    const description = desc === null ? '&#8203' : desc;
+    return [
+        moment(date).format('DD-MMM-YYYY HH:mm:ss'),
+        trxId,
+        getTransactionType(trxType),
+        getTransactionChannel(channel, trxType),
+        getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
+        amountDebit,
+        amountCredit,
+        runningBalance
+    ];
+}
