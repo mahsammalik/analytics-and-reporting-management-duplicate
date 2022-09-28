@@ -135,6 +135,7 @@ class accountStatementService {
             //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
             //     const { data, success, message } = response;
             // if (success) {
+            logger.debug(db2Data);
             if (db2Data.length > 0) {
                 db2Data = db2Data.map(arr => {
                     let msisdn = arr[0];
