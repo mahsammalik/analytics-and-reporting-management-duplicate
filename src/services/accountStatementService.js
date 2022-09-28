@@ -144,8 +144,6 @@ class accountStatementService {
                     var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
                 })
-
-                logger.debug(db2Data);
             }
 
             const accountData = {
