@@ -33,8 +33,8 @@ class Subscriber {
             // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
 
             //config.kafkaBroker.topics.initTrans_sendMoney_bank,
-            config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.confirmTrans_qr_payment,
+            //config.kafkaBroker.topics.initTrans_qr_payment,
+            //config.kafkaBroker.topics.confirmTrans_qr_payment,
             config.kafkaBroker.topics.initTrans_MobileBundle,
             config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
             config.kafkaBroker.topics.confirmTrans_MobileBundle,
