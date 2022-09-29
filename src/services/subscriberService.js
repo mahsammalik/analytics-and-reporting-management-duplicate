@@ -95,7 +95,7 @@ class Subscriber {
 
             config.kafkaBroker.topics.cashToGoodConfirm,
             config.kafkaBroker.topics.cashToGoodConfirmRedeem,
-            config.kafkaBroker.topics.multipayment_qr_payment_passed,
+            //config.kafkaBroker.topics.multipayment_qr_payment_passed,
             config.kafkaBroker.topics.cashToGoodRefund,
             config.kafkaBroker.topics.initTrans_MobileBundleZong,
             config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
