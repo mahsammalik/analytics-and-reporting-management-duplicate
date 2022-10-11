@@ -116,7 +116,7 @@ class DatabaseConn {
 
                 if (data.transactionStatus == 'Pending') {
                     if(dataExixts){
-                        const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AMOUNT='${data.amount}', BUNDLE_NAME='${data.bundleName}', BUNDLE_TYPE=${data.bundleType}, CHANNEL='${data.channel}', INITIATOR_MSISDN='${data.initiatorMsisdn}', NETWORK='${data.network}', TARGET_MSISDN='${data.targetMsisdn}', TRANS_DATE='${data.transactionTime}', TRANS_STATUS='Completed', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}' WHERE TRANS_ID='${data.TID}';`);
+                        const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AMOUNT=${data.amount}, BUNDLE_NAME='${data.bundleName}', BUNDLE_TYPE='${data.bundleType}', CHANNEL='${data.channel}', INITIATOR_MSISDN='${data.initiatorMsisdn}', NETWORK='${data.network}', TARGET_MSISDN='${data.targetMsisdn}', TRANS_DATE='${data.transactionTime}', TRANS_STATUS='Completed', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                         stmt.executeSync();
                         stmt.closeSync();
                         //conn.close(function (err) { });
@@ -131,7 +131,7 @@ class DatabaseConn {
                 }
                 else if (data.transactionStatus == 'Completed') {
                     if(dataExixts){
-                        const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}' WHERE TRANS_ID='${data.TID}';`);
+                        const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
                         stmt.executeSync();
                         stmt.closeSync();
                         //conn.close(function (err) { });
