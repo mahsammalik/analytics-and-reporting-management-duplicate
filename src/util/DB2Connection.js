@@ -104,14 +104,15 @@ class DatabaseConn {
             let conn = await getConnection();
             try {
                 //Check if record already exists or not
-                const stmt = conn.prepareSync(`SELECT * FROM ${schemaName}.${tableName} WHERE TRANS_ID = '${data.TID}';`);
+                const stmt = conn.prepareSync(`SELECT * FROM ${schemaName}.${tableName} WHERE TRANS_ID='${data.TID}'`);
                 logger.info("c: Select statement prepared")
                 let result = stmt.executeSync();
                 logger.info("d: Select statement executed")
                 let resultArray = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
                 logger.info(`${schemaName}.${tableName}_selectQuery executed`);
                 const dataExixts = resultArray.length > 0;
-
+                logger.debug(result);
+                logger.info(dataExixts);
                 if (data.transactionStatus == 'Pending') {
                     if(dataExixts){
                         const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AMOUNT=${data.amount}, BUNDLE_NAME='${data.bundleName}', BUNDLE_TYPE='${data.bundleType}', CHANNEL='${data.channel}', INITIATOR_MSISDN='${data.initiatorMsisdn}', NETWORK='${data.network}', TARGET_MSISDN='${data.targetMsisdn}', TRANS_DATE='${data.transactionTime}', TRANS_STATUS='Completed', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
@@ -121,8 +122,9 @@ class DatabaseConn {
                         logger.info(`${schemaName}.${tableName}_update done`);
                     }else{
                         const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                        stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
+                        stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
                         stmt.closeSync();
+                        logger.debug(stmt);
                         //conn.close(function (err) { });
                         logger.info(`${schemaName}.${tableName}_insert done`);
                     }
