@@ -313,7 +313,8 @@ class Subscriber {
                                 }
                             }
                         }
-
+                        tempData.topic = msg.topic;
+                        tempData.msg_offset = msg.offset;
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(tempData);
                         //logger.debug(response);
                     } catch (error) {
