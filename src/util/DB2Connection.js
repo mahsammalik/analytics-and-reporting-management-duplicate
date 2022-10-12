@@ -122,7 +122,7 @@ class DatabaseConn {
                         logger.info(`${schemaName}.${tableName}_update done`);
                     }else{
                         const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                        stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionDate, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
+                        stmt.executeSync([data.amount || 0, data.bundleName || "", data.bundleType || "", data.channel || "", data.initiatorMsisdn || "", data.network || "", data.targetMsisdn || "", data.transactionDate || "", data.TID || "", data.topic || "", data.msg_offset || 0, data.transactionStatus || ""]);
                         stmt.closeSync();
                         logger.debug(stmt);
                         //conn.close(function (err) { });
