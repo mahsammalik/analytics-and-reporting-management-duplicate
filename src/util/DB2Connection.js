@@ -247,9 +247,7 @@ class DatabaseConn {
                 const dataExixts = resultArray.length > 0;
                 logger.info(dataExixts);
                 if (data.transactionStatus == 'Pending') {
-                    logger.info(
-                        data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.voiceMinutes, data.smsDetails, data.DataDetails, data.responseCode, data.subString(0, 50)
-                    )
+
                     if(dataExixts){
                         const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET AMOUNT='${data.amount}', BUNDLE_NAME='${data.bundleName}', BUNDLE_TYPE=${data.bundleType}, CHANNEL='${data.channel}', INITIATOR_MSISDN='${data.initiatorMsisdn}', NETWORK='${data.network}', TARGET_MSISDN='${data.targetMsisdn}', TRANS_DATE='${data.transactionTime}', BUNDLE_VOICE='${data.voiceMinutes}', TRANS_STATUS='Completed', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', BUNDLE_SMS='${data.smsDetails}', BUNDLE_DATA='${data.DataDetails}', RESPONSE_CODE='${data.responseCode}', RESPONSE_DESCRIPTION='${data.responseDesc.subString(0, 50)}' WHERE TRANS_ID='${data.TID}';`);
                         stmt.executeSync();
