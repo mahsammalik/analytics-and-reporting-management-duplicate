@@ -21,7 +21,7 @@ const getCompanyNamebySpace = reason => {
 
 const getCompanyNamebyFor = reason => {
     //Company name starts after 'for' and continue till 'via' or 'at' occurs 
-    return reason.split(" for")[1].replaceAll("at", "via").split("via")[0];
+    return reason.split(" for")[1].replaceAll("at", "via").split("via")[0] || "";
 }
 
 const getAccountbyMSISDN = msisdn => {
@@ -29,7 +29,7 @@ const getAccountbyMSISDN = msisdn => {
 }
 
 const getAccountByDescription = desc => {
-    return desc ? desc.split('92')[1].replace(/\d(?=\d{4})/g, "*") : '';
+    return desc ? desc.split('92')[1]?.replace(/\d(?=\d{4})/g, "*") : '';
 }
 
 const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
