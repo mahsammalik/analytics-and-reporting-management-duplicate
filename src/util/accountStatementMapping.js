@@ -25,11 +25,11 @@ const getCompanyNamebyFor = reason => {
 }
 
 const getAccountbyMSISDN = msisdn => {
-    return msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+    return msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '' || "";
 }
 
 const getAccountByDescription = desc => {
-    return desc ? desc.split('92')[1]?.replace(/\d(?=\d{4})/g, "*") : '';
+    return desc ? desc.split('92')[1]?.replace(/\d(?=\d{4})/g, "*") : '' || "";
 }
 
 const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {

@@ -55,6 +55,7 @@ export const accountStatementData = {
     "channel": {
         "NEW_JC_APP": "JazzCash APP",
         "NEW JC APP": "JazzCash APP",
+        "New JC App": "JazzCash APP",
         "USSD": "USSD",
         "Business App": "Merchant APP",
         "ATM": "ATM",
