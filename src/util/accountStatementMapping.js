@@ -37,13 +37,13 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
     logger.debug({ desc, type, reason, amount, msisdn });
 
     if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
-        if(reason.includes('Customer Pay Bill for') || reason.includes('OMNO Customer Pay Bill for')){
+        if(reason?.includes('Customer Pay Bill for') || reason?.includes('OMNO Customer Pay Bill for')){
             const companyName = getCompanyNamebyFor(reason);
             const account = getAccountbyMSISDN(msisdn);
             return `Bill Payment Made to ${companyName} of amount ${amount} from JazzCash Account ${account}`
-        }else if(reason.includes('ReadyCash Self Repay')){
+        }else if(reason?.includes('ReadyCash Self Repay')){
             return `ReadyCash loan repayment`
-        }else if(reason.includes('Customer Buy Load') || reason.includes('Customer Buys Prepaid Load for') || reason.includes('OMNO Customer Buys Prepaid Load')){
+        }else if(reason?.includes('Customer Buy Load') || reason?.includes('Customer Buys Prepaid Load for') || reason?.includes('OMNO Customer Buys Prepaid Load')){
             const companyName = getCompanyNamebyFor(reason);
             return `Mobile Prepaid Load - ${companyName}`;
         }else{
@@ -51,7 +51,7 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
         }
     }else if(type === 'Donation'){
 
-        if(reason.includes('Customer Donate OR Customer Donation')){
+        if(reason?.includes('Customer Donate OR Customer Donation')){
             const companyName = getCompanyNamebySpace(reason);
             return `Donation at ${companyName}`;
         }else return desc;
@@ -60,40 +60,40 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
         const account = getAccountByDescription(desc);
         return `Money transfer to JazzCash account ${account}`;
     }else if(type === 'Transfer(C2B)'){
-        return reason.includes('RAAST') ? `Money Transfer via RAAST` : `Money Transfer From JazzCash Account`
+        return reason?.includes('RAAST') ? `Money Transfer via RAAST` : `Money Transfer From JazzCash Account`
     }else if(type === 'Transfer(B2C)'){
         const account = getAccountByDescription(desc);
         return `Payment Received to JazzCash Account ${account}`
     }else if(type === 'Refund Merchant Payment'){
-        return reason.includes('Insurance Reversal') ? `Insurance Payment Reversal` : desc;
+        return reason?.includes('Insurance Reversal') ? `Insurance Payment Reversal` : desc;
     }else if(type === 'Profit Disburse'){
         return `Savings Profit`
     }else if(type === 'Online Payment'){
         const account = getAccountbyMSISDN(msisdn);
         return `Successful Online Payment Request From JazzCash Account ${account}`
     }else if(type === 'Merchant Payment'){
-        if(reason.includes('Insurance')){
+        if(reason?.includes('Insurance')){
             return `Insurance Plan Payment`
-        }else if(reason.includes('Bundles')){
+        }else if(reason?.includes('Bundles')){
             return reason
-        }else if(reason.includes('Merchant Payment') || reason.includes('Customer Payment')){
+        }else if(reason?.includes('Merchant Payment') || reason?.includes('Customer Payment')){
             const account = getAccountbyMSISDN(msisdn);
             return `Till Payment from JazzCash Account ${account}`
         }else{
             return desc;
         }
     }else if(type === 'Loan Repayment'){
-        return reason.includes('Alfalah Repayment') ? `ReadyCash by Alfalah Loan Repayment` : `Loan Repayment`
+        return reason?.includes('Alfalah Repayment') ? `ReadyCash by Alfalah Loan Repayment` : `Loan Repayment`
     }else if(type === 'Loan Disbursement'){
-        if(reason.includes('ReadyCash Loan Disbursement')){
+        if(reason?.includes('ReadyCash Loan Disbursement')){
             return `ReadyCash Loan Disbursement`
-        }else if(reason.includes('Alfalah Disbursement')){
+        }else if(reason?.includes('Alfalah Disbursement')){
             return `ReadyCash by Alfalah Loan Disbursement`
         }else{
             return desc;
         }
     }else if(type === 'Jazz Load (Prepaid top-up)'){
-        if(reason.includes('Customer Buys Jazz Bundles')){
+        if(reason?.includes('Customer Buys Jazz Bundles')){
             return `Prepaid Jazz Bundle Subscription`;
         }else{
             const account = getAccountByDescription(desc);
@@ -117,9 +117,9 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
         const account = getAccountbyMSISDN(msisdn);
         return `Amount Credited to JazzCash Account ${account}`
     }else if(type === 'Auto Debit'){
-        if(reason.includes('Loan Repayment')){
+        if(reason?.includes('Loan Repayment')){
             return `Loan Repayment`
-        }else if(reason.includes('Microensure Insurance')){
+        }else if(reason?.includes('Microensure Insurance')){
             return `Insurance Plan Recurring Payment`
         }else{
             return desc;
