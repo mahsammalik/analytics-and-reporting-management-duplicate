@@ -33,9 +33,10 @@ class Subscriber {
             // config.kafkaBroker.topics.ConfirmTrans_IBFT_Incoming_Fail,
 
             //config.kafkaBroker.topics.initTrans_sendMoney_bank,
-            config.kafkaBroker.topics.initTrans_qr_payment,
-            config.kafkaBroker.topics.confirmTrans_qr_payment,
+            //config.kafkaBroker.topics.initTrans_qr_payment,
+            //config.kafkaBroker.topics.confirmTrans_qr_payment,
             config.kafkaBroker.topics.initTrans_MobileBundle,
+            config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B,
             config.kafkaBroker.topics.confirmTrans_MobileBundle,
             config.kafkaBroker.topics.initTrans_BusTicket,
             config.kafkaBroker.topics.confirmTrans_BusTicket,
@@ -44,13 +45,13 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_eventTickets,
             config.kafkaBroker.topics.confirmTrans_eventTickets,
             config.kafkaBroker.topics.queryTrans_creemVoucher,
-            config.kafkaBroker.topics.initTrans_Donation,
-            config.kafkaBroker.topics.confirmTrans_Donation,
+            //config.kafkaBroker.topics.initTrans_Donation,
+            //config.kafkaBroker.topics.confirmTrans_Donation,
             config.kafkaBroker.topics.intTrans_customerDeposit_DVDC,
             config.kafkaBroker.topics.confirm_deposit_DVDC,
             config.kafkaBroker.topics.init_daraz_voucher,
             config.kafkaBroker.topics.confirm_daraz_voucher,
-            config.kafkaBroker.topics.update_account_details,
+            //config.kafkaBroker.topics.update_account_details,
             config.kafkaBroker.topics.initTrans_mr_payment,
             config.kafkaBroker.topics.confirmTrans_mr_payment,
             config.kafkaBroker.topics.initTrans_cardOrdering,
@@ -68,11 +69,11 @@ class Subscriber {
             config.kafkaBroker.topics.SecureCard_CardLink,
             config.kafkaBroker.topics.initTrans_moneyTransfer_B2B,
             config.kafkaBroker.topics.confirmTrans_moneyTransfer_B2B,
-            config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
-            config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
+            //config.kafkaBroker.topics.initTrans_moneyTransfer_C2C,
+            //config.kafkaBroker.topics.confirmTrans_moneyTransfer_C2C,
             config.kafkaBroker.topics.initTrans_cnicPayment,
             config.kafkaBroker.topics.confirmTrans_cnicPayment,
-            config.kafkaBroker.topics.confirmTrans_scheduledTrans,
+            //config.kafkaBroker.topics.confirmTrans_scheduledTrans,
             config.kafkaBroker.topics.accountUpgrade_success,
             config.kafkaBroker.topics.accountUpgrade_nadraFailure,
             config.kafkaBroker.topics.accountUpgrade_cpsFailure,
@@ -84,17 +85,17 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_voucherPayment,
             config.kafkaBroker.topics.payoneer_registration,
             config.kafkaBroker.topics.payoneer_transaction,
-            config.kafkaBroker.topics.display_QR,
+            //config.kafkaBroker.topics.display_QR,
             config.kafkaBroker.topics.merchant_onboarding,
             config.kafkaBroker.topics.fallbackFailure,
             config.kafkaBroker.topics.consumer_onboarding,
-            config.kafkaBroker.topics.device_authentication,
-            config.kafkaBroker.topics.wallet_request,
+            //config.kafkaBroker.topics.device_authentication,
+            //config.kafkaBroker.topics.wallet_request,
             config.kafkaBroker.topics.insurance_claim,
 
             config.kafkaBroker.topics.cashToGoodConfirm,
             config.kafkaBroker.topics.cashToGoodConfirmRedeem,
-            config.kafkaBroker.topics.multipayment_qr_payment_passed,
+            //config.kafkaBroker.topics.multipayment_qr_payment_passed,
             config.kafkaBroker.topics.cashToGoodRefund,
             config.kafkaBroker.topics.initTrans_MobileBundleZong,
             config.kafkaBroker.topics.confirmTrans_MobileBundleZong,
@@ -241,6 +242,22 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
+                if (msg.topic === config.kafkaBroker.topics.init_refund_Trans_MobileBundle_withoutConfirmB2B) {
+                    logger.debug('*********** Init/Refund Trans Mobile Bundle B2B without Confirm *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        payload.topic = msg.topic;
+                        payload.msg_offset = msg.offset;
+                        logger.debug(JSON.stringify(payload));
+
+                        await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
+                        //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+
                 if (msg.topic === config.kafkaBroker.topics.confirmTrans_MobileBundle) {
                     logger.debug('*********** Confirm Trans Mobile Bundle *****************');
                     try {

@@ -1,4 +1,4 @@
-import validations from './validators/validations';
+import validations from './validators/validationEnhanced';
 import schema from './validators/schema.json';
 
 class Controller {
@@ -23,7 +23,7 @@ class Controller {
     }
 
     const validationResponse = validations.verifySchema(
-      schema.EMAIL_SCHEMA,
+      "EMAIL_SCHEMA",
       req.body
     );
     if (!validationResponse.success) {
