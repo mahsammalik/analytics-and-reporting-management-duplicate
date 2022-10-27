@@ -1285,6 +1285,9 @@ class DatabaseConn {
             const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);
             const result = stmt.executeSync();
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+            console.log("result ================>",result)
+            console.log("arrayResult ================>",arrayResult)
             logger.debug("Exited getTaxValueArray: ", arrayResult)
             result.closeSync();
             stmt.closeSync();
