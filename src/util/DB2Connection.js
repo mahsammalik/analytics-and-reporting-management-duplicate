@@ -1126,20 +1126,27 @@ class DatabaseConn {
         try {
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             // logger.info(`Step 02 b: mappedMSISDN `)
-            const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
             let result = stmt.executeSync();
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
             let updatedBalance = 0.00;
 
-            if (resultArrayFormat.length > 0) {
-                updatedBalance = resultArrayFormat[0];
-            }
+            logger.debug("getLatestAccountBalanceValue resultArrayFormat ========================>" + resultArrayFormat);
+            logger.info("getLatestAccountBalanceValue resultArrayFormat =========================>" + resultArrayFormat);
+            
+            
+            logger.debug("getLatestAccountBalanceValue result ========================>" + JSON.stringify(result));
+            logger.info("getLatestAccountBalanceValue result =========================>" + JSON.stringify(result));
+
+            // if (resultArrayFormat.length > 0) {
+            //     updatedBalance = resultArrayFormat[0];
+            // }
 
             result.closeSync();
             stmt.closeSync();
             // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
-            return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
-
+            // return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
+            return arrayResult || [];
         } catch (err) {
             logger.error('Database connection error' + err);
             logger.error(err);
