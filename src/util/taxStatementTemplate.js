@@ -64,15 +64,20 @@ const taxStatementTemplate = accountData => {
 		}, 0) || 0;
 		const totalTax = Number.parseFloat(WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
-		console.log("TAX:  ", taxInWords, totalTax)
+		console.log(`TAX: , ${taxInWords} , ${totalTax}`)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
+		console.log("ALRIGHT")
 		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2);
+		console.log("PHATA HERE 1")
 		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2);
+		console.log("PHATA HERE 2")
 		let creditTransactions = 0;
 		let debitTransactions = 0;
 		let totalCredit = 0;
 		let totalDebit = 0;
 		accountData.data2.forEach((number) => {
+			console.log("NUMBER ==================> ",number)
+			console.log("NUMBER LENGTH ==================> ",number.length)
 			totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 			totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 			if (parseFloat(number[number.length - 4]) > parseFloat(0))
@@ -83,8 +88,12 @@ const taxStatementTemplate = accountData => {
 		totalCredit = parseFloat(totalCredit).toFixed(2);
 		totalDebit = parseFloat(totalDebit).toFixed(2);
 
-		console.log("TOTAL <> ========================================",totalCredit)
-		console.log("TOTAL <---> ========================================",totalDebit)
+		console.log("openingBalance <> ========================================",openingBalance)
+		console.log("closingBalance <> ========================================",closingBalance)
+		console.log("creditTransactions <> ========================================",creditTransactions)
+		console.log("debitTransactions <> ========================================",debitTransactions)
+		console.log("totalCredit <> ========================================",totalCredit)
+		console.log("totalDebit <> ========================================",totalDebit)
 	
 
 		const statementSummary = `<div class="section" >
@@ -178,7 +187,6 @@ Withholding Tax Deducted:
 			<div>Tax Deposited</div>Rs ${totalTax}</b>
 		</div>
 	</div>
-	${statementSummary}
 </main>${htmlFoot}`;
 
 		return htmlString;
