@@ -16,6 +16,15 @@ class taxStatementController {
     }
 
     async calculateTaxStatement(req, res, next) {
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
+        console.log("TAX STATEMENT")
         let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
         let headersValidationResponse;
         if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
@@ -52,7 +61,7 @@ class taxStatementController {
             accountLevel: userProfile.accountLevel || ''
 
         };
-
+        console.log("BEFORE SERVICE")
         res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
         next();
 
@@ -97,6 +106,18 @@ class taxStatementController {
             const metadataHeaders = req.headers['x-meta-data'];
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             const userProfile = await getUserProfile(req.headers);
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log(userProfile)
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
+            console.log("000000000000000000000000000000000")
             logger.debug({ userProfile });
             logger.debug(metadata," metadata")
             let payload = {
