@@ -1152,7 +1152,42 @@ class DatabaseConn {
             conn.close(function (err) { if (err) { logger.error(err) } });
         }
     }
+    async getLatestAccountBalanceValue2(customerMobileNumer, mappedMsisdn, endDate) {
+        // get connection from connection pool
+        let conn = await getConnection();
+        // if connection is null then open it using connection string
+        if(!conn)
+        {
+            conn = await open(cn);
+        }
+        
+        try {
+            // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            // logger.info(`Step 02 b: mappedMSISDN `)
+            const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
+            let result = stmt.executeSync();
+            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            let updatedBalance = 0.00;
+            console.log("getLatestAccountBalanceValue2 updatedBalance",updatedBalance)
+            console.log("getLatestAccountBalanceValue2 result",result)
+            console.log("getLatestAccountBalanceValue2 resultArrayFormat",resultArrayFormat)
+            if (resultArrayFormat.length > 0) {
+                updatedBalance = resultArrayFormat[0];
+            }
+            console.log("getLatestAccountBalanceValue2 updatedBalance",updatedBalance)
+            result.closeSync();
+            stmt.closeSync();
+            // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
+            return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
 
+        } catch (err) {
+            logger.error('Database connection error' + err);
+            logger.error(err);
+            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+        } finally {
+            conn.close(function (err) { if (err) { logger.error(err) } });
+        }
+    }
     async getLatestAccountBalanceValueWithConn(customerMobileNumer, mappedMsisdn, endDate, conn) {
 
         try {
