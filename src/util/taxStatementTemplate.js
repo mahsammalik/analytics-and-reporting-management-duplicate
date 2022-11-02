@@ -94,13 +94,7 @@ const taxStatementTemplate = accountData => {
 		console.log("totalDebit <> ========================================",totalDebit)
 	
 
-		const statementSummary = `<div class="section" >
-		<div class="heading">
-			<h1>
-				Statement Summary
-				</h1>
-			</div>
-		</div>
+		const statementSummary = `<div class="section" > 
 		<div class="statementSummary">
 			<div class="statementBalance">
 				<b>Opening Balance: Rs ${openingBalance ? openingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
