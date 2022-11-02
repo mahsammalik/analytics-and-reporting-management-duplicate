@@ -54,7 +54,7 @@ const taxStatementTemplate = accountData => {
 
 		console.log(`payload ${JSON.stringify(accountData.payload)}`);
 		console.log(`account data ${JSON.stringify(accountData.data)}`);
-		console.log(`account data2 ${JSON.stringify(accountData.data2)}`);
+		console.log(`account data2 ${JSON.stringify(accountData.data2)}`); 
 
 		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
 			return a + b;
@@ -67,9 +67,9 @@ const taxStatementTemplate = accountData => {
 		console.log(`TAX: , ${taxInWords} , ${totalTax}`)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		console.log("ALRIGHT")
-		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2);
+		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2) || 0;
 		console.log("PHATA HERE 1")
-		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2);
+		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2) || 0;
 		console.log("PHATA HERE 2")
 		let creditTransactions = 0;
 		let debitTransactions = 0;
