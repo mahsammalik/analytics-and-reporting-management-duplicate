@@ -1445,9 +1445,9 @@ class DatabaseConn {
             const result = stmt.executeSync();
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
-            console.log("result ================>",result)
-            console.log("arrayResult ================>",arrayResult)
-            logger.debug("Exited getTaxValueArray: ", arrayResult)
+            // console.log("result ================>",result)
+            // console.log("arrayResult ================>",arrayResult)
+            // logger.debug("Exited getTaxValueArray: ", arrayResult)
             result.closeSync();
             stmt.closeSync();
             return arrayResult;
