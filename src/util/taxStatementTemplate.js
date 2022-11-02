@@ -52,6 +52,10 @@ const taxStatementTemplate = accountData => {
 		logger.debug(`account data ${JSON.stringify(accountData.data)}`);
 		logger.debug(`account data2 ${JSON.stringify(accountData.data2)}`);
 
+		console.log(`payload ${JSON.stringify(accountData.payload)}`);
+		console.log(`account data ${JSON.stringify(accountData.data)}`);
+		console.log(`account data2 ${JSON.stringify(accountData.data2)}`);
+
 		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
 			return a + b;
 		}, 0) || 0;
@@ -60,7 +64,7 @@ const taxStatementTemplate = accountData => {
 		}, 0) || 0;
 		const totalTax = Number.parseFloat(WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
-		logger.debug("TAX:  ", taxInWords, totalTax)
+		console.log("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2);
 		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2);
