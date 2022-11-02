@@ -61,7 +61,7 @@ class taxStatementController {
             accountLevel: userProfile.accountLevel || ''
 
         };
-        console.log("BEFORE SERVICE")
+        
         res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
         next();
 

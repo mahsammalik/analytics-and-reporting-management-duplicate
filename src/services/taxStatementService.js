@@ -150,10 +150,8 @@ class taxStatementService {
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
-            console.log("HERE 2")
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date, payload.start_date);
             const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
-            console.log("updatedRunningbalance +++++++++++++++++++++++++++++++",updatedRunningbalance)
             if (db2Data.length > 0) {
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
@@ -181,6 +179,7 @@ class taxStatementService {
                     return arr;
                 })
             }
+
 
 
             // const accountData = {
