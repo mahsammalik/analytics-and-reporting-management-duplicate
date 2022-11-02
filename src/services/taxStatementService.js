@@ -144,16 +144,13 @@ class taxStatementService {
 
     async sendTaxStatement(payload, res) {
         logger.debug("email pdf", payload);
-        console.log("HERE 1")
         try {
             let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
-            console.log("HERE 2")
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date, payload.start_date);
             const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
-            console.log("updatedRunningbalance +++++++++++++++++++++++++++++++",updatedRunningbalance)
             if (db2Data.length > 0) {
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
@@ -183,12 +180,6 @@ class taxStatementService {
             }
 
 
-            // const accountData = {
-            //     headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"],
-            //     data: db2Data,
-            //     payload: { ...payload, msisdn }
-            // };
-            // console.log("AFTER +++++++++++++++++++++++++++++++",db2Data)
             logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
 
             logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
@@ -200,7 +191,6 @@ class taxStatementService {
                 data2: db2Data,
                 payload
             };
-            console.log("FINAL ACCOUNT DATA +=================================?",JSON.stringify(accountData))
             const htmlTemplate = taxStatementTemplate(accountData);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
