@@ -66,6 +66,13 @@ const formatEnglishDate = date => {
  * @param {*} accountData
  */
 const accountStatementTemplate = accountData => {
+	console.log("ACCOUNT ",accountData)
+	console.log("ACCOUNT DATA",accountData.data)
+	console.log("accountData.data.length - 2",accountData.data.length - 2)
+
+	console.log("ACCOUNT DATA",JSON.stringify(accountData.data))
+	console.log("accountData.data.length - 2",accountData.data.length - 2)
+	
 	const htmlHead = `<!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
