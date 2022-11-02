@@ -76,8 +76,6 @@ const taxStatementTemplate = accountData => {
 		let totalCredit = 0;
 		let totalDebit = 0;
 		accountData.data2.forEach((number) => {
-			console.log("NUMBER ==================> ",number)
-			console.log("NUMBER LENGTH ==================> ",number.length)
 			totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 			totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 			if (parseFloat(number[number.length - 4]) > parseFloat(0))
@@ -187,6 +185,7 @@ Withholding Tax Deducted:
 			<div>Tax Deposited</div>Rs ${totalTax}</b>
 		</div>
 	</div>
+	${statementSummary}
 </main>${htmlFoot}`;
 
 		return htmlString;
