@@ -197,6 +197,7 @@ class taxStatementService {
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
+                data2: db2Data,
                 payload
             };
             console.log("FINAL ACCOUNT DATA +=================================?",JSON.stringify(accountData))

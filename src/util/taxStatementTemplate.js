@@ -50,6 +50,7 @@ const taxStatementTemplate = accountData => {
 
 		logger.debug(`payload ${JSON.stringify(accountData.payload)}`);
 		logger.debug(`account data ${JSON.stringify(accountData.data)}`);
+		logger.debug(`account data2 ${JSON.stringify(accountData.data2)}`);
 
 		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
 			return a + b;
@@ -61,13 +62,13 @@ const taxStatementTemplate = accountData => {
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		logger.debug("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
-		const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2);
-		const closingBalance = parseFloat(accountData.data[accountData.data.length - 2][accountData.data[0].length - 2] / 100).toFixed(2);
+		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2);
+		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2);
 		let creditTransactions = 0;
 		let debitTransactions = 0;
 		let totalCredit = 0;
 		let totalDebit = 0;
-		accountData.data.forEach((number) => {
+		accountData.data2.forEach((number) => {
 			totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 			totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 			if (parseFloat(number[number.length - 4]) > parseFloat(0))
