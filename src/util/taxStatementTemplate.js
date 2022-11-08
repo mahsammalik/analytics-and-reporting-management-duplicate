@@ -93,27 +93,27 @@ const taxStatementTemplate = accountData => {
 		console.log("totalCredit <> ========================================",totalCredit)
 		console.log("totalDebit <> ========================================",totalDebit)
 	
-
 		const statementSummary = `<div class="section" > 
 		<div class="statementSummary">
-			<div class="statementBalance">
-				<b>Opening Balance: Rs ${openingBalance ? openingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
-			</div>
-			<div class="statementDetails">
-				<div>Total Credit Amount: <b>Rs. ${totalCredit ? totalCredit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-				<div>Total Credit Transactions: <b>${creditTransactions ? creditTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-				<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-				<div>&nbsp;</div>
-				<div>Total Debit Amount: <b>Rs. ${totalDebit ? "-" + totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-				<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-			</div >
-
-	<div class="statementBalance">
+		<div class="statementBalance">
+		<b>Opening Balance: Rs ${openingBalance ? openingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
+		</div>
+		<div class="statementDetails">
+		<div>Total Credit Amount: <b>Rs. ${totalCredit ? totalCredit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Total Credit Transactions: <b>${creditTransactions ? creditTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>&nbsp;</div>
+		<div>Total Debit Amount: <b>Rs. ${totalDebit ? "-" + totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		</div >
+		
+		<div class="statementBalance">
 		<b>Closing Balance: Rs. ${closingBalance ? closingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
-	</div>
-			
+		</div>
+		
 		</div>`;
+		console.log("DATA ++++++++++++++++++++++++++++++",statementSummary)
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
 	</div>
