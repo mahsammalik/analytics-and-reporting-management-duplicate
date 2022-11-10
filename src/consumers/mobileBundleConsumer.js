@@ -22,159 +22,159 @@ class Processor {
                 let typeRefundB2B=  data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.some(e =>(e.Key== 'refund_without_confirm_b2b'&& e.Value ==true));    
 
                 if( init_MP == true ){
-                logger.info('***********init merchant to payment disocunted**************')           
-                initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
-                initTransData.bundleType = data?.CustomObject?.bundleType || '';
-                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
-                initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
-                initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.responseCode = data?.Result?.ResultCode || '';
-                initTransData.responseDesc = data?.Result?.ResultDesc || '';
-                if (initTransData.transactionDate !== '') {
-                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
-                }
-                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
-                if (initTransData.transactionTime !== '') {
-                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
-                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
-                }
-                initTransData.TID = data?.Result?.TransactionID || '0';
-                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.topic = data.topic;
-                initTransData.msg_offset = Number(data.msg_offset);
-                //new codee
-                initTransData.discounted = discounted!=undefined? discounted: false;
-                initTransData.typeOfTransaction = 'init_merchant_to_payment';
-                logger.debug(JSON.stringify(initTransData));
+                    logger.info('***********init merchant to payment disocunted**************')           
+                    initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                    initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
+                    initTransData.bundleType = data?.CustomObject?.bundleType || '';
+                    initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
+                    initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                    initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
+                    initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
+                    initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
+                    initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
+                    initTransData.responseCode = data?.Result?.ResultCode || '';
+                    initTransData.responseDesc = data?.Result?.ResultDesc || '';
+                    if (initTransData.transactionDate !== '') {
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
+                    }
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                    if (initTransData.transactionTime !== '') {
+                        const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                        initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                    }
+                    initTransData.TID = data?.Result?.TransactionID || '0';
+                    initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
+                    initTransData.topic = data.topic;
+                    initTransData.msg_offset = Number(data.msg_offset);
+                    //new codee
+                    initTransData.discounted = discounted!=undefined? discounted: false;
+                    initTransData.typeOfTransaction = 'init_merchant_to_payment';
+                    logger.debug(JSON.stringify(initTransData));
                 }
                 else if(confirm_MP == true ){
-                logger.info('***********confirm merchant to payment disocunted**************')           
-                initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
-                initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
-                initTransData.bundleType = data?.CustomObject?.bundleType || '';
-                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
-                initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
-                initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.responseCode = data?.Result?.ResultCode || '';
-                initTransData.responseDesc = data?.Result?.ResultDesc || '';
-                if (initTransData.transactionDate !== '') {
-                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
-                }
-                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
-                if (initTransData.transactionTime !== '') {
-                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
-                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
-                }
-                initTransData.TID = data?.Result?.TransactionID || '0';
-                initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
-                initTransData.topic = data.topic;
-                initTransData.msg_offset = Number(data.msg_offset);
-                //new codee
-                initTransData.discounted = discounted!=undefined? discounted: false;
-                initTransData.typeOfTransaction = 'confirm_merchant_to_payment';
-                logger.debug(JSON.stringify(initTransData));
+                    logger.info('***********confirm merchant to payment disocunted**************')           
+                    initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
+                    initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
+                    initTransData.bundleType = data?.CustomObject?.bundleType || '';
+                    initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
+                    initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                    initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
+                    initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
+                    initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
+                    initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.responseCode = data?.Result?.ResultCode || '';
+                    initTransData.responseDesc = data?.Result?.ResultDesc || '';
+                    if (initTransData.transactionDate !== '') {
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
+                    }
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                    if (initTransData.transactionTime !== '') {
+                        const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                        initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                    }
+                    initTransData.TID = data?.Result?.TransactionID || '0';
+                    initTransData.transactionStatus = isConfirm ? 'Completed' : 'Pending';
+                    initTransData.topic = data.topic;
+                    initTransData.msg_offset = Number(data.msg_offset);
+                    //new codee
+                    initTransData.discounted = discounted!=undefined? discounted: false;
+                    initTransData.typeOfTransaction = 'confirm_merchant_to_payment';
+                    logger.debug(JSON.stringify(initTransData));
                 }
                 else if(typeB2B== true ){
-                logger.info('***********b2b case discounted**************')
-                initTransData.amount = Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
-                initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
-                initTransData.bundleType = data?.CustomObject?.bundleType || '';
-                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
-                initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
-                initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.responseCode = data?.Result?.ResultCode || '';
-                initTransData.responseDesc = data?.Result?.ResultDesc || '';
-                if (initTransData.transactionDate !== '') {
-                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
-                }
-                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
-                if (initTransData.transactionTime !== '') {
-                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
-                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
-                }
-                initTransData.TID = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdUser'; })?.Value || '' ;
-                initTransData.transactionStatus = 'Completed';
-                initTransData.topic = data.topic;
-                initTransData.msg_offset = Number(data.msg_offset);
-                //new codeee 
-                initTransData.discounted = discounted!=undefined? discounted: false;
-                initTransData.TIDB= data?.Result?.TransactionID || '0';
-                initTransData.subscription = 'self';
-                initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
-                initTransData.incentiveAmountByPartner = Number('0');
-                initTransData.MsisdnB ='';
-                initTransData.typeOfTransaction = 'init_without_confirm_b2b';
-                initTransData.transactionStatusB = 'Completed';
-                logger.debug(JSON.stringify(initTransData));
+                    logger.info('***********b2b case discounted**************')
+                    initTransData.amount = Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
+                    initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
+                    initTransData.bundleType = data?.CustomObject?.bundleType || '';
+                    initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
+                    initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                    initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
+                    initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
+                    initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
+                    initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.responseCode = data?.Result?.ResultCode || '';
+                    initTransData.responseDesc = data?.Result?.ResultDesc || '';
+                    if (initTransData.transactionDate !== '') {
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
+                    }
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                    if (initTransData.transactionTime !== '') {
+                        const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                        initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                    }
+                    initTransData.TID = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdUser'; })?.Value || '' ;
+                    initTransData.transactionStatus = 'Completed';
+                    initTransData.topic = data.topic;
+                    initTransData.msg_offset = Number(data.msg_offset);
+                    //new codeee 
+                    initTransData.discounted = discounted!=undefined? discounted: false;
+                    initTransData.TIDB= data?.Result?.TransactionID || '0';
+                    initTransData.subscription = 'self';
+                    initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmountByPartner = Number('0');
+                    initTransData.MsisdnB ='';
+                    initTransData.typeOfTransaction = 'init_without_confirm_b2b';
+                    initTransData.transactionStatusB = 'Completed';
+                    logger.debug(JSON.stringify(initTransData));
                 }
                 else if( typeRefundB2B== true ){
-                logger.info('***********refund b2b case discounted**************')
-                initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
-                initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
-                initTransData.bundleType = data?.CustomObject?.bundleType || '';
-                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
-                initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
-                initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
-                initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
-                initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
-                initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
-                initTransData.responseCode = data?.Result?.ResultCode || '';
-                initTransData.responseDesc = data?.Result?.ResultDesc || '';
-                if (initTransData.transactionDate !== '') {
-                    initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
-                }
-                initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
-                if (initTransData.transactionTime !== '') {
-                    const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
-                    initTransData.transactionTime = initTransData.transactionDate + " " + time;
-                }
-                initTransData.TID = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdUser'; })?.Value || '' ;
-                initTransData.transactionStatus =  'Completed';
-                initTransData.topic = data.topic;
-                initTransData.msg_offset = Number(data.msg_offset);
-                //new codee 
-                initTransData.discounted = discounted!=undefined? discounted: false;
-                initTransData.TIDB = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2B'; })?.Value || '' ;
-                initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
-                initTransData.subscription = 'self';
-                initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
-                initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
-                initTransData.incentiveAmountByPartner = Number('0');
-                initTransData.MsisdnB ='';
-                initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
-                initTransData.transactionStatusB = 'Refund';
-                logger.debug(JSON.stringify(initTransData));
+                    logger.info('***********refund b2b case discounted**************')
+                    initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'transactionAmount'; })?.Value || '0');
+                    initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
+                    initTransData.bundleType = data?.CustomObject?.bundleType || '';
+                    initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
+                    initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
+                    initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
+                    initTransData.targetMsisdn = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
+                    initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
+                    initTransData.DataDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'DataDetails'; })?.Value || '0';
+                    initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
+                    initTransData.responseCode = data?.Result?.ResultCode || '';
+                    initTransData.responseDesc = data?.Result?.ResultDesc || '';
+                    if (initTransData.transactionDate !== '') {
+                        initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
+                    }
+                    initTransData.transactionTime = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndTime'; })?.Value || '';
+                    if (initTransData.transactionTime !== '') {
+                        const time = moment(initTransData.transactionTime, 'HHmmss').format('HH:mm:ss');
+                        initTransData.transactionTime = initTransData.transactionDate + " " + time;
+                    }
+                    initTransData.TID = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdUser'; })?.Value || '' ;
+                    initTransData.transactionStatus =  'Completed';
+                    initTransData.topic = data.topic;
+                    initTransData.msg_offset = Number(data.msg_offset);
+                    //new codee 
+                    initTransData.discounted = discounted!=undefined? discounted: false;
+                    initTransData.TIDB = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'transactionIdB2B'; })?.Value || '' ;
+                    initTransData.TIDBReversal = data?.Result?.TransactionID || '0';
+                    initTransData.subscription = 'self';
+                    initTransData.bundleAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleAmount'; })?.Value || '0');
+                    initTransData.incentiveAmount= Number(data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'incentiveAmount'; })?.Value || '0');
+                    initTransData.incentiveAmountByPartner = Number('0');
+                    initTransData.MsisdnB ='';
+                    initTransData.typeOfTransaction = 'refund_without_confirm_b2b';
+                    initTransData.transactionStatusB = 'Refund';
+                    logger.debug(JSON.stringify(initTransData));
                 }
             }else{
                 initTransData.amount = Number(data.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'Amount'; })?.Value || '0');
                 initTransData.bundleName = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'bundleName'; })?.Value || '';
                 initTransData.bundleType = data?.CustomObject?.bundleType || '';
-                initTransData.channel = data.Header?.ThirdPartyType || data.Header.SubChannel;
+                initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
