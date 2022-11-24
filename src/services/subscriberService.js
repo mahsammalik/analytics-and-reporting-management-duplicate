@@ -230,11 +230,12 @@ class Subscriber {
                 if (msg.topic === config.kafkaBroker.topics.initTrans_MobileBundle) {
                     logger.debug('*********** Init Trans Mobile Bundle *****************');
                     try {
-                        logger.debug(msg.value);
-                        const payload = JSON.parse(JSON.stringify(msg.value));
+
+                        const payload = JSON.parse(msg.value);
                         payload.topic = msg.topic;
                         payload.msg_offset = msg.offset;
                         logger.debug(JSON.stringify(payload));
+
                         await mobileBundleProcessor.mobileBundleConsumerProcessor(payload);
                         //logger.debug(response);
                     } catch (error) {
