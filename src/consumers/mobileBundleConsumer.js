@@ -174,7 +174,8 @@ class Processor {
                 initTransData.channel = data.Header?.ThirdPartyType || data?.Header?.SubChannel;
                 initTransData.initiatorMsisdn = data?.Header?.Identity?.Initiator?.Identifier || '0';
                 initTransData.network = data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'operator'; })?.Value || '';
-                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                // initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
+                initTransData.targetMsisdn = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || data?.Request?.Transaction?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || data?.Result?.ReferenceData?.ReferenceItem?.find((param) => { return param.Key == 'TargetMSISDN'; })?.Value || '0';
                 initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || ''
                 initTransData.voiceMinutes = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'voiceMinutes'; })?.Value || '0';
                 initTransData.smsDetails = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'smsDetails'; })?.Value || '0';
