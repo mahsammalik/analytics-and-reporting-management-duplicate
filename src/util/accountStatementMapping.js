@@ -99,15 +99,15 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
             const account = getAccountByDescription(desc);
             return `Mobile Prepaid Load - Jazz ${account}`
         }
-    }else if(type === 'Incoming IBFT'){
-        const account = getAccountbyMSISDN(msisdn);
-        return `Amount received to JazzCash Account ${account}`
-    }else if(type === 'IBFT Outgoing Customer'){
-        const account = getAccountByDescription(desc);
-        return `Money sent to ${account}`
-    }else if(type === 'IBFT Credit'){
-        const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
-        return `Amount Received to JazzCash Account ${account}`
+    // }else if(type === 'Incoming IBFT'){
+    //     const account = getAccountbyMSISDN(msisdn);
+    //     return `Amount received to JazzCash Account ${account}`
+    // }else if(type === 'IBFT Outgoing Customer'){
+    //     const account = getAccountByDescription(desc);
+    //     return `Money sent to ${account}`
+    // }else if(type === 'IBFT Credit'){
+    //     const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+    //     return `Amount Received to JazzCash Account ${account}`
     }else if(type === 'Cash out at Retailer' || type === 'Cash out'){
         return `Money Withdrawal from Retailer`
     }else if(type === 'Cash in at Retailer'){
