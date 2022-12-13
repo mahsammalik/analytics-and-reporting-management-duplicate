@@ -46,6 +46,7 @@ class taxStatementService {
     constructor() {
         this.sendTaxStatement = this.sendTaxStatement.bind(this);
         this.populateDataBase = this.populateDataBase.bind(this);
+        // this.extractRunningBalance = this.extractRunningBalance(this)
     }
 
 
@@ -152,12 +153,11 @@ class taxStatementService {
             if (data === 'Database Error') return "Database Error";
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
             // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
-            const updatedRunningbalance = this.extractBalance(db2Data) || 0
+            const updatedRunningbalance = this.extractRunningBalance(db2Data) || 0.00
             if (db2Data.length > 0) {
                 console.log("db2Data ==================>",db2Data)
-                console.log("db2Data[0][0] ==================>",db2Data[0][0])
-                console.log("db2Data[0][0][8] ==================>",db2Data[0][0][8])
-                console.log("updatedRunningbalance ==================>",updatedRunningbalance)
+                console.log("data[0][8] ==================>",data[0][8])
+                console.log("updatedRunningbalance ==================>",updatedRunningbalance/100)
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
                     if(arr[5] == null)
@@ -270,7 +270,10 @@ class taxStatementService {
     async populateDataBase() {
         await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
     }
-    extractBalance = (data) =>  data[0][0][8] || 0
+    extractRunningBalance(data) { 
+        console.log("DATA [0]",data[0])
+        return parseInt(data[0][8])/100 || 0 
+    }
 }
 
 export default new taxStatementService();
