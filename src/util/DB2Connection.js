@@ -1165,8 +1165,11 @@ class DatabaseConn {
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             // logger.info(`Step 02 b: mappedMSISDN `)
             const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
+            console.log("STMT ====",stmt)
             let result = stmt.executeSync();
+            console.log("result ====",result)
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+            console.log("resultArrayFormat ====",resultArrayFormat)
             let updatedBalance = 0.00;
             console.log("getLatestAccountBalanceValue2 updatedBalance",updatedBalance)
             console.log("getLatestAccountBalanceValue2 result",result)
