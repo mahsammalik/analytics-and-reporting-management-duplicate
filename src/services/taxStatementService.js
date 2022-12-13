@@ -152,12 +152,8 @@ class taxStatementService {
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
-            // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
             const updatedRunningbalance = this.extractRunningBalance(db2Data) || 0.00
             if (db2Data.length > 0) {
-                console.log("db2Data ==================>",db2Data)
-                console.log("data[0][8] ==================>",data[0][8])
-                console.log("updatedRunningbalance ==================>",updatedRunningbalance/100)
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
                     if(arr[5] == null)
@@ -201,7 +197,7 @@ class taxStatementService {
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
-                data2: db2Data,
+                result: db2Data,
                 payload
             };
             console.log("FINAL ACCOUNT DATA +=================================?",JSON.stringify(accountData))
@@ -271,8 +267,7 @@ class taxStatementService {
         await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
     }
     extractRunningBalance(data) { 
-        console.log("DATA [0]",data[0])
-        return parseInt(data[0][8])/100 || 0 
+        return parseInt(data[0][8])/100 || 0 // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
     }
 }
 

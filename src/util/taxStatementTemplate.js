@@ -66,16 +66,14 @@ const taxStatementTemplate = accountData => {
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		console.log(`TAX: , ${taxInWords} , ${totalTax}`)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
-		console.log("ALRIGHT")
-		const openingBalance = parseFloat(accountData.data2[0][accountData.data2[0].length - 2] / 100).toFixed(2) || 0;
-		console.log("PHATA HERE 1")
-		const closingBalance = parseFloat(accountData.data2[accountData.data2.length - 2][accountData.data2[0].length - 2] / 100).toFixed(2) || 0;
-		console.log("PHATA HERE 2")
-		let creditTransactions = 0;
-		let debitTransactions = 0;
+		const openingBalance = parseFloat(accountData.result[0][accountData.result[0].length - 2] / 100).toFixed(2) || 0;
+		const closingBalance = parseFloat(accountData.result[accountData.result.length - 2][accountData.result[0].length - 2] / 100).toFixed(2) || 0;
 		let totalCredit = 0;
 		let totalDebit = 0;
-		accountData.data2.forEach((number) => {
+		let creditTransactions = 0;
+		let debitTransactions = 0;
+
+		accountData.result.forEach((number) => {
 			totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
 			totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 			if (parseFloat(number[number.length - 4]) > parseFloat(0))
@@ -86,13 +84,6 @@ const taxStatementTemplate = accountData => {
 		totalCredit = parseFloat(totalCredit).toFixed(2);
 		totalDebit = parseFloat(totalDebit).toFixed(2);
 
-		console.log("openingBalance <> ========================================",openingBalance)
-		console.log("closingBalance <> ========================================",closingBalance)
-		console.log("creditTransactions <> ========================================",creditTransactions)
-		console.log("debitTransactions <> ========================================",debitTransactions)
-		console.log("totalCredit <> ========================================",totalCredit)
-		console.log("totalDebit <> ========================================",totalDebit)
-	
 		const statementSummary = `<div class="section" > 
 		<div class="statementSummary">
 		<div class="statementBalance">
@@ -113,7 +104,6 @@ const taxStatementTemplate = accountData => {
 		</div>
 		
 		</div>`;
-		console.log("DATA ++++++++++++++++++++++++++++++",statementSummary)
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
 	</div>
