@@ -149,8 +149,35 @@ class taxStatementService {
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
             logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
+            let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
+            const updatedRunningbalance = this.extractRunningBalance(db2Data) || 0.00
+            if (db2Data.length > 0) {
+                // if description column is null then replace it with HTML hidden space
+                db2Data = db2Data.map(arr => {
+                    if(arr[5] == null)
+                        arr[5] = '&#8203';  // &#8203 for HTML hidden space
+                    return arr;
+                });
+        
+                db2Data = db2Data.map((dat) => {
+                    dat.splice(0, 1);
+                    let b = dat[1];
+                    dat[1] = dat[0];
+                    dat[0] = b;
+                    return dat
+                }).sort(function (a, b) {
+                    var dateA = new Date(a[1]), dateB = new Date(b[1]);
+                    return dateA - dateB;
+                })
 
-            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
+                db2Data = db2Data.map(arr => {
+                    let newTransId = arr[0];
+                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+                    arr[1] = newTransId;
+                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+                    return arr;
+                })
+            }
 
             logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
 
@@ -160,6 +187,7 @@ class taxStatementService {
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
+                result: db2Data,
                 payload
             };
             const htmlTemplate = taxStatementTemplate(accountData);
@@ -226,6 +254,9 @@ class taxStatementService {
 
     async populateDataBase() {
         await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
+    }
+    extractRunningBalance(data) { 
+        return parseInt(data[0][8])/100 || 0 // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
     }
 }
 
