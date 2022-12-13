@@ -152,11 +152,12 @@ class taxStatementService {
             if (data === 'Database Error') return "Database Error";
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
             // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
-            const updatedRunningbalance = db2Data[0][0][9] || 0
+            const updatedRunningbalance = this.extractBalance(db2Data) || 0
             if (db2Data.length > 0) {
                 console.log("db2Data ==================>",db2Data)
-                console.log("db2Data[0] ==================>",db2Data[0])
-                console.log("db2Data[0][9] ==================>",db2Data[0][9])
+                console.log("db2Data[0][0] ==================>",db2Data[0][0])
+                console.log("db2Data[0][0][8] ==================>",db2Data[0][0][8])
+                console.log("updatedRunningbalance ==================>",updatedRunningbalance)
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
                     if(arr[5] == null)
@@ -269,6 +270,7 @@ class taxStatementService {
     async populateDataBase() {
         await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
     }
+    extractBalance = (data) =>  data[0][0][8] || 0
 }
 
 export default new taxStatementService();
