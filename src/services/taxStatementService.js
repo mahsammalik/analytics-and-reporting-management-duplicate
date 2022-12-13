@@ -152,7 +152,7 @@ class taxStatementService {
             if (data === 'Database Error') return "Database Error";
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
             // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue2(payload.msisdn, mappedMSISDN, payload.end_date);
-            const updatedRunningbalance = db2Data[0][9]
+            const updatedRunningbalance = db2Data[0][0][9] || 0
             if (db2Data.length > 0) {
                 console.log("db2Data ==================>",db2Data)
                 console.log("db2Data[0] ==================>",db2Data[0])
