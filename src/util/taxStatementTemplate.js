@@ -61,6 +61,45 @@ const taxStatementTemplate = accountData => {
 		const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
 		logger.debug("TAX:  ", taxInWords, totalTax)
 		const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
+		const openingBalance = parseFloat(accountData.result[0][accountData.result[0].length - 2] / 100).toFixed(2) || 0;
+		const closingBalance = parseFloat(accountData.result[accountData.result.length - 2][accountData.result[0].length - 2] / 100).toFixed(2) || 0;
+		let totalCredit = 0;
+		let totalDebit = 0;
+		let creditTransactions = 0;
+		let debitTransactions = 0;
+
+		accountData.result.forEach((number) => {
+			totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
+			totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
+			if (parseFloat(number[number.length - 4]) > parseFloat(0))
+				creditTransactions++;
+			if (parseFloat(number[number.length - 5]) > parseFloat(0))
+				debitTransactions++;
+		});
+		totalCredit = parseFloat(totalCredit).toFixed(2);
+		totalDebit = parseFloat(totalDebit).toFixed(2);
+
+		const statementSummary = `<div class="section" > 
+		<div class="statementSummary">
+		<div class="statementBalance">
+		<b>Opening Balance: Rs ${openingBalance ? openingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
+		</div>
+		<div class="statementDetails">
+		<div>Total Credit Amount: <b>Rs. ${totalCredit ? totalCredit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Total Credit Transactions: <b>${creditTransactions ? creditTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Average Credit Transactions: <b>Rs. ${creditTransactions > 0 ? parseFloat(totalCredit / creditTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>&nbsp;</div>
+		<div>Total Debit Amount: <b>Rs. ${totalDebit ? "-" + totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
+		</div >
+		
+		<div class="statementBalance">
+		<b>Closing Balance: Rs. ${closingBalance ? closingBalance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b>
+		</div>
+		
+		</div>`;
+
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
 	</div>
@@ -126,6 +165,7 @@ Withholding Tax Deducted:
 			<div>Tax Deposited</div>Rs ${totalTax}</b>
 		</div>
 	</div>
+	${statementSummary}
 </main>${htmlFoot}`;
 
 		return htmlString;
