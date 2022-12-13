@@ -151,7 +151,7 @@ class taxStatementService {
             if (data === 'Database Error') return "Database Error";
             let db2Data = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.start_date , payload.end_date);
             const updatedRunningbalance = this.extractRunningBalance(db2Data) || 0.00
-            if (db2Data.length > 0) {
+            if (db2Data?.length) {
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
                     if(arr[5] == null)
@@ -185,10 +185,10 @@ class taxStatementService {
 
             payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
-                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
-                data,
+                data:data,
                 result: db2Data,
-                payload
+                payload: payload,
+                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission']
             };
             const htmlTemplate = taxStatementTemplate(accountData);
             let pdfFile = await createPDF({
