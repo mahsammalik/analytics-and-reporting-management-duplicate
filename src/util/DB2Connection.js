@@ -1112,7 +1112,7 @@ class DatabaseConn {
     }
 
 
-    async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate) {
+    async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, startDate, endDate) {
         // get connection from connection pool
         let conn = await getConnection();
         // if connection is null then open it using connection string
@@ -1124,19 +1124,16 @@ class DatabaseConn {
         try {
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             // logger.info(`Step 02 b: mappedMSISDN `)
-            const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
-            let result = stmt.executeSync();
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?  order by TRX_DATETIME desc ;`);
+            let result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
             let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            let updatedBalance = 0.00;
 
-            if (resultArrayFormat.length > 0) {
-                updatedBalance = resultArrayFormat[0];
-            }
 
             result.closeSync();
             stmt.closeSync();
+            conn.close();
             // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
-            return updatedBalance / 100;    // convert last 2 digits to decimals (19800 to 198.00) as datatype is BIGINT in db
+            return resultArrayFormat || [];
 
         } catch (err) {
             logger.error('Database connection error' + err);
