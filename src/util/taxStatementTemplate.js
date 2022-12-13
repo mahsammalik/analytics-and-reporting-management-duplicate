@@ -50,11 +50,7 @@ const taxStatementTemplate = accountData => {
 
 		logger.debug(`payload ${JSON.stringify(accountData.payload)}`);
 		logger.debug(`account data ${JSON.stringify(accountData.data)}`);
-		logger.debug(`account data2 ${JSON.stringify(accountData.data2)}`);
-
-		console.log(`payload ${JSON.stringify(accountData.payload)}`);
-		console.log(`account data ${JSON.stringify(accountData.data)}`);
-		console.log(`account data2 ${JSON.stringify(accountData.data2)}`); 
+		logger.debug(`account result ${JSON.stringify(accountData.result)}`);
 
 		const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
 			return a + b;
