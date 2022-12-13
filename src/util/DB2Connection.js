@@ -1114,7 +1114,7 @@ class DatabaseConn {
     }
 
 
-    async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, endDate,startDate) {
+    async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, startDate, endDate) {
         // get connection from connection pool
         let conn = await getConnection();
         // if connection is null then open it using connection string
@@ -1126,7 +1126,7 @@ class DatabaseConn {
         try {
             // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             // logger.info(`Step 02 b: mappedMSISDN `)
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?  order by TRX_DATETIME desc ;`);
             const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
             const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
