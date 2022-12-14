@@ -102,8 +102,10 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_passed,
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
-            config.kafkaBroker.topics.confirmTrans_refundMobileBundle
-
+            config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
+            config.kafkaBroker.topics.Notification_Sms,
+            config.kafkaBroker.topics.Notification_Push,
+            config.kafkaBroker.topics.Notification_Email
         ]);
 
         //this.setConsumer();
@@ -1267,6 +1269,13 @@ class Subscriber {
         });
     }
 
+    static getInstance() {
+        if (!instance) {
+            instance = new Subscriber();
+        }
+
+        return instance;
+    }
 
 }
 
