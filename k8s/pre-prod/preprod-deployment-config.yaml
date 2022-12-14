@@ -68,8 +68,6 @@ spec:
             value: live
           - name: Token_Validation
             value: 'true'
-          - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '550'  
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
