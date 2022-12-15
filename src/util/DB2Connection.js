@@ -1366,7 +1366,6 @@ class DatabaseConn {
       let conn = await getConnection();
       const stmt = conn.prepareSync("INSERT INTO ${schema}.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FIRSTNAME, LASTNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID) VALUES('', '', '', '', '', '', '', '', '', '', '', '', '', '');");
       stmt.executeSync([payload.MSISDN, payload.CNIC, payload.DOB, payload.FIRSTNAME, payload.LASTNAME, payload.EMAIL, payload.CUSTOMER_TYPE, payload.FIRSTLOGIN_TS, payload.SIGNUPBONUS_TS, payload.REQUEST_TOPAY, payload.REGISTRATION_DATE, payload.HIT_COUNT, payload.CNIC_EXPIRY, payload.LOGIN_TIME, payload.VERSION, payload.PUSHID]);
-
       stmt.closeSync();
       conn.close((err) => { });
       logger.debug(`LOGIN_REPORT insertion done`);
