@@ -104,7 +104,8 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             config.kafkaBroker.topics.GTOP_Init_Passed,
-            config.kafkaBroker.topics.GTOP_Init_Failed
+            config.kafkaBroker.topics.GTOP_Init_Failed,
+            config.kafkaBroker.topics.account_login_reporting
         ]);
 
         //this.setConsumer();
@@ -1255,6 +1256,16 @@ class Subscriber {
                     }
                     catch(error){
                         logger.debug(error);
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.account_login_reporting) {
+                    logger.debug('*********** LOGIN REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                         DB2Connection.addLoginReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
                     }
                 }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
