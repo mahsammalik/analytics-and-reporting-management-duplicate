@@ -1263,6 +1263,7 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
+                        logger.info('LOGIN REPORTING ' + JSON.stringify(payload));
                          DB2Connection.addLoginReporting(payload);
                     } catch (error) {
                         logger.debug(error)
