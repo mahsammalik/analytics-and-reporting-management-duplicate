@@ -1497,17 +1497,39 @@ class DatabaseConn {
       try {
   
         let conn = await getConnection();
-        const stmt = conn.prepareSync("INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FIRSTNAME, LASTNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID) VALUES('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');");
-        stmt.executeSync([payload.MSISDN, payload.CNIC, payload.DOB, payload.FIRSTNAME, payload.LASTNAME, payload.EMAIL, payload.CUSTOMER_TYPE, payload.FIRSTLOGIN_TS, payload.SIGNUPBONUS_TS, payload.REQUEST_TOPAY, payload.REGISTRATION_DATE, payload.HIT_COUNT, payload.CNIC_EXPIRY, payload.LOGIN_TIME, payload.VERSION, payload.PUSHID]);
+        const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FIRSTNAME, LASTNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
+
+        VALUES
+        (
+            '${data.MSISDN}',
+            '${data.CNIC}',
+            '${data.DOB}', 
+            '${data.FIRSTNAME}',
+            '${data.LASTNAME}', 
+            '${data.EMAIL}',
+            '${data.CUSTOMER_TYPE}',
+            '${data.FIRSTLOGIN_TS}',
+            '${data.SIGNUPBONUS_TS}',
+            '${data.REQUEST_TOPAY}',
+            '${data.REGISTRATION_DATE}',
+            '${data.HIT_COUNT}',
+            '${data.CNIC_EXPIRY}',
+            '${data.LOGIN_TIME}',
+            '${data.VERSION}',
+            '${data.PUSHID}'
+        );`
+        );
+        stmt.executeSync();
         stmt.closeSync();
-        conn.close((err) => { });
         logger.debug(`LOGIN_REPORT insertion done`);
         return;
   
       } catch (err) {
         logger.error('Database connection error' + err);
         return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-      }
+      } finally {
+        conn.close(function (err) { });
+    }
     }
 
 }
