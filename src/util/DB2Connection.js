@@ -1501,7 +1501,7 @@ class DatabaseConn {
 
         VALUES
         (
-            '${payload.MSISDN}' || 12345,
+            '${payload.MSISDN}',
             '${payload.CNIC}',
             '${payload.DOB}', 
             '${payload.FIRSTNAME}',
