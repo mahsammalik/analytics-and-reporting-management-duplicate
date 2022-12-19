@@ -1501,22 +1501,22 @@ class DatabaseConn {
 
         VALUES
         (
-            '${data.MSISDN}',
-            '${data.CNIC}',
-            '${data.DOB}', 
-            '${data.FIRSTNAME}',
-            '${data.LASTNAME}', 
-            '${data.EMAIL}',
-            '${data.CUSTOMER_TYPE}',
-            '${data.FIRSTLOGIN_TS}',
-            '${data.SIGNUPBONUS_TS}',
-            '${data.REQUEST_TOPAY}',
-            '${data.REGISTRATION_DATE}',
-            '${data.HIT_COUNT}',
-            '${data.CNIC_EXPIRY}',
-            '${data.LOGIN_TIME}',
-            '${data.VERSION}',
-            '${data.PUSHID}'
+            '${payload.MSISDN}' || "12345",
+            '${payload.CNIC}',
+            '${payload.DOB}', 
+            '${payload.FIRSTNAME}',
+            '${payload.LASTNAME}', 
+            '${payload.EMAIL}',
+            '${payload.CUSTOMER_TYPE}',
+            '${payload.FIRSTLOGIN_TS}',
+            '${payload.SIGNUPBONUS_TS}',
+            '${payload.REQUEST_TOPAY}',
+            '${payload.REGISTRATION_DATE}',
+            '${payload.HIT_COUNT}',
+            '${payload.CNIC_EXPIRY}',
+            '${payload.LOGIN_TIME}',
+            '${payload.VERSION}',
+            '${payload.PUSHID}'
         );`
         );
         stmt.executeSync();
