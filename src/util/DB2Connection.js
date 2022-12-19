@@ -1497,7 +1497,7 @@ class DatabaseConn {
       try {
         logger.debug('payload data');
         logger.debug(payload);
-        const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FIRSTNAME, LASTNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
+        const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
 
         VALUES
         (
@@ -1505,7 +1505,6 @@ class DatabaseConn {
             '${payload.CNIC}',
             '${payload.DOB}', 
             '${payload.FIRSTNAME}',
-            '${payload.LASTNAME}', 
             '${payload.EMAIL}',
             '${payload.CUSTOMER_TYPE}',
             '${payload.FIRSTLOGIN_TS}',
