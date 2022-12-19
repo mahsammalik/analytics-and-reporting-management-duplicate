@@ -1360,21 +1360,42 @@ class DatabaseConn {
   }
 
   async addLoginReporting(payload) {
+    let conn = await getConnection();
+  try {
+    logger.debug('payload data');
+    logger.debug(payload);
+    const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
 
-    try {
+    VALUES
+    (
+        '${payload.MSISDN}',
+        '${payload.CNIC}',
+        '${payload.DOB}', 
+        '${payload.FIRSTNAME}',
+        '${payload.EMAIL}',
+        '${payload.CUSTOMER_TYPE}',
+        '${payload.FIRSTLOGIN_TS}',
+        '${payload.SIGNUPBONUS_TS}',
+        '${payload.REQUEST_TOPAY}',
+        '${payload.REGISTRATION_DATE}',
+        '${payload.HIT_COUNT}',
+        '${payload.CNIC_EXPIRY}',
+        '${payload.LOGIN_TIME}',
+        '${payload.VERSION}',
+        '${payload.PUSHID}'
+    );`
+    );
+    stmt.executeSync();
+    stmt.closeSync();
+    logger.debug(`LOGIN_REPORT insertion done`);
+    return;
 
-      let conn = await getConnection();
-      const stmt = conn.prepareSync("INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FIRSTNAME, LASTNAME,EMAIL,CUSTOMER_TYPE,FIRSTLOGIN_TS,SIGNUPBONUS_TS,REQUEST_TOPAY,REGISTRATION_DATE,HIT_COUNT,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID) VALUES('', '', '', '', '', '', '', '', '', '', '', '', '', '');");
-      stmt.executeSync([payload.MSISDN, payload.CNIC, payload.DOB, payload.FIRSTNAME, payload.LASTNAME, payload.EMAIL, payload.CUSTOMER_TYPE, payload.FIRSTLOGIN_TS, payload.SIGNUPBONUS_TS, payload.REQUEST_TOPAY, payload.REGISTRATION_DATE, payload.HIT_COUNT, payload.CNIC_EXPIRY, payload.LOGIN_TIME, payload.VERSION, payload.PUSHID]);
-      stmt.closeSync();
-      conn.close((err) => { });
-      logger.debug(`LOGIN_REPORT insertion done`);
-      return;
-
-    } catch (err) {
-      logger.error('Database connection error' + err);
-      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-    }
+  } catch (err) {
+    logger.error('Database connection error' + err);
+    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+  } finally {
+    conn.close(function (err) { });
+}
   }
 
 }
