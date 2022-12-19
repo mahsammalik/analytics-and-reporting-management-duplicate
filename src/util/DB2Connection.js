@@ -1504,7 +1504,7 @@ class DatabaseConn {
             '${payload.MSISDN}' || 12345,
             '${payload.CNIC}',
             '${payload.DOB}', 
-            '${payload.FULLNAME}',
+            '${payload.FIRSTNAME}',
             '${payload.EMAIL}',
             '${payload.CUSTOMER_TYPE}',
             '${payload.FIRSTLOGIN_TS}',
