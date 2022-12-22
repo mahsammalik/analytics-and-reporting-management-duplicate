@@ -259,7 +259,11 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
 
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
-                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed"
+                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
+
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
             }
         },
         "cache": {

@@ -263,8 +263,12 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
 
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
-                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed"
+                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
 
+                
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
 
             }
         },
