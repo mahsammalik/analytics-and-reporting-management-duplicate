@@ -9,7 +9,6 @@ import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
 import { getMappedAccountStatement } from '../util/accountStatementMapping';
-import Notification from '../util/notification';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
