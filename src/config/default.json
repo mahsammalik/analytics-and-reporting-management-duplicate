@@ -176,7 +176,10 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
                 "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
-                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
             }
         },
         "cache": {

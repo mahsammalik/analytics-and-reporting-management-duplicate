@@ -16,7 +16,7 @@ import {
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
-//let instance = null;
+let instance = null;
 
 class Subscriber {
 
@@ -105,7 +105,10 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             config.kafkaBroker.topics.GTOP_Init_Passed,
             config.kafkaBroker.topics.GTOP_Init_Failed,
-            config.kafkaBroker.topics.account_login_reporting
+            config.kafkaBroker.topics.account_login_reporting,
+            config.kafkaBroker.topics.Notification_Sms,
+            config.kafkaBroker.topics.Notification_Push,
+            config.kafkaBroker.topics.Notification_Email
         ]);
 
         //this.setConsumer();
@@ -1306,6 +1309,13 @@ class Subscriber {
         });
     }
 
+    static getInstance() {
+        if (!instance) {
+            instance = new Subscriber();
+        }
+
+        return instance;
+    }
 
 }
 
