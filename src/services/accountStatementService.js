@@ -2,7 +2,8 @@ import { isString } from 'lodash';
 import {
     logger,
     createPDF,
-    accountStatementTemplate
+    accountStatementTemplate,
+    Notification
 } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
