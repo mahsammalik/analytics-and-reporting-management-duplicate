@@ -16,7 +16,7 @@ import {
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
-//let instance = null;
+let instance = null;
 
 class Subscriber {
 

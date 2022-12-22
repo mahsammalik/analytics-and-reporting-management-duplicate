@@ -2,12 +2,12 @@ import { isString } from 'lodash';
 import {
     logger,
     createPDF,
-    accountStatementTemplate
+    accountStatementTemplate,
+    Notification
 } from '/util/';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import Notification from '../util/notification';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
