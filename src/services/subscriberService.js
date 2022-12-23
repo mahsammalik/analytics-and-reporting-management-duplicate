@@ -1,6 +1,8 @@
 import { logger, Broker } from '/util/';
 import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
+DB2Connection.addLoginReportingV2({MSISDN:"12234567",CNIC :"7654323456"})
+
 import dataMapping from './helpers/dataMapping';
 import {
     sendMonyToBankProcessor, qrPaymentProcessor, mobileBundleProcessor, donationProcessor,
@@ -1266,6 +1268,9 @@ class Subscriber {
 
                         const payload = JSON.parse(msg.value);
                         logger.debug('LOGIN REPORTING ' + JSON.stringify(payload));
+                       if(process.env.LOGIN_REPORT_V2 == "true")
+                        DB2Connection.addLoginReportingV2(payload);
+                       else
                          DB2Connection.addLoginReporting(payload);
                     } catch (error) {
                         logger.debug(error)
