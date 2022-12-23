@@ -1,7 +1,6 @@
 import { logger, Broker } from '/util/';
 import { accountStatementService, taxStatementService } from '/services/';
 import DB2Connection from '../util/DB2Connection';
-DB2Connection.addLoginReportingV2({MSISDN:"12234567",CNIC :"7654323456"})
 
 import dataMapping from './helpers/dataMapping';
 import {
