@@ -259,7 +259,8 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
 
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
-                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed"
+                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
             }
         },
         "cache": {

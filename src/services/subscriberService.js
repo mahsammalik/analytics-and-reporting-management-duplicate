@@ -102,8 +102,8 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_passed,
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
-            config.kafkaBroker.topics.confirmTrans_refundMobileBundle
-
+            config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
+            config.kafkaBroker.topics.account_login_reporting
         ]);
 
         //this.setConsumer();
@@ -1226,6 +1226,20 @@ class Subscriber {
 
                         await cashbackRedeemProcessor.processCashbackRedeemConsumer(payload);
                         //logger.debug(response);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.account_login_reporting) {
+                    logger.debug('*********** LOGIN REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('LOGIN REPORTING ' + JSON.stringify(payload));
+                        if(process.env.LOGIN_REPORT_V2 == "true")
+                         DB2Connection.addLoginReportingV2(payload);
+                        else
+                         DB2Connection.addLoginReporting(payload);
                     } catch (error) {
                         logger.debug(error)
                     }

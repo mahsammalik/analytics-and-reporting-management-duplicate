@@ -1,11 +1,13 @@
-import { open } from 'ibm_db';
+import { open , Pool} from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
 let conPool = DB2ConnectionPool.getInstance();
-
+const pool = new Pool();
+const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
+pool.setMaxPoolSize(maxPoolSize)
 const cn = config.DB2_Jazz.connectionString // process.env.DB2Connection || config.IBMDB2_Test?.connectionString || config.IBMDB2_Dev?.connectionString;
 
 //const connectionhca= config.DB2_HCA.connectionString
@@ -1359,6 +1361,99 @@ class DatabaseConn {
     }
   }
 
+  async addLoginReporting(payload) {
+    let conn = await getConnection();
+  try {
+    logger.debug('payload data');
+    logger.debug(payload);
+    const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,REGISTRATION_DATE,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
+    VALUES
+    (
+        '${payload.MSISDN}',
+        '${payload.CNIC}',
+        '${payload.DOB}', 
+        '${payload.FIRSTNAME}',
+        '${payload.EMAIL}',
+        '${payload.CUSTOMER_TYPE}',
+        '${payload.REGISTRATION_DATE}',
+        '${payload.CNIC_EXPIRY}',
+        '${payload.LOGIN_TIME}',
+        '${payload.VERSION}',
+        '${payload.PUSHID}'
+    );`
+    );
+    stmt.executeSync();
+    stmt.closeSync();
+    logger.debug(`LOGIN_REPORT insertion done`);
+    return;
+
+  } catch (err) {
+    logger.error('Database connection error' + err);
+    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+  } finally {
+    conn.close(function (err) { });
 }
+  }
+  
+  async addLoginReportingV2(payload) {
+    try {
+      pool.open(cn, async (error, conn) => {
+        if (error) {
+          throw error;
+        }
+        try {
+          let query = `INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,REGISTRATION_DATE,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
+                            VALUES
+                            (
+                                '${payload.MSISDN}',
+                                '${payload.CNIC}',
+                                '${payload.DOB}', 
+                                '${payload.FIRSTNAME}',
+                                '${payload.EMAIL}',
+                                '${payload.CUSTOMER_TYPE}',
+                                '${payload.REGISTRATION_DATE}',
+                                '${payload.CNIC_EXPIRY}',
+                                '${payload.LOGIN_TIME}',
+                                '${payload.VERSION}',
+                                '${payload.PUSHID}'
+                            );`
+          await conn.query(query);
+
+          logger.info({
+            event: '******  DB2 Insertion was successful  ******',
+            functionName: 'DB2Connection.addLoginReportingV2'
+          });
+        } catch (err) {
+          logger.error({
+            event: `database connection error` + err,
+            functionName: 'DB2Connection.addLoginReportingV2',
+          });
+        } finally {
+          conn.close();
+          logger.debug({
+            event: 'Finally block - connection closed',
+            functionName: 'DB2Connection.addLoginReportingV2'
+          });
+        }
+
+        
+      });
+    }
+    catch (error) {
+      logger.info({
+        event: '***** Error *****',
+        functionName: 'DB2Connection.report',
+        data,
+        error: {
+          message: error?.message,
+          stack: error?.stack
+        }
+      });
+    }
+  }
+
+  
+}
+
 
 export default new DatabaseConn();

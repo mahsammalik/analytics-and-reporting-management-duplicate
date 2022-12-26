@@ -173,7 +173,8 @@
                 "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
-                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED"
+                "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
             }
         },
         "cache": {

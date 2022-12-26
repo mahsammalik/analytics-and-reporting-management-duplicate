@@ -67,6 +67,8 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: LOGIN_REPORT_V2
+            value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
