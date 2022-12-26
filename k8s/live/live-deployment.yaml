@@ -80,7 +80,7 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '225'
+            value: '500'
           - name: DB2ConnMaxPoolSize
             value: '100'
           - name: Token_Validation
