@@ -1,0 +1,17 @@
+apiVersion: autoscaling/v2beta1 
+kind: HorizontalPodAutoscaler
+metadata:
+  name:  analytics-consumer-hpa 
+  namespace:  jc-pre-prod-microservices
+spec:
+  scaleTargetRef:
+    apiVersion: apps.openshift.io/v1 
+    kind: DeploymentConfig 
+    name: analytics-consumer
+  minReplicas: 15
+  maxReplicas: 15
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 75
