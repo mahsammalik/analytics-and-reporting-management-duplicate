@@ -76,7 +76,7 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-      value: '300'
+            value: '300'
           readinessProbe:
             failureThreshold: 12
             httpGet:
