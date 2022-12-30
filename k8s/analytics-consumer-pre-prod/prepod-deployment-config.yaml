@@ -70,9 +70,9 @@ spec:
             value: 'true'
           - name: LOGIN_REPORT_V2
             value: 'false'
-          - name: CONSUMER_GROUP_ID
           - name: CONSUMER
             value: 'false'
+          - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
                 name: consumer-groups

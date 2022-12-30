@@ -69,6 +69,8 @@ spec:
             value: live
           - name: LOGIN_REPORT_V2
             value: 'false'
+          - name: CONSUMER
+            value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:

@@ -68,9 +68,9 @@ spec:
           - name: NODE_ENV
             value: live
           - name: LOGIN_REPORT_V2
-            value: 'false'
+            value: 'true'
           - name: CONSUMER
-            value: 'false'
+            value: 'true'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
@@ -82,7 +82,7 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '500'
+            value: '200'
           - name: DB2ConnMaxPoolSize
             value: '100'
           - name: Token_Validation
