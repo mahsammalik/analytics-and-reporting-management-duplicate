@@ -65,6 +65,10 @@
                 }
             }
         },
+        "accountStatementScheduler": {
+            "accountStatementQueryInterval": "1 minute",
+            "collection": "accntstmtrequests"
+        },
         "kafkaBroker": {
             "brokers": "kafka:9092",
             "topicName": "jazz-topic",
