@@ -1,4 +1,4 @@
-import { accountStatementController } from '../controllers/';
+import accountStatementController from '../controllers/accountStatementController';
 import taxStatementController from '../controllers/taxStatementController';
 import excelExportController from '../controllers/excelExportController';
 
@@ -16,7 +16,7 @@ onboardingProcessor, fallbackFailureProcessor, consumerOnboardingProcessor} from
 import isTokenValid from '../middlewares/tokenValiadtion';
 
 const router = express.Router();
-const accountStatement = new accountStatementController();
+// const accountStatement = new accountStatementController();
 
 /**
  * Use this end point to test insert reporting data into DB
@@ -125,11 +125,11 @@ const accountStatement = new accountStatementController();
 // });
 
 router.get(
-    '/accountwithKakfa', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatement, responseCodeMW,
+    '/accountwithKakfa', msisdnParserMW(), isTokenValid, accountStatementController.calculateAccountStatement, responseCodeMW,
 );
 
 router.get(
-    '/account', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatementWithoutKafka, responseCodeMW,
+    '/account', msisdnParserMW(), isTokenValid, accountStatementController.createAccountStatementRequest, responseCodeMW,
 );
 router.get(
     '/tax', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement, responseCodeMW,
@@ -146,7 +146,7 @@ router.get(
 );
 
 router.get(
-    '/testingpdf', msisdnParserMW(), isTokenValid, accountStatement.calculateAccountStatementTEMPLATE,
+    '/testingpdf', msisdnParserMW(), isTokenValid, accountStatementController.calculateAccountStatementTEMPLATE,
 );
 
 export default router;
