@@ -6,7 +6,7 @@ import accountStatementService from '../../services/accountStatementService'
 
 const connectionString = process.env.MONGO_CONNECTION || config.mongodb.connectionString;
 const interval = process.env.ACCOUNT_STATEMENT_QUERY_INTERVAL || config.accountStatementScheduler.accountStatementQueryInterval;
-const collectionName = process.env.ACCOUNT_QUERY_SCHEDULER_TABLE || config.accountStatementScheduler.collection;
+const schedular = process.env.ACCOUNT_STATEMENT_SCHEDULER || config.accountStatementScheduler.scheduler || 'false';
 
 const agenda = new Agenda( {
   db: {
@@ -20,44 +20,66 @@ class accountStatementQueryScheduler {
   constructor (AccountStatementRequest, accountStatementService) {
     this.schedulerModel = AccountStatementRequest;
     this.accountStatementService = accountStatementService;
-    this.createJob = this.createJob.bind( this );
-    this.executeJob = this.executeJob.bind( this );
+    this.createJob = this.createJob.bind(this);
+    this.executeJob = this.executeJob.bind(this);
     this.createJob();
-  
   }
 
   async createJob() {
-
-    // this.schedulerModel = mongoose.model(collectionName);
-    agenda.define(jobName, {
-      concurrency: 0
-    }, this.executeJob );
-    await agenda.start();
-    await agenda.every("*/1 * * * *", jobName, null, {
-      timezone: "Asia/Karachi"
-    } );
+    if(schedular){
+      agenda.define(jobName, {
+        concurrency: 0
+      }, this.executeJob );
+      await agenda.start();
+      await agenda.every(interval, jobName, null, {
+        timezone: "Asia/Karachi"
+      } );
+    }else{
+      logger.info("Scheduler is skipping for this microservice");
+    }
   }
 
   async executeJob(job) {
-    console.log('Job Invoked');
-    const requests = await this.fetchAllRequests(job);
-    requests.forEach(async (request) => {
-        const requestExecuted = await this.requestAccountStatement(request);
-        if(requestExecuted.success){
-            const requestRemoved = await this.removeRequest(request._id);
-            if(requestRemoved){
-                logger.info("Request Removed")
-            }
-        } 
-    })
-    // await this.sendPNOnRemaingDays(job);
+    const request = await this.fetchRequest(job);
+    if(!!request){
+      const requestExecuted = await this.requestAccountStatement(request);
+      if(requestExecuted.success){
+          const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
+          if(requestUpdated){
+              logger.info("Scheduler: Email sent!")
+          }
+      }else{
+        const requestUpdated = await this.updateFailedRequestStatus(request);
+        logger.info({
+          event: "Schedule: Failed to send email",
+          data: { requestUpdated, message: "Request status updated" }
+        })
+      }
+    }else{
+      logger.info("No new request found!");
+    }
+    console.log('Request executed');
   }
 
-  async fetchAllRequests(job){
+  async fetchRequest(job){
     try{
-        const requests = await this.schedulerModel.find({});
-        job.schedule( "in 1 minutes" ); 
-        return requests;
+        const request = await this.schedulerModel.findOne({
+          $or: [
+            { "status": "pending" },
+            {
+              $and: [
+                { "status": "failed" },
+                { "failureCount" : { $lt: 3 } },
+                { "requestTime": { $lt: new Date() } }
+              ]
+            }
+          ]
+        });
+        logger.info({
+          event: "Request retrieved",
+          data: request
+        })
+        return request;
     }catch(error){
         logger.error( 'Error in executeJob for Account Statement query schedular from analytics and reporting microservice' + error )
     }
@@ -92,14 +114,32 @@ class accountStatementQueryScheduler {
     }
   }
 
-  async removeRequest(id){
+  async updateRequestStatus(id, status){
     try{
-        const requestDeleted = await this.schedulerModel.remove({ _id: id });
-        if(requestDeleted) return true;
+        const query = { _id: id };
+        const updateData = { status, requestTime: new Date() };
+        const requestUpdated = await this.schedulerModel.findOneAndUpdate(query, updateData);
+        if(requestUpdated) return true;
         else return false;
     }catch(error){
-        logger.error('Failed to remove request in account statement query scheduler' + error)
+        logger.error('Failed to update request status in account statement query scheduler' + error)
     }
+  }
+
+  async updateFailedRequestStatus(request){
+    try{
+      const query = { _id: request._id };
+      const updateData = {
+        status: 'failed',
+        failureCount: request.failureCount + 1,
+        requestTime: new Date(new Date().getTime() + 30 * 60 * 1000)
+      };
+      const requestUpdated = await this.schedulerModel.findOneAndUpdate(query, updateData);
+      if(requestUpdated) return true;
+      else return false;
+  }catch(error){
+      logger.error('Failed to update request status in account statement query scheduler' + error)
+  }
   }
 
 }

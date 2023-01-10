@@ -38,7 +38,10 @@ class accountStatementController {
                 format: req.query.format,
                 merchantName: userProfile.businessName || '',
                 accountLevel: userProfile.accountLevel || '',
-                channel: req.headers['x-channel']
+                channel: req.headers['x-channel'],
+                status: 'pending',
+                requestTime: new Date(),
+                failureCount: 0
             };
             const created = await accountStatementService.createAccountStatementRequest(payload);
             if(created)

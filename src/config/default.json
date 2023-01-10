@@ -86,8 +86,9 @@
             }
         },
         "accountStatementScheduler": {
-            "accountStatementQueryInterval": "1 minute",
-            "collection": "accntstmtrequests"
+            "accountStatementQueryInterval": "10 seconds",
+            "collection": "accntstmtrequests",
+            "scheduler": "true"
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
