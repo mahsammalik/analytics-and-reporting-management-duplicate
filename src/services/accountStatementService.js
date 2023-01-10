@@ -5,6 +5,7 @@ import {
     accountStatementTemplate,
     Notification,
 } from '/util/';
+import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
@@ -43,6 +44,28 @@ const formatEnglishDate = date => {
 }
 
 class accountStatementService {
+    constructor(AccountStatementRequest){
+        this.AccountStatementRequest = AccountStatementRequest
+    }
+
+    async createAccountStatementRequest(payload){
+        try{
+            logger.info({
+                event: 'Entered function',
+                functionName: 'accountStatementService.createAccountStatementRequest',
+                data: payload
+            });
+            let requestCreated = await AccountStatementRequest.create(payload);
+            return !!requestCreated ? { success: true } : { success: false }
+        }catch(error){
+            logger.info({
+                event: 'Catch function',
+                functionName: 'accountStatementService.createAccountStatementRequest',
+                error
+            });
+            return { success: false };
+        }
+    }
 
     async sendEmailCSVFormat(payload) {
         try {
@@ -229,4 +252,4 @@ class accountStatementService {
 
 }
 
-export default accountStatementService;
+export default new accountStatementService(AccountStatementRequest);
