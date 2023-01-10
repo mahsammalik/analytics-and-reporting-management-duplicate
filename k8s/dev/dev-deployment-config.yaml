@@ -62,6 +62,11 @@ spec:
                 key: CONSUMER_GROUP_ANALYTICS
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
           - name: MASTER_DATA_API_GET_RESPCODE_URL
             value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
           - name: NOTIFICATION_SERVICE_URL_EMAIL
