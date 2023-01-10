@@ -45,6 +45,18 @@ import mongoose, {
         channel: {
             type: String,
             required: false
+        },
+        status: {
+          type: String,
+          required: false
+        },
+        requestTime: {
+          type: Date,
+          required: false,
+        },
+        failureCount: {
+          type: Number,
+          required: false
         }
       }, {
         timestamps: true
