@@ -102,6 +102,12 @@ class accountStatementQueryScheduler {
             accountLevel: data.accountLevel,
             channel: data.channel
         }
+
+        logger.info({
+          event: "Scheduler: Payload for Account Statement",
+          data: payload
+        })
+
         if (payload.format === 'pdf')
             await accountStatementService.sendEmailPDFFormat(payload)
         else

@@ -8,7 +8,7 @@ const dirName = `${path.dirname(__dirname)}/public/assets`;
  * 
  * @param {*} accountData
  */
-const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel, channel }) => {
+const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel = '', channel }) => {
 	logger.info({ event: 'Entered function', functionName: 'accountStatementEmailTemplate' });
 	logger.debug("accountStatementEmailTemplate details: ", title, customerName, accountNumber, statementPeriod, accountLevel, channel);
 

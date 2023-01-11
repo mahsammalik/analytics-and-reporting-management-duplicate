@@ -142,21 +142,15 @@ class accountStatementService {
     async sendEmailPDFFormat(payload) {
 
         try {
-
-            logger.debug('-----payload sendEmailPDFFormat---', payload);
-            logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
+            logger.info({
+                event: 'Entered function',
+                functionName: 'sendEmailPDFFormat',
+                data: payload
+            });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
-            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
-            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
-            // if (resp.status === 200) {
-            //     const response = resp.data;
-            //     logger.debug("CHECK Oracle Account Statement: ", resp.data)
-            //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
-            //     const { data, success, message } = response;
-            // if (success) {
             if (db2Data.length > 0) {
                 // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
@@ -213,6 +207,8 @@ class accountStatementService {
             }
             ];
 
+            logger.info({ data: payload })
+
             if (payload.email) {
 
                 let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
@@ -245,7 +241,6 @@ class accountStatementService {
         } catch (error) {
             logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFFormat', error, payload });
             logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-
             throw new Error(`Error fetching data for account statement:${error}`);
         }
     }
