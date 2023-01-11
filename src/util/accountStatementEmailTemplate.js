@@ -4,7 +4,7 @@ import logger from './logger';
 
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel, channel }) => {
+const accountStatementEmailTemplate = async ({ title, customerName, accountNumber, statementPeriod, accountLevel, channel }) => {
 	logger.info({
 		event: 'Entered function',
 		functionName: 'accountStatementEmailTemplate',
