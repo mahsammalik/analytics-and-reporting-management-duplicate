@@ -97,7 +97,7 @@ class accountStatementQueryScheduler {
             subject: 'Hello',
             html: '<html></html>',
             format: data.format,
-            metadata: data.metadata,
+            metadata: data.metadata || false,
             merchantName: data.merchantName,
             accountLevel: data.accountLevel,
             channel: data.channel
