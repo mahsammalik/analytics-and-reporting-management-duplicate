@@ -1,11 +1,12 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: analytics-microservice
+  name: analytics-consumer
   namespace: m11s
   labels:
-    app: analytics-microservice
+    app: analytics-consumer
     app.kubernetes.io/part-of: m11s
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
@@ -24,30 +25,30 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
           namespace: m11s
-          name: 'analytics-microservice:latest'
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
     matchLabels:
-      app: analytics-microservice
-      deployment: analytics-microservice
+      app: analytics-consumer
+      deployment: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deployment: analytics-microservice
+        app: analytics-consumer
+        deployment: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -67,7 +68,9 @@ spec:
           - name: NODE_ENV
             value: live
           - name: LOGIN_REPORT_V2
-            value: 'false'
+            value: 'true'
+          - name: CONSUMER
+            value: 'true'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
@@ -79,7 +82,7 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '500'
+            value: '200'
           - name: DB2ConnMaxPoolSize
             value: '100'
           - name: Token_Validation
