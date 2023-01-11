@@ -70,6 +70,14 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:

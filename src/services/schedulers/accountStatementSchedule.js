@@ -5,8 +5,10 @@ import AccountStatementRequest from '../../model/acntStmtRequest';
 import accountStatementService from '../../services/accountStatementService'
 
 const connectionString = process.env.MONGO_CONNECTION || config.mongodb.connectionString;
-const interval = process.env.ACCOUNT_STATEMENT_QUERY_INTERVAL || config.accountStatementScheduler.accountStatementQueryInterval;
-const schedular = process.env.ACCOUNT_STATEMENT_SCHEDULER || config.accountStatementScheduler.scheduler || 'false';
+const interval = process.env.ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL || config.accountStatementScheduler.accountStatementQueryInterval;
+const schedular = process.env.ACCOUNT_STATEMENT_SCHEDULER || config.accountStatementScheduler.scheduler || false;
+const failureCountNumber = process.env.ACCOUNT_SCHEDULER_FAILURE_COUNT || config.accountStatementScheduler.failureCount;
+const failureTimeInMinutes = process.env.ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES || config.accountStatementScheduler.failureTimeInMinutes;
 
 const agenda = new Agenda( {
   db: {
@@ -58,7 +60,6 @@ class accountStatementQueryScheduler {
     }else{
       logger.info("No new request found!");
     }
-    console.log('Request executed');
   }
 
   async fetchRequest(job){
@@ -69,8 +70,8 @@ class accountStatementQueryScheduler {
             {
               $and: [
                 { "status": "failed" },
-                { "failureCount" : { $lt: 3 } },
-                { "requestTime": { $lt: new Date() } }
+                { "failureCount" : { $lt: failureCountNumber } }, //max number of failures of trying repeatedly
+                { "requestTime": { $lt: new Date() } } //failed request will add time for next request
               ]
             }
           ]
@@ -129,10 +130,11 @@ class accountStatementQueryScheduler {
   async updateFailedRequestStatus(request){
     try{
       const query = { _id: request._id };
+      const timeToAdd = parseInt(failureTimeInMinutes) * 60 * 1000;
       const updateData = {
         status: 'failed',
         failureCount: request.failureCount + 1,
-        requestTime: new Date(new Date().getTime() + 30 * 60 * 1000)
+        requestTime: new Date(new Date().getTime() +  timeToAdd) //add time for next try after getting failed
       };
       const requestUpdated = await this.schedulerModel.findOneAndUpdate(query, updateData);
       if(requestUpdated) return true;
