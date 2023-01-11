@@ -4,10 +4,6 @@ import logger from './logger';
 
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-/**
- * 
- * @param {*} accountData
- */
 const accountStatementEmailTemplate = ({ title, customerName, accountNumber, statementPeriod, accountLevel, channel }) => {
 	logger.info({
 		event: 'Entered function',
@@ -169,8 +165,7 @@ const accountStatementEmailTemplate = ({ title, customerName, accountNumber, sta
 
 
 	} catch (error) {
-
-		logger.error({ event: 'Error thrown ', functionName: 'accountStatementEmailTemplate', error, accountData });
+		logger.error({ event: 'Error thrown ', functionName: 'accountStatementEmailTemplate', error });
 		logger.info({ event: 'Exited function', functionName: 'accountStatementEmailTemplate' });
 		throw new Error(`error in account statement template  ${error}`);
 	}
