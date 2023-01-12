@@ -1,15 +1,16 @@
-kind: Deployment
-apiVersion: apps/v1
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
 metadata:
-  name: analytics-microservice
-  namespace: m11s
+  name: analytics-consumer
+  namespace: jc-pre-prod-microservices
   labels:
-    app: analytics-microservice
-    app.kubernetes.io/part-of: m11s
+    app: analytics-consumer
+    app.kubernetes.io/part-of: jc-pre-prod-microservices
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
-    type: RollingUpdate
+    type: Rolling
     rollingParams:
       updatePeriodSeconds: 1
       intervalSeconds: 1
@@ -24,30 +25,29 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
-          namespace: m11s
-          name: 'analytics-microservice:latest'
+          namespace: jc-pre-prod-microservices
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
-    matchLabels:
-      app: analytics-microservice
-      deployment: analytics-microservice
+    app: analytics-consumer
+    deploymentconfig: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deployment: analytics-microservice
+        app: analytics-consumer
+        deploymentconfig: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/jc-pre-prod-microservices/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -66,6 +66,8 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: Token_Validation
+            value: 'true'
           - name: LOGIN_REPORT_V2
             value: 'false'
           - name: CONSUMER
@@ -75,17 +77,8 @@ spec:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
-          - name: CONSUMER_GROUP_ID_REWARD
-            valueFrom:
-              configMapKeyRef:
-                name: consumer-groups
-                key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '500'
-          - name: DB2ConnMaxPoolSize
-            value: '100'
-          - name: Token_Validation
-            value: 'true'
+      value: '300'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -104,8 +97,8 @@ spec:
             timeoutSeconds: 5                                                                      
           resources:
             limits:
-              cpu: 600m
-              memory: 1Gi
+              memory: 512Mi
+              cpu: '0.3'
             requests:
               memory: 56Mi
               cpu: '120m'             
@@ -117,3 +110,4 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
+
