@@ -38,7 +38,7 @@ app.use(responseTime());
 // app.use(auditLoggerMW);
 
 // app.use(schemaValidatorMW);
-
+//this check is for analytics-consumer microservice
 if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){    
     logger.info({
       event: 'kafka subscriber true conditon',
