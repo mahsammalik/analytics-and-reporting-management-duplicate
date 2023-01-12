@@ -50,17 +50,6 @@ if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){
     rewardSubscriber.setConsumer();  
   }
 
-if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){    
-    logger.info({
-      event: 'kafka subscriber true conditon',
-      data: process.env.IS_SUBCRIBER
-    });
-    const subscriber = new Subscriber();
-    subscriber.setConsumer();
-    const rewardSubscriber = new RewardSubscriber();
-    rewardSubscriber.setConsumer();  
-  }
-
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);
 app.use((err, req, res, next) => {
