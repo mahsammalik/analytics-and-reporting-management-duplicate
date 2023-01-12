@@ -105,6 +105,13 @@
                 }
             }
         },
+        "accountStatementScheduler": {
+            "accountStatementQueryInterval": "10 seconds",
+            "collection": "accntstmtrequests",
+            "scheduler": "true",
+            "failureCount": 3,
+            "failureTimeInMinutes": 30
+        },
         "kafkaBroker": {
             "brokers": "kafka:9092",
             "topicName": "jazz-topic",
@@ -263,7 +270,8 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
 
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
-                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed"
+                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
             }
         },
         "cache": {

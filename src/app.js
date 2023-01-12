@@ -12,7 +12,9 @@ import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
 import DB2Connection from './util/DB2Connection';
+import dbConnection from './util/dbConnection';
 import { open } from 'ibm_db';
+import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -38,12 +40,19 @@ app.use(responseTime());
 // app.use(auditLoggerMW);
 
 // app.use(schemaValidatorMW);
+//this check is for analytics-consumer microservice
+if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){    
+    logger.info({
+      event: 'kafka subscriber true conditon',
+      data: process.env.IS_SUBCRIBER
+    });
+    const subscriber = new Subscriber();
+    subscriber.setConsumer();
+    const rewardSubscriber = new RewardSubscriber();
+    rewardSubscriber.setConsumer();  
+}
 
-const subscriber = new Subscriber();
-subscriber.setConsumer();
 
-const rewardSubscriber = new RewardSubscriber();
-rewardSubscriber.setConsumer();
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);

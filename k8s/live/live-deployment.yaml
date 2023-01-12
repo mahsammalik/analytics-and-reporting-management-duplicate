@@ -6,6 +6,7 @@ metadata:
   labels:
     app: analytics-microservice
     app.kubernetes.io/part-of: m11s
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
@@ -73,6 +74,10 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
+            value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
@@ -84,9 +89,11 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '550'
+            value: '500'
           - name: DB2ConnMaxPoolSize
             value: '100'
+          - name: Token_Validation
+            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -105,8 +112,8 @@ spec:
             timeoutSeconds: 5                                                                      
           resources:
             limits:
-              memory: 512Mi
-              cpu: '300m'
+              cpu: 600m
+              memory: 1Gi
             requests:
               memory: 56Mi
               cpu: '120m'             

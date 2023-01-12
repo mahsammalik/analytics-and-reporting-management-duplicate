@@ -61,6 +61,11 @@ spec:
           env:
           - name: CACHE_SERVER
             value: datagrid.datagrid-tests
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:

@@ -1,4 +1,4 @@
-import validations from './validators/validatorEnhanced';
+import validations from './validators/validationEnhanced';
 import schema from './validators/schema.json';
 
 class Controller {

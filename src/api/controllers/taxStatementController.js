@@ -1,7 +1,6 @@
 import taxStatementService from '../../services/taxStatementService';
 import Controller from './controller';
-import validations from './validators/validatorEnhanced';
-import schema from './validators/schema.json';
+import validations from './validators/validationEnhanced';
 import responseCodeHandler from '../../util/responseCodeHandler';
 import { logger, mappedMetaData } from '/util/';
 import getUserProfile from '../../services/helpers/accountProfile';
@@ -20,15 +19,15 @@ class taxStatementController {
         let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
         let headersValidationResponse;
         if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
-            headersValidationResponse = validations.verifySchema(schema.USSD_HEADER_SCHEMA, req.headers);
+            headersValidationResponse = validations.verifySchema("USSD_HEADER_SCHEMA", req.headers);
         }else{
-            headersValidationResponse =   validations.verifySchema(schema.REQUEST_HEADER_SCHEMA, req.headers);
+            headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
         }
         if (!headersValidationResponse.success) {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
         }
-        const queryValidationResponse   =   validations.verifySchema(schema.Tax_Statement_SCHEMA, req.query);
+        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
         if (!queryValidationResponse.success) {
             const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
