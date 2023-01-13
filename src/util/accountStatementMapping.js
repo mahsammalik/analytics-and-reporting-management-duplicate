@@ -3,11 +3,19 @@ import { accountStatementData } from "./constants";
 import logger from "./logger";
 
 const getTransactionType = type => {
+    logger.info({
+        event: "accountStatement.getTransactionType",
+        type
+    })
     const { trxType } = accountStatementData;
     return trxType[type] ? trxType[type] : type;
 }
 
 const getTransactionChannel = (trxChannel, type) => {
+    logger.info({
+        event: "accountStatement.getTransactionChannel",
+        data: { trxChannel, type }
+    })
     const { channel, trxType } = accountStatementData;
     const apiChannel = trxType[type] === 'ATM Withdrawal' ? 'Debit Card' : trxChannel;
     const otherChannel = channel[trxChannel] ? channel[trxChannel] : trxChannel;
@@ -15,26 +23,44 @@ const getTransactionChannel = (trxChannel, type) => {
 }
 
 const getCompanyNamebySpace = reason => {
+    logger.info({
+        event: "accountStatement.getCompanyNamebySpace",
+        reason
+    })
     //Company name starts after second space and continue till 'via' occurs
     return reason.split(" ").slice(2).join(" ").split("via")[0];
 }
 
 const getCompanyNamebyFor = reason => {
-    //Company name starts after 'for' and continue till 'via' or 'at' occurs 
+    //Company name starts after 'for' and continue till 'via' or 'at' occurs
+    logger.info({
+        event: "accountStatement.getCompanyNamebyFor",
+        reason
+    })
     return reason.split(" for")[1].replaceAll("at", "via").split("via")[0] || "";
 }
 
 const getAccountbyMSISDN = msisdn => {
+    logger.info({
+        event: "accountStatement.getAccountbyMSISDN",
+        msisdn
+    })
     return msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '' || "";
 }
 
 const getAccountByDescription = desc => {
+    logger.info({
+        event: "accountStatement.getAccountByDescription",
+        desc
+    })
     return desc ? desc.split('92')[1]?.replace(/\d(?=\d{4})/g, "*") : '' || "";
 }
 
 const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0, msisdn = '') => {
-
-    logger.debug({ desc, type, reason, amount, msisdn });
+    logger.info({
+        event: "accountStatement.getTransactionDescription",
+        data: { desc, type, reason, amount, msisdn }
+    })
 
     if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
         if(reason?.includes('Customer Pay Bill for') || reason?.includes('OMNO Customer Pay Bill for')){
@@ -130,6 +156,10 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
 } 
 
 export const getMappedAccountStatement = arr => {
+    logger.info({
+        event: "Data in accountStatement.getMappedAccountStatement",
+        data: arr
+    })
     const [msisdn, date, trxId, trxType, channel, desc, amountDebit, amountCredit, runningBalance, reason] = arr;
     const description = desc === null ? '&#8203' : desc;
     return [
