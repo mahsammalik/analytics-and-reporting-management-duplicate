@@ -9,6 +9,7 @@ import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
+import { getMappedAccountStatement } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -152,36 +153,16 @@ class accountStatementService {
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
             if (db2Data.length > 0) {
-                // if description column is null then replace it with HTML hidden space
                 db2Data = db2Data.map(arr => {
-                    if(arr[5] == null)
-                        arr[5] = '&#8203';  // &#8203 for HTML hidden space
-                    return arr;
-                });
-        
-                db2Data = db2Data.map((dat) => {
-                    dat.splice(0, 1);
-                    let b = dat[1];
-                    dat[1] = dat[0];
-                    dat[0] = b;
-                    return dat
+                    return getMappedAccountStatement(arr);
                 }).sort(function (a, b) {
-                    var dateA = new Date(a[1]), dateB = new Date(b[1]);
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
-                })
-
-                db2Data = db2Data.map(arr => {
-                    let newTransId = arr[0];
-                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
-                    arr[1] = newTransId;
-                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
-                    return arr;
                 })
             }
 
-
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
+                headers: ["Date/Time", "Transaction ID#", "Transaction Type", "Channel", "Transaction Description", "Amount Debit", "Amount Credit", "Running Balance\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
