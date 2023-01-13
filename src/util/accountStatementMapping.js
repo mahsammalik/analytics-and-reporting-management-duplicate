@@ -37,7 +37,6 @@ const getCompanyNamebyFor = reason => {
         event: "accountStatement.getCompanyNamebyFor",
         reason
     })
-    replace(/00/g,'')
     return reason.split(" for")[1].replace(/at/g, "via").split("via")[0] || "";
 }
 
