@@ -80,12 +80,12 @@ class accountStatementController {
             }
             const payload = {
                 msisdn: req.headers['x-msisdn'],
-                startDate: req.query.start_date,
-                endDate: req.query.end_date,
+                start_date: req.query.start_date,
+                end_date: req.query.end_date,
                 request: req.query.requestType,
                 email: req.query.email,
-                // subject: 'Hello',
-                // html: '<html></html>',
+                subject: 'Hello',
+                html: '<html></html>',
                 format: req.query.format,
                 metadata,
                 merchantName: userProfile.businessName || '',
