@@ -6,6 +6,7 @@ import {
     accountStatementTemplateMerchant,
     Notification,
 } from '/util/';
+import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
@@ -45,6 +46,28 @@ const formatEnglishDate = date => {
 }
 
 class accountStatementService {
+    constructor(AccountStatementRequest){
+        this.AccountStatementRequest = AccountStatementRequest
+    }
+
+    async createAccountStatementRequest(payload){
+        try{
+            logger.info({
+                event: 'Entered function',
+                functionName: 'accountStatementService.createAccountStatementRequest',
+                data: payload
+            });
+            let requestCreated = await AccountStatementRequest.create(payload);
+            return !!requestCreated ? { success: true } : { success: false }
+        }catch(error){
+            logger.info({
+                event: 'Catch function',
+                functionName: 'accountStatementService.createAccountStatementRequest',
+                error
+            });
+            return { success: false };
+        }
+    }
 
     async sendEmailCSVFormat(payload) {
         try {
@@ -121,22 +144,15 @@ class accountStatementService {
     async sendEmailPDFFormat(payload) {
 
         try {
-
-            logger.debug('-----payload sendEmailPDFFormat---', payload);
-            logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
+            logger.info({
+                event: 'Entered function',
+                functionName: 'sendEmailPDFFormat',
+                data: payload
+            });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
-            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
-            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
-            // if (resp.status === 200) {
-            //     const response = resp.data;
-            //     logger.debug("CHECK Oracle Account Statement: ", resp.data)
-            //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
-            //     const { data, success, message } = response;
-            // if (success) {
-            logger.debug(db2Data);
             if (db2Data.length > 0) {
                 db2Data = db2Data.map(arr => {
                     return getMappedAccountStatement(arr);
@@ -174,7 +190,6 @@ class accountStatementService {
             ];
 
             if (payload.email) {
-
                 let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
@@ -205,7 +220,6 @@ class accountStatementService {
         } catch (error) {
             logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFFormat', error, payload });
             logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-
             throw new Error(`Error fetching data for account statement:${error}`);
         }
     }
@@ -412,4 +426,4 @@ class accountStatementService {
 
 }
 
-export default accountStatementService;
+export default new accountStatementService(AccountStatementRequest);
