@@ -150,7 +150,7 @@ router.get(
 );
 
 router.get(
-    '/accountMerchant', msisdnParserMW(), accountStatement.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
+    '/accountMerchant', msisdnParserMW(), accountStatementController.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
 );
 
 export default router;
