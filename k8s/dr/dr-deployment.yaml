@@ -54,7 +54,7 @@ spec:
               protocol: TCP
           env:
           - name: CACHE_SERVER
-            value: datagrid.datagrid-dr
+            value: datagrid.datagrid-prod
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -67,13 +67,26 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
+            value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
+          - name: CONSUMER_GROUP_ID_REWARD
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'
+            value: '500'
+          - name: DB2ConnMaxPoolSize
+            value: '100'
+          - name: Token_Validation
+            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -92,8 +105,8 @@ spec:
             timeoutSeconds: 5                                                                      
           resources:
             limits:
-              memory: 512Mi
-              cpu: '0.3'
+              cpu: 600m
+              memory: 1Gi
             requests:
               memory: 56Mi
               cpu: '120m'             
@@ -105,4 +118,3 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
-
