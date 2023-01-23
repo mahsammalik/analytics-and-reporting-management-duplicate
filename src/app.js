@@ -7,12 +7,14 @@ import compression from 'compression';
 import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
-import { Subscriber, RewardSubscriber } from '/services/';
+import { Subscriber, RewardSubscriber} from '/services/';
 import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
 import DB2Connection from './util/DB2Connection';
+import dbConnection from './util/dbConnection';
 import { open } from 'ibm_db';
+import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -48,9 +50,7 @@ if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){
     subscriber.setConsumer();
     const rewardSubscriber = new RewardSubscriber();
     rewardSubscriber.setConsumer();  
-  }
-
-
+}
 
 app.use('/rest/api/v1/reports/statement', router);
 // app.use(requestLoggerMW);

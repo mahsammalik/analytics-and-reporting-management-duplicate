@@ -11,7 +11,7 @@
         },
         "externalServices": {
             "masterDataAPI": {
-                "responseCodeURL": "http://masterdata-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/masterdata/responseCodes"
+                "responseCodeURL": "http://masterdata-microservice-qa-consumer.apps.tjcocp.jazz.com.pk/rest/api/v1/masterdata/responseCodes"
             },
             "accountManagementAPI": {
                 "userProfileURL": "http://account-management-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/account/profile",
@@ -27,9 +27,10 @@
             }
         },
         "mongodb": {
+            "connectionString": "mongodb://mongodb:27017/analytics",
             "host": "mongodb",
             "port": 27017,
-            "database": "sampledb"
+            "database": "analytics"
         },
         "IBMDB2": {
             "username": "jcapprepdb",
@@ -83,6 +84,13 @@
                     "json": true
                 }
             }
+        },
+        "accountStatementScheduler": {
+            "accountStatementQueryInterval": "1 minutes",
+            "collection": "accntstmtrequests",
+            "scheduler": "true",
+            "failureCount": 3,
+            "failureTimeInMinutes": 30
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
@@ -174,6 +182,8 @@
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
+                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
+                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
             }
         },
@@ -363,7 +373,8 @@
             "SCHEDULED_TRANSACTIONS": "COMMON_SCHEDULED_TRANSACTIONS",
             "ACCOUNT_UPGRADE": "COMMON_ACCOUNT_UPGRADE",
             "CASHTOGOOD": "CASHTOGOOD",
-            "CASHTOGOOD_REDEEM": "CASHTOGOOD_REDEEM"
+            "CASHTOGOOD_REDEEM": "CASHTOGOOD_REDEEM",
+            "SPSU": "SPSU_DISBURSEMENTS"
         }
     }
 }

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
+import logger from './logger';
 
-const server = process.env.MONGO_DB_HOST || config.mongodb.host;
-const port = process.env.MONGO_DB_PORT || config.mongodb.port;
-const database = process.env.MONGO_DB_DATABASE || config.mongodb.database;
+const connectionString = process.env.MONGO_CONNECTION || config.mongodb.connectionString;
+
 
 class Database {
   constructor() {
@@ -14,13 +14,13 @@ class Database {
     mongoose.set('useFindAndModify', false);
     mongoose.set('useCreateIndex', true);
     mongoose
-      .connect(`mongodb://${server}:${port}/${database}`)
+      .connect(connectionString)
       .then(() => {
-        logger.info('Database connection successful');
+        logger.debug({event:'Database connection successful'});
       })
       .catch((err) => {
-        logger.error(err);
-        logger.error('Database connection error');
+        logger.error({event:'Error Thrown', err});
+        logger.error({event:'Database connection error'});
       });
   }
 }

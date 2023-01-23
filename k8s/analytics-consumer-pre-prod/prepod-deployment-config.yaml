@@ -1,10 +1,10 @@
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: analytics-microservice
+  name: analytics-consumer
   namespace: jc-pre-prod-microservices
   labels:
-    app: analytics-microservice
+    app: analytics-consumer
     app.kubernetes.io/part-of: jc-pre-prod-microservices
     monitoring.appd: AppD_NodeJS
 spec:
@@ -25,35 +25,40 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
           namespace: jc-pre-prod-microservices
-          name: 'analytics-microservice:latest'
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    app: analytics-consumer
+    deploymentconfig: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deploymentconfig: analytics-microservice
+        app: analytics-consumer
+        deploymentconfig: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/jc-pre-prod-microservices/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/jc-pre-prod-microservices/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -66,9 +71,19 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
           - name: Token_Validation
             value: 'true'
           - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
             value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
