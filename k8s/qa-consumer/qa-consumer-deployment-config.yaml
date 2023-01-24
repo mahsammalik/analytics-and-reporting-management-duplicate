@@ -52,6 +52,19 @@ spec:
             - containerPort: 3000
               protocol: TCP
           env:
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
           - name: CACHE_SERVER
             value: datagrid.datagrid-tests
           - name: CONSUMER_GROUP_ID
