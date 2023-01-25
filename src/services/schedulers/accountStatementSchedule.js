@@ -45,21 +45,25 @@ class accountStatementQueryScheduler {
     const request = await this.fetchRequest(job);
     if(!!request){
       await this.updateRequestStatus(request._id, 'inProgress');
-      const requestExecuted = await this.requestAccountStatement(request);
-      if(requestExecuted.success){
-          const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
-          if(requestUpdated){
-              logger.info("Scheduler: Email sent!")
-          }
-      }else{
-        const requestUpdated = await this.updateFailedRequestStatus(request);
-        logger.info({
-          event: "Schedule: Failed to send email",
-          data: { requestUpdated, message: "Request status updated" }
-        })
-      }
+      this.processRecords(request);
     }else{
       logger.info("No new request found!");
+    }
+  }
+
+  async processRecords(request){
+    const requestExecuted = await this.requestAccountStatement(request);
+    if(requestExecuted.success){
+        const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
+        if(requestUpdated){
+            logger.info("Scheduler: Email sent!")
+        }
+    }else{
+      const requestUpdated = await this.updateFailedRequestStatus(request);
+      logger.info({
+        event: "Schedule: Failed to send email",
+        data: { requestUpdated, message: "Request status updated" }
+      })
     }
   }
 
