@@ -44,6 +44,7 @@ class accountStatementQueryScheduler {
   async executeJob(job) {
     const request = await this.fetchRequest(job);
     if(!!request){
+      await this.updateRequestStatus(request._id, 'inProgress');
       const requestExecuted = await this.requestAccountStatement(request);
       if(requestExecuted.success){
           const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
@@ -75,7 +76,7 @@ class accountStatementQueryScheduler {
               ]
             }
           ]
-        });
+        }).sort({ createdAt: 1 });
         logger.info({
           event: "Request retrieved",
           data: request
