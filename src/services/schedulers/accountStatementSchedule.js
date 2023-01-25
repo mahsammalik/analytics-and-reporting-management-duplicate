@@ -44,21 +44,26 @@ class accountStatementQueryScheduler {
   async executeJob(job) {
     const request = await this.fetchRequest(job);
     if(!!request){
-      const requestExecuted = await this.requestAccountStatement(request);
-      if(requestExecuted.success){
-          const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
-          if(requestUpdated){
-              logger.info("Scheduler: Email sent!")
-          }
-      }else{
-        const requestUpdated = await this.updateFailedRequestStatus(request);
-        logger.info({
-          event: "Schedule: Failed to send email",
-          data: { requestUpdated, message: "Request status updated" }
-        })
-      }
+      await this.updateRequestStatus(request._id, 'inProgress');
+      this.processRecords(request);
     }else{
       logger.info("No new request found!");
+    }
+  }
+
+  async processRecords(request){
+    const requestExecuted = await this.requestAccountStatement(request);
+    if(requestExecuted.success){
+        const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
+        if(requestUpdated){
+            logger.info("Scheduler: Email sent!")
+        }
+    }else{
+      const requestUpdated = await this.updateFailedRequestStatus(request);
+      logger.info({
+        event: "Schedule: Failed to send email",
+        data: { requestUpdated, message: "Request status updated" }
+      })
     }
   }
 
@@ -75,7 +80,7 @@ class accountStatementQueryScheduler {
               ]
             }
           ]
-        });
+        }).sort({ createdAt: 1 });
         logger.info({
           event: "Request retrieved",
           data: request

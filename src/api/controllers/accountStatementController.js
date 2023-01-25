@@ -47,11 +47,14 @@ class accountStatementController {
             const created = await accountStatementService.createAccountStatementRequest(payload);
             if(created)
                 res.locals.response = true;
-            else
-                res.locals.response = false;
+            else{
+                if(created.duplicate){
+                    res.locals.duplicate = true
+                }
+                res.locals.response = false
+            }
             return next();
         }catch(error){
-            console.log(error);
             logger.info({
                 event: 'Catch function',
                 functionName: 'accountStatementController.createAccountStatementRequest',
