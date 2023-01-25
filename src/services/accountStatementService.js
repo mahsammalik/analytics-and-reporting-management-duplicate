@@ -57,8 +57,18 @@ class accountStatementService {
                 functionName: 'accountStatementService.createAccountStatementRequest',
                 data: payload
             });
-            let requestCreated = await AccountStatementRequest.create(payload);
-            return !!requestCreated ? { success: true } : { success: false }
+            let query = {
+                msisdn: payload.msisdn,
+                status: 'pending'
+            };
+            let requestFound = await AccountStatementRequest.findOne(query);
+            if(!!requestFound){
+                return { success: false, duplicate: true }
+            }else
+            {
+                let requestCreated = await AccountStatementRequest.create(payload);
+                return !!requestCreated ? { success: true } : { success: false }
+            }
         }catch(error){
             logger.info({
                 event: 'Catch function',
