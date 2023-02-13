@@ -67,6 +67,11 @@ spec:
             value: '30'
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics 
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -83,6 +88,14 @@ spec:
             value: 'true'
           - name: LOGIN_REPORT_V2
             value: 'false'
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
           - name: CONSUMER
             value: 'false'
           - name: CONSUMER_GROUP_ID

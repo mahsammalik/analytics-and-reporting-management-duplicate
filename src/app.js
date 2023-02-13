@@ -14,7 +14,9 @@ import logRequestMW from './api/middlewares/logRequestMW';
 import dbConnection from './util/dbConnection';
 import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
 import DB2Connection from './util/DB2Connection';
+import dbConnection from './util/dbConnection';
 import { open } from 'ibm_db';
+import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
 
 // logger.info('printing webserver value' + config.mongodb.host);
 
@@ -50,7 +52,7 @@ if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){
     subscriber.setConsumer();
     const rewardSubscriber = new RewardSubscriber();
     rewardSubscriber.setConsumer();  
-  }
+}
 
 
 

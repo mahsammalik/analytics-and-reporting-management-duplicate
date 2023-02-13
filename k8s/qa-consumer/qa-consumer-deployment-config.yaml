@@ -67,6 +67,11 @@ spec:
             value: '30'
           - name: CACHE_SERVER
             value: datagrid.datagrid-tests
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
@@ -85,7 +90,15 @@ spec:
           - name: NODE_ENV
             value: qa-consumer
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'  
+            value: '300'
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
           readinessProbe:
             failureThreshold: 12
             httpGet:
