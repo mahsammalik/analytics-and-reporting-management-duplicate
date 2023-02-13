@@ -173,3 +173,37 @@ export const getMappedAccountStatement = arr => {
         runningBalance
     ];
 }
+
+export const getMappedAccountStatementMerchant = arr => {
+    logger.info({
+        event: "Data in accountStatement.getMappedAccountStatement",
+        data: arr
+    })
+    if (arr.length > 0) {
+        // if description column is null then replace it with HTML hidden space
+        arr = arr.map(arr => {
+            if (arr[5] == null)
+                arr[5] = '&#8203';  // &#8203 for HTML hidden space
+            return arr;
+        });
+
+        arr = arr.map((dat) => {
+            dat.splice(0, 1);
+            let b = dat[1];
+            dat[1] = dat[0];
+            dat[0] = b;
+            return dat
+        }).sort(function (a, b) {
+            var dateA = new Date(a[1]), dateB = new Date(b[1]);
+            return dateA - dateB;
+        })
+
+        arr = arr.map(arr => {
+            let newTransId = arr[0];
+            arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
+            arr[1] = newTransId;
+            arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
+            return arr;
+        })
+    }
+}

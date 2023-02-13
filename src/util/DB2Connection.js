@@ -1266,6 +1266,38 @@ class DatabaseConn {
     }
   }
 
+  async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+
+    try {
+
+      printLog(
+        'Entered function',
+        'DatabaseConn.getValueArrayMerchant'
+      );
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+      logger.debug("Updated Msisdn" + mappedMsisdn);
+
+      let conn = await getConnection();
+      //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+
+      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      result.closeSync();
+      stmt.closeSync();
+      conn.close();
+
+      logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
+      return arrayResult || [];
+
+    } catch (error) {
+      logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
+      logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+      throw new Error(`Database error ${error}`);
+    }
+  }
+
   //Tax Statemet 
   async getTaxValueArray(customerMobileNumer, mappedMsisdn, endDate, startDate) {
     // get connection from connection pool

@@ -273,9 +273,9 @@ class accountStatementController {
             };
             logger.debug(payload, "payload")
 
-            // const accountStatement = new accountStatementService();
-            if (payload.format === 'pdf') await accountStatementService.sendEmailPDFFormat(payload)
-            else await accountStatementService.sendEmailCSVFormat(payload);
+            if (payload.format === "pdf" && channel === "consumerApp") accountStatementService.sendEmailPDFFormat(payload)
+            else accountStatementService.sendEmailPDFMerchant(payload)
+            if (payload.format === "csv") accountStatementService.sendEmailCSVFormat(payload)
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
