@@ -68,15 +68,6 @@ const formatEnglishDate = (date) => {
  * @param {*} accountData
  */
 const accountStatementTemplateMerchant = (accountData) => {
-	console.log(
-		"ACCOUNT DATA ==================================>",
-		accountData.data
-	);
-	console.log(
-		"ACCOUNT DATA ==================================>",
-		accountData.payload
-	);
-
 	const htmlHead = `<!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
@@ -151,8 +142,6 @@ const accountStatementTemplateMerchant = (accountData) => {
 				] / 100
 			).toFixed(2);
 
-			console.log("OPENING +++++", openingBalance);
-			console.log("CLOSE +++++", closingBalance);
 			let creditTransactions = 0;
 			let debitTransactions = 0;
 			let totalCredit = 0;
@@ -164,9 +153,10 @@ const accountStatementTemplateMerchant = (accountData) => {
 				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					creditTransactions++;
-				if (parseFloat(number[number.length - 5]) > parseFloat(0))
+				if (parseFloat(nsumber[number.length - 5]) > parseFloat(0))
 					debitTransactions++;
 			});
+			
 			totalCredit = parseFloat(totalCredit).toFixed(2);
 			totalDebit = parseFloat(totalDebit).toFixed(2);
 			totalFee = parseFloat(totalFee).toFixed(2);
@@ -179,7 +169,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 			</div>
 		</div>
 		<div class="statementSummary">
-			<div class="statementBalance">
+			<div class="statementBalance"> // ! OPENING BALANCE
 				<b>Opening Balance: Rs ${openingBalance
 					? openingBalance
 						.toString()
@@ -237,14 +227,14 @@ const accountStatementTemplateMerchant = (accountData) => {
 
                 </div >
 
-	<div class="statementBalance">
-		<b>Closing Balance: Rs. ${closingBalance
+				<div class="statementBalance"> // ! CLOSING BALANCE
+					<b>Closing Balance: Rs. ${closingBalance
 					? closingBalance
 						.toString()
 						.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
 					: 0
 				}</b>
-	</div>
+				</div>
 			
 		</div>`;
 

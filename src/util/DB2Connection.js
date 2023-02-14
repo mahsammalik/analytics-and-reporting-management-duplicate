@@ -5,6 +5,8 @@ import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
 import fetchQuery from './queries'
+import { printLog, printError } from '../util/utility';
+
 
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
@@ -1269,23 +1271,26 @@ class DatabaseConn {
     try {
 
       if (!conn) {
-        console.log(
-          ' ************ connection failed ***************',
-          'DatabaseConn.getValueArrayMerchant'
+
+        printLog(
+          'connection failed',
+          'DatabaseConn.getValueArrayMerchant',
+          { customerMobileNumer: customerMobileNumer, endDate: endDate, startDate: startDate }
         );
+
         throw new Error("Database connection failed")
       }
 
-      console.log(
-        'Entered function',
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+
+      printLog(
+        'Updated Msisdn',
         'DatabaseConn.getValueArrayMerchant',
-        { customerMobileNumer: customerMobileNumer, endDate: endDate, startDate: startDate }
+        { mappedMsisdn }
       );
 
-      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-      logger.debug("Updated Msisdn" + mappedMsisdn);
-
       const query = fetchQuery("merchantAccountStatment")
+
       const statement = conn.prepareSync(query);
       const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
       const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
@@ -1294,7 +1299,12 @@ class DatabaseConn {
       statement.closeSync();
       conn.close();
 
-      logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', output });
+      printLog(
+        'UExiting function',
+        'getValueArrayMerchant in class DatabaseConn',
+        { output }
+      );
+
       return output || [];
 
     } catch (error) {

@@ -234,8 +234,6 @@ class accountStatementService {
 
         try {
 
-            logger.debug('-----payload sendEmailPDFMerchant---', payload);
-
             printLog(
                 'Entered function',
                 'accountStatementService.sendEmailPDFMerchant',
@@ -263,8 +261,6 @@ class accountStatementService {
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
-            // console.log("🚀 ~ file: accountStatementService.js:266 ~ sendEmailPDFMerchant ~ accountData", accountData)
-
 
             let pdfFile = await createPDF({
                 template: accountStatementTemplateMerchant(accountData),

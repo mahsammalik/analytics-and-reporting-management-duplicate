@@ -81,7 +81,6 @@ class accountStatementController {
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
             }
-            console.log("REQUEST **********************",req.query)
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 startDate: req.query.start_date,
@@ -96,7 +95,6 @@ class accountStatementController {
                 accountLevel: userProfile.accountLevel || ''
             };
             logger.debug(payload, "payload")
-            console.log("payload ------------------>",payload)
             // const subscriber = new Subscriber();
             // await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             // const accountStatement = new accountStatementService();
