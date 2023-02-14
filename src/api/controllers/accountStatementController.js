@@ -64,7 +64,7 @@ class accountStatementController {
         }
     }
 
-    async calculateAccountStatement(req, res, next) {
+    async calculateAccountStatement(req, res, next) { // MAIN
         try {
             logger.info({ event: 'Entered function', functionName: 'calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
 
@@ -74,12 +74,14 @@ class accountStatementController {
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             logger.debug(`getting userProfile : `)
             const userProfile = await getUserProfile(req.headers);
+            console.log(" **** USER PROFILE *****",userProfile)
             logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA", metadataHeaders)
             logger.debug(`Obtained user profile as follows : `)
             logger.debug({ userProfile });
             if (!req.query.email) {
                 return res.status(401).send({ success: false, message: "Email Not Provided" });
             }
+            console.log("REQUEST **********************",req.query)
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 startDate: req.query.start_date,
@@ -94,6 +96,7 @@ class accountStatementController {
                 accountLevel: userProfile.accountLevel || ''
             };
             logger.debug(payload, "payload")
+            console.log("payload ------------------>",payload)
             // const subscriber = new Subscriber();
             // await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             // const accountStatement = new accountStatementService();
