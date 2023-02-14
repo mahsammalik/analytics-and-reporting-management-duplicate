@@ -2,14 +2,15 @@ import {
     logger,
     createPDF,
     accountStatementTemplate,
+    accountStatementTemplateMerchant,
     Notification,
 } from '/util/';
 import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
-import { getMappedAccountStatement } from '../util/accountStatementMapping';
-
+import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
+import { printLog } from '../util/utility';
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
 /**
@@ -17,13 +18,12 @@ const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || 
  * @param {*} day 
  * @returns 
  */
- const nth = day => {
-	if(day > 3 && day < 21)
-	{
-		return day + "th";
-	}
+const nth = day => {
+    if (day > 3 && day < 21) {
+        return day + "th";
+    }
 
-	switch (day % 10) {
+    switch (day % 10) {
         case 1:
             return day + "st";
         case 2:
@@ -40,16 +40,16 @@ const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || 
  * @param {*} date 
  */
 const formatEnglishDate = date => {
-	return nth(moment(date).format("DD")) + " " + moment(date).format("MMMM") + ", " + moment(date).format("YYYY");
+    return nth(moment(date).format("DD")) + " " + moment(date).format("MMMM") + ", " + moment(date).format("YYYY");
 }
 
 class accountStatementService {
-    constructor(AccountStatementRequest){
+    constructor(AccountStatementRequest) {
         this.AccountStatementRequest = AccountStatementRequest
     }
 
-    async createAccountStatementRequest(payload){
-        try{
+    async createAccountStatementRequest(payload) {
+        try {
             logger.info({
                 event: 'Entered function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
@@ -57,40 +57,7 @@ class accountStatementService {
             });
             let requestCreated = await AccountStatementRequest.create(payload);
             return !!requestCreated ? { success: true } : { success: false }
-        }catch(error){
-            logger.info({
-                event: 'Catch function',
-                functionName: 'accountStatementService.createAccountStatementRequest',
-                error
-            });
-            return { success: false };
-        }
-    }
-
-    constructor(AccountStatementRequest){
-        this.AccountStatementRequest = AccountStatementRequest
-    }
-
-    async createAccountStatementRequest(payload){
-        try{
-            logger.info({
-                event: 'Entered function',
-                functionName: 'accountStatementService.createAccountStatementRequest',
-                data: payload
-            });
-            let query = {
-                msisdn: payload.msisdn,
-                status: 'pending'
-            };
-            let requestFound = await AccountStatementRequest.findOne(query);
-            if(!!requestFound){
-                return { success: false, duplicate: true }
-            }else
-            {
-                let requestCreated = await AccountStatementRequest.create(payload);
-                return !!requestCreated ? { success: true } : { success: false }
-            }
-        }catch(error){
+        } catch (error) {
             logger.info({
                 event: 'Catch function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
@@ -117,7 +84,7 @@ class accountStatementService {
             // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             // const { data, success, message } = response;
             // if (success) {
-            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Fee, Running balance, Reason Type\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + db2Data).toString('base64');
             logger.debug(`csvData ${csvData}`, db2Data);
@@ -262,6 +229,94 @@ class accountStatementService {
         }
     }
 
+    async sendEmailPDFMerchant(payload) {
+
+        try {
+
+            printLog(
+                'Entered function',
+                'accountStatementService.sendEmailPDFMerchant',
+                { payload: payload }
+            );
+
+            let msisdn = payload.msisdn;
+
+            if (msisdn.substring(0, 2) === '92')
+                msisdn = msisdn.replace("92", "0");
+
+            let db2Data = await DB2Connection.getValueArrayMerchant(payload.msisdn, payload.end_date, payload.start_date);
+
+            if (db2Data.length > 0) {
+                db2Data = db2Data.map(arr => {
+                    return getMappedAccountStatementMerchant(arr);
+                }).sort(function (a, b) {
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
+                    return dateA - dateB;
+                })
+            }
+
+            const accountData = {
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited","Running Balance" , "Fee", , "Reason Type\n"],
+                data: db2Data,
+                payload: { ...payload, msisdn }
+            };
+
+            let pdfFile = await createPDF({
+                template: accountStatementTemplateMerchant(accountData),
+                fileName: `Account Statement`
+            });
+
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+
+            logger.debug(`pdfFile ${pdfFile}`, db2Data);
+
+            const emailData = [
+                {
+                    'key': 'customerName',
+                    'value': payload.merchantName
+                },
+                {
+                    'key': 'accountNumber',
+                    'value': payload.msisdn
+                },
+                {
+                    'key': 'statementPeriod',
+                    'value': payload.start_date
+                }
+            ];
+
+            if (payload.email) {
+
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFMerchant' });
+
+                const attachment = [{
+                    filename: 'AccountStatement.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+
+                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+            }
+            else {
+                throw new Error(`Error fetching data for account statement`);
+            }
+
+        } catch (error) {
+            logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFMerchant', error, payload });
+            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFMerchant' });
+
+            throw new Error(`Error fetching data for account statement:${error}`);
+        }
+
+    }
 }
 
 export default new accountStatementService(AccountStatementRequest);
