@@ -309,8 +309,8 @@ class accountStatementService {
             }
 
         } catch (error) {
-            logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFFormat', error, payload });
-            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+            logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFMerchant', error, payload });
+            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFMerchant' });
 
             throw new Error(`Error fetching data for account statement:${error}`);
         }
