@@ -1284,12 +1284,12 @@ class DatabaseConn {
       }
       console.log("***************88 EXECUTE QUERY *************")
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      // const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      // const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
-      console.log(" *************************  FIRST FETCHED ****************************",result)
+      // console.log(" *************************  FIRST FETCHED ****************************",result)
 
-      const stmt2 = conn.prepareSync(`SELECT MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE , FEE_FED from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      const stmt2 = conn.prepareSync(`SELECT MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, FEE_FED , RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       const result2 = stmt2.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
       console.log(" *************************  SECOND FETCHED ****************************",result2)
@@ -1300,16 +1300,16 @@ class DatabaseConn {
       // console.log(" *************************  THIRD FETCHED ****************************",result3)
 
 
-      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      // const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       const arrayResult2 = result2.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       // const arrayResult3 = result3.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
-      console.log("ARRAY RESULT 1 ==========",arrayResult)
+      // console.log("ARRAY RESULT 1 ==========",arrayResult)
       console.log("ARRAY RESULT 2 ==========",arrayResult2)
       // console.log("ARRAY RESULT 3 ==========",arrayResult3)
 
-      result.closeSync();
-      stmt.closeSync();
+      // result.closeSync();
+      // stmt.closeSync();
       result2.closeSync();
       stmt2.closeSync();
       // result3.closeSync();
@@ -1317,7 +1317,7 @@ class DatabaseConn {
       conn.close();
 
       logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', arrayResult });
-      return arrayResult || [];
+      return arrayResult2 || [];
 
     } catch (error) {
       logger.error({ event: 'Error  thrown', functionName: 'getValueArrayMerchant in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });

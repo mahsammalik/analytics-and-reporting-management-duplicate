@@ -19,7 +19,7 @@ const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || 
  * @param {*} day 
  * @returns 
  */
- const nth = day => {
+const nth = day => {
     if (day > 3 && day < 21) {
         return day + "th";
     }
@@ -41,16 +41,16 @@ const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || 
  * @param {*} date 
  */
 const formatEnglishDate = date => {
-	return nth(moment(date).format("DD")) + " " + moment(date).format("MMMM") + ", " + moment(date).format("YYYY");
+    return nth(moment(date).format("DD")) + " " + moment(date).format("MMMM") + ", " + moment(date).format("YYYY");
 }
 
 class accountStatementService {
-    constructor(AccountStatementRequest){
+    constructor(AccountStatementRequest) {
         this.AccountStatementRequest = AccountStatementRequest
     }
 
-    async createAccountStatementRequest(payload){
-        try{
+    async createAccountStatementRequest(payload) {
+        try {
             logger.info({
                 event: 'Entered function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
@@ -58,7 +58,7 @@ class accountStatementService {
             });
             let requestCreated = await AccountStatementRequest.create(payload);
             return !!requestCreated ? { success: true } : { success: false }
-        }catch(error){
+        } catch (error) {
             logger.info({
                 event: 'Catch function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
@@ -249,21 +249,26 @@ class accountStatementService {
 
             let db2Data = await DB2Connection.getValueArrayMerchant(payload.msisdn, payload.end_date, payload.start_date);
 
-            db2Data = getMappedAccountStatementMerchant(db2Data)
+            if (db2Data.length > 0) {
+                db2Data = db2Data.map(arr => {
+                    return getMappedAccountStatementMerchant(arr);
+                }).sort(function (a, b) {
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
+                    return dateA - dateB;
+                })
+            }
 
             const accountData = {
                 headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
+            console.log("🚀 ~ file: accountStatementService.js:266 ~ sendEmailPDFMerchant ~ accountData", accountData)
 
-            let pdfFile = await createPDF
-                (
-                    {
-                        template: accountStatementTemplateMerchant(accountData),
-                        fileName: `Account Statement`
-                    }
-                );
+            let pdfFile = await createPDF({
+                template: accountStatementTemplateMerchant(accountData),
+                fileName: `Account Statement`
+            });
 
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
 
@@ -286,14 +291,14 @@ class accountStatementService {
 
             if (payload.email) {
 
-                let emailHTMLContent = await accountStatementTemplateMerchant({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
                     value: emailHTMLContent,
                 });
 
-                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFMerchant' });
 
                 const attachment = [{
                     filename: 'AccountStatement.pdf',
