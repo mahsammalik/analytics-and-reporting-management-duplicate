@@ -1282,6 +1282,7 @@ class DatabaseConn {
         console.log(" *************************  CONNECTION CLOSED ****************************")
         throw new Error("Database connection failed")
       }
+      console.log("***************88 EXECUTE QUERY *************")
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
       const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
