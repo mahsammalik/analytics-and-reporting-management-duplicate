@@ -1263,6 +1263,8 @@ class DatabaseConn {
   }
 
   async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+    
+    let conn = await getConnection();
 
     try {
 
@@ -1275,10 +1277,10 @@ class DatabaseConn {
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       logger.debug("Updated Msisdn" + mappedMsisdn);
 
-      let conn = await getConnection();
 
-      if(conn){
-        console.log(" *************************  CONNECTION OPENED ****************************")
+      if(!conn){
+        console.log(" *************************  CONNECTION CLOSED ****************************")
+        throw new Error("Database connection failed")
       }
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
       const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
@@ -1307,6 +1309,10 @@ class DatabaseConn {
 
       result.closeSync();
       stmt.closeSync();
+      result2.closeSync();
+      stmt2.closeSync();
+      result3.closeSync();
+      stmt3.closeSync();
       conn.close();
 
       logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', arrayResult });
