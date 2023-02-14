@@ -1,9 +1,10 @@
-import { open , Pool} from 'ibm_db';
+import { open, Pool } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
+import fetchQuery from './queries'
 
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
@@ -103,106 +104,106 @@ class DatabaseConn {
     }
 
     if (tableName === config.reportingDBTables.MOBILE_BUNDLE) {
-        let conn = await getConnection();
-        try {
-            // let conn = await open(cn);
-            if(data?.discounted != undefined && data?.discounted == true){
-            if (data.transactionStatus == 'Pending' && data.typeOfTransaction =='init_merchant_to_payment') {
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, DISCOUNTED, TYPE_OF_TRANS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data?.discounted ?data?.discounted:false, data?.typeOfTransaction ?data?.typeOfTransaction:'']);
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
-            }
-            else if (data.transactionStatus == 'Completed' && data.typeOfTransaction =='confirm_merchant_to_payment') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}') WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_update done`);
-            }
-            else if (data.typeOfTransaction == 'init_merchant_to_payment_refund') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_ID_REV='${data?.TIDReversal? data?.TIDReversal:''}', TRANS_ID_B_REV='${data?.TIDBReversal ?data?.TIDBReversal:''}',SUBSCRIPTION='${ data?.subscription ? data?.subscription :''}', BUNDLE_AMOUNT=${data?.bundleAmount ? data?.bundleAmount:0}, INCENTIVE_AMOUNT=${data?.incentiveAmount ? data?.incentiveAmount:0}, MSISDN_B='${data?.MsisdnB}'  WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert refund done`);
-            }
-            else if (data.typeOfTransaction == 'confirm_merchant_to_payment_refund') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_update refund done`);
-            }
-            else if (data.typeOfTransaction =='init_without_confirm_b2b' ) {
+      let conn = await getConnection();
+      try {
+        // let conn = await open(cn);
+        if (data?.discounted != undefined && data?.discounted == true) {
+          if (data.transactionStatus == 'Pending' && data.typeOfTransaction == 'init_merchant_to_payment') {
+            const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, DISCOUNTED, TYPE_OF_TRANS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+            stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data?.discounted ? data?.discounted : false, data?.typeOfTransaction ? data?.typeOfTransaction : '']);
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_insert done`);
+          }
+          else if (data.transactionStatus == 'Completed' && data.typeOfTransaction == 'confirm_merchant_to_payment') {
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}') WHERE TRANS_ID='${data.TID}';`);
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_update done`);
+          }
+          else if (data.typeOfTransaction == 'init_merchant_to_payment_refund') {
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_ID_REV='${data?.TIDReversal ? data?.TIDReversal : ''}', TRANS_ID_B_REV='${data?.TIDBReversal ? data?.TIDBReversal : ''}',SUBSCRIPTION='${data?.subscription ? data?.subscription : ''}', BUNDLE_AMOUNT=${data?.bundleAmount ? data?.bundleAmount : 0}, INCENTIVE_AMOUNT=${data?.incentiveAmount ? data?.incentiveAmount : 0}, MSISDN_B='${data?.MsisdnB}'  WHERE TRANS_ID='${data.TID}';`);
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_insert refund done`);
+          }
+          else if (data.typeOfTransaction == 'confirm_merchant_to_payment_refund') {
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), WHERE TRANS_ID='${data.TID}';`);
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_update refund done`);
+          }
+          else if (data.typeOfTransaction == 'init_without_confirm_b2b') {
 
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
-                TRANS_ID_B='${data.TIDB}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
+                TRANS_ID_B='${data.TIDB}', BUNDLE_AMOUNT=${data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
                 INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done b2b`);
-            }
-            else if (data.typeOfTransaction =='refund_without_confirm_b2b' ) {
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_insert done b2b`);
+          }
+          else if (data.typeOfTransaction == 'refund_without_confirm_b2b') {
 
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
-                TRANS_ID_B='${data.TIDB}',TRANS_ID_B_REV='${data.TIDBReversal}', BUNDLE_AMOUNT=${ data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}',
+                TRANS_ID_B='${data.TIDB}',TRANS_ID_B_REV='${data.TIDBReversal}', BUNDLE_AMOUNT=${data.bundleAmount},INCENTIVE_AMOUNT=${data.incentiveAmount},
                 INCENTIVE_AMOUNT_PARTNER=${data.incentiveAmountByPartner}, MSISDN_B='${data.MsisdnB}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}'), TRANS_STATUS_B='${data.transactionStatusB}'  WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done b2b refund`);
-            }
-        }else{
-            if (data.transactionStatus == 'Pending') {
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
-            }
-            else if (data.transactionStatus == 'Completed') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}' WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_update done`);
-            }
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_insert done b2b refund`);
+          }
+        } else {
+          if (data.transactionStatus == 'Pending') {
+            const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+            stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus]);
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_insert done`);
+          }
+          else if (data.transactionStatus == 'Completed') {
+            const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}' WHERE TRANS_ID='${data.TID}';`);
+            stmt.executeSync();
+            stmt.closeSync();
+            //conn.close(function (err) { });
+            logger.info(`${schemaName}.${tableName}_update done`);
+          }
         }
-        } catch (err) {
-            logger.error(`${schemaName}.${tableName} database connection error` + err);
-            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-        } finally {
-            conn.close(function (err) { });
-        }
+      } catch (err) {
+        logger.error(`${schemaName}.${tableName} database connection error` + err);
+        return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+      } finally {
+        conn.close(function (err) { });
+      }
     }
 
     if (tableName === config.reportingDBTables.MOBILE_BUNDLE_ZONG) {
-        let conn = await open(cn);
-        try {
-            // let conn = await open(cn);
-            if (data.transactionStatus == 'Pending') {
-                const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, BUNDLE_VOICE, BUNDLE_SMS, BUNDLE_DATA, RESPONSE_CODE, RESPONSE_DESCRIPTION) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
-                stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.voiceMinutes, data.smsDetails, data.DataDetails, data.responseCode, data.responseDesc]);
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_insert done`);
-            }
-            else if (data.transactionStatus == 'Completed') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
-                stmt.executeSync();
-                stmt.closeSync();
-                //conn.close(function (err) { });
-                logger.info(`${schemaName}.${tableName}_update done`);
-            }
-        } catch (err) {
-            logger.error(`${schemaName}.${tableName} database connection error` + err);
-            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-        } finally {
-            conn.close(function (err) { });
+      let conn = await open(cn);
+      try {
+        // let conn = await open(cn);
+        if (data.transactionStatus == 'Pending') {
+          const stmt = conn.prepareSync(`INSERT INTO ${schemaName}.${tableName} (AMOUNT, BUNDLE_NAME, BUNDLE_TYPE, CHANNEL, INITIATOR_MSISDN, NETWORK, TARGET_MSISDN, TRANS_DATE, TRANS_ID, TOP_NAME, MSG_OFFSET, TRANS_STATUS, BUNDLE_VOICE, BUNDLE_SMS, BUNDLE_DATA, RESPONSE_CODE, RESPONSE_DESCRIPTION) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`);
+          stmt.executeSync([data.amount, data.bundleName, data.bundleType, data.channel, data.initiatorMsisdn, data.network, data.targetMsisdn, data.transactionTime, data.TID, data.topic, data.msg_offset, data.transactionStatus, data.voiceMinutes, data.smsDetails, data.DataDetails, data.responseCode, data.responseDesc]);
+          stmt.closeSync();
+          //conn.close(function (err) { });
+          logger.info(`${schemaName}.${tableName}_insert done`);
         }
+        else if (data.transactionStatus == 'Completed') {
+          const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET=${data.msg_offset} WHERE TRANS_ID='${data.TID}';`);
+          stmt.executeSync();
+          stmt.closeSync();
+          //conn.close(function (err) { });
+          logger.info(`${schemaName}.${tableName}_update done`);
+        }
+      } catch (err) {
+        logger.error(`${schemaName}.${tableName} database connection error` + err);
+        return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+      } finally {
+        conn.close(function (err) { });
+      }
     }
 
     if (tableName === config.reportingDBTables.DONATION) {
@@ -1110,37 +1111,36 @@ class DatabaseConn {
     }
   }
 
-    async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, startDate, endDate) {
-        // get connection from connection pool
-        let conn = await getConnection();
-        // if connection is null then open it using connection string
-        if(!conn)
-        {
-            conn = await open(cn);
-        }
-        
-        try {
-            // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            // logger.info(`Step 02 b: mappedMSISDN `)
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?  order by TRX_DATETIME desc ;`);
-            let result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-
-
-            result.closeSync();
-            stmt.closeSync();
-            conn.close();
-            // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
-            return resultArrayFormat || [];
-
-        } catch (err) {
-            logger.error('Database connection error' + err);
-            logger.error(err);
-            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-        } finally {
-            conn.close(function (err) { if (err) { logger.error(err) } });
-        }
+  async getLatestAccountBalanceValue(customerMobileNumer, mappedMsisdn, startDate, endDate) {
+    // get connection from connection pool
+    let conn = await getConnection();
+    // if connection is null then open it using connection string
+    if (!conn) {
+      conn = await open(cn);
     }
+
+    try {
+      // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+      // logger.info(`Step 02 b: mappedMSISDN `)
+      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?  order by TRX_DATETIME desc ;`);
+      let result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+
+      result.closeSync();
+      stmt.closeSync();
+      conn.close();
+      // logger.info(`Step 02: c Returning updated balance ${updatedBalance}`)
+      return resultArrayFormat || [];
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      logger.error(err);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+    } finally {
+      conn.close(function (err) { if (err) { logger.error(err) } });
+    }
+  }
 
   async getLatestAccountBalanceValueWithConn(customerMobileNumer, mappedMsisdn, endDate, conn) {
 
@@ -1263,61 +1263,39 @@ class DatabaseConn {
   }
 
   async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
-    
+
     let conn = await getConnection();
 
     try {
 
+      if (!conn) {
+        console.log(
+          ' ************ connection failed ***************',
+          'DatabaseConn.getValueArrayMerchant'
+        );
+        throw new Error("Database connection failed")
+      }
+
       console.log(
         'Entered function',
         'DatabaseConn.getValueArrayMerchant',
-        {customerMobileNumer : customerMobileNumer, endDate: endDate, startDate : startDate}
+        { customerMobileNumer: customerMobileNumer, endDate: endDate, startDate: startDate }
       );
 
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       logger.debug("Updated Msisdn" + mappedMsisdn);
 
+      const query = fetchQuery("merchantAccountStatment")
+      const statement = conn.prepareSync(query);
+      const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
-      if(!conn){
-        // console.log(" *************************  CONNECTION CLOSED ****************************")
-        throw new Error("Database connection failed")
-      }
-      // console.log("***************EXECUTE QUERY *************")
-      //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      // const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      // const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
-
-      // console.log(" *************************  FIRST FETCHED ****************************",result)
-
-      const stmt2 = conn.prepareSync(`SELECT MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, FEE_FED , RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      const result2 = stmt2.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
-
-      // console.log(" *************************  SECOND FETCHED ****************************",result2)
-
-      // const stmt3 = conn.prepareSync(`Select json_object ('MSISDN' value MSISDN,'TRX_DATETIME' value TRX_DATETIME,'TRX_ID' value TRX_ID ,'DESCRIPTION' value DESCRIPTION) from statements.ACCOUNTSTATEMENT_NEW where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      // const result3 = stmt3.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
-
-      // console.log(" *************************  THIRD FETCHED ****************************",result3)
-
-
-      // const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-      const arrayResult2 = result2.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-      // const arrayResult3 = result3.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-
-      // console.log("ARRAY RESULT 1 ==========",arrayResult)
-      // console.log("ARRAY RESULT 2 ==========",arrayResult2)
-      // console.log("ARRAY RESULT 3 ==========",arrayResult3)
-
-      // result.closeSync();
-      // stmt.closeSync();
-      result2.closeSync();
-      stmt2.closeSync();
-      // result3.closeSync();
-      // stmt3.closeSync();
+      result.closeSync();
+      statement.closeSync();
       conn.close();
 
-      logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', arrayResult2 });
-      return arrayResult2 || [];
+      logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', output });
+      return output || [];
 
     } catch (error) {
       logger.error({ event: 'Error  thrown', functionName: 'getValueArrayMerchant in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
@@ -1423,10 +1401,10 @@ class DatabaseConn {
 
   async addLoginReporting(payload) {
     let conn = await getConnection();
-  try {
-    logger.debug('payload data');
-    logger.debug(payload);
-    const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,REGISTRATION_DATE,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
+    try {
+      logger.debug('payload data');
+      logger.debug(payload);
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.LOGIN_AUTH_REPORTING (MSISDN, CNIC, DOB, FULLNAME,EMAIL,CUSTOMER_TYPE,REGISTRATION_DATE,CNIC_EXPIRY,LOGIN_TIME,VERSION,PUSHID )
     VALUES
     (
         '${payload.MSISDN}',
@@ -1441,20 +1419,20 @@ class DatabaseConn {
         '${payload.VERSION}',
         '${payload.PUSHID}'
     );`
-    );
-    stmt.executeSync();
-    stmt.closeSync();
-    logger.debug(`LOGIN_REPORT insertion done`);
-    return;
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`LOGIN_REPORT insertion done`);
+      return;
 
-  } catch (err) {
-    logger.error('Database connection error' + err);
-    return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-  } finally {
-    conn.close(function (err) { });
-}
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+    } finally {
+      conn.close(function (err) { });
+    }
   }
-  
+
   async addLoginReportingV2(payload) {
     try {
       pool.open(cn, async (error, conn) => {
@@ -1496,7 +1474,7 @@ class DatabaseConn {
           });
         }
 
-        
+
       });
     }
     catch (error) {
@@ -1512,7 +1490,7 @@ class DatabaseConn {
     }
   }
 
-  
+
 }
 
 
