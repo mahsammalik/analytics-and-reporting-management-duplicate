@@ -108,10 +108,9 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        if (payload.format === 'pdf')
-            await accountStatementService.sendEmailPDFFormat(payload)
-        else
-            await accountStatementService.sendEmailCSVFormat(payload);
+        if (payload.format === "pdf" && payload.channel === "consumerApp") accountStatementService.sendEmailPDFFormat(payload)
+        else accountStatementService.sendEmailPDFMerchant(payload)
+        if (payload.format === "csv") accountStatementService.sendEmailCSVFormat(payload)
         
         return { success: true }
     }catch(error){
