@@ -146,7 +146,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 			console.log("accountData.data[0].length - 2 ", accountData.data[0].length - 2)
 			console.log("accountData.data[0][accountData.data[0].length - 2]", accountData.data[0][accountData.data[0].length - 2])
 			console.log("accountData.data[0][accountData.data[0].length - 2]/100", accountData.data[0][accountData.data[0].length - 2] / 100)
-			console.log("parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2)",parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2))
+			console.log("parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2)", parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2))
 
 
 			const openingBalance = parseFloat(
@@ -326,6 +326,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 			return htmlString;
 		}
 	} catch (error) {
+		console.log("ERROR ****************", error)
 		logger.error({
 			event: "Error thrown ",
 			functionName: "accountStatementTemplateMerchant",

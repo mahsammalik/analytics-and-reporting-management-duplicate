@@ -214,7 +214,7 @@ export const getMappedAccountStatementMerchant = arr => {
         event: "Data in accountStatement.getMappedAccountStatementMerchant",
         data: arr
     })
-    const [msisdn, date, trxId, trxType, channel, desc, amountDebit, amountCredit, fee ,runningBalance, reason] = arr;
+    const [msisdn, date, trxId = "", trxType = "", channel = "", desc = "", amountDebit = 0, amountCredit = 0, fee = 0, runningBalance = 0, reason = ""] = arr;
     const description = desc === null ? '&#8203' : desc;
     return [
         moment(date).format('DD-MMM-YYYY HH:mm:ss'),
