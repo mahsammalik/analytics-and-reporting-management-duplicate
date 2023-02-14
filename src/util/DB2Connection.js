@@ -1289,7 +1289,7 @@ class DatabaseConn {
 
       console.log(" *************************  FIRST FETCHED ****************************",result)
 
-      const stmt2 = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE , FEE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      const stmt2 = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE , FEE_FED from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       const result2 = stmt2.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
       console.log(" *************************  SECOND FETCHED ****************************",result2)
