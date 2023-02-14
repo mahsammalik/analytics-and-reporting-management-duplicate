@@ -112,6 +112,9 @@ const accountStatementTemplateMerchant = accountData => {
 			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplateMerchant' });
 			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2);
 			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 2] / 100).toFixed(2);
+
+			console.log("OPENING +++++",openingBalance)
+			console.log("CLOSE +++++",closingBalance)
 			let creditTransactions = 0;
 			let debitTransactions = 0;
 			let totalCredit = 0;
