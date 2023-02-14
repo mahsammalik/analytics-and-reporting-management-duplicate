@@ -7,7 +7,6 @@ import DB2ConnectionPool from './DB2ConnPool'
 import fetchQuery from './queries'
 import { printLog, printError } from '../util/utility';
 
-
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
 const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
@@ -1271,14 +1270,7 @@ class DatabaseConn {
     try {
 
       if (!conn) {
-
-        printLog(
-          'connection failed',
-          'DatabaseConn.getValueArrayMerchant',
-          { customerMobileNumer: customerMobileNumer, endDate: endDate, startDate: startDate }
-        );
-
-        throw new Error("Database connection failed")
+        conn = await open(cn);
       }
 
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******

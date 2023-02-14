@@ -14,6 +14,9 @@ const queries = {
             WHERE DATE(TRX_DATETIME) 
             BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`,
 };
+
+
+
 const fetchQuery = (name) => queries[name] || null;
 
 module.exports = fetchQuery;

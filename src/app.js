@@ -50,7 +50,7 @@ if(process.env.CONSUMER && process.env.CONSUMER.toLowerCase() === "true"){
     subscriber.setConsumer();
     const rewardSubscriber = new RewardSubscriber();
     rewardSubscriber.setConsumer();  
-}
+  }
 
 
 

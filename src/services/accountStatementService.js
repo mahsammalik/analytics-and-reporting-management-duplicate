@@ -11,7 +11,7 @@ import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
 import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
-import { successResponse, errorResponse, printLog, printError } from '../util/utility';
+import { printLog } from '../util/utility';
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
 /**

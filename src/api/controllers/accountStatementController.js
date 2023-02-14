@@ -99,10 +99,11 @@ class accountStatementController {
             // await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
             // const accountStatement = new accountStatementService();
             const channel = req.headers['x-channel']
-            if (payload.format === "pdf" && channel === "consumerApp") accountStatementService.sendEmailPDFFormat(payload)
-            else accountStatementService.sendEmailPDFMerchant(payload)
 
-            if (payload.format === "csv") accountStatementService.sendEmailCSVFormat(payload)
+            if (payload.format === "pdf" && channel === "consumerApp") await accountStatementService.sendEmailPDFFormat(payload)
+            else await accountStatementService.sendEmailPDFMerchant(payload)
+
+            if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload)
 
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
@@ -220,9 +221,12 @@ class accountStatementController {
             };
             logger.debug(payload, "payload")
 
-            if (payload.format === "pdf" && channel === "consumerApp") accountStatementService.sendEmailPDFFormat(payload)
-            else accountStatementService.sendEmailPDFMerchant(payload)
-            if (payload.format === "csv") accountStatementService.sendEmailCSVFormat(payload)
+            const channel = req.headers['x-channel']
+
+            if (payload.format === "pdf" && channel === "consumerApp") await accountStatementService.sendEmailPDFFormat(payload)
+            else await accountStatementService.sendEmailPDFMerchant(payload)
+
+            if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload)
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
