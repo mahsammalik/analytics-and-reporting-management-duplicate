@@ -211,7 +211,7 @@ export const getMappedAccountStatement = arr => {
 
 export const getMappedAccountStatementMerchant = arr => {
     logger.info({
-        event: "Data in accountStatement.getMappedAccountStatement",
+        event: "Data in accountStatement.getMappedAccountStatementMerchant",
         data: arr
     })
     const [msisdn, date, trxId, trxType, channel, desc, amountDebit, amountCredit, fee ,runningBalance, reason] = arr;
