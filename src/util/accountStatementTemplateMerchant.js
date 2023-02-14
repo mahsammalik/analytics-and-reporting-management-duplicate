@@ -36,21 +36,20 @@ const htmlFoot = `<footer>
  * @returns 
  */
 const nth = day => {
-	if(day > 3 && day < 21)
-	{
+	if (day > 3 && day < 21) {
 		return day + "th";
 	}
 
 	switch (day % 10) {
-        case 1:
-            return day + "st";
-        case 2:
-            return day + "nd";
-        case 3:
-            return day + "rd";
-        default:
-            return day + "th";
-    }
+		case 1:
+			return day + "st";
+		case 2:
+			return day + "nd";
+		case 3:
+			return day + "rd";
+		default:
+			return day + "th";
+	}
 }
 
 /**
@@ -66,6 +65,10 @@ const formatEnglishDate = date => {
  * @param {*} accountData
  */
 const accountStatementTemplateMerchant = accountData => {
+
+	console.log("ACCOUNT DATA ==================================>", accountData.data)
+	console.log("ACCOUNT DATA ==================================>", accountData.payload)
+
 	const htmlHead = `<!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
@@ -107,20 +110,20 @@ const accountStatementTemplateMerchant = accountData => {
 			return htmlString;
 		} else {
 			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplateMerchant' });
-			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 1] / 100).toFixed(2);
-			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 1] / 100).toFixed(2);
+			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2);
+			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 2] / 100).toFixed(2);
 			let creditTransactions = 0;
 			let debitTransactions = 0;
 			let totalCredit = 0;
 			let totalDebit = 0;
-            let totalFee = 0
+			let totalFee = 0
 			accountData.data.forEach((number) => {
-                totalFee += parseFloat(number[number.length - 2] / 100) || 0;
-				totalCredit += parseFloat(number[number.length - 3] / 100) || 0;
-				totalDebit += parseFloat(number[number.length - 4] / 100) || 0;
-				if (parseFloat(number[number.length - 3]) > parseFloat(0))
-					creditTransactions++;
+				totalFee += parseFloat(number[number.length - 3] / 100) || 0;
+				totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
+				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
+					creditTransactions++;
+				if (parseFloat(number[number.length - 5]) > parseFloat(0))
 					debitTransactions++;
 			});
 			totalCredit = parseFloat(totalCredit).toFixed(2);
@@ -188,7 +191,7 @@ const accountStatementTemplateMerchant = accountData => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col/ 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
+							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col / 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
 						});
 						column = column.join();
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
