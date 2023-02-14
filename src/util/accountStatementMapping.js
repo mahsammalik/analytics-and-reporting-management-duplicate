@@ -226,5 +226,6 @@ export const getMappedAccountStatementMerchant = arr => {
         amountCredit,
         fee,
         runningBalance,
+        reason
     ];
 }
