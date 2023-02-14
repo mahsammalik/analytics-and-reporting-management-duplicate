@@ -1316,7 +1316,7 @@ class DatabaseConn {
       // stmt3.closeSync();
       conn.close();
 
-      logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', arrayResult });
+      logger.info({ event: 'Exited function', functionName: 'getValueArrayMerchant in class DatabaseConn', arrayResult2 });
       return arrayResult2 || [];
 
     } catch (error) {
