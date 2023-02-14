@@ -68,14 +68,14 @@ const formatEnglishDate = (date) => {
  * @param {*} accountData
  */
 const accountStatementTemplateMerchant = (accountData) => {
-	// console.log(
-	// 	"ACCOUNT DATA ==================================>",
-	// 	accountData.data
-	// );
-	// console.log(
-	// 	"ACCOUNT DATA ==================================>",
-	// 	accountData.payload
-	// );
+	console.log(
+		"ACCOUNT DATA ==================================>",
+		accountData.data
+	);
+	console.log(
+		"ACCOUNT DATA ==================================>",
+		accountData.payload
+	);
 
 	const htmlHead = `<!DOCTYPE html>
 	<head>
@@ -142,13 +142,6 @@ const accountStatementTemplateMerchant = (accountData) => {
 				event: "Entered block accountData.data.length > 0 ",
 				functionName: "accountStatementTemplateMerchant",
 			});
-			console.log("accountData.data[0] ", accountData.data[0])
-			console.log("accountData.data[0].length - 2 ", accountData.data[0].length - 2)
-			console.log("accountData.data[0][accountData.data[0].length - 2]", accountData.data[0][accountData.data[0].length - 2])
-			console.log("accountData.data[0][accountData.data[0].length - 2]/100", accountData.data[0][accountData.data[0].length - 2] / 100)
-			console.log("parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2)", parseFloat(accountData.data[0][accountData.data[0].length - 2] / 100).toFixed(2))
-
-
 			const openingBalance = parseFloat(
 				accountData.data[0][accountData.data[0].length - 2] / 100
 			).toFixed(2);
@@ -234,7 +227,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 						.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
 					: 0
 				}</b></div>
-				<div>&nbsp;</div>
+
 				<div>Total Fee Amount: <b>${totalFee
 					? totalFee
 						.toString()
@@ -252,6 +245,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 					: 0
 				}</b>
 	</div>
+			
 		</div>`;
 
 			const checkifsecondlastpage = (ind) =>
@@ -326,7 +320,6 @@ const accountStatementTemplateMerchant = (accountData) => {
 			return htmlString;
 		}
 	} catch (error) {
-		console.log("ERROR ****************", error)
 		logger.error({
 			event: "Error thrown ",
 			functionName: "accountStatementTemplateMerchant",

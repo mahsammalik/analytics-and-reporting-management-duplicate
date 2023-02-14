@@ -103,6 +103,7 @@ class accountStatementController {
             const channel = req.headers['x-channel']
             if (payload.format === "pdf" && channel === "consumerApp") accountStatementService.sendEmailPDFFormat(payload)
             else accountStatementService.sendEmailPDFMerchant(payload)
+
             if (payload.format === "csv") accountStatementService.sendEmailCSVFormat(payload)
 
             const subscriber = new Subscriber();
