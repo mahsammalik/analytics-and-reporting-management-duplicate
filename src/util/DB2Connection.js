@@ -1297,7 +1297,7 @@ class DatabaseConn {
       // const stmt3 = conn.prepareSync(`Select json_object ('MSISDN' value MSISDN,'TRX_DATETIME' value TRX_DATETIME,'TRX_ID' value TRX_ID ,'DESCRIPTION' value DESCRIPTION) from statements.ACCOUNTSTATEMENT_NEW where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       // const result3 = stmt3.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
-      console.log(" *************************  THIRD FETCHED ****************************",result3)
+      // console.log(" *************************  THIRD FETCHED ****************************",result3)
 
 
       const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
