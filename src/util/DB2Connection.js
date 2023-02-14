@@ -1,9 +1,12 @@
-import { open , Pool} from 'ibm_db';
+import { open, Pool } from 'ibm_db';
 import responseCodeHandler from './responseCodeHandler';
 import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
+import fetchQuery from './queries'
+import { printLog, printError } from '../util/utility';
+
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
 const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
@@ -1266,6 +1269,49 @@ class DatabaseConn {
     }
   }
 
+  async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+
+    let conn = await getConnection();
+
+    try {
+
+      if (!conn) {
+        conn = await open(cn);
+      }
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+
+      printLog(
+        'Updated Msisdn',
+        'DatabaseConn.getValueArrayMerchant',
+        { mappedMsisdn }
+      );
+
+      const query = fetchQuery("merchantAccountStatment")
+
+      const statement = conn.prepareSync(query);
+      const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+      result.closeSync();
+      statement.closeSync();
+      conn.close();
+
+      printLog(
+        'UExiting function',
+        'getValueArrayMerchant in class DatabaseConn',
+        { output }
+      );
+
+      return output || [];
+
+    } catch (error) {
+      logger.error({ event: 'Error  thrown', functionName: 'getValueArrayMerchant in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
+      logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormatMerchant' });
+      throw new Error(`Database error ${error}`);
+    }
+  }
+
   //Tax Statemet 
   async getTaxValueArray(customerMobileNumer, mappedMsisdn, endDate, startDate) {
     // get connection from connection pool
@@ -1394,7 +1440,7 @@ class DatabaseConn {
     conn.close(function (err) { });
 }
   }
-  
+
   async addLoginReportingV2(payload) {
     try {
       pool.open(cn, async (error, conn) => {
@@ -1452,7 +1498,7 @@ class DatabaseConn {
     }
   }
 
-  
+
 }
 
 
