@@ -247,7 +247,7 @@ class accountStatementService {
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
 
-            let db2Data = await DB2Connection.getValueArrayMerchant(payload.msisdn, payload.endDate, payload.startDate);
+            let db2Data = await DB2Connection.getValueArrayMerchant(payload.msisdn, payload.end_date, payload.start_date);
 
             db2Data = getMappedAccountStatementMerchant(db2Data)
 
