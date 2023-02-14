@@ -252,6 +252,9 @@ class accountStatementService {
             if (db2Data.length > 0) {
                 db2Data = db2Data.map(arr => {
                     return getMappedAccountStatementMerchant(arr);
+                }).sort(function (a, b) {
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
+                    return dateA - dateB;
                 })
             }
 
@@ -260,7 +263,7 @@ class accountStatementService {
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
-            console.log("🚀 ~ file: accountStatementService.js:266 ~ sendEmailPDFMerchant ~ accountData", accountData)
+            // console.log("🚀 ~ file: accountStatementService.js:266 ~ sendEmailPDFMerchant ~ accountData", accountData)
 
 
             let pdfFile = await createPDF({

@@ -1279,10 +1279,10 @@ class DatabaseConn {
 
 
       if(!conn){
-        console.log(" *************************  CONNECTION CLOSED ****************************")
+        // console.log(" *************************  CONNECTION CLOSED ****************************")
         throw new Error("Database connection failed")
       }
-      console.log("***************88 EXECUTE QUERY *************")
+      // console.log("***************EXECUTE QUERY *************")
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
       // const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       // const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
@@ -1292,7 +1292,7 @@ class DatabaseConn {
       const stmt2 = conn.prepareSync(`SELECT MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, FEE_FED , RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       const result2 = stmt2.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
-      console.log(" *************************  SECOND FETCHED ****************************",result2)
+      // console.log(" *************************  SECOND FETCHED ****************************",result2)
 
       // const stmt3 = conn.prepareSync(`Select json_object ('MSISDN' value MSISDN,'TRX_DATETIME' value TRX_DATETIME,'TRX_ID' value TRX_ID ,'DESCRIPTION' value DESCRIPTION) from statements.ACCOUNTSTATEMENT_NEW where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       // const result3 = stmt3.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
@@ -1305,7 +1305,7 @@ class DatabaseConn {
       // const arrayResult3 = result3.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
 
       // console.log("ARRAY RESULT 1 ==========",arrayResult)
-      console.log("ARRAY RESULT 2 ==========",arrayResult2)
+      // console.log("ARRAY RESULT 2 ==========",arrayResult2)
       // console.log("ARRAY RESULT 3 ==========",arrayResult3)
 
       // result.closeSync();
