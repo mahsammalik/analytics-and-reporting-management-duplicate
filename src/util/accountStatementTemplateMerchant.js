@@ -153,7 +153,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					creditTransactions++;
-				if (parseFloat(nsumber[number.length - 5]) > parseFloat(0))
+				if (parseFloat(number[number.length - 5]) > parseFloat(0))
 					debitTransactions++;
 			});
 			
