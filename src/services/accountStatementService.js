@@ -158,7 +158,7 @@ class accountStatementService {
 
             logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
 
-            let header = ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee", "Reason Type\n"];
+            let header = ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"];
 
             header = header.join(",");
             const csvData = new Buffer.from(header + db2Data).toString("base64");
