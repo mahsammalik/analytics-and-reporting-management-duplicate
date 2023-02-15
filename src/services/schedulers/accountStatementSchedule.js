@@ -108,8 +108,26 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        if (payload.format === "pdf" && payload.channel === "consumerApp") await accountStatementService.sendEmailPDFFormat(payload);
-        else await accountStatementService.sendEmailPDFMerchant(payload);
+        console.log("PAYLOAD >>>>>>",payload)
+        console.log("CHANNEL >>>>>>",CHANNEL)
+        if(payload.format === 'pdf'){
+          console.log("IF==========================")
+          var execute = {
+              'consumerApp': accountStatementService.sendEmailCSVFormat,
+              'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+          }
+          
+          await execute[payload.channel](payload)
+        }
+        else {
+          console.log("ELSE==========================")
+          var execute = {
+              'consumerApp': accountStatementService.sendEmailPDFFormat,
+              'merchantApp': accountStatementService.sendEmailPDFMerchant,
+          }
+          
+          await execute[payload.channel](payload)
+        }
 
         if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload);
   
