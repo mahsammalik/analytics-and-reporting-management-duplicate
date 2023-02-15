@@ -356,7 +356,7 @@ class accountStatementService {
             }
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee", , "Reason Type\n"],
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee", "Reason Type\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
