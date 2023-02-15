@@ -1278,6 +1278,9 @@ class DatabaseConn {
             return dateA - dateB;
         })
       }
+
+      console.log("***************** resultArrayFormat ************************",resultArrayFormat)
+
       if (resultArrayFormat.length > 0)
         resultArrayFormat = resultArrayFormat.map((dat) => {
           console.log("DATA ++++++++++++++++++++++++++++",dat)
