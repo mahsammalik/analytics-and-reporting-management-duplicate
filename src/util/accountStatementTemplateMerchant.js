@@ -156,7 +156,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 				if (parseFloat(number[number.length - 5]) > parseFloat(0))
 					debitTransactions++;
 			});
-			
+
 			totalCredit = parseFloat(totalCredit).toFixed(2);
 			totalDebit = parseFloat(totalDebit).toFixed(2);
 			totalFee = parseFloat(totalFee).toFixed(2);
@@ -169,7 +169,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 			</div>
 		</div>
 		<div class="statementSummary">
-			<div class="statementBalance"> // ! OPENING BALANCE
+			<div class="statementBalance">
 				<b>Opening Balance: Rs ${openingBalance
 					? openingBalance
 						.toString()
@@ -227,7 +227,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 
                 </div >
 
-				<div class="statementBalance"> // ! CLOSING BALANCE
+				<div class="statementBalance">
 					<b>Closing Balance: Rs. ${closingBalance
 					? closingBalance
 						.toString()
