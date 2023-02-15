@@ -148,17 +148,21 @@ class accountStatementService {
             );
 
             const {
-                msisdn = " ",
+                email = "",
+                msisdn = "",
+                channel = "",
                 end_date = "",
                 start_date = "",
                 merchantName = "",
-                email = "",
-                accountLevel = "",
-                channel = "",
+                accountLevel = ""
             } = payload;
 
-            if (msisdn.substring(0, 2) === "92") msisdn = msisdn.replace("92", "0");
+            console.log("msisdn ========================",msisdn)
+            if (msisdn.substring(0, 2) === "92") {
+                msisdn = msisdn.replace("92", "0");
+            }
 
+            console.log(" ******************** HERE *********************")
             // * FETCH ACCOUNT STATEMENT
             const db2Data = await DB2Connection.getValue(msisdn, end_date, start_date);
 
@@ -191,7 +195,7 @@ class accountStatementService {
             if (email) {
                 logger.info({
                     event: "Exited function",
-                    functionName: "sendEmailCSVFormat",
+                    functionName: "sendEmailCSVFormatMerchant",
                 });
                 const attachment = [
                     {
