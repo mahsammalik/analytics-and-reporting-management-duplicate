@@ -1272,8 +1272,8 @@ class DatabaseConn {
       resultArrayFormat.forEach((row) => {
         sumDebit += parseFloat(row[row.length - 5]);
         sumCredit += parseFloat(row[row.length - 4]);
-        sumBalance += parseFloat(row[row.length - 3]);
-        sumFee += parseFloat(row[row.length - 2]);
+        sumFee+= parseFloat(row[row.length - 3]);
+        sumBalance += parseFloat(row[row.length - 2]);
       });
 
       console.log("sum resultArrayFormat ==============>", resultArrayFormat)
