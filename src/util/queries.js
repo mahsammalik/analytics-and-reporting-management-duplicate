@@ -5,19 +5,19 @@ const queries = {
             RUNNING_BALANCE, REASON_TYPE 
             FROM statements.ACCOUNTSTATEMENT 
             WHERE DATE(TRX_DATETIME) 
-            BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`,
+            BETWEEN ? AND ? AND MSISDN = ? OR MSISDN = ?   ;`,
         consumerAccountStatement: `
             SELECT MSISDN, TRX_DATETIME, TRX_ID, 
             TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, 
             AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE 
             FROM statements.ACCOUNTSTATEMENT_NEW 
             WHERE DATE(TRX_DATETIME) 
-            BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`,
+            BETWEEN ? AND ? AND MSISDN = ? OR MSISDN = ?   ;`,
         merchantAccountStatmentCSV: `
             SELECT * 
             FROM statements.ACCOUNTSTATEMENT 
             where Date(TRX_DATETIME) 
-            BETWEEN ? AND ? And MSISDN = ?  ;`,
+            BETWEEN ? AND ? AND  MSISDN = ? OR MSISDN = ?;`,
 };
 
 

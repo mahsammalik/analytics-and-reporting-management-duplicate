@@ -155,6 +155,17 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
     }
 } 
 
+const parseNumber = (value , type) => {
+    switch (type) {
+        case 'float':
+            return parseFloat(value / 100) || 0  
+        case 'number':
+            return parseInt(value / 100) || 0    
+        default:
+            break;
+    }
+}
+
 export const getMappedAccountStatement = arr => {
     logger.info({
         event: "Data in accountStatement.getMappedAccountStatement",
@@ -195,10 +206,10 @@ export const getMappedAccountStatementMerchant = arr => {
         getTransactionType(trxType),
         getTransactionChannel(channel, trxType),
         getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
-        parseFloat(amountDebit / 100),
-        parseFloat(amountCredit / 100),
-        parseFloat(fee / 100),
-        parseFloat(runningBalance / 100),
+        parseNumber(amountDebit , "float"),
+        parseNumber(amountCredit, "float"),
+        parseNumber(fee, "float"),
+        parseNumber(runningBalance, "float"),
         reason
     ];
 }

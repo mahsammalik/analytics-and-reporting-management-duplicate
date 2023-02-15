@@ -134,12 +134,10 @@ const accountStatementTemplateMerchant = (accountData) => {
 				functionName: "accountStatementTemplateMerchant",
 			});
 			const openingBalance = parseFloat(
-				accountData.data[0][accountData.data[0].length - 2] / 100
+				accountData.data[0][accountData.data[0].length - 2]
 			).toFixed(2);
 			const closingBalance = parseFloat(
-				accountData.data[accountData.data.length - 2][
-				accountData.data[0].length - 2
-				] / 100
+				accountData.data[accountData.data.length - 2][accountData.data[0].length - 2]
 			).toFixed(2);
 
 			let creditTransactions = 0;
@@ -148,9 +146,9 @@ const accountStatementTemplateMerchant = (accountData) => {
 			let totalDebit = 0;
 			let totalFee = 0;
 			accountData.data.forEach((number) => {
-				totalFee += parseFloat(number[number.length - 3] / 100) || 0;
-				totalCredit += parseFloat(number[number.length - 4] / 100) || 0;
-				totalDebit += parseFloat(number[number.length - 5] / 100) || 0;
+				totalFee += parseFloat(number[number.length - 3] ) || 0;
+				totalCredit += parseFloat(number[number.length - 4] ) || 0;
+				totalDebit += parseFloat(number[number.length - 5] ) || 0;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					creditTransactions++;
 				if (parseFloat(number[number.length - 5]) > parseFloat(0))
@@ -277,7 +275,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 						let column = row.map((col, ind) => {
 							return ind >= 5 && ind <= 8
 								? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(
-									+col / 100
+									+col 
 								)
 									.toFixed(2)
 									.toString()
