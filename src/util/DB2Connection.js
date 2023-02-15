@@ -6,6 +6,8 @@ import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
 import fetchQuery from './queries'
 import { printLog, printError } from '../util/utility';
+import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
+
 
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
@@ -1210,6 +1212,7 @@ class DatabaseConn {
       let sumDebit = 0.00;
 
       console.log("before resultArrayFormat ==============>",resultArrayFormat)
+      
       if (resultArrayFormat.length > 0)
         resultArrayFormat = resultArrayFormat.map((dat) => {
           console.log("DATA ++++++++++++++++++++++++++++",dat)
@@ -1242,6 +1245,71 @@ class DatabaseConn {
       stmt.closeSync();
       conn.close(function (err) { });
       logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
+      return concatenatResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+    }
+  }
+  async getValueMerchant(customerMobileNumer, endDate, startDate) {
+
+    try {
+      logger.info({ event: 'Entered function', functionName: 'getValueMerchant in class DatabaseConn' });
+
+      let concatenatResult;
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+      let conn = await getConnection();
+      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
+
+      let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      let sumBalance = 0.00;
+      let sumCredit = 0.00;
+      let sumDebit = 0.00;
+
+      console.log("before resultArrayFormat ==============>",resultArrayFormat)
+      if (resultArrayFormat.length > 0) {
+        resultArrayFormat = resultArrayFormat.map(arr => {
+            return getMappedAccountStatementMerchant(arr);
+        }).sort(function (a, b) {
+            var dateA = new Date(a[0]), dateB = new Date(b[0]);
+            return dateA - dateB;
+        })
+      }
+      if (resultArrayFormat.length > 0)
+        resultArrayFormat = resultArrayFormat.map((dat) => {
+          console.log("DATA ++++++++++++++++++++++++++++",dat)
+          dat.splice(0, 1);
+          let b = dat[1];
+          dat[1] = dat[0];
+          dat[0] = b;
+          dat[dat.length - 3] = dat[dat.length - 3] / 100;
+          dat[dat.length - 2] = dat[dat.length - 2] / 100;
+          dat[dat.length - 1] = dat[dat.length - 1] / 100;
+          return dat
+        });
+
+      console.log("after resultArrayFormat ==============>",resultArrayFormat)
+
+      resultArrayFormat.forEach((row) => {
+        sumDebit += parseFloat(row[row.length - 3]);
+        sumCredit += parseFloat(row[row.length - 2]);
+        sumBalance += parseFloat(row[row.length - 1]);
+      });
+
+      console.log("sum resultArrayFormat ==============>",resultArrayFormat)
+
+      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+      concatenatResult = resultArrayFormat.join('\n');
+
+      console.log("concatenatResult resultArrayFormat ==============>",concatenatResult)
+      logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+      result.closeSync();
+      stmt.closeSync();
+      conn.close(function (err) { });
+      logger.info({ event: 'Exited function', functionName: 'getValueMerchant in class DatabaseConn', concatenatResult });
       return concatenatResult;
 
     } catch (err) {

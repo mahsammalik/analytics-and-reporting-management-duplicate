@@ -154,7 +154,7 @@ class accountStatementService {
 
             console.log(" ******************** HERE *********************")
             // * FETCH ACCOUNT STATEMENT
-            const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
+            const db2Data = await DB2Connection.getValueMerchant(payload.msisdn, payload.end_date, payload.start_date);
 
             logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
 
