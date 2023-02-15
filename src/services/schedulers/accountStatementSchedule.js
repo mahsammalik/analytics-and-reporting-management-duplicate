@@ -129,8 +129,6 @@ class accountStatementQueryScheduler {
           
           await execute[payload.channel](payload)
         }
-
-        if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload);
   
         return { success: true }
     }catch(error){
