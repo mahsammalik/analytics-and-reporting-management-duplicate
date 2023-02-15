@@ -148,12 +148,10 @@ class accountStatementService {
                 { payload: payload }
             );
             let msisdn = payload.msisdn;
-            console.log("msisdn ========================", msisdn)
             if (msisdn.substring(0, 2) === "92") {
                 msisdn = msisdn.replace("92", "0");
             }
 
-            console.log(" ******************** HERE *********************")
             // * FETCH ACCOUNT STATEMENT
             const db2Data = await DB2Connection.getValueMerchant(payload.msisdn, payload.end_date, payload.start_date);
 
