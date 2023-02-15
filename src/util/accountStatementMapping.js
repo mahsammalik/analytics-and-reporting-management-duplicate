@@ -222,10 +222,10 @@ export const getMappedAccountStatementMerchant = arr => {
         getTransactionType(trxType),
         getTransactionChannel(channel, trxType),
         getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
-        amountDebit,
-        amountCredit,
-        fee,
-        runningBalance,
+        parseFloat(amountDebit/100),
+        parseFloat(amountCredit/100),
+        parseFloat(fee/100),
+        parseFloat(runningBalance/100),
         reason
     ];
 }

@@ -1260,6 +1260,7 @@ class DatabaseConn {
 
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       let sumBalance = 0.00;
+      let sumFee = 0.00;
       let sumCredit = 0.00;
       let sumDebit = 0.00;
 
@@ -1275,31 +1276,16 @@ class DatabaseConn {
 
       console.log("***************** resultArrayFormat ************************", resultArrayFormat)
 
-      // if (resultArrayFormat.length > 0)
-      //   resultArrayFormat = resultArrayFormat.map((dat) => {
-      //     console.log("DATA ++++++++++++++++++++++++++++",dat)
-      //     dat.splice(0, 1);
-      //     let b = dat[1];
-      //     dat[1] = dat[0];
-      //     dat[0] = b;
-      //     dat[dat.length - 3] = dat[dat.length - 3] / 100;
-      //     dat[dat.length - 2] = dat[dat.length - 2] / 100;
-      //     dat[dat.length - 1] = dat[dat.length - 1] / 100;
-      //     return dat
-      //   });
-
-      // console.log("after resultArrayFormat ==============>",resultArrayFormat)
-
-
       resultArrayFormat.forEach((row) => {
         sumDebit += parseFloat(row[row.length - 5]);
         sumCredit += parseFloat(row[row.length - 4]);
         sumBalance += parseFloat(row[row.length - 3]);
+        sumFee += parseFloat(row[row.length - 2]);
       });
 
       console.log("sum resultArrayFormat ==============>", resultArrayFormat)
 
-      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2),parseFloat(sumFee).toFixed(2)]);
       concatenatResult = resultArrayFormat.join('\n');
 
       console.log("concatenatResult resultArrayFormat ==============>", concatenatResult)
