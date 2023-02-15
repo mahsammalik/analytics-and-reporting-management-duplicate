@@ -174,58 +174,31 @@ export const getMappedAccountStatement = arr => {
     ];
 }
 
-// export const getMappedAccountStatementMerchant = arr => {
-//     logger.info({
-//         event: "Data in accountStatement.getMappedAccountStatement",
-//         data: arr
-//     })
-//     if (arr.length > 0) {
-//         // if description column is null then replace it with HTML hidden space
-//         arr = arr.map(arr => {
-//             if (arr[5] == null)
-//                 arr[5] = '&#8203';  // &#8203 for HTML hidden space
-//             return arr;
-//         });
-
-//         arr = arr.map((dat) => {
-//             dat.splice(0, 1);
-//             let b = dat[1];
-//             dat[1] = dat[0];
-//             dat[0] = b;
-//             return dat
-//         }).sort(function (a, b) {
-//             var dateA = new Date(a[1]), dateB = new Date(b[1]);
-//             return dateA - dateB;
-//         })
-
-//         arr = arr.map(arr => {
-//             let newTransId = arr[0];
-//             arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
-//             arr[1] = newTransId;
-//             arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
-//             return arr;
-//         })
-//     }
-// }
-
-
 export const getMappedAccountStatementMerchant = arr => {
     logger.info({
         event: "Data in accountStatement.getMappedAccountStatementMerchant",
         data: arr
     })
-    const [msisdn, date, trxId = "", trxType = "", channel = "", desc = "", amountDebit = 0, amountCredit = 0, fee = 0, runningBalance = 0, reason = ""] = arr;
+
+    const [
+        msisdn, date, trxId = "", trxType = "",
+        channel = "", desc = "", amountDebit = 0,
+        amountCredit = 0, fee = 0, runningBalance = 0,
+        reason = ""
+    ] = arr;
+
     const description = desc === null ? '&#8203' : desc;
+
     return [
         moment(date).format('DD-MMM-YYYY HH:mm:ss'),
         trxId,
         getTransactionType(trxType),
         getTransactionChannel(channel, trxType),
         getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
-        parseFloat(amountDebit/100),
-        parseFloat(amountCredit/100),
-        parseFloat(fee/100),
-        parseFloat(runningBalance/100),
+        parseFloat(amountDebit / 100),
+        parseFloat(amountCredit / 100),
+        parseFloat(fee / 100),
+        parseFloat(runningBalance / 100),
         reason
     ];
 }

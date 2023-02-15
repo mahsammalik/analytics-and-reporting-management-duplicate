@@ -1261,7 +1261,10 @@ class DatabaseConn {
 
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       let conn = await getConnection();
-      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
+
+      const query = fetchQuery("merchantAccountStatmentCSV")
+
+      const stmt = conn.prepareSync(query);
       const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
 
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
@@ -1354,7 +1357,7 @@ class DatabaseConn {
         { mappedMsisdn }
       );
 
-      const query = fetchQuery("merchantAccountStatment")
+      const query = fetchQuery("merchantAccountStatmentPDF")
 
       const statement = conn.prepareSync(query);
       const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
