@@ -1203,19 +1203,16 @@ class DatabaseConn {
 
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       let conn = await getConnection();
-      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
-      const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
+      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       let sumBalance = 0.00;
       let sumCredit = 0.00;
       let sumDebit = 0.00;
 
-      console.log("before resultArrayFormat ==============>", resultArrayFormat)
-
       if (resultArrayFormat.length > 0)
         resultArrayFormat = resultArrayFormat.map((dat) => {
-          console.log("DATA ++++++++++++++++++++++++++++", dat)
           dat.splice(0, 1);
           let b = dat[1];
           dat[1] = dat[0];
@@ -1226,20 +1223,13 @@ class DatabaseConn {
           return dat
         });
 
-      console.log("after resultArrayFormat ==============>", resultArrayFormat)
-
       resultArrayFormat.forEach((row) => {
         sumDebit += parseFloat(row[row.length - 3]);
         sumCredit += parseFloat(row[row.length - 2]);
         sumBalance += parseFloat(row[row.length - 1]);
       });
-
-      console.log("sum resultArrayFormat ==============>", resultArrayFormat)
-
       resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
       concatenatResult = resultArrayFormat.join('\n');
-
-      console.log("concatenatResult resultArrayFormat ==============>", concatenatResult)
       logger.debug("the result of database" + concatenatResult, resultArrayFormat);
       result.closeSync();
       stmt.closeSync();
@@ -1265,7 +1255,7 @@ class DatabaseConn {
       const query = fetchQuery("merchantAccountStatmentCSV")
 
       const stmt = conn.prepareSync(query);
-      const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       let sumBalance = 0.00;
@@ -1283,21 +1273,18 @@ class DatabaseConn {
         })
       }
 
-      console.log("***************** resultArrayFormat ************************", resultArrayFormat)
 
       resultArrayFormat.forEach((row) => {
         sumDebit += parseFloat(row[row.length - 5]);
         sumCredit += parseFloat(row[row.length - 4]);
-        sumBalance += parseFloat(row[row.length - 3]);
-        sumFee += parseFloat(row[row.length - 2]);
+        sumFee += parseFloat(row[row.length - 3]);
+        sumBalance += parseFloat(row[row.length - 2]);
       });
 
-      console.log("sum resultArrayFormat ==============>", resultArrayFormat)
 
-      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2),parseFloat(sumFee).toFixed(2)]);
+      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), , parseFloat(sumBalance).toFixed(2)]);
       concatenatResult = resultArrayFormat.join('\n');
 
-      console.log("concatenatResult resultArrayFormat ==============>", concatenatResult)
       logger.debug("the result of database" + concatenatResult, resultArrayFormat);
       result.closeSync();
       stmt.closeSync();
@@ -1368,7 +1355,7 @@ class DatabaseConn {
       conn.close();
 
       printLog(
-        'UExiting function',
+        'Exiting function',
         'getValueArrayMerchant in class DatabaseConn',
         { output }
       );
@@ -1376,8 +1363,9 @@ class DatabaseConn {
       return output || [];
 
     } catch (error) {
-      logger.error({ event: 'Error  thrown', functionName: 'getValueArrayMerchant in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
-      logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormatMerchant' });
+
+      printError(error, 'getValueArrayMerchant in class DatabaseConn')
+
       throw new Error(`Database error ${error}`);
     }
   }
