@@ -1203,8 +1203,10 @@ class DatabaseConn {
       let sumCredit = 0.00;
       let sumDebit = 0.00;
 
+      console.log("before resultArrayFormat ==============>",resultArrayFormat)
       if (resultArrayFormat.length > 0)
         resultArrayFormat = resultArrayFormat.map((dat) => {
+          console.log("DATA ++++++++++++++++++++++++++++",dat)
           dat.splice(0, 1);
           let b = dat[1];
           dat[1] = dat[0];
@@ -1215,13 +1217,20 @@ class DatabaseConn {
           return dat
         });
 
+      console.log("after resultArrayFormat ==============>",resultArrayFormat)
+
       resultArrayFormat.forEach((row) => {
         sumDebit += parseFloat(row[row.length - 3]);
         sumCredit += parseFloat(row[row.length - 2]);
         sumBalance += parseFloat(row[row.length - 1]);
       });
+
+      console.log("sum resultArrayFormat ==============>",resultArrayFormat)
+
       resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
       concatenatResult = resultArrayFormat.join('\n');
+
+      console.log("concatenatResult resultArrayFormat ==============>",concatenatResult)
       logger.debug("the result of database" + concatenatResult, resultArrayFormat);
       result.closeSync();
       stmt.closeSync();

@@ -113,8 +113,8 @@ class accountStatementQueryScheduler {
         if(payload.format === 'pdf'){
           console.log("IF==========================")
           var execute = {
-              'consumerApp': accountStatementService.sendEmailCSVFormat,
-              'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+            'consumerApp': accountStatementService.sendEmailPDFFormat,
+            'merchantApp': accountStatementService.sendEmailPDFMerchant,
           }
           
           await execute[payload.channel](payload)
@@ -122,8 +122,9 @@ class accountStatementQueryScheduler {
         else {
           console.log("ELSE==========================")
           var execute = {
-              'consumerApp': accountStatementService.sendEmailPDFFormat,
-              'merchantApp': accountStatementService.sendEmailPDFMerchant,
+
+              'consumerApp': accountStatementService.sendEmailCSVFormat,
+              'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
           }
           
           await execute[payload.channel](payload)
