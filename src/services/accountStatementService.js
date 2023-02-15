@@ -147,25 +147,15 @@ class accountStatementService {
                 'accountStatementService.sendEmailCSVFormatMerchant',
                 { payload: payload }
             );
-
-            const {
-                email = "",
-                msisdn = "",
-                channel = "",
-                end_date = "",
-                start_date = "",
-                merchantName = "",
-                accountLevel = ""
-            } = payload;
-
-            console.log("msisdn ========================",msisdn)
+            let msisdn = payload.msisdn;
+            console.log("msisdn ========================", msisdn)
             if (msisdn.substring(0, 2) === "92") {
                 msisdn = msisdn.replace("92", "0");
             }
 
             console.log(" ******************** HERE *********************")
             // * FETCH ACCOUNT STATEMENT
-            const db2Data = await DB2Connection.getValue(msisdn, end_date, start_date);
+            const db2Data = await DB2Connection.getValue(payload.msisdn, payload.end_date, payload.start_date);
 
             logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
 
@@ -181,19 +171,19 @@ class accountStatementService {
             const emailData = [
                 {
                     key: "customerName",
-                    value: merchantName,
+                    value: payload.merchantName,
                 },
                 {
                     key: "accountNumber",
-                    value: msisdn,
+                    value: payload.msisdn,
                 },
                 {
                     key: "statementPeriod",
-                    value: start_date,
+                    value: payload.start_date,
                 },
             ];
 
-            if (email) {
+            if (payload.email) {
                 logger.info({
                     event: "Exited function",
                     functionName: "sendEmailCSVFormatMerchant",
@@ -211,14 +201,14 @@ class accountStatementService {
                 let emailHTMLContent =
                     (await accountStatementEmailTemplate({
                         title: "Account Statement",
-                        customerName: merchantName,
-                        accountNumber: msisdn,
-                        statementPeriod: `${(start_date ? formatEnglishDate(start_date) : "-") +
+                        customerName: payload.merchantName,
+                        accountNumber: payload.msisdn,
+                        statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : "-") +
                             " to " +
-                            (end_date ? formatEnglishDate(end_date) : "-")
+                            (payload.end_date ? formatEnglishDate(payload.end_date) : "-")
                             }`,
-                        accountLevel: accountLevel,
-                        channel: channel,
+                        accountLevel: payload.accountLevel,
+                        channel: payload.channel,
                     })) || "";
 
                 emailData.push({
@@ -228,7 +218,7 @@ class accountStatementService {
 
                 // * SEND EMAIL TO USER WITH ATTACHMENT
                 return await new Notification.sendEmail(
-                    email,
+                    payload.email,
                     "Account Statement",
                     "",
                     attachment,
