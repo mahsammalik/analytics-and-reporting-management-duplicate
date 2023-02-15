@@ -108,8 +108,8 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        console.log("PAYLOAD >>>>>>",payload)
-        console.log("CHANNEL >>>>>>",CHANNEL)
+        console.log("format >>>>>>",payload.format)
+        console.log("channel >>>>>>",payload.channel)
         if(payload.format === 'pdf'){
           console.log("IF==========================")
           var execute = {
