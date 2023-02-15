@@ -5,12 +5,12 @@ import { getUserProfile } from '/services/helpers/';
 import { accountStatementTemplate, createPDF } from '../../util';
 import moment from 'moment';
 class accountStatementController {
-    constructor(accountStatementService){
+    constructor(accountStatementService) {
         this.accountStatementService = accountStatementService;
     }
 
-    async createAccountStatementRequest(req, res, next){
-        try{
+    async createAccountStatementRequest(req, res, next) {
+        try {
             logger.info({
                 event: 'Entered function',
                 functionName: 'accountStatementController.createAccountStatementRequest'
@@ -18,7 +18,7 @@ class accountStatementController {
             let metadataHeaders = req.headers['x-meta-data'];
             if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:")
                 metadataHeaders = metadataHeaders.replace("a:", "")
-            
+
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             logger.debug(`getting userProfile : `)
             const userProfile = await getUserProfile(req.headers);
@@ -44,16 +44,16 @@ class accountStatementController {
                 failureCount: 0
             };
             const created = await accountStatementService.createAccountStatementRequest(payload);
-            if(created)
+            if (created)
                 res.locals.response = true;
-            else{
-                if(created.duplicate){
+            else {
+                if (created.duplicate) {
                     res.locals.duplicate = true
                 }
                 res.locals.response = false
             }
             return next();
-        }catch(error){
+        } catch (error) {
             logger.info({
                 event: 'Catch function',
                 functionName: 'accountStatementController.createAccountStatementRequest',
@@ -95,15 +95,27 @@ class accountStatementController {
                 accountLevel: userProfile.accountLevel || ''
             };
             logger.debug(payload, "payload")
-            // const subscriber = new Subscriber();
-            // await subscriber.event.produceMessage(payload, config.kafkaBroker.topics.App_Merchant_Account_Statement);
-            // const accountStatement = new accountStatementService();
             const channel = req.headers['x-channel']
 
-            if (payload.format === "pdf" && channel === "consumerApp") await accountStatementService.sendEmailPDFFormat(payload)
-            else await accountStatementService.sendEmailPDFMerchant(payload)
+            if(payload.format === 'pdf'){
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
+            else {
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
 
-            if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload)
+            // const execute = this.getFunction(payload.format, channel)
+            // await execute(payload)
 
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
@@ -129,7 +141,7 @@ class accountStatementController {
     }
     async calculateAccountStatementTEMPLATE(req, res, next) {
         let newdata = []
-        for(let i = 0 ; i <400 ; i ++){
+        for (let i = 0; i < 400; i++) {
             newdata.push([
                 "923042227396",
                 "2021-04-06 21:36:27.000000",
@@ -180,10 +192,10 @@ class accountStatementController {
             }),
             fileName: `Account Statement`
         });
-     //   console.log(pdfFile, "pdfFile")
-        
+        //   console.log(pdfFile, "pdfFile")
+
         // return res.status(200).send({success:true, 'pdf': Buffer.from(pdfFile, 'base64').toString('base64')})
-        return res.status(200).send({success:true})
+        return res.status(200).send({ success: true })
 
     }
     async calculateAccountStatementWithoutKafka(req, res, next) {
@@ -204,7 +216,7 @@ class accountStatementController {
             }
             logger.debug("req.query");
             logger.debug(req.query);
-    
+
             const payload = {
                 msisdn: req.headers['x-msisdn'],
                 start_date: req.query.start_date,
@@ -241,5 +253,19 @@ class accountStatementController {
             return next();
         }
     }
+
+    // getFunction(format, channel) {
+
+    //     switch (format) {
+    //         case 'pdf':
+    //             return (channel === 'consumerApp') ? sendEmailPDFFormat : sendEmailPDFMerchant
+    //         case 'csv':
+    //             return (channel === 'merchantApp') ? sendEmailCSVFormat : sendEmailCSVFormatMerchant
+    //         default:
+    //             console.log("channel or format can't be recognized")
+    //             return null
+
+    //     }
+    // }
 }
 export default new accountStatementController(accountStatementService);
