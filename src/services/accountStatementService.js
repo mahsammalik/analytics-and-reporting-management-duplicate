@@ -85,7 +85,7 @@ class accountStatementService {
             // logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}&isStringify=true`, "Oracle db CSV response", response)
             // const { data, success, message } = response;
             // if (success) {
-            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Fee, Running balance, Reason Type\n"];
+            let header = ["Transaction ID, Transaction Date, Transaction Type, Channel, Description, Amount debited, Amount credited, Running balance\n"];
             header = header.join(',');
             const csvData = new Buffer.from(header + db2Data).toString('base64');
             logger.debug(`csvData ${csvData}`, db2Data);
@@ -139,7 +139,99 @@ class accountStatementService {
 
 
     }
+    async sendEmailCSVFormatMerchant(payload) {
+        try {
 
+            printLog(
+                'Entered function',
+                'accountStatementService.sendEmailCSVFormatMerchant',
+                { payload: payload }
+            );
+            let msisdn = payload.msisdn;
+            console.log("msisdn ========================", msisdn)
+            if (msisdn.substring(0, 2) === "92") {
+                msisdn = msisdn.replace("92", "0");
+            }
+
+            console.log(" ******************** HERE *********************")
+            // * FETCH ACCOUNT STATEMENT
+            const db2Data = await DB2Connection.getValueMerchant(payload.msisdn, payload.end_date, payload.start_date);
+
+            logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
+
+            let header = ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"];
+
+            header = header.join(",");
+            const csvData = new Buffer.from(header + db2Data).toString("base64");
+            logger.debug(`csvData ${csvData}`, db2Data);
+
+            // * CREATE A EMAIL CONTENT
+            const emailData = [
+                {
+                    key: "customerName",
+                    value: payload.merchantName,
+                },
+                {
+                    key: "accountNumber",
+                    value: payload.msisdn,
+                },
+                {
+                    key: "statementPeriod",
+                    value: payload.start_date,
+                },
+            ];
+
+            if (payload.email) {
+                logger.info({
+                    event: "Exited function",
+                    functionName: "sendEmailCSVFormatMerchant",
+                });
+                const attachment = [
+                    {
+                        filename: "AccountStatement.csv",
+                        content: csvData,
+                        type: "base64",
+                        embedImage: false,
+                    },
+                ];
+
+                // * CREATE A EMAIL TEMPLATE
+                let emailHTMLContent =
+                    (await accountStatementEmailTemplate({
+                        title: "Account Statement",
+                        customerName: payload.merchantName,
+                        accountNumber: payload.msisdn,
+                        statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : "-") +
+                            " to " +
+                            (payload.end_date ? formatEnglishDate(payload.end_date) : "-")
+                            }`,
+                        accountLevel: payload.accountLevel,
+                        channel: payload.channel,
+                    })) || "";
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
+                // * SEND EMAIL TO USER WITH ATTACHMENT
+                return await new Notification.sendEmail(
+                    payload.email,
+                    "Account Statement",
+                    "",
+                    attachment,
+                    "ACCOUNT_STATEMENT",
+                    emailData
+                );
+            } else {
+                throw new Error(`Email Not provided`); // ! NO EMAIL FOUND PROVIDED IN THE QUERY PARAM
+            }
+        } catch (error) {
+            logger.error(error);
+            return new Error(`Error mailing csv:${error}`);
+        }
+
+    }
     async sendEmailPDFFormat(payload) {
 
         try {
@@ -257,7 +349,7 @@ class accountStatementService {
             }
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited","Running Balance" , "Fee", , "Reason Type\n"],
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance", "Fee", "Reason Type\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
