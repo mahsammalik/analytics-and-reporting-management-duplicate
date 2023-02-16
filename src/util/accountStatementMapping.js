@@ -28,7 +28,7 @@ const getCompanyNamebySpace = reason => {
         reason
     })
     //Company name starts after second space and continue till 'via' occurs
-    return reason.split(" ").slice(2).join(" ").split("via")[0];
+    return !!reason ?  reason.split(" ").slice(2).join(" ").split("via")[0] : "";
 }
 
 const getCompanyNamebyFor = reason => {
@@ -37,7 +37,7 @@ const getCompanyNamebyFor = reason => {
         event: "accountStatement.getCompanyNamebyFor",
         reason
     })
-    return reason.split(" for")[1].replace(/at/g, "via").split("via")[0] || "";
+    return !!reason ? reason.split(" for")[1]?.replace(/at/g, "via")?.split("via")[0] : "" || "";
 }
 
 const getAccountbyMSISDN = msisdn => {
@@ -45,7 +45,7 @@ const getAccountbyMSISDN = msisdn => {
         event: "accountStatement.getAccountbyMSISDN",
         msisdn
     })
-    return msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '' || "";
+    return msisdn ? msisdn?.replace(/\d(?=\d{4})/g, "*") : '' || "";
 }
 
 const getAccountByDescription = desc => {
