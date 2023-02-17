@@ -77,7 +77,9 @@ spec:
           - name: NODE_ENV
             value: qa-merchant
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'  
+            value: '300'
+          - name: Token_Validation
+            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
