@@ -86,6 +86,8 @@ spec:
             value: '3'
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
             value: '30'
+          - name: Token_Validation
+            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
