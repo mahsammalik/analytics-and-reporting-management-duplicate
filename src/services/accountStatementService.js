@@ -152,6 +152,11 @@ class accountStatementService {
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            logger.info({
+                event: 'Response from DB2',
+                functionName: 'sendEmailPDFFormat',
+                data: { records: db2Data, count: db2Data.length }
+            });
             if (db2Data.length > 0) {
                 db2Data = db2Data.map(arr => {
                     return getMappedAccountStatement(arr);
