@@ -15,6 +15,8 @@ const isTokenValid = (req,res,next) =>
             msisdn = msisdn[0] === '0' ? msisdn.replace('0','92'): msisdn;
             if (metadatamsisdn && metadatamsisdn.substring(0, 2) === "a:") metadatamsisdn = metadatamsisdn.replace("a:", "")
             let metadata = JSON.parse(metadatamsisdn);
+            logger.info("*** msisdn ***" + msisdn);
+            logger.info("*** metadata ***" + metadata);
             if (isTokenValidation == 'false' || !msisdn )
             { 
                 return next();
