@@ -1256,7 +1256,9 @@ class DatabaseConn {
       stmt.closeSync();
       conn.close();
 
+      logger.info({ event: 'COUNT OF ACCOUNT STATEMENTS RECORDS', functionName: 'ACCOUNT_STATEMENT_NEW', data: arrayResult.length });
       logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
+
       return arrayResult || [];
 
     } catch (error) {
