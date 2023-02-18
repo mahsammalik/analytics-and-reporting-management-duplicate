@@ -155,7 +155,7 @@ class accountStatementService {
             logger.info({
                 event: 'Response from DB2',
                 functionName: 'sendEmailPDFFormat',
-                data: { records: db2Data, count: db2Data.length }
+                data: { count: db2Data.length }
             });
             if (db2Data.length > 0) {
                 db2Data = db2Data.map((arr) => {
@@ -169,7 +169,7 @@ class accountStatementService {
             logger.info({
                 event: 'Data after Mapping',
                 functionName: 'accountStatement.sendEmailPDFFormat',
-                data: { records: db2Data, count: db2Data.length }
+                data: { count: db2Data.length }
             });
 
             const accountData = {
