@@ -158,13 +158,19 @@ class accountStatementService {
                 data: { records: db2Data, count: db2Data.length }
             });
             if (db2Data.length > 0) {
-                db2Data = db2Data.map(arr => {
-                    return getMappedAccountStatement(arr);
+                db2Data = db2Data.map((arr) => {
+                  return getMappedAccountStatement(arr);
                 }).sort(function (a, b) {
                     var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
                 })
             }
+
+            logger.info({
+                event: 'Data after Mapping',
+                functionName: 'accountStatement.sendEmailPDFFormat',
+                data: { records: db2Data, count: db2Data.length }
+            });
 
             const accountData = {
                 headers: ["Date/Time", "Transaction ID#", "Transaction Type", "Channel", "Transaction Description", "Amount Debit", "Amount Credit", "Running Balance\n"],
