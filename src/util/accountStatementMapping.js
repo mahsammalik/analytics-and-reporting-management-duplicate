@@ -28,7 +28,7 @@ const getCompanyNamebySpace = reason => {
         reason
     })
     //Company name starts after second space and continue till 'via' occurs
-    return !!reason ?  reason.split(" ").slice(2).join(" ").split("via")[0] : "";
+    return !!reason ?  reason.split(" ").slice(2).join(" ").split("via ")[0] : "";
 }
 
 const getCompanyNamebyFor = reason => {
@@ -37,7 +37,7 @@ const getCompanyNamebyFor = reason => {
         event: "accountStatement.getCompanyNamebyFor",
         reason
     })
-    return !!reason ? reason.split(" for")[1]?.replace(/at/g, "via")?.split("via")[0] : "" || "";
+    return !!reason ? reason.split(" for")[1]?.replace(/at /g, "via ")?.split("via ")[0] : "" || "";
 }
 
 const getAccountbyMSISDN = msisdn => {
@@ -77,7 +77,7 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
         }
     }else if(type === 'Donation'){
 
-        if(reason?.includes('Customer Donate OR Customer Donation')){
+        if(reason?.includes('Customer Donate') || reason?.includes('Customer Donation')){
             const companyName = getCompanyNamebySpace(reason);
             return `Donation at ${companyName}`;
         }else return desc;
@@ -123,7 +123,7 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
             return `Prepaid Jazz Bundle Subscription`;
         }else{
             const account = getAccountByDescription(desc);
-            return `Mobile Prepaid Load - Jazz ${account}`
+            return `Mobile Prepaid Load - Jazz ${!!account ? account : ''}`
         }
     // }else if(type === 'Incoming IBFT'){
     //     const account = getAccountbyMSISDN(msisdn);
