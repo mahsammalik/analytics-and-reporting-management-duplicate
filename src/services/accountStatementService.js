@@ -8,6 +8,7 @@ import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
+import { getMappedAccountStatement } from '../util/accountStatementMapping';
 
 const oracleAccountManagementURL = process.env.ORACLE_ACCOUNT_MANAGEMENT_URL || config.externalServices.oracleAccountManagement.oracleAccountManagementURL;
 
@@ -152,52 +153,37 @@ class accountStatementService {
     async sendEmailPDFFormat(payload) {
 
         try {
-
-            logger.debug('-----payload sendEmailPDFFormat---', payload);
-            logger.info({ event: 'Entered function', functionName: 'sendEmailPDFFormat' });
+            logger.info({
+                event: 'Entered function',
+                functionName: 'sendEmailPDFFormat',
+                data: payload
+            });
             let msisdn = payload.msisdn;
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
-            // const data = await OracleDBConnection.getValue(payload.msisdn, payload.end_date, payload.start_date);
-            // const resp = await axios.get(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`)
-            // if (resp.status === 200) {
-            //     const response = resp.data;
-            //     logger.debug("CHECK Oracle Account Statement: ", resp.data)
-            //     logger.debug(`${oracleAccountManagementURL}?customerMobileNumber=${msisdn}&startDate=${payload.start_date}&endDate=${payload.end_date}`, "Oracle db Pdf response", response)
-            //     const { data, success, message } = response;
-            // if (success) {
+            logger.info({
+                event: 'Response from DB2',
+                functionName: 'sendEmailPDFFormat',
+                data: { count: db2Data.length }
+            });
             if (db2Data.length > 0) {
-                // if description column is null then replace it with HTML hidden space
-                db2Data = db2Data.map(arr => {
-                    if(arr[5] == null)
-                        arr[5] = '&#8203';  // &#8203 for HTML hidden space
-                    return arr;
-                });
-        
-                db2Data = db2Data.map((dat) => {
-                    dat.splice(0, 1);
-                    let b = dat[1];
-                    dat[1] = dat[0];
-                    dat[0] = b;
-                    return dat
+                db2Data = db2Data.map((arr) => {
+                  return getMappedAccountStatement(arr);
                 }).sort(function (a, b) {
-                    var dateA = new Date(a[1]), dateB = new Date(b[1]);
+                    var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
-                })
-
-                db2Data = db2Data.map(arr => {
-                    let newTransId = arr[0];
-                    arr[0] = moment(arr[1]).format('DD-MMM-YYYY HH:mm:ss');
-                    arr[1] = newTransId;
-                    arr[4] = arr[4] ? arr[4].replace(/\d(?=\d{4})/g, "*") : '';
-                    return arr;
                 })
             }
 
+            logger.info({
+                event: 'Data after Mapping',
+                functionName: 'accountStatement.sendEmailPDFFormat',
+                data: { count: db2Data.length }
+            });
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Running Balance\n"],
+                headers: ["Date/Time", "Transaction ID#", "Transaction Type", "Channel", "Transaction Description", "Amount Debit", "Amount Credit", "Running Balance\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
@@ -223,8 +209,14 @@ class accountStatementService {
             }
             ];
 
-            if (payload.email) {
+            logger.info({ data: payload })
 
+            if (payload.email) {
+                logger.info({
+                    event: "Sending payload to accountStatementEmailTemplate",
+                    function: "Inside payload.email If block. accountStatementService",
+                    payload
+                })
                 let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Account Statement', customerName: payload.merchantName, accountNumber: msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel, channel: payload.channel }) || '';
 
                 emailData.push({
@@ -239,14 +231,6 @@ class accountStatementService {
                     embedImage: false
                 }];
                 return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-                //     }
-                //     else {
-                //         throw new Error(`Email Not provided`);
-                //     }
-                // }
-                // else {
-                //     throw new Error(`Error fetching data for account statement:${message}`);
-                // }
             }
             else {
                 throw new Error(`Error fetching data for account statement`);
@@ -255,7 +239,6 @@ class accountStatementService {
         } catch (error) {
             logger.error({ event: 'Error thrown', functionName: 'sendEmailPDFFormat', error, payload });
             logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-
             throw new Error(`Error fetching data for account statement:${error}`);
         }
     }
