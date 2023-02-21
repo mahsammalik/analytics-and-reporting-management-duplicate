@@ -241,14 +241,25 @@ class accountStatementService {
             if (msisdn.substring(0, 2) === '92')
                 msisdn = msisdn.replace("92", "0");
             let db2Data = await DB2Connection.getValueArray(payload.msisdn, payload.end_date, payload.start_date);
+            logger.info({
+                event: 'Response from DB2',
+                functionName: 'sendEmailPDFFormat',
+                data: { count: db2Data.length }
+            });
             if (db2Data.length > 0) {
-                db2Data = db2Data.map(arr => {
-                    return getMappedAccountStatement(arr);
+                db2Data = db2Data.map((arr) => {
+                  return getMappedAccountStatement(arr);
                 }).sort(function (a, b) {
                     var dateA = new Date(a[0]), dateB = new Date(b[0]);
                     return dateA - dateB;
                 })
             }
+
+            logger.info({
+                event: 'Data after Mapping',
+                functionName: 'accountStatement.sendEmailPDFFormat',
+                data: { count: db2Data.length }
+            });
 
             const accountData = {
                 headers: ["Date/Time", "Transaction ID#", "Transaction Type", "Channel", "Transaction Description", "Amount Debit", "Amount Credit", "Running Balance\n"],
@@ -299,14 +310,6 @@ class accountStatementService {
                     embedImage: false
                 }];
                 return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
-                //     }
-                //     else {
-                //         throw new Error(`Email Not provided`);
-                //     }
-                // }
-                // else {
-                //     throw new Error(`Error fetching data for account statement:${message}`);
-                // }
             }
             else {
                 throw new Error(`Error fetching data for account statement`);

@@ -1308,14 +1308,14 @@ class DatabaseConn {
 
       let conn = await getConnection();
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      const stmt = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT_NEW where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+      const stmt = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
       const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
 
       const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       result.closeSync();
       stmt.closeSync();
       conn.close();
-
+      logger.info({ event: 'Response from DB2', functionName: 'getValueArray', count: arrayResult.length });
       logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
       return arrayResult || [];
 
