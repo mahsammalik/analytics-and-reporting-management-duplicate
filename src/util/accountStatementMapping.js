@@ -192,7 +192,7 @@ export const getMappedAccountStatementMerchant = arr => {
         data: arr
     })
 
-    const [
+    let [
         msisdn = "", date, trxId = "", trxType = "",
         channel = "", desc = "", amountDebit = 0,
         amountCredit = 0, fee = 0, runningBalance = 0,
