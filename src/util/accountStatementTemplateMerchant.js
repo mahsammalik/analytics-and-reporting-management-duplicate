@@ -273,8 +273,6 @@ const accountStatementTemplateMerchant = (accountData) => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map((row) => {
 						let column = row.map((col, ind) => {
-							console.log("COL +++++++++++++++++",col)
-							console.log("ind +++++++++++++++++",ind)
 							return ind >= 5 && ind <= 8
 								? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(
 									+col 

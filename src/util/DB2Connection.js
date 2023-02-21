@@ -1263,7 +1263,6 @@ class DatabaseConn {
       let sumCredit = 0.00;
       let sumDebit = 0.00;
 
-      console.log("before resultArrayFormat ==============>", resultArrayFormat)
       if (resultArrayFormat.length > 0) {
         resultArrayFormat = resultArrayFormat.map(arr => {
           return getMappedAccountStatementMerchant(arr);

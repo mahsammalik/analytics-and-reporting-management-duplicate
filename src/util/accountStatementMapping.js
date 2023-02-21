@@ -199,7 +199,6 @@ export const getMappedAccountStatementMerchant = arr => {
         reason = ""
     ] = arr;
 
-    console.log("ARRAY ++++++++++++++", arr)
     const description = desc === null ? '&#8203' : desc;
     reason = reason || ""
 
@@ -216,7 +215,6 @@ export const getMappedAccountStatementMerchant = arr => {
         reason
     ];
    } catch (error) {
-    console.log("error========>",error)
     logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
     logger.debug({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
 
