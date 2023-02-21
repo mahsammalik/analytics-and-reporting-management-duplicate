@@ -273,6 +273,8 @@ const accountStatementTemplateMerchant = (accountData) => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map((row) => {
 						let column = row.map((col, ind) => {
+							console.log("COL +++++++++++++++++",col)
+							console.log("ind +++++++++++++++++",ind)
 							return ind >= 5 && ind <= 8
 								? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(
 									+col 
@@ -283,10 +285,10 @@ const accountStatementTemplateMerchant = (accountData) => {
 										/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
 										","
 									)}</div></td>`
-								: `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(
+								: `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col ? col.replace(
 									/,/g,
 									""
-								)}</div></td>`;
+								): ""}</div></td>`;
 						});
 						column = column.join();
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
