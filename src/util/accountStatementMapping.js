@@ -186,19 +186,22 @@ export const getMappedAccountStatement = arr => {
 }
 
 export const getMappedAccountStatementMerchant = arr => {
+   try {
     logger.info({
         event: "Data in accountStatement.getMappedAccountStatementMerchant",
         data: arr
     })
 
     const [
-        msisdn, date, trxId = "", trxType = "",
+        msisdn = "", date, trxId = "", trxType = "",
         channel = "", desc = "", amountDebit = 0,
         amountCredit = 0, fee = 0, runningBalance = 0,
         reason = ""
     ] = arr;
 
+    console.log("ARRAY ++++++++++++++", arr)
     const description = desc === null ? '&#8203' : desc;
+    reason = reason || ""
 
     return [
         moment(date).format('DD-MMM-YYYY HH:mm:ss'),
@@ -212,4 +215,10 @@ export const getMappedAccountStatementMerchant = arr => {
         parseNumber(runningBalance, "float"),
         reason
     ];
+   } catch (error) {
+    console.log("error========>",error)
+    logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
+    logger.debug({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
+
+   }
 }
