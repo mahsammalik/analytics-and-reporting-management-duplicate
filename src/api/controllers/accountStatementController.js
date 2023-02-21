@@ -114,9 +114,6 @@ class accountStatementController {
                 await execute[channel](payload)
             }
 
-            // const execute = this.getFunction(payload.format, channel)
-            // await execute(payload)
-
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
             logger.debug(`============PRODUCING MESSAGE OF ACCOUNT STATEMENT======================`)
@@ -235,10 +232,22 @@ class accountStatementController {
 
             const channel = req.headers['x-channel']
 
-            if (payload.format === "pdf" && channel === "consumerApp") await accountStatementService.sendEmailPDFFormat(payload)
-            else await accountStatementService.sendEmailPDFMerchant(payload)
-
-            if (payload.format === "csv") await accountStatementService.sendEmailCSVFormat(payload)
+            if(payload.format === 'pdf'){
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
+            else {
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;

@@ -1,5 +1,4 @@
 import Agenda from 'agenda';
-import mongoose from "mongoose";
 import logger from '../../util/logger';
 import AccountStatementRequest from '../../model/acntStmtRequest';
 import accountStatementService from '../../services/accountStatementService'
@@ -108,10 +107,12 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        console.log("format >>>>>>",payload.format)
-        console.log("channel >>>>>>",payload.channel)
+        logger.info({
+          event: "Payload and Channel Account Statement",
+          data: {payload : payload.format , channel : payload.channel}
+        })
+
         if(payload.format === 'pdf'){
-          console.log("IF==========================")
           var execute = {
             'consumerApp': accountStatementService.sendEmailPDFFormat,
             'merchantApp': accountStatementService.sendEmailPDFMerchant,
@@ -120,7 +121,6 @@ class accountStatementQueryScheduler {
           await execute[payload.channel](payload)
         }
         else {
-          console.log("ELSE==========================")
           var execute = {
 
               'consumerApp': accountStatementService.sendEmailCSVFormat,
@@ -129,7 +129,6 @@ class accountStatementQueryScheduler {
           
           await execute[payload.channel](payload)
         }
-  
         return { success: true }
     }catch(error){
         console.log('Error', error)
