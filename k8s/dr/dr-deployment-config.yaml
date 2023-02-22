@@ -52,7 +52,7 @@ spec:
               protocol: TCP
           env:
           - name: CACHE_SERVER
-            value: datagrid.datagrid-dr
+            value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
             valueFrom:
               secretKeyRef:

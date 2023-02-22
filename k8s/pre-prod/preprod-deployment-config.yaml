@@ -52,19 +52,6 @@ spec:
             - containerPort: 3000
               protocol: TCP
           env:
-          - name: MONGO_CONNECTION
-            valueFrom:
-              secretKeyRef:
-                key: mongo-connection-string
-                name: mongo-connection-analytics
-          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
-            value: '1 minutes'
-          - name: ACCOUNT_STATEMENT_SCHEDULER
-            value: 'true'
-          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
-            value: '3'
-          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
-            value: '30'
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
@@ -84,6 +71,14 @@ spec:
             value: info
           - name: NODE_ENV
             value: live
+          - name: Token_Validation
+            value: 'true'
+          - name: KAFKA_TOPICS_CONSUME_INTERVAL
+            value: '550'  
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
+            value: 'false'
           - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
             value: '1 minutes'
           - name: ACCOUNT_STATEMENT_SCHEDULER
@@ -92,17 +87,11 @@ spec:
             value: '3'
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
             value: '30'
-          - name: Token_Validation
-            value: 'true'
-          - name: LOGIN_REPORT_V2
-            value: 'false'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
-          - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -134,4 +123,3 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
-

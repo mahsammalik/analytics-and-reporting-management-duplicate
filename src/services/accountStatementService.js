@@ -269,12 +269,15 @@ class accountStatementService {
             };
 
             let pdfFile = await createPDF({
-                template: accountStatementTemplate(accountData),
+                template: accountStatementTemplateMerchant(accountData),
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
 
             logger.debug(`pdfFile ${pdfFile}`, db2Data);
+
+            console.log('db2data', db2Data);
+
             const emailData = [{
                 'key': 'customerName',
                 'value': payload.merchantName

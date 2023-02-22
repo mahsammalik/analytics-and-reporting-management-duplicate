@@ -195,6 +195,7 @@ class accountStatementController {
         return res.status(200).send({ success: true })
 
     }
+
     async calculateAccountStatementWithoutKafka(req, res, next) {
         try {
             logger.info({ event: 'Entered function', functionName: 'main calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
