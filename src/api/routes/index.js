@@ -149,8 +149,4 @@ router.get(
     '/testingpdf', msisdnParserMW(), isTokenValid, accountStatementController.calculateAccountStatementTEMPLATE,
 );
 
-router.get(
-    '/accountMerchant', msisdnParserMW(), accountStatementController.calculateAccountStatementWithoutKafkaMerchant, responseCodeMW,
-);
-
 export default router;
