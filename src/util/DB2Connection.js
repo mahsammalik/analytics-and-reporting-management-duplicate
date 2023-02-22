@@ -1283,7 +1283,7 @@ class DatabaseConn {
         });
     
     
-        resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), , parseFloat(sumBalance).toFixed(2)]);
+        resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
         concatenatResult = resultArrayFormat.join('\n');
     
         logger.debug("the result of database" + concatenatResult, resultArrayFormat);
