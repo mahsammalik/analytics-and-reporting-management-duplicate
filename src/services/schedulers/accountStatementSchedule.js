@@ -1,5 +1,4 @@
 import Agenda from 'agenda';
-import mongoose from "mongoose";
 import logger from '../../util/logger';
 import AccountStatementRequest from '../../model/acntStmtRequest';
 import accountStatementService from '../../services/accountStatementService'
@@ -113,11 +112,28 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        if (payload.format === 'pdf')
-            await accountStatementService.sendEmailPDFFormat(payload)
-        else
-            await accountStatementService.sendEmailCSVFormat(payload);
-        
+        logger.info({
+          event: "Payload and Channel Account Statement",
+          data: {payload : payload.format , channel : payload.channel}
+        })
+
+        if(payload.format === 'pdf'){
+          var execute = {
+            'consumerApp': accountStatementService.sendEmailPDFFormat,
+            'merchantApp': accountStatementService.sendEmailPDFMerchant,
+          }
+          
+          await execute[payload.channel](payload)
+        }
+        else {
+          var execute = {
+
+              'consumerApp': accountStatementService.sendEmailCSVFormat,
+              'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+          }
+          
+          await execute[payload.channel](payload)
+        }
         return { success: true }
     }catch(error){
         console.log('Error', error)

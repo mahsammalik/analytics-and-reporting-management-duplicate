@@ -4,7 +4,9 @@ import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
-import accountStatementService from './../services/accountStatementService';
+import fetchQuery from './queries'
+import { printLog, printError } from '../util/utility';
+import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
 
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
@@ -1197,175 +1199,175 @@ class DatabaseConn {
     async getValue(customerMobileNumer, endDate, startDate) {
 
         try {
-            logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
-
-            let concatenatResult;
-
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            let conn = await getConnection();
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
-            const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
-            let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            let sumBalance = 0.00;
-            let sumCredit = 0.00;
-            let sumDebit = 0.00;
-
-            if (resultArrayFormat.length > 0)
-                resultArrayFormat = resultArrayFormat.map((dat) => {
-                    dat.splice(0, 1);
-                    let b = dat[1];
-                    dat[1] = dat[0];
-                    dat[0] = b;
-                    dat[dat.length - 3] = dat[dat.length - 3] / 100;
-                    dat[dat.length - 2] = dat[dat.length - 2] / 100;
-                    dat[dat.length - 1] = dat[dat.length - 1] / 100;
-                    return dat
-                });
-
-            resultArrayFormat.forEach((row) => {
-                sumDebit += parseFloat(row[row.length - 3]);
-                sumCredit += parseFloat(row[row.length - 2]);
-                sumBalance += parseFloat(row[row.length - 1]);
+          logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
+    
+          let concatenatResult;
+    
+          let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+          let conn = await getConnection();
+          const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
+          const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
+    
+          let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+          let sumBalance = 0.00;
+          let sumCredit = 0.00;
+          let sumDebit = 0.00;
+    
+          if (resultArrayFormat.length > 0)
+            resultArrayFormat = resultArrayFormat.map((dat) => {
+              dat.splice(0, 1);
+              let b = dat[1];
+              dat[1] = dat[0];
+              dat[0] = b;
+              dat[dat.length - 3] = dat[dat.length - 3] / 100;
+              dat[dat.length - 2] = dat[dat.length - 2] / 100;
+              dat[dat.length - 1] = dat[dat.length - 1] / 100;
+              return dat
             });
-            resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
-            concatenatResult = resultArrayFormat.join('\n');
-            logger.debug("the result of database" + concatenatResult, resultArrayFormat);
-            result.closeSync();
-            stmt.closeSync();
-            conn.close(function (err) { });
-            logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
-            return concatenatResult;
-
+    
+          resultArrayFormat.forEach((row) => {
+            sumDebit += parseFloat(row[row.length - 3]);
+            sumCredit += parseFloat(row[row.length - 2]);
+            sumBalance += parseFloat(row[row.length - 1]);
+          });
+          resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+          concatenatResult = resultArrayFormat.join('\n');
+          logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+          result.closeSync();
+          stmt.closeSync();
+          conn.close(function (err) { });
+          logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
+          return concatenatResult;
+    
         } catch (err) {
-            logger.error('Database connection error' + err);
-            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+          logger.error('Database connection error' + err);
+          return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
         }
     }
-
+    async getValueMerchant(customerMobileNumer, endDate, startDate) {
+    
+        try {
+        logger.info({ event: 'Entered function', functionName: 'getValueMerchant in class DatabaseConn' });
+    
+        let concatenatResult;
+    
+        let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+        let conn = await getConnection();
+    
+        const query = fetchQuery("merchantAccountStatmentCSV")
+    
+        const stmt = conn.prepareSync(query);
+        const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+    
+        let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+        let sumBalance = 0.00;
+        let sumFee = 0.00;
+        let sumCredit = 0.00;
+        let sumDebit = 0.00;
+    
+        if (resultArrayFormat.length > 0) {
+            resultArrayFormat = resultArrayFormat.map(arr => {
+                return getMappedAccountStatementMerchant(arr);
+            }).sort(function (a, b) {
+              var dateA = new Date(a[0]), dateB = new Date(b[0]);
+              return dateA - dateB;
+        })
+        }
+    
+    
+        resultArrayFormat.forEach((row) => {
+            sumDebit += parseFloat(row[row.length - 5]);
+            sumCredit += parseFloat(row[row.length - 4]);
+            sumFee += parseFloat(row[row.length - 3]);
+            sumBalance += parseFloat(row[row.length - 2]);
+        });
+    
+    
+        resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), , parseFloat(sumBalance).toFixed(2)]);
+        concatenatResult = resultArrayFormat.join('\n');
+    
+        logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+        result.closeSync();
+        stmt.closeSync();
+        conn.close(function (err) { });
+        logger.info({ event: 'Exited function', functionName: 'getValueMerchant in class DatabaseConn', concatenatResult });
+        return concatenatResult;
+    
+        } catch (err) {
+          logger.error('Database connection error' + err);
+          return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+        }
+      }
+    
     async getValueArray(customerMobileNumer, endDate, startDate) {
-
+    
         try {
-
-            logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            logger.debug("Updated Msisdn" + mappedMsisdn);
-
-            let conn = await getConnection();
-            //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?   ;`);
-            const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
-            const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-            result.closeSync();
-            stmt.closeSync();
-            conn.close();
-
-            logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
-            return arrayResult || [];
-
+    
+          logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
+          let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+          logger.debug("Updated Msisdn" + mappedMsisdn);
+    
+          let conn = await getConnection();
+          //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
+          const stmt = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
+          const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+    
+          const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+          result.closeSync();
+          stmt.closeSync();
+          conn.close();
+          logger.info({ event: 'Response from DB2', functionName: 'getValueArray', count: arrayResult.length });
+          logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
+          return arrayResult || [];
+    
         } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-            throw new Error(`Database error ${error}`);
+          logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
+          logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+          throw new Error(`Database error ${error}`);
         }
     }
-
-    async getValueMerchant(customerMobileNumer, endDate, startDate, payload) {
-
+    
+    async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+    
+        let conn = await getConnection();
+    
         try {
-            logger.info({ event: 'Entered function', functionName: 'getValue in class DatabaseConn' });
-
-            let concatenatResult;
-
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            let conn = await getConnection();
-            conn.prepare(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`, function (err, stmt) {
-
-                if (err) {
-                    //could not prepare for some reason
-                    console.log(err);
-                    return conn.closeSync();
-                }
-                console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
-                stmt.execute([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn], async function (err, result) {
-                    console.log(result, "result")
-                    let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-                    console.log(resultArrayFormat, "resultArrayFormat")
-                    let sumBalance = 0.00;
-                    let sumCredit = 0.00;
-                    let sumDebit = 0.00;
-        
-                    if (resultArrayFormat.length > 0)
-                        resultArrayFormat = resultArrayFormat.map((dat) => {
-                            dat.splice(0, 1);
-                            let b = dat[1];
-                            dat[1] = dat[0];
-                            dat[0] = b;
-                            dat[dat.length - 4] = dat[dat.length - 4] / 100;
-                            dat[dat.length - 3] = dat[dat.length - 3] / 100;
-                            dat[dat.length - 2] = dat[dat.length - 2] / 100;
-                            dat[dat.length - 1] = dat[dat.length - 1] / 100;
-                            return dat
-                        });
-        
-                    resultArrayFormat.forEach((row) => {
-                        sumDebit += parseFloat(row[row.length - 4]);
-                        sumCredit += parseFloat(row[row.length - 3]);
-                        sumBalance += parseFloat(row[row.length - 2]);
-                    });
-                    resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
-                    concatenatResult = resultArrayFormat.join('\n');
-                    logger.debug("the result of database" + concatenatResult, resultArrayFormat);
-                    result.closeSync();
-                    stmt.closeSync();
-                    conn.close(function (err) { });
-                    logger.info({ event: 'Exited function', functionName: 'getValue in class DatabaseConn', concatenatResult });
-                    const accountStatement = new accountStatementService();
-                    await accountStatement.sendEmailCSVMerchant(payload, concatenatResult)
-                    return concatenatResult;
-                });
-            });
-        } catch (err) {
-            logger.error('Database connection error' + err);
-            return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
-        }
-    }
-
-    async getValueArrayMerchant(customerMobileNumer, endDate, startDate, payload) {
-
-        try {
-
-            logger.info({ event: 'Entered function', functionName: 'getValueArray in class DatabaseConn' });
-            let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            logger.debug("Updated Msisdn" + mappedMsisdn);
-
-            let conn = await getConnection();
-            //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-            conn.prepare(`Select ac.*, txc.fee from statements.ACCOUNTSTATEMENT ac, statements.TAXSTATEMENT txc where ac.trx_id = txc.trx_id and Date(ac.TRX_DATETIME) BETWEEN ? AND ? and Date(txc.TRX_DATETIME) BETWEEN ? AND ? And ac.MSISDN = ? OR ac.MSISDN = ? And txc.MSISDN = ? OR txc.MSISDN = ?   ;`, function (err, stmt) {
-                if (err) {
-                    //could not prepare for some reason
-                    console.log(err);
-                    return conn.closeSync();
-                }
-                console.log(stmt, 'stmt', startDate, 'startDate', endDate, 'endDate', customerMobileNumer, 'customerMobileNumer', mappedMsisdn, 'mappedMsisdn');
-                stmt.execute([startDate, endDate, startDate, endDate, customerMobileNumer, mappedMsisdn, customerMobileNumer, mappedMsisdn], async function (err, result) {
-                    console.log(result, "result")
-                    let arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
-                    console.log(arrayResult, "arrayResult")
-                    result.closeSync();
-                    stmt.closeSync();
-                    conn.close();
-        
-                    logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
-                    const accountStatement = new accountStatementService();
-                    await accountStatement.sendEmailPDFMerchant(payload, arrayResult)
-                    return arrayResult || [];    
-                });    
-            });
-
+    
+          if (!conn) {
+            conn = await open(cn);
+          }
+    
+          let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+    
+          printLog(
+            'Updated Msisdn',
+            'DatabaseConn.getValueArrayMerchant',
+            { mappedMsisdn }
+          );
+    
+          const query = fetchQuery("merchantAccountStatmentPDF")
+    
+          const statement = conn.prepareSync(query);
+          const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+          const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+    
+          result.closeSync();
+          statement.closeSync();
+          conn.close();
+    
+          printLog(
+            'Exiting function',
+            'getValueArrayMerchant in class DatabaseConn',
+            { output }
+          );
+    
+          return output || [];
+    
         } catch (error) {
-            logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
-            logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-            throw new Error(`Database error ${error}`);
+    
+          printError(error, 'getValueArrayMerchant in class DatabaseConn')
+    
+          throw new Error(`Database error ${error}`);
         }
     }
 

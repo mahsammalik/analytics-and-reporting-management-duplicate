@@ -11,6 +11,8 @@ import { Subscriber, RewardSubscriber} from '/services/';
 import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
+import dbConnection from './util/dbConnection';
+import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
 import DB2Connection from './util/DB2Connection';
 import dbConnection from './util/dbConnection';
 import { open } from 'ibm_db';
