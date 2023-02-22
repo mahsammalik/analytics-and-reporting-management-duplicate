@@ -6,7 +6,6 @@ metadata:
   labels:
     app: analytics-microservice
     app.kubernetes.io/part-of: m11s
-    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
@@ -53,7 +52,7 @@ spec:
               protocol: TCP
           env:
           - name: CACHE_SERVER
-            value: datagrid.datagrid-dr
+            value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
             valueFrom:
               secretKeyRef:
@@ -76,8 +75,19 @@ spec:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
+          - name: CONSUMER_GROUP_ID_REWARD
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '300'
+            value: '550'
+          - name: DB2ConnMaxPoolSize
+            value: '100'
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: Token_Validation
+            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -97,7 +107,7 @@ spec:
           resources:
             limits:
               memory: 512Mi
-              cpu: '0.3'
+              cpu: '300m'
             requests:
               memory: 56Mi
               cpu: '120m'             
@@ -109,4 +119,3 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
-

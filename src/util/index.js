@@ -2,6 +2,8 @@ export { default as createPDF }
 from './PDFCreator';
 export { default as accountStatementTemplate }
 from './accountStatementTemplate';
+export { default as accountStatementTemplateMerchant }
+from './accountStatementTemplateMerchant';
 export { default as taxStatementTemplate }
 from './taxStatementTemplate';
 export { default as logger }
@@ -20,5 +22,3 @@ export {default as BrokerReward}
 from './brokerReward'
 export { default as mappedMetaData }
 from './mapMetaData';
-export { default as accountStatementTemplateMerchant }
-from './accountStatementTemplateMerchant';
