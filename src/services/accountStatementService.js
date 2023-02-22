@@ -45,20 +45,31 @@ const formatEnglishDate = date => {
 }
 
 class accountStatementService {
-    constructor(AccountStatementRequest) {
+
+    constructor(AccountStatementRequest){
         this.AccountStatementRequest = AccountStatementRequest
     }
 
-    async createAccountStatementRequest(payload) {
-        try {
+    async createAccountStatementRequest(payload){
+        try{
             logger.info({
                 event: 'Entered function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
                 data: payload
             });
-            let requestCreated = await AccountStatementRequest.create(payload);
-            return !!requestCreated ? { success: true } : { success: false }
-        } catch (error) {
+            let query = {
+                msisdn: payload.msisdn,
+                status: 'pending'
+            };
+            let requestFound = await AccountStatementRequest.findOne(query);
+            if(!!requestFound){
+                return { success: false, duplicate: true }
+            }else
+            {
+                let requestCreated = await AccountStatementRequest.create(payload);
+                return !!requestCreated ? { success: true } : { success: false }
+            }
+        }catch(error){
             logger.info({
                 event: 'Catch function',
                 functionName: 'accountStatementService.createAccountStatementRequest',
@@ -269,7 +280,7 @@ class accountStatementService {
             };
 
             let pdfFile = await createPDF({
-                template: accountStatementTemplateMerchant(accountData),
+                template: accountStatementTemplate(accountData),
                 fileName: `Account Statement`
             });
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');

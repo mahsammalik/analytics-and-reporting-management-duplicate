@@ -5,12 +5,13 @@ import { getUserProfile } from '/services/helpers/';
 import { accountStatementTemplate, createPDF } from '../../util';
 import moment from 'moment';
 class accountStatementController {
-    constructor(accountStatementService) {
+
+    constructor(accountStatementService){
         this.accountStatementService = accountStatementService;
     }
 
-    async createAccountStatementRequest(req, res, next) {
-        try {
+    async createAccountStatementRequest(req, res, next){
+        try{
             logger.info({
                 event: 'Entered function',
                 functionName: 'accountStatementController.createAccountStatementRequest'
@@ -113,7 +114,6 @@ class accountStatementController {
                 
                 await execute[channel](payload)
             }
-
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
             logger.debug(`============PRODUCING MESSAGE OF ACCOUNT STATEMENT======================`)
@@ -195,7 +195,6 @@ class accountStatementController {
         return res.status(200).send({ success: true })
 
     }
-
     async calculateAccountStatementWithoutKafka(req, res, next) {
         try {
             logger.info({ event: 'Entered function', functionName: 'main calculateAccountStatement in class accountStatementController', request: req.url, header: req.headers, query: req.query });
@@ -249,7 +248,6 @@ class accountStatementController {
                 
                 await execute[channel](payload)
             }
-
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;
             return next();
