@@ -53,6 +53,8 @@ spec:
           env:
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
+          - name: CACHE_URL
+            value: http://infinispan.datagrid-op:11222/rest/v2/caches/
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -64,7 +66,7 @@ spec:
           - name: PRODUCTION_LOG_LEVEL
             value: info
           - name: NODE_ENV
-            value: live
+            value: dr
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
