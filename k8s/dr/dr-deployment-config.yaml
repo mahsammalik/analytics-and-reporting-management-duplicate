@@ -65,7 +65,7 @@ spec:
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
             value: '30'
           - name: CACHE_SERVER
-            value: datagrid.datagrid-prod
+            value: infinispan.datagrid-op
           - name: CACHE_URL
             value: http://infinispan.datagrid-op:11222/rest/v2/caches/
           - name: ESB_SERVER
