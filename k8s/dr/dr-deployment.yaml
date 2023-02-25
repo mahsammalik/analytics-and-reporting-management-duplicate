@@ -102,6 +102,8 @@ spec:
             value: '100'
           - name: Token_Validation
             value: 'true'
+          - name: ENABLE_CACHE_AUTH
+            value: 'false'
           readinessProbe:
             failureThreshold: 12
             httpGet:
