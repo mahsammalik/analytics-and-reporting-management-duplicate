@@ -215,7 +215,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 						.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
 					: 0
 				}</b></div>
-
+				<div>&nbsp;</div>
 				<div>Total Fee Amount: <b>${totalFee
 					? totalFee
 						.toString()
