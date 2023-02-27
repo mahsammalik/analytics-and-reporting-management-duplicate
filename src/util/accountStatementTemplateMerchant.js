@@ -65,7 +65,7 @@ const formatEnglishDate = date => {
  * 
  * @param {*} accountData
  */
-const accountStatementTemplateMerchant = accountData => {
+const accountStatementTemplate = accountData => {
 	const htmlHead = `<!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
@@ -80,7 +80,7 @@ const accountStatementTemplateMerchant = accountData => {
 			<img class="headerLogo-img" src="file://${dirName}/images/${accountData.payload.channel === "consumerApp" ? "JazzCash_logo" : "jazzcashbusinesslogo"}.png" />
 		</div>`;
 	try {
-		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplateMerchant' });
+		logger.info({ event: 'Entered function', functionName: 'accountStatementTemplate' });
 		let pageSize = 7;
 
 		//TODO: update account title based on input for metadata
@@ -97,37 +97,32 @@ const accountStatementTemplateMerchant = accountData => {
 		`;
 		let htmlString = ``;
 		if (accountData.data.length === 0) {
-			logger.info({ event: 'Entered block accountData.data.length === 0 ', functionName: 'accountStatementTemplateMerchant' });
+			logger.info({ event: 'Entered block accountData.data.length === 0 ', functionName: 'accountStatementTemplate' });
 			htmlString = `${htmlHead}${accountDetails}<div class="section">
 			<div class="heading">
 			<h1>
 			Statement of Account
 			</h1></div><div class="mainSection"><i class="noData">No transactions performed during the selected period.</i></div></div></main>${htmlFoot}`;
-			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplateMerchant' });
+			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
 			return htmlString;
 		} else {
-			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplateMerchant' });
-			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 2]).toFixed(2);
-			const closingBalance = parseFloat(accountData.data[accountData.data.length - 2][accountData.data[0].length - 2]).toFixed(2);
+			logger.info({ event: 'Entered block accountData.data.length > 0 ', functionName: 'accountStatementTemplate' });
+			const openingBalance = parseFloat(accountData.data[0][accountData.data[0].length - 1] / 100).toFixed(2);
+			const closingBalance = parseFloat(accountData.data[accountData.data.length - 1][accountData.data[0].length - 1] / 100).toFixed(2);
 			let creditTransactions = 0;
 			let debitTransactions = 0;
 			let totalCredit = 0;
 			let totalDebit = 0;
-			let totalFee = 0;
 			accountData.data.forEach((number) => {
-				totalFee += parseFloat(number[number.length - 3] ) || 0;
-				totalCredit += parseFloat(number[number.length - 4] ) || 0;
-				totalDebit += parseFloat(number[number.length - 5] ) || 0;
-				if (parseFloat(number[number.length - 4]) > parseFloat(0))
+				totalCredit += parseFloat(number[number.length - 2] / 100) || 0;
+				totalDebit += parseFloat(number[number.length - 3] / 100) || 0;
+				if (parseFloat(number[number.length - 2]) > parseFloat(0))
 					creditTransactions++;
-				if (parseFloat(number[number.length - 5]) > parseFloat(0))
+				if (parseFloat(number[number.length - 3]) > parseFloat(0))
 					debitTransactions++;
 			});
-
 			totalCredit = parseFloat(totalCredit).toFixed(2);
 			totalDebit = parseFloat(totalDebit).toFixed(2);
-			totalFee = parseFloat(totalFee).toFixed(2);
-
 			const statementSummary = `<div class="section" >
 		<div class="heading">
 			<h1>
@@ -147,9 +142,6 @@ const accountStatementTemplateMerchant = accountData => {
 				<div>Total Debit Amount: <b>Rs. ${totalDebit ? totalDebit.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>Total Debit Transactions: <b>${debitTransactions ? debitTransactions.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
 				<div>Average Debit Transactions: <b>Rs. ${debitTransactions > 0 ? parseFloat(totalDebit / debitTransactions).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-
-				<div>Total Fee Amount: <b>Rs. ${totalFee ? totalFee.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : 0}</b></div>
-
 			</div >
 
 	<div class="statementBalance">
@@ -190,7 +182,7 @@ const accountStatementTemplateMerchant = accountData => {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
-							return ind >= 5 && ind <= 8 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
+							return ind > 4 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col/ 100).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
 						});
 						column = column.join();
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
@@ -203,18 +195,20 @@ const accountStatementTemplateMerchant = accountData => {
 				htmlString += index === slicedArray.length - 1 ? `${statementSummary}</main>${htmlFoot} ` : `</main > ${htmlFoot} `;
 
 			});
-			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplateMerchant' });
+			logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
+
+			console.log("HTML STRING ", htmlString)
 			return htmlString;
 		}
 
 	} catch (error) {
 
-		logger.error({ event: 'Error thrown ', functionName: 'accountStatementTemplateMerchant', error, accountData });
-		logger.info({ event: 'Exited function', functionName: 'accountStatementTemplateMerchant' });
+		logger.error({ event: 'Error thrown ', functionName: 'accountStatementTemplate', error, accountData });
+		logger.info({ event: 'Exited function', functionName: 'accountStatementTemplate' });
 		throw new Error(`error in account statement template  ${error} `);
 	}
 
 
 };
 
-export default accountStatementTemplateMerchant;
+export default accountStatementTemplate;
