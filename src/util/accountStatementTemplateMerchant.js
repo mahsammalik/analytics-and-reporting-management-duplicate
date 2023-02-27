@@ -190,7 +190,7 @@ const accountStatementTemplateMerchant = accountData => {
 					let page = item.map(row => {
 						let column = row.map((col, ind) => {
 							console.log("INDEX ===================>" ,ind)
-							console.log("data ===================>" ,data)
+							console.log("data ===================>" ,col)
 							return ind >= 4 && ind <= 8 ? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(+col).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}</div></td>` : `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col.replace(/,/g, '')}</div></td>`;
 						});
 						column = column.join();
