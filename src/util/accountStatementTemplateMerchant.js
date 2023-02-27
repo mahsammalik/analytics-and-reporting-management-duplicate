@@ -305,6 +305,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 				event: "Exited function",
 				functionName: "accountStatementTemplateMerchant",
 			});
+			console.log("htmlString ---",htmlString)
 			return htmlString;
 		}
 	} catch (error) {
