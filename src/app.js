@@ -14,8 +14,8 @@ import logRequestMW from './api/middlewares/logRequestMW';
 import DB2Connection from './util/DB2Connection';
 import dbConnection from './util/dbConnection';
 import { open } from 'ibm_db';
+import outdatedAcntStmtSchedule from './services/schedulers/outdatedAcntStmtSchedule';
 import accountStatementQueryScheduler from './services/schedulers/accountStatementSchedule';
-
 // logger.info('printing webserver value' + config.mongodb.host);
 
 // logger.info('Trace message, Winston!');
