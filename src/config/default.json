@@ -88,9 +88,13 @@
         "accountStatementScheduler": {
             "accountStatementQueryInterval": "1 minutes",
             "collection": "accntstmtrequests",
-            "scheduler": "true",
+            "scheduler": true,
             "failureCount": 3,
-            "failureTimeInMinutes": 30
+            "failureTimeInMinutes": 30,
+            "requestRetrievelTimeInMinutes": 15,
+            "requestsQueryLimit": 1,
+            "timedOutRequestsSchedulerInterval": "1 minutes",
+            "outDatedRequestsScheduler": true
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
