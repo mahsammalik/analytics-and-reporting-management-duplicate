@@ -96,9 +96,24 @@ class accountStatementController {
                 accountLevel: userProfile.accountLevel || ''
             };
             logger.debug(payload, "payload")
-            
-            if (payload.format === 'pdf') accountStatementService.sendEmailPDFFormat(payload)
-            else accountStatementService.sendEmailCSVFormat(payload);
+            const channel = req.headers['x-channel']
+
+            if(payload.format === 'pdf'){
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
+            else {
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
 
             const subscriber = new Subscriber();
             //subscriber.setConsumer(); 
@@ -216,8 +231,24 @@ class accountStatementController {
             };
             logger.debug(payload, "payload")
 
-            if (payload.format === 'pdf') await accountStatementService.sendEmailPDFFormat(payload)
-            else await accountStatementService.sendEmailCSVFormat(payload);
+            const channel = req.headers['x-channel']
+
+            if(payload.format === 'pdf'){
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
+            else {
+                var execute = {
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                }
+                
+                await execute[channel](payload)
+            }
 
             logger.info({ event: 'Exited function', functionName: 'main calculateAccountStatement in class accountStatementController' });
             res.locals.response = true;

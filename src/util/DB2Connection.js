@@ -4,6 +4,11 @@ import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
+import fetchQuery from './queries'
+import { printLog, printError } from '../util/utility';
+import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
+
+
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
 const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
@@ -1237,6 +1242,60 @@ class DatabaseConn {
       return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
     }
   }
+  async getValueMerchant(customerMobileNumer, endDate, startDate) {
+
+    try {
+      logger.info({ event: 'Entered function', functionName: 'getValueMerchant in class DatabaseConn' });
+
+      let concatenatResult;
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+      let conn = await getConnection();
+
+      const query = fetchQuery("merchantAccountStatmentCSV")
+
+      const stmt = conn.prepareSync(query);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+
+      let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      let sumBalance = 0.00;
+      let sumFee = 0.00;
+      let sumCredit = 0.00;
+      let sumDebit = 0.00;
+
+      if (resultArrayFormat.length > 0) {
+        resultArrayFormat = resultArrayFormat.map(arr => {
+          return getMappedAccountStatementMerchant(arr);
+        }).sort(function (a, b) {
+          var dateA = new Date(a[0]), dateB = new Date(b[0]);
+          return dateA - dateB;
+        })
+      }
+
+
+      resultArrayFormat.forEach((row) => {
+        sumDebit += parseFloat(row[row.length - 5]);
+        sumCredit += parseFloat(row[row.length - 4]);
+        sumFee += parseFloat(row[row.length - 3]);
+        sumBalance += parseFloat(row[row.length - 2]);
+      });
+
+
+      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+      concatenatResult = resultArrayFormat.join('\n');
+
+      logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+      result.closeSync();
+      stmt.closeSync();
+      conn.close(function (err) { });
+      logger.info({ event: 'Exited function', functionName: 'getValueMerchant in class DatabaseConn', concatenatResult });
+      return concatenatResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+    }
+  }
 
   async getValueArray(customerMobileNumer, endDate, startDate) {
 
@@ -1262,6 +1321,50 @@ class DatabaseConn {
     } catch (error) {
       logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
       logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+      throw new Error(`Database error ${error}`);
+    }
+  }
+
+  async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+
+    let conn = await getConnection();
+
+    try {
+
+      if (!conn) {
+        conn = await open(cn);
+      }
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+
+      printLog(
+        'Updated Msisdn',
+        'DatabaseConn.getValueArrayMerchant',
+        { mappedMsisdn }
+      );
+
+      const query = fetchQuery("merchantAccountStatmentPDF")
+
+      const statement = conn.prepareSync(query);
+      const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+      result.closeSync();
+      statement.closeSync();
+      conn.close();
+
+      printLog(
+        'Exiting function',
+        'getValueArrayMerchant in class DatabaseConn',
+        { output }
+      );
+
+      return output || [];
+
+    } catch (error) {
+
+      printError(error, 'getValueArrayMerchant in class DatabaseConn')
+
       throw new Error(`Database error ${error}`);
     }
   }
@@ -1436,7 +1539,7 @@ class DatabaseConn {
           });
         }
 
-        
+
       });
     }
     catch (error) {
