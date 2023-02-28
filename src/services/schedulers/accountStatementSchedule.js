@@ -90,7 +90,7 @@ class accountStatementQueryScheduler {
           ]
         })
         .sort({ createdAt: 1 })
-        .limit(requestsQueryLimit);
+        .limit(parseInt(requestsQueryLimit));
         logger.info({
           event: "Requests retrieved",
           data: requests
