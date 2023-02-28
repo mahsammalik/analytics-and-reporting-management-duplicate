@@ -73,18 +73,18 @@ class accountStatementQueryScheduler {
   async fetchRequest(job){
     try{
         const requests = await this.schedulerModel.find({
-          $and: [
-            { "requestTime": { $gte: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000) } }, // fetch requests from last X minutes
+          $or: [
             {
-              $or: [
-                { "status": "pending" },
-                {
-                  $and: [
-                    { "status": "failed" },
-                    { "failureCount" : { $lt: failureCountNumber } }, //max number of failures of trying repeatedly
-                    { "requestTime": { $lt: new Date() } } //failed request will add time for next request
-                  ]
-                }
+              $and: [
+                { "requestTime": { $gte: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000) } }, // fetch requests from last X minutes
+                { "status": "pending" }
+              ]
+            },
+            {
+              $and: [
+                { "status": "failed" },
+                { "failureCount" : { $lt: failureCountNumber } }, //max number of failures of trying repeatedly
+                { "requestTime": { $lt: new Date() } } //failed request will add time for next request
               ]
             }
           ]
