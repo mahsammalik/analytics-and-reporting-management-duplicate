@@ -47,9 +47,14 @@ class outdatedAcntStmtScheduler {
   async updateRequests(job){
     try{
         const query = {
-            "requestTime": {
-                $lt: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000)
-            }
+            $and: [
+              {
+                "requestTime": {
+                  $lt: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000)
+                }
+              },
+              { "status": "pending" }
+            ]
         }
         const requests = await this.schedulerModel.updateMany(query, { $set: { status: 'systemFailed' } });
         if(!!requests){
