@@ -2,7 +2,7 @@ const queries = {
     merchantAccountStatmentPDF: `
         SELECT MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL,
         DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, FEE_FED , 
-        RUNNING_BALANCE, REASON_TYPE 
+        RUNNING_BALANCE 
         FROM statements.ACCOUNTSTATEMENT 
         WHERE DATE(TRX_DATETIME) 
         BETWEEN ? AND ? AND MSISDN = ? OR MSISDN = ?   ;`,
