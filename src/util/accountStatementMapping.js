@@ -28,7 +28,7 @@ const getCompanyNamebySpace = reason => {
         reason
     })
     //Company name starts after second space and continue till 'via' occurs
-    return !!reason ?  reason.split(" ").slice(2).join(" ").split("via ")[0] : "";
+    return !!reason ? reason.split(" ").slice(2).join(" ").split("via ")[0] : "";
 }
 
 const getCompanyNamebyFor = reason => {
@@ -62,105 +62,105 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
         data: { desc, type, reason, amount, msisdn }
     })
 
-    if(type === 'Utility Bills Payment' || type === 'Utility Bill Payment'){
-        if(reason?.includes('Customer Pay Bill for') || reason?.includes('OMNO Customer Pay Bill for')){
+    if (type === 'Utility Bills Payment' || type === 'Utility Bill Payment') {
+        if (reason?.includes('Customer Pay Bill for') || reason?.includes('OMNO Customer Pay Bill for')) {
             const companyName = getCompanyNamebyFor(reason);
             const account = getAccountbyMSISDN(msisdn);
             return `Bill Payment Made to ${companyName} of amount ${amount} from JazzCash Account ${account}`
-        }else if(reason?.includes('ReadyCash Self Repay')){
+        } else if (reason?.includes('ReadyCash Self Repay')) {
             return `ReadyCash loan repayment`
-        }else if(reason?.includes('Customer Buy Load') || reason?.includes('Customer Buys Prepaid Load for') || reason?.includes('OMNO Customer Buys Prepaid Load')){
+        } else if (reason?.includes('Customer Buy Load') || reason?.includes('Customer Buys Prepaid Load for') || reason?.includes('OMNO Customer Buys Prepaid Load')) {
             const companyName = getCompanyNamebyFor(reason);
             return `Mobile Prepaid Load - ${companyName}`;
-        }else{
+        } else {
             return desc;
         }
-    }else if(type === 'Donation'){
+    } else if (type === 'Donation') {
 
-        if(reason?.includes('Customer Donate') || reason?.includes('Customer Donation')){
+        if (reason?.includes('Customer Donate') || reason?.includes('Customer Donation')) {
             const companyName = getCompanyNamebySpace(reason);
             return `Donation at ${companyName}`;
-        }else return desc;
+        } else return desc;
 
-    }else if(type === 'Transfer(C2C)'){
+    } else if (type === 'Transfer(C2C)') {
         const account = getAccountByDescription(desc);
         return `Money transfer to JazzCash account ${account}`;
-    }else if(type === 'Transfer(C2B)'){
+    } else if (type === 'Transfer(C2B)') {
         return reason?.includes('RAAST') ? `Money Transfer via RAAST` : `Money Transfer From JazzCash Account`
-    }else if(type === 'Transfer(B2C)'){
+    } else if (type === 'Transfer(B2C)') {
         const account = getAccountByDescription(desc);
         return `Payment Received to JazzCash Account ${account}`
-    }else if(type === 'Refund Merchant Payment'){
+    } else if (type === 'Refund Merchant Payment') {
         return reason?.includes('Insurance Reversal') ? `Insurance Payment Reversal` : desc;
-    }else if(type === 'Profit Disburse'){
+    } else if (type === 'Profit Disburse') {
         return `Savings Profit`
-    }else if(type === 'Online Payment'){
+    } else if (type === 'Online Payment') {
         const account = getAccountbyMSISDN(msisdn);
         return `Successful Online Payment Request From JazzCash Account ${account}`
-    }else if(type === 'Merchant Payment'){
-        if(reason?.includes('Insurance')){
+    } else if (type === 'Merchant Payment') {
+        if (reason?.includes('Insurance')) {
             return `Insurance Plan Payment`
-        }else if(reason?.includes('Bundles')){
+        } else if (reason?.includes('Bundles')) {
             return reason
-        }else if(reason?.includes('Merchant Payment') || reason?.includes('Customer Payment')){
+        } else if (reason?.includes('Merchant Payment') || reason?.includes('Customer Payment')) {
             const account = getAccountbyMSISDN(msisdn);
             return `Till Payment from JazzCash Account ${account}`
-        }else{
+        } else {
             return desc;
         }
-    }else if(type === 'Loan Repayment'){
+    } else if (type === 'Loan Repayment') {
         return reason?.includes('Alfalah Repayment') ? `ReadyCash by Alfalah Loan Repayment` : `Loan Repayment`
-    }else if(type === 'Loan Disbursement'){
-        if(reason?.includes('ReadyCash Loan Disbursement')){
+    } else if (type === 'Loan Disbursement') {
+        if (reason?.includes('ReadyCash Loan Disbursement')) {
             return `ReadyCash Loan Disbursement`
-        }else if(reason?.includes('Alfalah Disbursement')){
+        } else if (reason?.includes('Alfalah Disbursement')) {
             return `ReadyCash by Alfalah Loan Disbursement`
-        }else{
+        } else {
             return desc;
         }
-    }else if(type === 'Jazz Load (Prepaid top-up)'){
-        if(reason?.includes('Customer Buys Jazz Bundles')){
+    } else if (type === 'Jazz Load (Prepaid top-up)') {
+        if (reason?.includes('Customer Buys Jazz Bundles')) {
             return `Prepaid Jazz Bundle Subscription`;
-        }else{
+        } else {
             const account = getAccountByDescription(desc);
             return `Mobile Prepaid Load - Jazz ${!!account ? account : ''}`
         }
-    // }else if(type === 'Incoming IBFT'){
-    //     const account = getAccountbyMSISDN(msisdn);
-    //     return `Amount received to JazzCash Account ${account}`
-    // }else if(type === 'IBFT Outgoing Customer'){
-    //     const account = getAccountByDescription(desc);
-    //     return `Money sent to ${account}`
-    // }else if(type === 'IBFT Credit'){
-    //     const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
-    //     return `Amount Received to JazzCash Account ${account}`
-    }else if(type === 'Cash out at Retailer' || type === 'Cash out'){
+        // }else if(type === 'Incoming IBFT'){
+        //     const account = getAccountbyMSISDN(msisdn);
+        //     return `Amount received to JazzCash Account ${account}`
+        // }else if(type === 'IBFT Outgoing Customer'){
+        //     const account = getAccountByDescription(desc);
+        //     return `Money sent to ${account}`
+        // }else if(type === 'IBFT Credit'){
+        //     const account = msisdn ? msisdn.replace(/\d(?=\d{4})/g, "*") : '';
+        //     return `Amount Received to JazzCash Account ${account}`
+    } else if (type === 'Cash out at Retailer' || type === 'Cash out') {
         return `Money Withdrawal from Retailer`
-    }else if(type === 'Cash in at Retailer'){
+    } else if (type === 'Cash in at Retailer') {
         const account = getAccountbyMSISDN(msisdn);
         return `Amount Credited to JazzCash Account ${account}`;
-    }else if(type === 'Cash in'){
+    } else if (type === 'Cash in') {
         const account = getAccountbyMSISDN(msisdn);
         return `Amount Credited to JazzCash Account ${account}`
-    }else if(type === 'Auto Debit'){
-        if(reason?.includes('Loan Repayment')){
+    } else if (type === 'Auto Debit') {
+        if (reason?.includes('Loan Repayment')) {
             return `Loan Repayment`
-        }else if(reason?.includes('Microensure Insurance')){
+        } else if (reason?.includes('Microensure Insurance')) {
             return `Insurance Plan Recurring Payment`
-        }else{
+        } else {
             return desc;
         }
-    }else{
+    } else {
         return desc;
     }
-} 
+}
 
-const parseNumber = (value , type) => {
+const parseNumber = (value, type) => {
     switch (type) {
         case 'float':
-            return parseFloat(value / 100) || 0  
+            return parseFloat(value / 100) || 0
         case 'number':
-            return parseInt(value / 100) || 0    
+            return parseInt(value / 100) || 0
         default:
             break;
     }
@@ -186,37 +186,34 @@ export const getMappedAccountStatement = arr => {
 }
 
 export const getMappedAccountStatementMerchant = arr => {
-   try {
-    logger.info({
-        event: "Data in accountStatement.getMappedAccountStatementMerchant",
-        data: arr
-    })
+    try {
+        logger.info({
+            event: "Data in accountStatement.getMappedAccountStatementMerchant",
+            data: arr
+        })
 
-    let [
-        msisdn = "", date, trxId = "", trxType = "",
-        channel = "", desc = "", amountDebit = 0,
-        amountCredit = 0, fee = 0, runningBalance = 0,
-        reason = ""
-    ] = arr;
+        let [
+            msisdn = "", date, trxId = "", trxType = "",
+            channel = "", desc = "", amountDebit = 0,
+            amountCredit = 0, fee = 0, runningBalance = 0
+        ] = arr;
 
-    const description = desc === null ? '&#8203' : desc;
-    reason = reason || ""
+        const description = desc === null ? '&#8203' : desc;
 
-    return [
-        moment(date).format('DD-MMM-YYYY HH:mm:ss'),
-        trxId,
-        getTransactionType(trxType),
-        getTransactionChannel(channel, trxType),
-        getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
-        parseNumber(amountDebit , "float"),
-        parseNumber(amountCredit, "float"),
-        parseNumber(fee, "float"),
-        parseNumber(runningBalance, "float"),
-        reason
-    ];
-   } catch (error) {
-    logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
-    logger.debug({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
+        return [
+            moment(date).format('DD-MMM-YYYY HH:mm:ss'),
+            trxId,
+            getTransactionType(trxType),
+            getTransactionChannel(channel, trxType),
+            getTransactionDescription(description, trxType, reason, amountDebit, msisdn),
+            parseNumber(amountDebit, "float"),
+            parseNumber(amountCredit, "float"),
+            parseNumber(fee, "float"),
+            parseNumber(runningBalance, "float")
+        ];
+    } catch (error) {
+        logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack } });
+        logger.debug({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack } });
 
-   }
+    }
 }
