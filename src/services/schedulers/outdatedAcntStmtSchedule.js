@@ -17,7 +17,6 @@ const jobName = 'AcntStmtTimedOutJob';
 
 class outdatedAcntStmtScheduler {
   constructor (AccountStatementRequest) {
-    console.log('Instructer Invoked')
     this.schedulerModel = AccountStatementRequest;
     this.createJob = this.createJob.bind(this);
     this.executeJob = this.executeJob.bind(this);
@@ -25,7 +24,6 @@ class outdatedAcntStmtScheduler {
   }
 
   async createJob() {
-    console.log('Scheduler Working!')
     if(schedular){
       agenda.define(jobName, {
         concurrency: 0
@@ -43,7 +41,7 @@ class outdatedAcntStmtScheduler {
     logger.info({
         event: 'Scheduler for out dated Requests'
     })
-    // await this.updateRequests(job);
+    await this.updateRequests(job);
   }
 
   async updateRequests(job){
@@ -53,7 +51,7 @@ class outdatedAcntStmtScheduler {
                 $lt: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000)
             }
         }
-        const requests = this.schedulerModel.updateMany(query, { $set: { status: 'systemFailed' } });
+        const requests = await this.schedulerModel.updateMany(query, { $set: { status: 'systemFailed' } });
         if(!!requests){
             logger.info({
                 event: "Scheduler: Requests updated with System Failed status.",

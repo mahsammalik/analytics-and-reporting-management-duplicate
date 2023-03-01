@@ -93,7 +93,7 @@
             "failureTimeInMinutes": 30,
             "requestRetrievelTimeInMinutes": 15,
             "requestsQueryLimit": 1,
-            "timedOutRequestsSchedulerInterval": "1 minutes",
+            "timedOutRequestsSchedulerInterval": "1 seconds",
             "outDatedRequestsScheduler": true
         },
         "kafkaBroker": {
