@@ -43,7 +43,7 @@ class outdatedAcntStmtScheduler {
     logger.info({
         event: 'Scheduler for out dated Requests'
     })
-    // await this.updateRequests(job);
+    await this.updateRequests(job);
   }
 
   async updateRequests(job){
