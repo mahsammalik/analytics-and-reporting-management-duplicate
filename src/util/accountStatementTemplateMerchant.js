@@ -4,7 +4,7 @@ import logger from "./logger";
 
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-const htmlFoot = `<footer>
+const htmlFoot = `<footer style="margin-top: 30ptx">
 <div class="disclaimer">
 	<b >Disclaimer:</b>
 	<p style="margin-top: 3pt">This is an electronic statement.</p></br>
@@ -134,10 +134,10 @@ const accountStatementTemplateMerchant = (accountData) => {
 				functionName: "accountStatementTemplateMerchant",
 			});
 			const openingBalance = parseFloat(
-				accountData.data[0][accountData.data[0].length - 2]
+				accountData.data[0][accountData.data[0].length - 1]
 			).toFixed(2);
 			const closingBalance = parseFloat(
-				accountData.data[accountData.data.length - 2][accountData.data[0].length - 2]
+				accountData.data[accountData.data.length - 1][accountData.data[0].length - 1]
 			).toFixed(2);
 
 			let creditTransactions = 0;
@@ -146,12 +146,12 @@ const accountStatementTemplateMerchant = (accountData) => {
 			let totalDebit = 0;
 			let totalFee = 0;
 			accountData.data.forEach((number) => {
-				totalFee += parseFloat(number[number.length - 3] ) || 0;
-				totalCredit += parseFloat(number[number.length - 4] ) || 0;
-				totalDebit += parseFloat(number[number.length - 5] ) || 0;
-				if (parseFloat(number[number.length - 4]) > parseFloat(0))
+				totalFee += parseFloat(number[number.length - 2] ) || 0;
+				totalCredit += parseFloat(number[number.length - 3] ) || 0;
+				totalDebit += parseFloat(number[number.length - 4] ) || 0;
+				if (parseFloat(number[number.length - 3]) > parseFloat(0))
 					creditTransactions++;
-				if (parseFloat(number[number.length - 5]) > parseFloat(0))
+				if (parseFloat(number[number.length - 4]) > parseFloat(0))
 					debitTransactions++;
 			});
 
@@ -247,7 +247,10 @@ const accountStatementTemplateMerchant = (accountData) => {
 
 			slicedArray = accountData.data
 				.map((item, index) => {
-					if (checkifsecondlastpage(index + 1)) return [""];
+					console.log("INDEX ------------>",index)
+					const check = checkifsecondlastpage(index + 1);
+					console.log("CHECK ---------------",check)
+					if (check) return [""];
 
 					if (index % pageSize === 0)
 						return accountData.data.slice(index, index + pageSize);
@@ -259,19 +262,21 @@ const accountStatementTemplateMerchant = (accountData) => {
 				});
 
 			slicedArray.forEach((item, index) => {
-				let pagination = `<div class="section" style="margin-bottom: 5pt;" >
-	<div class="heading">
-		<h1 style="margin-right: -55pt;">
-			Statement of Account
-		</h1>
-		<i style="margin: 0 3pt;font-style: italic;">${index + 1} of ${slicedArray.length
-					}</i> <b style="font-style: italic;">Page </b>
-	</div>
-				</div>`;
+				let pagination = `
+								<div class="section" style="margin-bottom: 5pt;" >
+									<div class="heading">
+										<h1 style="margin-right: -55pt;">
+											Statement of Account
+										</h1>
+										<i style="margin: 0 3pt;font-style: italic;">${index + 1} of ${slicedArray.length}</i> <b style="font-style: italic;">Page </b>
+									</div>
+								</div>
+								`;
 				htmlString += `${htmlHead} ${accountDetails} ${pagination}<div class="main-section">`;
 				if (item[0] !== "") {
 					htmlString += `<table><thead>${statementTableHeader}</thead>`;
 					let page = item.map((row) => {
+						console.log("ROW ______________________>",row)
 						let column = row.map((col, ind) => {
 							return ind >= 5 && ind <= 8
 								? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(
@@ -289,6 +294,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 								): ""}</div></td>`;
 						});
 						column = column.join();
+						console.log("column ______________________>",column)
 						return `<tr style="font-size: 5pt;">${column}</tr>`;
 					});
 					page = page.join().replace(/td>,<td/g, "td><td");
