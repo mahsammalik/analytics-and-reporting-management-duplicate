@@ -101,10 +101,6 @@ class accountStatementQueryScheduler {
     }
   }
 
-  //Set Limit ENV_VARIABLE 
-  // status = pending, 15 mins before
-  // Scheduler to SystemFailed, 1 Sec
-
   async requestAccountStatement(data){
     try{
         const payload = {
