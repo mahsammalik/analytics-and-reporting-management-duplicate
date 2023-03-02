@@ -100,16 +100,16 @@ class accountStatementController {
 
             if(payload.format === 'pdf'){
                 var execute = {
-                    'consumerApp': accountStatementService.sendEmailCSVFormat,
-                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
                 }
                 
                 await execute[channel](payload)
             }
             else {
                 var execute = {
-                    'consumerApp': accountStatementService.sendEmailPDFFormat,
-                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
                 }
                 
                 await execute[channel](payload)
@@ -235,16 +235,16 @@ class accountStatementController {
 
             if(payload.format === 'pdf'){
                 var execute = {
-                    'consumerApp': accountStatementService.sendEmailCSVFormat,
-                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+                    'consumerApp': accountStatementService.sendEmailPDFFormat,
+                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
                 }
                 
                 await execute[channel](payload)
             }
             else {
                 var execute = {
-                    'consumerApp': accountStatementService.sendEmailPDFFormat,
-                    'merchantApp': accountStatementService.sendEmailPDFMerchant,
+                    'consumerApp': accountStatementService.sendEmailCSVFormat,
+                    'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
                 }
                 
                 await execute[channel](payload)

@@ -168,7 +168,7 @@ class accountStatementService {
 
             logger.debug("CHECK DB2 Account Statement CSV: ", db2Data);
 
-            let header = ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"];
+            let header = ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance\n"];
 
             header = header.join(",");
             const csvData = new Buffer.from(header + db2Data).toString("base64");
@@ -361,7 +361,7 @@ class accountStatementService {
             }
 
             const accountData = {
-                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance", "Reason Type\n"],
+                headers: ["Date", "Transaction ID", "Transaction Type", "Channel", "Description", "Amount Debited", "Amount Credited", "Fee", "Running Balance\n"],
                 data: db2Data,
                 payload: { ...payload, msisdn }
             };
