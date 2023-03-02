@@ -89,11 +89,13 @@ const accountStatementTemplateMerchant = (accountData) => {
 			event: "Entered function",
 			functionName: "accountStatementTemplateMerchant",
 		});
-		let pageSize = 7;
+		let pageSize = 7; // ! NUMBER OF RECORDS PER PAGE
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div style="line-height: 1.9;">Date of Issue: <b>${moment().format("DD-MMM-YYYY")}</b></div>
+		<div style="line-height: 1.9;">Date of Issue: <b>${moment().format(
+			"DD-MMM-YYYY"
+		)}</b></div>
 		<div style="line-height: 1.9;">Account Title: <b>${accountData.payload.merchantName
 			}</b></div>
 		<div style="line-height: 1.9;">Account Number: <b>${accountData.payload.msisdn
@@ -143,10 +145,11 @@ const accountStatementTemplateMerchant = (accountData) => {
 			let totalCredit = 0;
 			let totalDebit = 0;
 			let totalFee = 0;
+
 			accountData.data.forEach((number) => {
-				totalFee += parseFloat(number[number.length - 2] ) || 0;
-				totalCredit += parseFloat(number[number.length - 3] ) || 0;
-				totalDebit += parseFloat(number[number.length - 4] ) || 0;
+				totalFee += parseFloat(number[number.length - 2]) || 0;
+				totalCredit += parseFloat(number[number.length - 3]) || 0;
+				totalDebit += parseFloat(number[number.length - 4]) || 0;
 				if (parseFloat(number[number.length - 3]) > parseFloat(0))
 					creditTransactions++;
 				if (parseFloat(number[number.length - 4]) > parseFloat(0))
@@ -245,9 +248,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 
 			slicedArray = accountData.data
 				.map((item, index) => {
-					console.log("INDEX ------------>",index)
 					const check = checkifsecondlastpage(index + 1);
-					console.log("CHECK ---------------",check)
 					if (check) return [""];
 
 					if (index % pageSize === 0)
@@ -266,7 +267,8 @@ const accountStatementTemplateMerchant = (accountData) => {
 										<h1 style="margin-right: -55pt;">
 											Statement of Account
 										</h1>
-										<i style="margin: 0 3pt;font-style: italic;">${index + 1} of ${slicedArray.length}</i> <b style="font-style: italic;">Page </b>
+										<i style="margin: 0 3pt;font-style: italic;">${index + 1} of ${slicedArray.length
+					}</i> <b style="font-style: italic;">Page </b>
 									</div>
 								</div>
 								`;
@@ -278,7 +280,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 						let column = row.map((col, ind) => {
 							return ind >= 5 && ind <= 8
 								? `<td style="font-size: 5pt;text-align:left;"><div style="font-size: 5pt;text-align:left;">${parseFloat(
-									+col 
+									+col
 								)
 									.toFixed(2)
 									.toString()
@@ -286,10 +288,8 @@ const accountStatementTemplateMerchant = (accountData) => {
 										/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
 										","
 									)}</div></td>`
-								: `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col ? col.replace(
-									/,/g,
-									""
-								): ""}</div></td>`;
+								: `<td style="font-size: 5pt;"><div style="font-size: 5pt; text-align:left;">${col ? col.replace(/,/g, "") : ""
+								}</div></td>`;
 						});
 						column = column.join();
 						console.log("column ______________________>",column)
