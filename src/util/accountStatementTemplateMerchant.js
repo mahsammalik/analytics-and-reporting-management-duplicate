@@ -93,9 +93,7 @@ const accountStatementTemplateMerchant = (accountData) => {
 
 		//TODO: update account title based on input for metadata
 		const accountDetails = `<div class="headerTable">
-		<div style="line-height: 1.9;">Date of Issue: <b>${moment(
-			accountData.payload.start_date
-		).format("DD-MMM-YYYY")}</b></div>
+		<div style="line-height: 1.9;">Date of Issue: <b>${moment().format("DD-MMM-YYYY")}</b></div>
 		<div style="line-height: 1.9;">Account Title: <b>${accountData.payload.merchantName
 			}</b></div>
 		<div style="line-height: 1.9;">Account Number: <b>${accountData.payload.msisdn
