@@ -2,10 +2,11 @@ kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
   name: analytics-microservice
-  namespace: m11s
+  namespace: jc-pre-prod-microservices
   labels:
     app: analytics-microservice
-    app.kubernetes.io/part-of: m11s
+    app.kubernetes.io/part-of: jc-pre-prod-microservices
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
@@ -27,7 +28,7 @@ spec:
           - analytics-microservice
         from:
           kind: ImageStreamTag
-          namespace: m11s
+          namespace: jc-pre-prod-microservices
           name: 'analytics-microservice:latest'
   revisionHistoryLimit: 10
   test: false
@@ -46,16 +47,38 @@ spec:
     spec:
       containers:
         - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
+          image: image-registry.openshift-image-registry.svc:5000/jc-pre-prod-microservices/analytics-microservice:latest
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
+          - name: CACHE_SERVER
+            value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
             valueFrom:
               secretKeyRef:
                 key: mongo-connection-string
                 name: mongo-connection-analytics
+          - name: ESB_SERVER
+            value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
+          - name: MASTER_DATA_API_GET_RESPCODE_URL
+            value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
+          - name: NOTIFICATION_SERVICE_URL_EMAIL
+            value: http://notification-microservice:3000/rest/api/v1/notification/email
+          - name: KAFKA_DRAIN_CHECK
+            value: 'false'    
+          - name: PRODUCTION_LOG_LEVEL
+            value: info
+          - name: NODE_ENV
+            value: live
+          - name: Token_Validation
+            value: 'true'
+          - name: KAFKA_TOPICS_CONSUME_INTERVAL
+            value: '550'  
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
+            value: 'false'
           - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
             value: '1 minutes'
           - name: ACCOUNT_STATEMENT_SCHEDULER
@@ -72,38 +95,11 @@ spec:
             value: '1 seconds'
           - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
             value: 'true'
-          - name: CACHE_SERVER
-            value: datagrid.datagrid-prod
-          - name: ESB_SERVER
-            value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
-          - name: MASTER_DATA_API_GET_RESPCODE_URL
-            value: http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes
-          - name: NOTIFICATION_SERVICE_URL_EMAIL
-            value: http://notification-microservice:3000/rest/api/v1/notification/email
-          - name: KAFKA_DRAIN_CHECK
-            value: 'false'    
-          - name: PRODUCTION_LOG_LEVEL
-            value: info
-          - name: NODE_ENV
-            value: live
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS
-          - name: CONSUMER_GROUP_ID_REWARD
-            valueFrom:
-              configMapKeyRef:
-                name: consumer-groups
-                key: CONSUMER_GROUP_ANALYTICS_REWARD
-          - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '550'
-          - name: DB2ConnMaxPoolSize
-            value: '100'
-          - name: LOGIN_REPORT_V2
-            value: 'false'
-          - name: Token_Validation
-            value: 'true'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -123,7 +119,7 @@ spec:
           resources:
             limits:
               memory: 512Mi
-              cpu: '300m'
+              cpu: '0.3'
             requests:
               memory: 56Mi
               cpu: '120m'             
