@@ -134,7 +134,7 @@ class accountStatementQueryScheduler {
             'merchantApp': accountStatementService.sendEmailPDFMerchant,
           }
           logger.info('***Request Executed***');
-          // await execute[payload.channel](payload)
+          await execute[payload.channel](payload)
         }
         else {
           var execute = {
