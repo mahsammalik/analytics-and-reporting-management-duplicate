@@ -211,8 +211,7 @@ export const getMappedAccountStatementMerchant = arr => {
         parseNumber(amountDebit , "float"),
         parseNumber(amountCredit, "float"),
         parseNumber(fee, "float"),
-        parseNumber(runningBalance, "float"),
-        reason
+        parseNumber(runningBalance, "float")
     ];
    } catch (error) {
     logger.error({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
