@@ -60,7 +60,7 @@ spec:
           - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
             value: '1 minutes'
           - name: ACCOUNT_STATEMENT_SCHEDULER
-            value: 'true'
+            value: 'false'
           - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
             value: '3'
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
@@ -72,7 +72,7 @@ spec:
           - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
             value: '1 seconds'
           - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
-            value: 'true'
+            value: 'false'
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
