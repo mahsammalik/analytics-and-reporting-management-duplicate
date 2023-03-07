@@ -28,7 +28,7 @@ class accountStatementQueryScheduler {
   }
 
   async createJob() {
-    if(schedular){
+    if(schedular === 'true' || schedular === true){
       agenda.define(jobName, {
         concurrency: 0
       }, this.executeJob );
