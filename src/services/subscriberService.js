@@ -103,7 +103,9 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
-            config.kafkaBroker.topics.account_login_reporting
+            config.kafkaBroker.topics.account_login_reporting,
+            config.kafkaBroker.topics.trx_history_reporting
+
         ]);
 
         //this.setConsumer();
@@ -1240,6 +1242,17 @@ class Subscriber {
                          DB2Connection.addLoginReportingV2(payload);
                         else
                          DB2Connection.addLoginReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.trx_history_reporting) {
+                    logger.debug('*********** LOGIN REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.info('TRX REPORTING ' + JSON.stringify(payload));
+                         DB2Connection.addTrxReporting(payload);
                     } catch (error) {
                         logger.debug(error)
                     }
