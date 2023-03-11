@@ -106,7 +106,7 @@ class Subscriber {
             // config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             // config.kafkaBroker.topics.GTOP_Init_Passed,
             // config.kafkaBroker.topics.GTOP_Init_Failed,
-            config.kafkaBroker.topics.account_login_reporting,
+            //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting
 
         ]);
