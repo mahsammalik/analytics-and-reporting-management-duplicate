@@ -1246,7 +1246,7 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.trx_history_reporting) {
-                    logger.debug('*********** LOGIN REPORTING *****************');
+                    logger.info('*********** LOGIN REPORTING *****************');
                     try {
 
                         const payload = JSON.parse(msg.value);
