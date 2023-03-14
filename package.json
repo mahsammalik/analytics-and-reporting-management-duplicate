@@ -60,7 +60,7 @@
         "gen-uid": "0.0.2",
         "html-pdf": "^2.2.0",
         "hummus-recipe": "^2.0.0",
-        "agenda": "^3.1.0",
+        "agenda": "^5.0.0",
         "ibm_db": "^2.8.0",
         "infinispan": "^0.7.0",
         "libphonenumber-js": "^1.10.13",

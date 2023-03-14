@@ -70,6 +70,8 @@ spec:
             value: '15'
           - name: SCHEDULER_REQUESTS_QUERY_LIMIT
             value: '1'
+          - name: 'SCHEDULER_LOCK_TIME'
+            value: '30000'
           - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
             value: '1 seconds'
           - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER

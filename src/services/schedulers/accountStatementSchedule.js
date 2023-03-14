@@ -10,6 +10,7 @@ const failureCountNumber = process.env.ACCOUNT_SCHEDULER_FAILURE_COUNT || config
 const failureTimeInMinutes = process.env.ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES || config.accountStatementScheduler.failureTimeInMinutes;
 const requestRetrievelTimeInMinutes = process.env.SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES || config.accountStatementScheduler.requestRetrievelTimeInMinutes || 15;
 const requestsQueryLimit = process.env.SCHEDULER_REQUESTS_QUERY_LIMIT || config.accountStatementScheduler.requestsQueryLimit || 1;
+const schedulerLockTime = process.env.SCHEDULER_LOCK_TIME || config.accountStatementScheduler.schedulerLockTime;
 
 const agenda = new Agenda( {
   db: {
@@ -30,7 +31,8 @@ class accountStatementQueryScheduler {
   async createJob() {
     if(schedular === 'true' || schedular === true){
       agenda.define(jobName, {
-        concurrency: 0
+        concurrency: 0,
+        lockLifetime: parseInt(schedulerLockTime)
       }, this.executeJob );
       await agenda.start();
       await agenda.every(interval, jobName, null, {
