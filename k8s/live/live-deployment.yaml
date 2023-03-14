@@ -74,6 +74,8 @@ spec:
             value: 'true'
           - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
             value: '1 seconds'
+          - name: 'SCHEDULER_LOCK_TIME'
+            value: '30000'
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
           - name: ESB_SERVER
