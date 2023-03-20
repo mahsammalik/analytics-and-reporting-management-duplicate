@@ -1112,8 +1112,6 @@ class DatabaseConn {
       }
 
     }
-
-
   }
 
 
@@ -1600,6 +1598,71 @@ class DatabaseConn {
     }
   }
   
+  async addReadyCashBaflReporting(payload){
+    let conn = await getConnection();
+    try {
+      logger.debug('payload addReadyCashBaflReporting data');
+      logger.debug(payload);
+      const stam = conn.prepareSync(`
+        INSERT INTO COMMON.READYCASH_BAFL_REPORTING (
+          MSISDN,
+          UID,
+          DATE,
+          TIME,
+          STAGE,
+          API_TYPE,
+          API_STATUS,
+          RESPONSE_CODE,
+          RESPONSE_DESCRIPTION,
+          THIRDPARTY_ERROR,
+          THIRDPARTY_CODE,
+          LOAN_AMOUNT,
+          LOAN_ID
+        )
+        VALUES (
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?,
+          ?
+        )
+      `);
+
+      stam.run(
+        payload.MSISDN || '',
+        payload.UID || '',
+        payload.Date || '',
+        payload.Time || '',
+        payload.Stage || '',
+        payload.API_Type || '',
+        payload.API_status || '',
+        payload.Response_Code || '',
+        payload.Response_Description || '',
+        payload.ThirdParty_Error || '',
+        payload.ThirdPartyCode || '',
+        payload.Loan_Amount || '0',
+        payload.Loan_ID || ''
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`addReadyCashBaflReporting insertion done`);
+      return;
+    } catch (error) {
+      logger.error('Database connection error' + err);
+      return ;
+    }finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
 }
 
 
