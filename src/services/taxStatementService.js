@@ -224,6 +224,82 @@ class taxStatementService {
         }
     }
 
+    async sendConsumerTaxStatement(payload, res) {
+        logger.debug("email pdf", payload);
+        try {
+            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year);
+            logger.debug("the output of changing database " + data);
+            // if (data === 'Database Error') return "Database Error";
+            // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
+
+            // logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
+
+            // logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+
+            // payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
+            
+            const htmlTemplate = taxStatementTemplate({ data, payload });
+            let pdfFile = await createPDF({
+                template: htmlTemplate,
+                fileName: `Tax Statement`
+            });
+            logger.info(`Step 03: Obtained htmlTemplate for tax`)
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            const emailData = [{
+                'key': 'customerName',
+                'value': payload.merchantName
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.start_date
+            }
+            ];
+            const attachment = [{
+                filename: 'Tax Certificate.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
+            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                const attachment = [{
+                    filename: 'TaxStatement.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+                let emailHTMLContent = accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: year, accountLevel: payload.accountLevel }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
+                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                logger.info(`Step 04: Sent email `)
+            }
+            else {
+                throw new Error(`Email Not provided`);
+                logger.error(`Email not provided`)
+            }
+
+            // myDoc.table(table0, {
+            //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
+            //     prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
+            // });
+            // myDoc.end();
+        } catch (err) {
+            logger.error({ event: 'Error in pdf Creation' + err });
+            logger.error(err)
+            return "PDF creation error";
+        }
+    }
+
     async populateDataBase() {
         await DB2Connection.addTaxStatement('0343015091633', '2020-08-26', '851626', '0', '12', '0', '0', '20', '0');
     }
