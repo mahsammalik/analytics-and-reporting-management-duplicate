@@ -86,11 +86,16 @@
             }
         },
         "accountStatementScheduler": {
-            "accountStatementQueryInterval": "1 minutes",
+            "accountStatementQueryInterval": "1 seconds",
             "collection": "accntstmtrequests",
-            "scheduler": "true",
+            "scheduler": true,
             "failureCount": 3,
-            "failureTimeInMinutes": 30
+            "failureTimeInMinutes": 30,
+            "requestRetrievelTimeInMinutes": 15,
+            "requestsQueryLimit": 1,
+            "timedOutRequestsSchedulerInterval": "1 seconds",
+            "outDatedRequestsScheduler": true,
+            "schedulerLockTime": 30000
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
@@ -182,7 +187,8 @@
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
-                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
+                "trx_history_reporting": "TRX_HISTORY_REPORTING"
             }
         },
         "cache": {
@@ -204,7 +210,8 @@
                     "date_invalid": "AR-AS-T04",
                     "database_connection": "AR-AS-T05",
                     "email_problem": "AR-AS-T08",
-                    "pdf_internal_error": "AR-AS-T06"
+                    "pdf_internal_error": "AR-AS-T06",
+                    "duplicate": "AR-AS-T07"
                 },
                 "contactIntegration": {
                     "success": "AM-CI-T01",

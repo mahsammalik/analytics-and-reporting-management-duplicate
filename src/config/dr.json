@@ -23,7 +23,7 @@
                 "pushNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms/rest/api/v1/notification/pushnotification"
             },
             "oracleAccountManagement": {
-                "oracleAccountManagementURL": "http://oracle-account-management-git-oracle-account-management.apps.tjcocp.jazz.com.pk/getaccountstatement"
+                "oracleAccountManagementURL": "http://oracle-account-management-git-oracle-account-management.apps.pjcocp.jazzcash.com.pk/getaccountstatement"
             }
         },
         "mongodb": {
@@ -31,56 +31,16 @@
             "port": 27017,
             "database": "sampledb"
         },
-        "IBMDB2": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
-            "address": "",
-            "connectionString": "DATABASE=repdb;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.124",
-            "port": 60000,
-            "protocol": "TCPIP"
-        },
-        "IBMDB2_Dev": {
-            "username": "hqx82030",
-            "password": "mfdv73-dd65gz41p",
-            "address": "",
-            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=hqx82030;PWD=mfdv73-dd65gz41p;",
-            "schema": "HQX82030",
-            "hostName": "dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net",
-            "port": 50000,
-            "protocol": "TCPIP"
-        },
         "DB2_Jazz": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
+            "username": "jcappdb",
+            "password": "abcd@123",
             "address": "",
-            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.124",
-            "port": 60000,
-            "protocol": "TCPIP",
-            "maxPoolSize": 30
-        },
-        "DB2_HCA": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
-            "address": "",
-            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
             "schema": "COMMON",
             "hostName": "10.50.20.212",
             "port": 60000,
-            "protocol": "TCPIP"
-        },
-        "IBMDB2_Test": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
-            "address": "",
-            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.124",
-            "port": 60000,
-            "protocol": "TCPIP"
+            "protocol": "TCPIP",
+            "maxPoolSize": 30
         },
         "winston": {
             "file": {
@@ -106,7 +66,7 @@
             }
         },
         "accountStatementScheduler": {
-            "accountStatementQueryInterval": "10 seconds",
+            "accountStatementQueryInterval": "1 minutes",
             "collection": "accntstmtrequests",
             "scheduler": "true",
             "failureCount": 3,
@@ -124,26 +84,26 @@
             "consumerConfig": {
                 "debug": "all",
                 "client_id": "analytics-client",
-                "group_id": "analytics-reporting-consumer-group-id3",
-                "metadata_broker_list": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
+                "group_id": "analytics-reporting-consumer-group-id",
+                "metadata_broker_list": "kafka-prod-1-kafka-bootstrap-es.apps.isbjcocp.jazzcash.com.pk:443",
                 "security_protocol": "sasl_ssl",
                 "sasl_mechanisms": "SCRAM-SHA-512",
-                "ssl_ca_location": "/project/user-app/dist/util/estest-cert.pem",
-                "sasl_username": "testkafka",
-                "sasl_password": "C2yxplFZJtmZ",
-                "enable_ssl_certificate.verification": false,
+                "ssl_ca_location": "/project/user-app/dist/util/dr-es-cert.pem",
+                "sasl_username": "m11s-scram",
+                "sasl_password": "xjrnhB9y0Z42",
+                "enable_ssl_certificate_verification": false,
                 "enable_auto_commit": true,
                 "broker_version_fallback": "0.10.2.1",
                 "log_connection_close": false,
                 "auto_offset_reset": "smallest"
             },
             "producerConfig": {
-                "bootstrap.servers": "es-1-kafka-bootstrap-es.apps.tjcocp.jazz.com.pk:443",
+                "bootstrap.servers": "kafka-prod-1-kafka-bootstrap-es.apps.isbjcocp.jazzcash.com.pk:443",
                 "security.protocol": "sasl_ssl",
                 "sasl.mechanisms": "SCRAM-SHA-512",
-                "ssl.ca.location": "/project/user-app/dist/util/estest-cert.pem",
-                "sasl.username": "testkafka",
-                "sasl.password": "C2yxplFZJtmZ",
+                "ssl.ca.location": "/project/user-app/dist/util/dr-es-cert.pem",
+                "sasl.username": "m11s-scram",
+                "sasl.password": "xjrnhB9y0Z42",
                 "enable.ssl.certificate.verification": false,
                 "broker.version.fallback": "0.10.0",
                 "log.connection.close": false
@@ -182,6 +142,7 @@
                 "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
 
                 "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
+                "init_refund_Trans_MobileBundle_withoutConfirmB2B":"ESB_App_MoneyTransferPGW_Init_Passed",
                 "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
                 "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
                 "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed",
@@ -253,8 +214,9 @@
                 "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
 
                 "display_QR": "AccountManagement_DisplayQR_Success",
-                "merchant_onboarding": "Merchant_Onboarding_Success",
+
                 "fallbackFailure": "Consumer_Fallback_Failure",
+                "merchant_onboarding": "Merchant_Onboarding_Success",
                 "consumer_onboarding": "Consumer_Onboarding_Success",
                 "device_authentication": "Device_Registration",
                 "wallet_request": "Consumer_Wallet_Success",
@@ -270,7 +232,6 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING"
-
 
             }
         },
@@ -415,8 +376,8 @@
                 "1": "Basic Business",
                 "2": "Premium Business"
             }
-        }, 
-        "reportingDBTables" : {
+        },
+        "reportingDBTables": {
             "APP_SIGNUP": "APP_SIGNUP",
             "BUS_TICKET": "BUS_TICKET",
             "CARD_BLOCK": "CARD_BLOCK",

@@ -2,7 +2,7 @@ import fs from "fs";
 import pdf from 'html-pdf';
 import logger from './logger';
 
-const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '100000'};
+const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '600000'};
 
 const createPDF = async(templateDetails) => {
     try {

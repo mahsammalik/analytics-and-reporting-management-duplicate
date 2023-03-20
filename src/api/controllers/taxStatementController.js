@@ -40,8 +40,6 @@ class taxStatementController {
         logger.debug(metadata," metadata")
         let payload = {
             msisdn: req.headers['x-msisdn'],
-            start_date: req.query.start_date,
-            end_date: req.query.end_date,
             request: req.query.requestType,
             email: req.query.email || metadata.emailAddress,
             subject: 'Hello',
@@ -52,29 +50,15 @@ class taxStatementController {
             accountLevel: userProfile.accountLevel || ''
 
         };
-
-        res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+        if(thirdParty.inludes("consumer")){
+            payload.year = req.query.year;
+            res.locals.response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
+        }else{
+            payload.start_date = req.query.start_date;
+            payload.end_date = req.query.end_date;
+            res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+        }
         next();
-
-        //   const responseCodeForTaxStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");;
-        //   res.status(200).json(responseCodeForTaxStatementQuery);
-
-
-        // if(response == 'Database Error'){
-        //    responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, "Database Error");
-        //    res.status(500).send(responseCodeForAccountStatementQuery);
-        // }else if (response == 'Error in sending email'){
-        //   logger.debug("enter the correct conditiion")
-        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "Email service issue");
-        //   res.status(422).send(responseCodeForAccountStatementQuery);
-        // }  else if (response == 'Email send Succefull'){
-        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "Email send successful");
-        //   res.status(200).send(responseCodeForAccountStatementQuery);
-        // }else if (response == 'PDF creation error'){
-        //   responseCodeForAccountStatementQuery  = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.pdf_internal_error, "Internal error");
-        //   res.status(500).send(responseCodeForAccountStatementQuery);
-        // }
-
     }
 
 

@@ -52,6 +52,29 @@ spec:
             - containerPort: 3000
               protocol: TCP
           env:
+          - name: MONGO_CONNECTION
+            valueFrom:
+              secretKeyRef:
+                key: mongo-connection-string
+                name: mongo-connection-analytics
+          - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
+            value: '1 minutes'
+          - name: ACCOUNT_STATEMENT_SCHEDULER
+            value: 'true'
+          - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
+            value: '3'
+          - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
+            value: '30'
+          - name: SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES
+            value: '15'
+          - name: SCHEDULER_REQUESTS_QUERY_LIMIT
+            value: '1'
+          - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
+            value: '1 seconds'
+          - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
+            value: 'true'
+          - name: 'SCHEDULER_LOCK_TIME'
+            value: '30000'
           - name: CACHE_SERVER
             value: datagrid.datagrid-prod
           - name: MONGO_CONNECTION
