@@ -155,8 +155,6 @@ const getTransactionDescription = (desc = '', type = '', reason = '', amount = 0
     }
 } 
 
-<<<<<<< HEAD
-=======
 const parseNumber = (value , type) => {
     switch (type) {
         case 'float':
@@ -168,7 +166,6 @@ const parseNumber = (value , type) => {
     }
 }
 
->>>>>>> 2f02f3e8d93e328a0eb26332ab45d5286dd5e33f
 export const getMappedAccountStatement = arr => {
     logger.info({
         event: "Data in accountStatement.getMappedAccountStatement",
@@ -186,8 +183,6 @@ export const getMappedAccountStatement = arr => {
         amountCredit,
         runningBalance
     ];
-<<<<<<< HEAD
-=======
 }
 
 export const getMappedAccountStatementMerchant = arr => {
@@ -223,5 +218,4 @@ export const getMappedAccountStatementMerchant = arr => {
     logger.debug({ event: 'Error thrown', functionName: 'jazzcashOutgoingExport in class excelExportController', 'error': { message: error.message, stack: error.stack }});
 
    }
->>>>>>> 2f02f3e8d93e328a0eb26332ab45d5286dd5e33f
 }

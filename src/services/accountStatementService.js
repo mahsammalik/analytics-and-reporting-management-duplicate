@@ -45,28 +45,6 @@ const formatEnglishDate = date => {
 }
 
 class accountStatementService {
-    constructor(AccountStatementRequest){
-        this.AccountStatementRequest = AccountStatementRequest
-    }
-
-    async createAccountStatementRequest(payload){
-        try{
-            logger.info({
-                event: 'Entered function',
-                functionName: 'accountStatementService.createAccountStatementRequest',
-                data: payload
-            });
-            let requestCreated = await AccountStatementRequest.create(payload);
-            return !!requestCreated ? { success: true } : { success: false }
-        }catch(error){
-            logger.info({
-                event: 'Catch function',
-                functionName: 'accountStatementService.createAccountStatementRequest',
-                error
-            });
-            return { success: false };
-        }
-    }
 
     constructor(AccountStatementRequest){
         this.AccountStatementRequest = AccountStatementRequest

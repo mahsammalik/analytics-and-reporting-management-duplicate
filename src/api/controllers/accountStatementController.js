@@ -5,61 +5,6 @@ import { getUserProfile } from '/services/helpers/';
 import { accountStatementTemplate, createPDF } from '../../util';
 import moment from 'moment';
 class accountStatementController {
-    constructor(accountStatementService){
-        this.accountStatementService = accountStatementService;
-    }
-
-    async createAccountStatementRequest(req, res, next){
-        try{
-            logger.info({
-                event: 'Entered function',
-                functionName: 'accountStatementService.createAccountStatementRequest'
-            });
-            let metadataHeaders = req.headers['x-meta-data'];
-            if (metadataHeaders && metadataHeaders.substring(0, 2) === "a:")
-                metadataHeaders = metadataHeaders.replace("a:", "")
-            
-            const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-            logger.debug(`getting userProfile : `)
-            const userProfile = await getUserProfile(req.headers);
-            logger.debug(mappedMetaData({ accountLevel: userProfile.accountLevel }), "CHECK MAPPED DATA", metadataHeaders)
-            logger.debug(`Obtained user profile as follows : `)
-            logger.debug({ userProfile });
-            if (!req.query.email) {
-                return res.status(401).send({ success: false, message: "Email Not Provided" });
-            }
-            const payload = {
-                metadata,
-                msisdn: req.headers['x-msisdn'],
-                startDate: req.query.start_date,
-                endDate: req.query.end_date,
-                request: req.query.requestType,
-                email: req.query.email,
-                format: req.query.format,
-                merchantName: userProfile.businessName || '',
-                accountLevel: userProfile.accountLevel || '',
-                channel: req.headers['x-channel'],
-                status: 'pending',
-                requestTime: new Date(),
-                failureCount: 0
-            };
-            const created = await accountStatementService.createAccountStatementRequest(payload);
-            if(created)
-                res.locals.response = true;
-            else
-                res.locals.response = false;
-            return next();
-        }catch(error){
-            console.log(error);
-            logger.info({
-                event: 'Catch function',
-                functionName: 'accountStatementService.createAccountStatementRequest',
-                error
-            });
-            res.locals.response = false;
-            return next();
-        }
-    }
 
     constructor(accountStatementService){
         this.accountStatementService = accountStatementService;
@@ -139,12 +84,12 @@ class accountStatementController {
             }
             const payload = {
                 msisdn: req.headers['x-msisdn'],
-                startDate: req.query.start_date,
-                endDate: req.query.end_date,
+                start_date: req.query.start_date,
+                end_date: req.query.end_date,
                 request: req.query.requestType,
                 email: req.query.email,
-                // subject: 'Hello',
-                // html: '<html></html>',
+                subject: 'Hello',
+                html: '<html></html>',
                 format: req.query.format,
                 metadata,
                 merchantName: userProfile.businessName || '',
