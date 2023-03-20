@@ -15,6 +15,15 @@ const responseCodeMW = async (req, res, next) => {
             res.locals.response = response;
             res.status(200).json(response);
         } else {
+            if(res.locals.duplicate){
+                const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.duplicate, "");
+                res.locals.response = response;
+                res.status(422).send(response);    
+            }else{
+                const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
+                res.locals.response = response;
+                res.status(422).send(response);
+            }
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
             res.locals.response = response;
             res.status(422).send(response);

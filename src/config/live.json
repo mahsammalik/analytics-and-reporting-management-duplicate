@@ -66,11 +66,16 @@
             }
         },
         "accountStatementScheduler": {
-            "accountStatementQueryInterval": "1 minutes",
+            "accountStatementQueryInterval": "1 seconds",
             "collection": "accntstmtrequests",
-            "scheduler": "true",
+            "scheduler": true,
             "failureCount": 3,
-            "failureTimeInMinutes": 30
+            "failureTimeInMinutes": 30,
+            "requestRetrievelTimeInMinutes": 15,
+            "requestsQueryLimit": 1,
+            "timedOutRequestsSchedulerInterval": "1 seconds",
+            "outDatedRequestsScheduler": true,
+            "schedulerLockTime": 30000
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
@@ -230,7 +235,8 @@
 
                 "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
-                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
+                "trx_history_reporting": "TRX_HISTORY_REPORTING"
 
             }
         },

@@ -1,5 +1,4 @@
 import Agenda from 'agenda';
-import mongoose from "mongoose";
 import logger from '../../util/logger';
 import AccountStatementRequest from '../../model/acntStmtRequest';
 import accountStatementService from '../../services/accountStatementService'
@@ -9,6 +8,9 @@ const interval = process.env.ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL || confi
 const schedular = process.env.ACCOUNT_STATEMENT_SCHEDULER || config.accountStatementScheduler.scheduler || false;
 const failureCountNumber = process.env.ACCOUNT_SCHEDULER_FAILURE_COUNT || config.accountStatementScheduler.failureCount;
 const failureTimeInMinutes = process.env.ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES || config.accountStatementScheduler.failureTimeInMinutes;
+const requestRetrievelTimeInMinutes = process.env.SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES || config.accountStatementScheduler.requestRetrievelTimeInMinutes || 15;
+const requestsQueryLimit = process.env.SCHEDULER_REQUESTS_QUERY_LIMIT || config.accountStatementScheduler.requestsQueryLimit || 1;
+const schedulerLockTime = process.env.SCHEDULER_LOCK_TIME || config.accountStatementScheduler.schedulerLockTime;
 
 const agenda = new Agenda( {
   db: {
@@ -18,7 +20,6 @@ const agenda = new Agenda( {
 
 const jobName = 'AcntStmtQueryJob';
 class accountStatementQueryScheduler {
-
   constructor (AccountStatementRequest, accountStatementService) {
     this.schedulerModel = AccountStatementRequest;
     this.accountStatementService = accountStatementService;
@@ -28,9 +29,10 @@ class accountStatementQueryScheduler {
   }
 
   async createJob() {
-    if(schedular){
+    if(schedular === 'true' || schedular === true){
       agenda.define(jobName, {
-        concurrency: 0
+        concurrency: 0,
+        lockLifetime: parseInt(schedulerLockTime)
       }, this.executeJob );
       await agenda.start();
       await agenda.every(interval, jobName, null, {
@@ -42,31 +44,44 @@ class accountStatementQueryScheduler {
   }
 
   async executeJob(job) {
-    const request = await this.fetchRequest(job);
-    if(!!request){
-      const requestExecuted = await this.requestAccountStatement(request);
-      if(requestExecuted.success){
-          const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
-          if(requestUpdated){
-              logger.info("Scheduler: Email sent!")
-          }
-      }else{
-        const requestUpdated = await this.updateFailedRequestStatus(request);
-        logger.info({
-          event: "Schedule: Failed to send email",
-          data: { requestUpdated, message: "Request status updated" }
-        })
+    const requests = await this.fetchRequest(job);
+    const count = requests.length;
+    if(count > 0){
+      for(let i = 0; i < count; i++){
+        await this.updateRequestStatus(requests[i]._id, 'inProgress');
+        this.processRecords(requests[i]);
       }
     }else{
       logger.info("No new request found!");
     }
   }
 
+  async processRecords(request){
+    const requestExecuted = await this.requestAccountStatement(request);
+    if(requestExecuted.success){
+        const requestUpdated = await this.updateRequestStatus(request._id, 'sent');
+        if(requestUpdated){
+            logger.info("Scheduler: Email sent!")
+        }
+    }else{
+      const requestUpdated = await this.updateFailedRequestStatus(request);
+      logger.info({
+        event: "Schedule: Failed to send email",
+        data: { requestUpdated, message: "Request status updated" }
+      })
+    }
+  }
+
   async fetchRequest(job){
     try{
-        const request = await this.schedulerModel.findOne({
+        const requests = await this.schedulerModel.find({
           $or: [
-            { "status": "pending" },
+            {
+              $and: [
+                { "requestTime": { $gte: new Date().getTime()-(requestRetrievelTimeInMinutes*60*1000) } }, // fetch requests from last X minutes
+                { "status": "pending" }
+              ]
+            },
             {
               $and: [
                 { "status": "failed" },
@@ -75,12 +90,14 @@ class accountStatementQueryScheduler {
               ]
             }
           ]
-        });
-        logger.info({
-          event: "Request retrieved",
-          data: request
         })
-        return request;
+        .sort({ createdAt: 1 })
+        .limit(parseInt(requestsQueryLimit));
+        logger.info({
+          event: "Requests retrieved",
+          data: requests
+        });
+        return requests;
     }catch(error){
         logger.error( 'Error in executeJob for Account Statement query schedular from analytics and reporting microservice' + error )
     }
@@ -108,11 +125,28 @@ class accountStatementQueryScheduler {
           data: payload
         })
 
-        if (payload.format === 'pdf')
-            await accountStatementService.sendEmailPDFFormat(payload)
-        else
-            await accountStatementService.sendEmailCSVFormat(payload);
-        
+        logger.info({
+          event: "Payload and Channel Account Statement",
+          data: {payload : payload.format , channel : payload.channel}
+        })
+
+        if(payload.format === 'pdf'){
+          var execute = {
+            'consumerApp': accountStatementService.sendEmailPDFFormat,
+            'merchantApp': accountStatementService.sendEmailPDFMerchant,
+          }
+          logger.info('***Request Executed***');
+          await execute[payload.channel](payload)
+        }
+        else {
+          var execute = {
+
+              'consumerApp': accountStatementService.sendEmailCSVFormat,
+              'merchantApp': accountStatementService.sendEmailCSVFormatMerchant,
+          }
+          
+          await execute[payload.channel](payload)
+        }
         return { success: true }
     }catch(error){
         console.log('Error', error)

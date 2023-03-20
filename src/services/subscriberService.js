@@ -105,7 +105,6 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting
-
         ]);
 
         //this.setConsumer();
@@ -1251,7 +1250,7 @@ class Subscriber {
                     try {
 
                         const payload = JSON.parse(msg.value);
-                        logger.info('TRX REPORTING ' + JSON.stringify(payload));
+                        logger.debug('TRX REPORTING ' + JSON.stringify(payload));
                          DB2Connection.addTrxReporting(payload);
                     } catch (error) {
                         logger.debug(error)

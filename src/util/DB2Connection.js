@@ -4,6 +4,11 @@ import { logger } from '/util/';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
 import DB2ConnectionPool from './DB2ConnPool'
+import fetchQuery from './queries'
+import { printLog, printError } from '../util/utility';
+import { getMappedAccountStatement, getMappedAccountStatementMerchant } from '../util/accountStatementMapping';
+
+
 let conPool = DB2ConnectionPool.getInstance();
 const pool = new Pool();
 const maxPoolSize = Number(process.env.DB2ConnMaxPoolSize) || config.DB2_Jazz.maxPoolSize
@@ -1123,7 +1128,7 @@ class DatabaseConn {
     try {
       // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       // logger.info(`Step 02 b: mappedMSISDN `)
-      const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
+      const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where MSISDN = '${customerMobileNumer}' AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc limit 1;`);
       let result = stmt.executeSync();
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       let updatedBalance = 0.00;
@@ -1156,7 +1161,7 @@ class DatabaseConn {
       // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       // logger.info(`Step 02 b: mappedMSISDN `);
 
-      var query = `Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`;
+      var query = `Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where MSISDN = '${customerMobileNumer}' AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`;
       logger.info('QUERU ' + query);
       var result = conn.queryResultSync(query);
       //const stmt = conn.prepareSync(`Select RUNNING_BALANCE from statements.ACCOUNTSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) AND (date(TRX_DATETIME)  <= '${endDate}') order by TRX_DATETIME desc Limit 1;`);
@@ -1198,8 +1203,8 @@ class DatabaseConn {
 
       let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       let conn = await getConnection();
-      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const stmt = conn.prepareSync(`Select * from statements.ACCOUNTSTATEMENT where Date(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ?  ;`);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
 
       let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       let sumBalance = 0.00;
@@ -1237,6 +1242,60 @@ class DatabaseConn {
       return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
     }
   }
+  async getValueMerchant(customerMobileNumer, endDate, startDate) {
+
+    try {
+      logger.info({ event: 'Entered function', functionName: 'getValueMerchant in class DatabaseConn' });
+
+      let concatenatResult;
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+      let conn = await getConnection();
+
+      const query = fetchQuery("merchantAccountStatmentCSV")
+
+      const stmt = conn.prepareSync(query);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+
+      let resultArrayFormat = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      let sumBalance = 0.00;
+      let sumFee = 0.00;
+      let sumCredit = 0.00;
+      let sumDebit = 0.00;
+
+      if (resultArrayFormat.length > 0) {
+        resultArrayFormat = resultArrayFormat.map(arr => {
+          return getMappedAccountStatementMerchant(arr);
+        }).sort(function (a, b) {
+          var dateA = new Date(a[0]), dateB = new Date(b[0]);
+          return dateA - dateB;
+        })
+      }
+
+
+      resultArrayFormat.forEach((row) => {
+        sumDebit += parseFloat(row[row.length - 4]);
+        sumCredit += parseFloat(row[row.length - 3]);
+        sumFee += parseFloat(row[row.length - 2]);
+        sumBalance += parseFloat(row[row.length - 1]);
+      });
+
+
+      resultArrayFormat.push(["Total", "", "", "", "", parseFloat(sumDebit).toFixed(2), parseFloat(sumCredit).toFixed(2), parseFloat(sumFee).toFixed(2), parseFloat(sumBalance).toFixed(2)]);
+      concatenatResult = resultArrayFormat.join('\n');
+
+      logger.debug("the result of database" + concatenatResult, resultArrayFormat);
+      result.closeSync();
+      stmt.closeSync();
+      conn.close(function (err) { });
+      logger.info({ event: 'Exited function', functionName: 'getValueMerchant in class DatabaseConn', concatenatResult });
+      return concatenatResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.database_connection, err);
+    }
+  }
 
   async getValueArray(customerMobileNumer, endDate, startDate) {
 
@@ -1248,15 +1307,14 @@ class DatabaseConn {
 
       let conn = await getConnection();
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      const stmt = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT_NEW where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? OR MSISDN = ?   ;`);
-      const result = stmt.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const stmt = conn.prepareSync(`Select MSISDN, TRX_DATETIME, TRX_ID, TRX_YPE, CHANNEL, DESCRIPTION, AMOUNT_DEBITED, AMOUNT_CREDITED, RUNNING_BALANCE, REASON_TYPE from statements.ACCOUNTSTATEMENT where DATE(TRX_DATETIME) BETWEEN ? AND ? And MSISDN = ? ;`);
+      const result = stmt.executeSync([startDate, endDate, customerMobileNumer]);
 
       const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       result.closeSync();
       stmt.closeSync();
       conn.close();
-
-      logger.info({ event: 'COUNT OF ACCOUNT STATEMENTS RECORDS', functionName: 'ACCOUNT_STATEMENT_NEW', data: arrayResult.length });
+      logger.info({ event: 'Response from DB2', functionName: 'getValueArray', count: arrayResult.length });
       logger.info({ event: 'Exited function', functionName: 'getValueArray in class DatabaseConn', arrayResult });
 
       return arrayResult || [];
@@ -1264,6 +1322,50 @@ class DatabaseConn {
     } catch (error) {
       logger.error({ event: 'Error  thrown', functionName: 'getValueArray in class DatabaseConn', 'arguments': { customerMobileNumer, endDate, startDate }, 'error': error });
       logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+      throw new Error(`Database error ${error}`);
+    }
+  }
+
+  async getValueArrayMerchant(customerMobileNumer, endDate, startDate) {
+
+    let conn = await getConnection();
+
+    try {
+
+      if (!conn) {
+        conn = await open(cn);
+      }
+
+      let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+
+      printLog(
+        'Updated Msisdn',
+        'DatabaseConn.getValueArrayMerchant',
+        { mappedMsisdn }
+      );
+
+      const query = fetchQuery("merchantAccountStatmentPDF")
+
+      const statement = conn.prepareSync(query);
+      const result = statement.executeSync([startDate, endDate, customerMobileNumer, mappedMsisdn]);
+      const output = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+
+      result.closeSync();
+      statement.closeSync();
+      conn.close();
+
+      printLog(
+        'Exiting function',
+        'getValueArrayMerchant in class DatabaseConn',
+        { output }
+      );
+
+      return output || [];
+
+    } catch (error) {
+
+      printError(error, 'getValueArrayMerchant in class DatabaseConn')
+
       throw new Error(`Database error ${error}`);
     }
   }
@@ -1280,12 +1382,38 @@ class DatabaseConn {
 
       // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       // logger.debug("Updated Msisdn" + mappedMsisdn);
-      logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
+      logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where (MSISDN = '${customerMobileNumer}' OR MSISDN = '${mappedMsisdn}') And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);
+      const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = '${customerMobileNumer}' And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);
       const result = stmt.executeSync();
       const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       logger.debug("Exited getTaxValueArray: ", arrayResult)
+      result.closeSync();
+      stmt.closeSync();
+      return arrayResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return "Database Error";
+    } finally {
+      conn.close(function (err) {
+        if (err) {
+          logger.error(err)
+        }
+      });
+    }
+  }
+
+  async getTaxCertificateData(customerMobileNumer, year) {
+    let conn = await getConnection();
+    if (!conn) {
+      conn = await open(cn);
+    }
+    try {
+      const stmt = conn.prepareSync(`Select ACC_TITLE, ACC_NUMBER, ACC_LEVEL, TAX_PERIOD, END_DATE, END_DATE_BALANCE, END_DATE_BALANCE_IN_WORDS, OPENING_PERIOD_BALANCE, ENDING_PERIOD_BALANCE, TIME_PERIOD_OF_CERTIFICATE, TAX_DEDUCTION, TAX_DEDUCTION_IN_WORDS from statements.TAXSTATEMENT where MSISDN = '${customerMobileNumer}' And TAX_YEAR = '${year}' ;`);
+      const result = stmt.executeSync();
+      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      logger.info("Exited getTaxValueArray: ", arrayResult)
       result.closeSync();
       stmt.closeSync();
       return arrayResult;
@@ -1307,9 +1435,9 @@ class DatabaseConn {
 
       // let mappedMsisdn = await MsisdnTransformer.formatNumberSingle(customerMobileNumer, 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
       // logger.debug("Updated Msisdn" + mappedMsisdn);
-      logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
+      logger.debug({ event: 'QUERY', String: `Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} And TRX_DATETIME BETWEEN '${startDate}' AND '${endDate}'   ;` })
       //  const mobileNumber = customerMobileNumer.substr(customerMobileNumer.length - 10); //333333333
-      const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where (MSISDN = ${customerMobileNumer} OR MSISDN = ${mappedMsisdn}) And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);
+      const stmt = conn.prepareSync(`Select * from statements.TAXSTATEMENT where MSISDN = ${customerMobileNumer} And (Date(TRX_DATETIME) BETWEEN '${startDate}' AND '${endDate}')   ;`);
       const result = await stmt.executeSync();
       const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
       logger.debug("Exited getTaxValueArray: ", arrayResult)
@@ -1438,7 +1566,7 @@ class DatabaseConn {
           });
         }
 
-        
+
       });
     }
     catch (error) {
@@ -1498,6 +1626,50 @@ class DatabaseConn {
     }
   }
 
+  async addTrxReporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('payload trx data');
+      logger.debug(payload);
+      payload.CONTEXT_DATA = JSON.stringify(payload.CONTEXT_DATA || {})
+      const stmt = conn.prepareSync(`INSERT INTO STATEMENTS.HISTORY_REVAMPED (TRANS_ID, TRX_DTTM, INITIATOR_NAME, INITIATOR_MSISDN, TRX_CHANNEL, TRX_TYPE, AC_FROM, AC_TO, UTILITY_COMPANY, CONSUMER_NO, FEE, FED, WHT, GROSS_AMT, AMOUNT_DEBITED, AMOUNT_CREDITED, BENEFICIARY_MSISDN, DESCRIPTION, REASON_TYPE, CONTEXT_DATA )
+        VALUES
+        (
+          '${payload.TRANS_ID }',
+          '${payload.TRX_DTTM}',
+          '${payload.INITIATOR_NAME || '' }',
+          '${payload.INITIATOR_MSISDN || '' }',
+          '${payload.TRX_CHANNEL || '' }',
+          '${payload.TRX_TYPE || '' }',
+          '${payload.AC_FROM || '' }',
+          '${payload.AC_TO || '' }',
+          '${payload.UTILITY_COMPANY || '' }',
+          '${payload.CONSUMER_NO || '' }',
+          '${payload.FEE || '' }',
+          '${payload.FED || '' }',
+          '${payload.WHT || '' }',
+          '${payload.GROSS_AMT || '' }',
+          '${payload.AMOUNT_DEBITED || '' }',
+          '${payload.AMOUNT_CREDITED || '' }',
+          '${payload.BENEFICIARY_MSISDN || '' }',
+          '${payload.DESCRIPTION || '' }',
+          '${payload.REASON_TYPE || '' }',
+          '${payload.CONTEXT_DATA}' 
+        );`
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`TRX_REPORT insertion done`);
+      return;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return ;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
   
 }
 
