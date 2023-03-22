@@ -4,7 +4,8 @@ const connectionString = config.DB2_Jazz.connectionString
 import {
     createPDF,
     logger,
-    taxStatementTemplate
+    taxStatementTemplate,
+    taxStatementConsumerTemplate
 } from '../util/';
 import Notification from '../util/notification';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
@@ -225,25 +226,23 @@ class taxStatementService {
     }
 
     async sendConsumerTaxStatement(payload, res) {
-        logger.debug("email pdf", payload);
         try {
-            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year);
-            logger.debug("the output of changing database " + data);
-            // if (data === 'Database Error') return "Database Error";
-            // const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
-
-            // logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
-
-            // logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
-
-            // payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
-            
-            const htmlTemplate = taxStatementTemplate({ data, payload });
+            logger.info({
+                event: 'Entered Funnction',
+                functionName: 'taxStatementService.sendConsumerTaxStatement',
+                payload
+            })
+            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+            logger.info({
+                event: 'Tax certificate data from DB2',
+                data: data[0]
+            });
+            const htmlTemplate = await taxStatementConsumerTemplate({ data: data[0], payload });
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
-            logger.info(`Step 03: Obtained htmlTemplate for tax`)
+            logger.info(`Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
@@ -255,7 +254,7 @@ class taxStatementService {
             },
             {
                 'key': 'statementPeriod',
-                'value': payload.start_date
+                'value': payload.year
             }
             ];
             const attachment = [{
@@ -273,26 +272,20 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: year, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: payload.year, accountLevel: payload.accountLevel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
                     value: emailHTMLContent,
                 });
 
+                logger.info(`Email Sending...`)
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                logger.info(`Step 04: Sent email `)
             }
             else {
-                throw new Error(`Email Not provided`);
                 logger.error(`Email not provided`)
+                throw new Error(`Email Not provided`);
             }
-
-            // myDoc.table(table0, {
-            //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
-            //     prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
-            // });
-            // myDoc.end();
         } catch (err) {
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)

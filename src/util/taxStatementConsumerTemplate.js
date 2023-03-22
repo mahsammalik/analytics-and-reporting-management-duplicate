@@ -44,8 +44,12 @@ const htmlFoot = `<footer>
  * 
  * @param {*} accountData
  */
-const taxStatementConsumerTemplate = accountData => {
+const taxStatementConsumerTemplate = async (accountData) => {
 	try {
+		logger.info({
+			event: 'taxStatementConsumerTemplate',
+			accountData
+		})
         const {
             accountTitle,
             accountNumber,
@@ -60,7 +64,23 @@ const taxStatementConsumerTemplate = accountData => {
             taxDeduction,
             taxDeductionInWords
         } = getStatementMappedData(accountData.data);
-        logger.info();
+        logger.info({
+			event: 'Account Statement Mapped Data',
+			data: {
+				accountTitle,
+				accountNumber,
+				accountLevel,
+				taxPeriod,
+				endDate,
+				balance,
+				balanceInWords,
+				openingBalance,
+				closingBalance,
+				timePeriod,
+				taxDeduction,
+				taxDeductionInWords
+			}
+		});
         const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
         </div>
