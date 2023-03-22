@@ -103,7 +103,7 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
-            config.kafkaBroker.topics.account_login_reporting,
+            //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting
         ]);
 
