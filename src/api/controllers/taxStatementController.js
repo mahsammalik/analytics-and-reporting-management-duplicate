@@ -16,49 +16,54 @@ class taxStatementController {
     }
 
     async calculateTaxStatement(req, res, next) {
-        let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
-        let headersValidationResponse;
-        if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
-            headersValidationResponse = validations.verifySchema("USSD_HEADER_SCHEMA", req.headers);
-        }else{
-            headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
-        }
-        if (!headersValidationResponse.success) {
+        try{
+            let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
+            let headersValidationResponse;
+            if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
+                headersValidationResponse = validations.verifySchema("USSD_HEADER_SCHEMA", req.headers);
+            }else{
+                headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
+            }
+            if (!headersValidationResponse.success) {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
-        }
-        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
-        if (!queryValidationResponse.success) {
+            }
+            const queryValidationResponse = thirdParty.includes("consumer") ? validations.verifySchema("Consumer_Tax_Statement_SCHEMA", req.query) : validations.verifySchema("Tax_Statement_SCHEMA", req.query);
+            if (!queryValidationResponse.success) {
             const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
             return res.status(422).send(badQueryParam);
+            }
+            const metadataHeaders = req.headers['x-meta-data'];
+            const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+            const userProfile = await getUserProfile(req.headers);
+            logger.debug({ userProfile });
+            logger.debug(metadata," metadata")
+            let payload = {
+                msisdn: req.headers['x-msisdn'],
+                request: req.query.requestType,
+                email: req.query.email || metadata.emailAddress,
+                subject: 'Hello',
+                html: '<html></html>',
+                format: req.query.format,
+                metadata,
+                merchantName: userProfile.businessName || '',
+                accountLevel: userProfile.accountLevel || ''
+            };
+            if(thirdParty.includes("consumer")){
+                payload.year = req.query.year;
+                res.locals.response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
+            }else{
+                payload.start_date = req.query.start_date;
+                payload.end_date = req.query.end_date;
+                res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+            }
+            next();
+        }catch(err){
+            logger.error('Error', err);
+            res.locals.response = false;
+            next();
         }
-        const metadataHeaders = req.headers['x-meta-data'];
-        const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-        const userProfile = await getUserProfile(req.headers);
-        logger.debug({ userProfile });
-        logger.debug(metadata," metadata")
-        let payload = {
-            msisdn: req.headers['x-msisdn'],
-            request: req.query.requestType,
-            email: req.query.email || metadata.emailAddress,
-            subject: 'Hello',
-            html: '<html></html>',
-            format: req.query.format,
-            metadata,
-            merchantName: userProfile.businessName || '',
-            accountLevel: userProfile.accountLevel || ''
-
-        };
-        if(thirdParty.inludes("consumer")){
-            payload.year = req.query.year;
-            res.locals.response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
-        }else{
-            payload.start_date = req.query.start_date;
-            payload.end_date = req.query.end_date;
-            res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
-        }
-        next();
     }
 
 
