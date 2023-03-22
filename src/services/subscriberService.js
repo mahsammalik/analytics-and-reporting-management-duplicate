@@ -109,6 +109,8 @@ class Subscriber {
             config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.readyCashBaflReporting
+            //config.kafkaBroker.topics.account_login_reporting,
+            config.kafkaBroker.topics.trx_history_reporting
 
         ]);
 
