@@ -107,7 +107,8 @@ class Subscriber {
             // config.kafkaBroker.topics.GTOP_Init_Passed,
             // config.kafkaBroker.topics.GTOP_Init_Failed,
             config.kafkaBroker.topics.account_login_reporting,
-            config.kafkaBroker.topics.trx_history_reporting
+            config.kafkaBroker.topics.trx_history_reporting,
+            config.kafkaBroker.topics.readyCashBaflReporting
 
         ]);
 
@@ -1283,6 +1284,16 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         logger.info('TRX REPORTING ' + JSON.stringify(payload));
                          DB2Connection.addTrxReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
+                    logger.debug('*********** readyCashBaflReporting *****************');
+                    try {
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('readyCashBaflReporting ' + JSON.stringify(payload));
+                         DB2Connection.addReadyCashBaflReporting(payload)
                     } catch (error) {
                         logger.debug(error)
                     }
