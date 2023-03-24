@@ -283,8 +283,7 @@ class taxStatementService {
                 });
 
                 logger.info(`Email Sending...`)
-                const emailSent = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                return emailSent ? { success: true } : { success: false }
+                return  await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
             }
             else {
                 logger.error(`Email not provided`)
@@ -293,7 +292,7 @@ class taxStatementService {
         } catch (err) {
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
-            return { success: false };
+            return "PDF creation error";;
         }
     }
 
