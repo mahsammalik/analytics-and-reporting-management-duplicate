@@ -76,10 +76,12 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = taxStatementTemplate(accountData);
+            console.log("htmlTemplate ------------------>",htmlTemplate)
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
+            console.log("GENERATED ------------------>",pdfFile)
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{

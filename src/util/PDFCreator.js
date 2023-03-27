@@ -18,14 +18,18 @@ const createPDF = async(templateDetails) => {
         //     });
         // });
 
-
+        console.log("templateDetails ========================>",templateDetails)
+        console.log("stringify templateDetails ========================>",JSON.stringify(templateDetails))
         logger.info({ event: 'Entered function', functionName: 'createPDF' });
         logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
+                console.log("INSIDE CREATE PDF")
                 if (err) {
+                    console.log("REJECTED")
                     reject(err);
                 } else {
+                    console.log("RESOLVED")
                     resolve(buffer);
                 }
             });
