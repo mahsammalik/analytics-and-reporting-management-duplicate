@@ -242,10 +242,15 @@ class taxStatementService {
                 data: taxData
             });
             const htmlTemplate = await taxStatementConsumerTemplate({ data: taxData });
+            logger.info({
+                event: 'HTML Template',
+                htmlTemplate
+            })
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
+            logger.info('PDFFILE', pdfFile);
             logger.info(`Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
