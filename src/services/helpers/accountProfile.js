@@ -104,7 +104,7 @@ const levels = {
 		"expiryDate": null
 	}
  */
-const getUserProfile = async headers => {
+const getUserProfile = async (headers) => {
 	try {
 
 		logger.info({ event: 'Entered function', functionName: 'getUserProfile', headers, userProfileURL });
@@ -116,6 +116,14 @@ const getUserProfile = async headers => {
 			'X-IP-ADDRESS': headers['x-ip-address'] || '',
 			'X-APP-VERSION': headers['x-app-version'] || '',
 		};
+
+		logger.info({
+			event: 'Calling AXIOS Profile from Account',
+			data: {
+				url: userProfileURL,
+				headers: headerFields
+			}
+		})
 
 		const result = await axios.get(userProfileURL, { headers: headerFields });
 		logger.info({ event: 'User Profile Response', functionName: 'getUserProfile', result });
