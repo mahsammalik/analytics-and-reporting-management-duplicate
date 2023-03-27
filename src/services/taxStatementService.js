@@ -236,11 +236,12 @@ class taxStatementService {
             if(data.length < 1){
                 return { success: false, noData: true };
             }
+            const taxData = data[0];
             logger.info({
                 event: 'Tax certificate data from DB2',
-                data: data[0]
+                data: taxData
             });
-            const htmlTemplate = await taxStatementConsumerTemplate({ data: data[0], payload });
+            const htmlTemplate = await taxStatementConsumerTemplate({ data: taxData });
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
@@ -249,7 +250,7 @@ class taxStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
-                'value': payload.merchantName
+                'value': taxData[0] || ""
             },
             {
                 'key': 'accountNumber',
@@ -275,7 +276,13 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: payload.year, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = accountStatementEmailTemplate({
+                        title: 'Tax Statement',
+                        customerName: taxData[0] || "",
+                        accountNumber: payload.msisdn,
+                        statementPeriod: payload.year,
+                        accountLevel: taxData[2] || ""
+                    }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",

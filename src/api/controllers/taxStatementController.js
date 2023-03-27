@@ -36,8 +36,6 @@ class taxStatementController {
             }
             const metadataHeaders = req.headers['x-meta-data'];
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-            const userProfile = await getUserProfile(req.headers);
-            logger.debug({ userProfile });
             logger.debug(metadata," metadata")
             let payload = {
                 msisdn: req.headers['x-msisdn'],
@@ -46,9 +44,7 @@ class taxStatementController {
                 subject: 'Hello',
                 html: '<html></html>',
                 format: req.query.format,
-                metadata,
-                merchantName: userProfile.businessName || '',
-                accountLevel: userProfile.accountLevel || ''
+                metadata
             };
             if(thirdParty.includes("consumer")){
                 payload.year = req.query.year;
@@ -58,6 +54,10 @@ class taxStatementController {
                     res.locals.noData = response.noData;
                 }
             }else{
+                const userProfile = await getUserProfile(req.headers);
+                logger.debug({ userProfile });
+                payload.merchantName = userProfile.businessName || '',
+                payload.accountLevel = userProfile.accountLevel || ''
                 payload.start_date = req.query.start_date;
                 payload.end_date = req.query.end_date;
                 res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
