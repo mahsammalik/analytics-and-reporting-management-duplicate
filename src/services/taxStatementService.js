@@ -297,7 +297,10 @@ class taxStatementService {
                     value: emailHTMLContent,
                 });
 
-                logger.info(`Email Sending...`)
+                logger.info({
+                    event: 'Email Data',
+                    emailData
+                });
                 Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
                 return { success: true }
             }
