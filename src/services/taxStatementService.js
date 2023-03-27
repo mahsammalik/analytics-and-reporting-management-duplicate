@@ -298,8 +298,8 @@ class taxStatementService {
                 });
 
                 logger.info(`Email Sending...`)
-                const emailSent = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                return emailSent ? { success: true } : { success: false };
+                Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                return { success: true }
             }
             else {
                 logger.error(`Email not provided`)
