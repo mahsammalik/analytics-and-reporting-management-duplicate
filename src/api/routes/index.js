@@ -135,7 +135,8 @@ router.get(
     '/tax', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement, responseCodeMW,
 );
 router.get(
-    '/tax2', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement2, responseCodeMW,
+    // '/tax2', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement2, responseCodeMW,
+    '/tax2', taxStatementController.calculateTaxStatement2, responseCodeMW,
 );
 router.get(
     '/ibft/incoming/:startDate/:endDate', isTokenValid, excelExportController.jazzcashIncomingExport
