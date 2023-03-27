@@ -12,6 +12,32 @@ const htmlHead = `<!DOCTYPE html>
 		<title>Title</title>
 		<link href="file:///${dirName}/css/reset.css" rel="stylesheet">
 		<link href="file:///${dirName}/css/style.css" rel="stylesheet">
+		<style>
+			.taxHeading{
+				background: #FFE8A4;
+				width: 100%;
+    			height: 26px;
+				display: table;
+			}
+			.taxHeading b{
+				display: table-cell;
+				vertical-align: middle;
+				padding-left: 10px;
+			}
+			.taxDetails .details-row .title,
+			.taxDetails .details-row .details{
+				background: none;
+				margin: 0;
+			}
+			.taxDetails .details-row .title{
+				width: 25%;
+				border-right: 2px solid #D9D9D9;
+			}
+			.taxDetails .details-row .details{
+				width: 70%;
+				margin-left: 7px;
+			}
+		</style>
 </head><body>
 <header>
 	<div class="headerLogo">
@@ -29,8 +55,8 @@ const htmlFoot = `<footer>
 </div>
 <div class="copyright">
 	<div class="helpline">
-		<p>Customer Helpline: <b>444</b> | UAN: 111-124-444</p>
-		<b>wwww.jazzcash.com.pk</b>
+		<p>Customer Helpline: 8000 | UAN: 111-118-000</p>
+		<b>wwww.jazzcash.com.pk | complaints@jazzcash.com.pk</b>
 	</div>
 	<div class="footerlogo">
 		<img src="file:///${dirName}/images/mobilink-microfinance.png"
@@ -89,7 +115,7 @@ const taxStatementConsumerTemplate = async (accountData) => {
             <div class="section">
             <div class="heading">
             <h1>
-            Certificate of Tax Deduction
+            	Tax Certificate
             </h1>
         </div>
 		`;
@@ -101,14 +127,17 @@ const taxStatementConsumerTemplate = async (accountData) => {
 	</div>
 
 	<div class="taxDetails">
-		<div>
-			<div>Account Title </div>${accountTitle}</b>
+		<div class="details-row">
+			<div class="title">Account Title</div>
+			<div class="details">${accountTitle}</div>
 		</div>
-		<div>
-			<div>Account Number </div>${accountNumber}</b>
+		<div class="details-row">
+			<div class="title">Account Number</div>
+			<div class="details">${accountNumber}</div>
 		</div>
-		<div>
-			<div>Account Type </div>${accountLevel}</b>
+		<div class="details-row">
+			<div class="title">Account Level</div>
+			<div class="details">${accountLevel}</div>
 		</div>
 	</div>
 	<div class="taxHeading">
@@ -118,38 +147,45 @@ Account Balance from ${taxPeriod}
 	</div>
 
 	<div class="taxDetails">
-		<div>
-			<div>Balance as of Ending Date </div>${endDate}</b>
+		<div class="details-row">
+			<div class="title">Balance as of Ending Date </div>
+			<div class="details">${endDate}</div>
 		</div>
-		<div>
-			<div>Balance in Amount </div>Rs ${balance}</b>
+		<div class="details-row">
+			<div class="title">Balance in Amount </div>
+			<div class="details">Rs ${balance}</div>
 		</div>
-		<div>
-			<div>Balance in Words </div>${balanceInWords}</b>
+		<div class="details-row">
+			<div class="title">Balance in Words </div>
+			<div class="details">${balanceInWords}</div>
 		</div>
-        <div>
-			<div>Opening Balance </div>Rs ${openingBalance}</b>
+		<div class="details-row">
+			<div class="title">Opening Balance </div>
+			<div class="details">Rs ${openingBalance}</div>
 		</div>
-        <div>
-			<div>Closing Balance </div>Rs ${closingBalance}</b>
+		<div class="details-row">
+			<div class="title">Closing Balance </div>
+			<div class="details">Rs ${closingBalance}</div>
 		</div>
-
 	</div>
 	<div class="taxHeading">
 		<b>
-Withholding Tax Deducted:
+Withholding Tax Deduction
 </b>
 	</div>
 
 	<div class="taxDetails">
-		<div>
-			<div>Time Period of Certificate</div> ${timePeriod} </b>
+		<div class="details-row">
+			<div class="title">Time Period of Certificate</div>
+			<div class="details">${timePeriod} </div>
 		</div>
-		<div>
-			<div>Tax Deduction</div>Rs ${taxDeduction}</b>
+		<div class="details-row">
+			<div class="title">Tax Deduction</div>
+			<div class="details">Rs ${taxDeduction}</div>
 		</div>
-        <div>
-			<div>Tax Deduction in Words</div>Rs ${taxDeductionInWords}</b>
+		<div class="details-row">
+			<div class="title">Tax Deduction (in words)</div>
+			<div class="details">Rs ${taxDeductionInWords}</div>
 		</div>
 	</div>
 </main>${htmlFoot}`;

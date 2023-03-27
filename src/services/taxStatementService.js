@@ -284,12 +284,13 @@ class taxStatementService {
                     embedImage: false
                 }];
                 let emailHTMLContent = accountStatementEmailTemplate({
-                        title: 'Tax Statement',
-                        customerName: taxData[0] || "",
-                        accountNumber: payload.msisdn,
-                        statementPeriod: payload.year,
-                        accountLevel: taxData[2] || ""
-                    }) || '';
+                    title: 'Tax Statement',
+                    customerName: taxData[0] || "",
+                    accountNumber: payload.msisdn,
+                    statementPeriod: payload.year,
+                    accountLevel: taxData[2] || "",
+                    channel: payload.channel
+                }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",

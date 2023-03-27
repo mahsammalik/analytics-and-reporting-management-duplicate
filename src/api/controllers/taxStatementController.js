@@ -48,6 +48,7 @@ class taxStatementController {
             };
             if(thirdParty.includes("consumer")){
                 payload.year = req.query.year;
+                payload.channel = thirdParty;
                 const response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
                 res.locals.response = response.success;
                 if(response.noData){
