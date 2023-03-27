@@ -52,7 +52,11 @@ class taxStatementController {
             };
             if(thirdParty.includes("consumer")){
                 payload.year = req.query.year;
-                res.locals.response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
+                const response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
+                res.locals.response = response.success;
+                if(response.noData){
+                    res.locals.noData = response.noData;
+                }
             }else{
                 payload.start_date = req.query.start_date;
                 payload.end_date = req.query.end_date;
