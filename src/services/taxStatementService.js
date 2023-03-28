@@ -248,13 +248,13 @@ class taxStatementService {
                 event: 'HTML Template',
                 htmlTemplate
             })
-            let pdfFile = await createPDF({
-                template: htmlTemplate,
-                fileName: `Tax Statement`
-            });
-            logger.info('PDFFILE', pdfFile);
-            logger.info(`Obtained htmlTemplate for tax`)
-            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            // let pdfFile = await createPDF({
+            //     template: htmlTemplate,
+            //     fileName: `Tax Statement`
+            // });
+            // logger.info('PDFFILE', pdfFile);
+            // logger.info(`Obtained htmlTemplate for tax`)
+            // pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
                 'value': taxData[0] || ""
@@ -270,7 +270,7 @@ class taxStatementService {
             ];
             const attachment = [{
                 filename: 'Tax Certificate.pdf',
-                content: pdfFile,
+                content: '<h2>Hello</h2',
                 type: 'base64',
                 embedImage: false
             }];
