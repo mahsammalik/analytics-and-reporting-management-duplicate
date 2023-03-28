@@ -195,6 +195,7 @@ Withholding Tax Deduction
 
 		return htmlString;
 	} catch (error) {
+		console.log('Error', error);
 		logger.error(error);
 		return new Error(`error:  ${error}`);
 	}
