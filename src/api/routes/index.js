@@ -132,7 +132,7 @@ router.get(
     '/account', msisdnParserMW(), isTokenValid, accountStatementController.createAccountStatementRequest, responseCodeMW,
 );
 router.get(
-    '/tax', taxStatementController.calculateTaxStatement, responseCodeMW,
+    '/tax', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement, responseCodeMW,
 );
 router.get(
     '/tax2', msisdnParserMW(), isTokenValid, taxStatementController.calculateTaxStatement2, responseCodeMW,
