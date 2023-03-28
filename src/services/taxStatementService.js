@@ -243,7 +243,7 @@ class taxStatementService {
                 event: 'Tax certificate data from DB2',
                 data: taxData
             });
-            const htmlTemplate = await taxStatementConsumerTemplate({ data: taxData });
+            const htmlTemplate = taxStatementConsumerTemplate({ data: taxData });
             logger.info({
                 event: 'HTML Template',
                 htmlTemplate
