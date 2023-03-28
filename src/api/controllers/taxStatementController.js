@@ -34,11 +34,14 @@ class taxStatementController {
             logger.debug(queryValidationResponse);
             return res.status(422).send(badQueryParam);
             }
+            let userProfile = {};
+            if(thirdParty.includes("merchant")){
+                userProfile = await getUserProfile(req.headers);
+                logger.debug({ userProfile });
+            }
             const metadataHeaders = req.headers['x-meta-data'];
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             logger.debug(metadata," metadata")
-            const userProfile = await getUserProfile(req.headers);
-            logger.debug({ userProfile });
             let payload = {
                 msisdn: req.headers['x-msisdn'],
                 request: req.query.requestType,
@@ -50,7 +53,7 @@ class taxStatementController {
                 accountLevel: userProfile.accountLevel || '',
                 start_date: req.query.start_date,
                 end_date: req.query.end_date,
-                year: req.query.year || '',
+                year: thirdParty.includes("merchant") ? '' : req.query.year,
                 channel:  thirdParty,
                 metadata
             };
