@@ -75,6 +75,7 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = taxStatementTemplate(accountData);
+            console.log("htmlTemplate ------------------>",htmlTemplate)
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
