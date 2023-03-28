@@ -303,6 +303,7 @@ class taxStatementService {
             // });
             // myDoc.end();
         } catch (err) {
+            console.log('SError', err);
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
             return "PDF creation error";
