@@ -18,7 +18,11 @@ const createPDF = async(templateDetails) => {
         //     });
         // });
 
-        logger.info({ event: 'Entered function', functionName: 'createPDF' });
+        logger.info({
+            event: 'Entered function',
+            functionName: 'createPDF',
+            data: templateDetails.template
+        });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
                 if (err) {

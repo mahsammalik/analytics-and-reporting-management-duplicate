@@ -4,14 +4,14 @@ import logger from './logger';
 import moment from 'moment';
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-const htmlHead = `<!DOCTYPE html>
-<head>
-	<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+const htmlHead = `<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Title</title>
-		<link href="file:///${dirName}/css/reset.css" rel="stylesheet">
-		<link href="file:///${dirName}/css/style.css" rel="stylesheet">
+		<link href="file:///${dirName}/css/reset.css" rel="stylesheet" />
+		<link href="file:///${dirName}/css/style.css" rel="stylesheet" />
 		<style>
 			.taxHeading{
 				background: #FFE8A4;
@@ -38,33 +38,31 @@ const htmlHead = `<!DOCTYPE html>
 				margin-left: 7px;
 			}
 		</style>
-</head><body>
-<header>
-	<div class="headerLogo">
-		<img class="headerLogo-img" src="file:///${dirName}/images/JazzCash_logo.png" />
-	</div>`;
+</head>
+	<body>
+		<header>
+			<div class="headerLogo">
+				<img class="headerLogo-img" src="file:///${dirName}/images/JazzCash_logo.png" />
+			</div>`;
 
-const htmlFoot = `<footer>
-<div class="disclaimer">
-	<b>Disclaimer:</b>
-	<p>This is a system generated tax statement and does not require any signatures.</p></br>
-	<p> This file may contain information that is privileged and/or confidential under applicable laws. If you are not the intended recipient of this file, you should delete it immediately and are hereby notified that any dissemination, copy or disclosure of this file is strictly prohibited. Including any unauthorized use or communication of this file in whole or in part.
-	</p></br>
-	<p>
-		Mobilink Microfinance Bank will not be Liable for the improper or incomplete transmission of the information contained in this file nor for any delay in its receipt or damage to your system. Mobilink Microfinance Bank does not guarantee that the integrity of this file has been maintained nor that this communication is free of viruses, interceptions or interferences. </p>
-</div>
-<div class="copyright">
-	<div class="helpline">
-		<p>Customer Helpline: 8000 | UAN: 111-118-000</p>
-		<b>wwww.jazzcash.com.pk | complaints@jazzcash.com.pk</b>
-	</div>
-	<div class="footerlogo">
-		<img src="file:///${dirName}/images/mobilink-microfinance.png"
-	</div>
-
-</div>
-</footer>
-</body>
+const htmlFoot = `
+	<footer>
+		<div class="disclaimer">
+			<b>Disclaimer:</b>
+			<p>This is a system generated tax statement and does not require any signatures.</p></br>
+			<p> This file may contain information that is privileged and/or confidential under applicable laws. If you are not the intended recipient of this file, you should delete it immediately and are hereby notified that any dissemination, copy or disclosure of this file is strictly prohibited. Including any unauthorized use or communication of this file in whole or in part.</p></br>
+			<p>Mobilink Microfinance Bank will not be Liable for the improper or incomplete transmission of the information contained in this file nor for any delay in its receipt or damage to your system. Mobilink Microfinance Bank does not guarantee that the integrity of this file has been maintained nor that this communication is free of viruses, interceptions or interferences. </p>
+		</div>
+		<div class="copyright">
+			<div class="helpline">
+				<p>Customer Helpline: 8000 | UAN: 111-118-000</p>
+				<b>wwww.jazzcash.com.pk | complaints@jazzcash.com.pk</b>
+			</div>
+		<div class="footerlogo">
+			<img src="file:///${dirName}/images/mobilink-microfinance.png" />
+		</div>
+	</footer>
+	</body>
 </html>`;
 /**
  * 
@@ -107,23 +105,26 @@ const taxStatementConsumerTemplate = async (accountData) => {
 				taxDeductionInWords
 			}
 		});
-        const accountDetails = `<div class="headerTable">
-		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
+        const accountDetails = `
+		<div class="headerTable">
+			<div>
+				<b>Date: </b>${moment().format('DD-MMM-YYYY')}
+			</div>
         </div>
-            </header>
-            <main>
+		</header>
+		<main>
             <div class="section">
-            <div class="heading">
-            <h1>
-            	Tax Certificate
-            </h1>
-        </div>
+           		<div class="heading">
+            		<h1>
+            			Tax Certificate
+            		</h1>
+        		</div>
 		`;
 
 		let htmlString = `${htmlHead}${accountDetails}<div class="taxHeading">
 		<b>
-	Account Details
-</b>
+			Account Details
+		</b>
 	</div>
 
 	<div class="taxDetails">
