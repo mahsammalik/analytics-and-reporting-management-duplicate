@@ -20,6 +20,7 @@ const createPDF = async(templateDetails) => {
 
 
         logger.info({ event: 'Entered function', functionName: 'createPDF' });
+        logger.info({ event: 'Entered function', functionName: 'createPDF', html: templateDetails.template });
         logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
