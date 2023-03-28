@@ -27,8 +27,10 @@ const createPDF = async(templateDetails) => {
         return new Promise((resolve, reject) => {
             htmlToPdf.generatePdf(templateDetails.template, { format: 'A4' }).then((err, buffer) => {
                 if (err) {
+                    console.log('PDF Error', err)
                     reject(err);
                 } else {
+                    console.log('{DF Buffer', buffer)
                     resolve(buffer);
                 }
             });
