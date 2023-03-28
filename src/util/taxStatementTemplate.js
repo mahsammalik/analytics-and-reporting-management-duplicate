@@ -127,7 +127,7 @@ Withholding Tax Deducted:
 		</div>
 	</div>
 </main>${htmlFoot}`;
-		logger.info({ event: 'Entered function', functionName: 'htmlString' , data : htmlString});
+		logger.info(htmlString);
 		return htmlString;
 	} catch (error) {
 		logger.error(error);
