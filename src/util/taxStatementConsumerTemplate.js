@@ -61,6 +61,7 @@ const htmlFoot = `
 		<div class="footerlogo">
 			<img src="file:///${dirName}/images/mobilink-microfinance.png" />
 		</div>
+		</div>
 	</footer>
 	</body>
 </html>`;
@@ -188,6 +189,7 @@ Withholding Tax Deduction
 			<div class="title">Tax Deduction (in words)</div>
 			<div class="details">Rs ${taxDeductionInWords}</div>
 		</div>
+	</div>
 	</div>
 </main>${htmlFoot}`;
 
