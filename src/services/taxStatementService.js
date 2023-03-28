@@ -148,18 +148,22 @@ class taxStatementService {
     async sendTaxStatement(payload, res) {
         logger.debug("email pdf", payload);
         try {
-            let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-            const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
-            logger.debug("the output of changing database " + data);
+            let data = [];
+            if(payload.channel.includes("consumer")){
+                data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+            }else{
+                let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+                data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
+                const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
+                logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
+                logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+                payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
+            }
+            logger.info({
+                event: 'Response from DB2',
+                data
+            });
             if (data === 'Database Error') return "Database Error";
-
-            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
-
-            logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
-
-            logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
-
-            payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,

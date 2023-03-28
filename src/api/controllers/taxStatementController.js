@@ -37,6 +37,8 @@ class taxStatementController {
             const metadataHeaders = req.headers['x-meta-data'];
             const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
             logger.debug(metadata," metadata")
+            const userProfile = await getUserProfile(req.headers);
+            logger.debug({ userProfile });
             let payload = {
                 msisdn: req.headers['x-msisdn'],
                 request: req.query.requestType,
@@ -44,25 +46,15 @@ class taxStatementController {
                 subject: 'Hello',
                 html: '<html></html>',
                 format: req.query.format,
+                erchantName: userProfile.businessName || '',
+                accountLevel: userProfile.accountLevel || '',
+                start_date: req.query.start_date,
+                end_date: req.query.end_date,
+                year: req.query.year || '',
+                channel:  thirdParty,
                 metadata
             };
-            if(thirdParty.includes("consumer")){
-                payload.year = req.query.year;
-                payload.channel = thirdParty;
-                const response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
-                res.locals.response = response.success;
-                if(response.noData){
-                    res.locals.noData = response.noData;
-                }
-            }else{
-                const userProfile = await getUserProfile(req.headers);
-                logger.debug({ userProfile });
-                payload.merchantName = userProfile.businessName || '',
-                payload.accountLevel = userProfile.accountLevel || ''
-                payload.start_date = req.query.start_date;
-                payload.end_date = req.query.end_date;
-                res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
-            }
+            res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
             next();
         }catch(err){
             console.log('CError', err)
