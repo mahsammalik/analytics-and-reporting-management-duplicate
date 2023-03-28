@@ -4,46 +4,45 @@ import logger from './logger';
 import moment from 'moment';
 const dirName = `${path.dirname(__dirname)}/public/assets`;
 
-const htmlHead = `<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+const htmlHead = `<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Title</title>
-		<link href="file:///${dirName}/css/reset.css" rel="stylesheet" />
-		<link href="file:///${dirName}/css/style.css" rel="stylesheet" />
+		<link href="file:///${dirName}/css/reset.css" rel="stylesheet">
+		<link href="file:///${dirName}/css/style.css" rel="stylesheet">
 		<style>
-			.taxHeading{
-				background: #FFE8A4;
-				width: 100%;
-    			height: 26px;
-				display: table;
-			}
-			.taxHeading b{
-				display: table-cell;
-				vertical-align: middle;
-				padding-left: 10px;
-			}
-			.taxDetails .details-row .title,
-			.taxDetails .details-row .details{
-				background: none;
-				margin: 0;
-			}
-			.taxDetails .details-row .title{
-				width: 25%;
-				border-right: 2px solid #D9D9D9;
-			}
-			.taxDetails .details-row .details{
-				width: 60%;
-				margin-left: 7px;
-			}
-		</style>
-</head>
-	<body>
-		<header>
-			<div class="headerLogo">
-				<img class="headerLogo-img" src="file:///${dirName}/images/JazzCash_logo.png" />
-			</div>`;
+		.taxHeading{
+			background: #FFE8A4;
+			width: 100%;
+			height: 26px;
+			display: table;
+		}
+		.taxHeading b{
+			display: table-cell;
+			vertical-align: middle;
+			padding-left: 10px;
+		}
+		.taxDetails .details-row .title,
+		.taxDetails .details-row .details{
+			background: none;
+			margin: 0;
+		}
+		.taxDetails .details-row .title{
+			width: 25%;
+			border-right: 2px solid #D9D9D9;
+		}
+		.taxDetails .details-row .details{
+			width: 60%;
+			margin-left: 7px;
+		}
+	</style>
+</head><body>
+<header>
+	<div class="headerLogo">
+		<img class="headerLogo-img" src="file:///${dirName}/images/JazzCash_logo.png" />
+	</div>`;
 
 const htmlFoot = `
 	<footer>
