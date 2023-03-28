@@ -150,6 +150,7 @@ class taxStatementService {
         try {
             let data = [];
             if(payload.channel.includes("consumer")){
+                logger.info('Working here...!')
                 data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
             }else{
                 let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
@@ -165,7 +166,7 @@ class taxStatementService {
             });
             if (data === 'Database Error') return "Database Error";
             const accountData = {
-                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
+                // headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
                 payload
             };
