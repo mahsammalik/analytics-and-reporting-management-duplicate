@@ -243,15 +243,18 @@ class taxStatementService {
                 event: 'Tax certificate data from DB2',
                 data: taxData
             });
-            const htmlTemplate = taxStatementConsumerTemplate({ data: taxData });
-            logger.info({
-                event: 'HTML Template',
-                htmlTemplate
-            })
+            const accountData = {
+                headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
+                data,
+                payload
+            };
+            const htmlTemplate = taxStatementTemplate(accountData);
+            logger.info('HtmlTemplate', taxStatementTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
+            
             logger.info(`Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
