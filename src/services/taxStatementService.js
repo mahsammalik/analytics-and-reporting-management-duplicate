@@ -267,12 +267,6 @@ class taxStatementService {
                 'value': payload.year
             }
             ];
-            const attachment = [{
-                filename: 'Tax Certificate.pdf',
-                content: pdfFile,
-                type: 'base64',
-                embedImage: false
-            }];
             logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
             if (payload.email) {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
