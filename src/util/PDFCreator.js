@@ -1,9 +1,8 @@
 import fs from "fs";
 import pdf from 'html-pdf';
 import logger from './logger';
-const htmlToPdf = require('html-pdf-node');
 
-// const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '10000000'};
+const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '10000000'};
 
 const createPDF = async(templateDetails) => {
     try {
@@ -19,18 +18,14 @@ const createPDF = async(templateDetails) => {
         //     });
         // });
 
-        logger.info({
-            event: 'Entered function',
-            functionName: 'createPDF',
-            data: templateDetails.template
-        });
+        logger.info({ event: 'Entered function', functionName: 'createPDF', html: templateDetails.template });
         return new Promise((resolve, reject) => {
-            htmlToPdf.generatePdf(templateDetails.template, { format: 'A4' }).then((err, buffer) => {
+            pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
                 if (err) {
-                    console.log('PDF Error', err)
+                    console.log('PDF Error', err);
                     reject(err);
                 } else {
-                    console.log('{DF Buffer', buffer)
+                    console.log('PDF Buffer', buffer);
                     resolve(buffer);
                 }
             });
