@@ -248,8 +248,8 @@ class taxStatementService {
                 data,
                 payload
             };
-            const htmlTemplate = taxStatementTemplate(accountData);
-            logger.info('HtmlTemplate', taxStatementTemplate);
+            const htmlTemplate = taxStatementConsumerTemplate(accountData);
+            logger.info('HtmlTemplate', htmlTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
