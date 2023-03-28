@@ -160,6 +160,10 @@ class taxStatementService {
                     return "No Data"
                 }
                 consumerTaxData = data[0];
+                logger.info({
+                    event: 'Tax Certificate Data for Consumer',
+                    consumerTaxData
+                })
             }else{
                 let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
                 data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
