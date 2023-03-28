@@ -127,7 +127,7 @@ Withholding Tax Deducted:
 		</div>
 	</div>
 </main>${htmlFoot}`;
-
+		console.log("HTML STRING *************************",htmlString)
 		return htmlString;
 	} catch (error) {
 		logger.error(error);
