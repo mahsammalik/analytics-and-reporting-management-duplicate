@@ -147,7 +147,10 @@ class taxStatementService {
         try {
             let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
             const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
-            logger.debug("the output of changing database " + data);
+            logger.info({
+                event: 'Response from DB2',
+                data
+            });
             if (data === 'Database Error') return "Database Error";
 
             const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
