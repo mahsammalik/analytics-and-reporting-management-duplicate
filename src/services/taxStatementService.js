@@ -228,38 +228,35 @@ class taxStatementService {
     }
 
     async sendConsumerTaxStatement(payload, res) {
+        logger.debug("email pdf", payload);
         try {
-            logger.info({
-                event: 'Entered Funnction',
-                functionName: 'taxStatementService.sendConsumerTaxStatement',
-                payload
-            })
-            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
-            if(data.length < 1){
-                return { success: false, noData: true };
-            }
-            const taxData = data[0];
-            logger.info({
-                event: 'Tax certificate data from DB2',
-                data: taxData
-            });
+            let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            const data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
+            logger.debug("the output of changing database " + data);
+            if (data === 'Database Error') return "Database Error";
+
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
+
+            logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
+
+            logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+
+            payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data,
                 payload
             };
             const htmlTemplate = taxStatementConsumerTemplate(accountData);
-            logger.info('HtmlTemplate', htmlTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
-            
-            logger.info(`Obtained htmlTemplate for tax`)
+            logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
-                'value': taxData[0] || ""
+                'value': payload.merchantName
             },
             {
                 'key': 'accountNumber',
@@ -267,9 +264,15 @@ class taxStatementService {
             },
             {
                 'key': 'statementPeriod',
-                'value': payload.year
+                'value': payload.start_date
             }
             ];
+            const attachment = [{
+                filename: 'Tax Certificate.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
             logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
             if (payload.email) {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
@@ -279,37 +282,115 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({
-                    title: 'Tax Statement',
-                    customerName: taxData[0] || "",
-                    accountNumber: payload.msisdn,
-                    statementPeriod: payload.year,
-                    accountLevel: taxData[2] || "",
-                    channel: payload.channel
-                }) || '';
-                logger.info('emailHTMLContent', emailHTMLContent);
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
                     value: emailHTMLContent,
                 });
 
-                logger.info({
-                    event: 'Email Data',
-                    emailData
-                });
-                Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                return { success: true }
+                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                logger.info(`Step 04: Sent email `)
             }
             else {
-                logger.error(`Email not provided`)
                 throw new Error(`Email Not provided`);
+                logger.error(`Email not provided`)
             }
+
+            // myDoc.table(table0, {
+            //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
+            //     prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
+            // });
+            // myDoc.end();
         } catch (err) {
+            console.log('SError', err);
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
-            return { success: false };
+            return "PDF creation error";
         }
+        // try {
+        //     logger.info({
+        //         event: 'Entered Funnction',
+        //         functionName: 'taxStatementService.sendConsumerTaxStatement',
+        //         payload
+        //     })
+        //     const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+        //     if(data.length < 1){
+        //         return { success: false, noData: true };
+        //     }
+        //     const taxData = data[0];
+        //     logger.info({
+        //         event: 'Tax certificate data from DB2',
+        //         data: taxData
+        //     });
+        //     const accountData = {
+        //         headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
+        //         data,
+        //         payload
+        //     };
+        //     const htmlTemplate = taxStatementConsumerTemplate(accountData);
+        //     logger.info('HtmlTemplate', htmlTemplate);
+        //     let pdfFile = await createPDF({
+        //         template: htmlTemplate,
+        //         fileName: `Tax Statement`
+        //     });
+            
+        //     logger.info(`Obtained htmlTemplate for tax`)
+        //     pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+        //     const emailData = [{
+        //         'key': 'customerName',
+        //         'value': taxData[0] || ""
+        //     },
+        //     {
+        //         'key': 'accountNumber',
+        //         'value': payload.msisdn
+        //     },
+        //     {
+        //         'key': 'statementPeriod',
+        //         'value': payload.year
+        //     }
+        //     ];
+        //     logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+        //     if (payload.email) {
+        //         logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+        //         const attachment = [{
+        //             filename: 'TaxStatement.pdf',
+        //             content: pdfFile,
+        //             type: 'base64',
+        //             embedImage: false
+        //         }];
+        //         let emailHTMLContent = await accountStatementEmailTemplate({
+        //             title: 'Tax Statement',
+        //             customerName: taxData[0] || "",
+        //             accountNumber: payload.msisdn,
+        //             statementPeriod: payload.year,
+        //             accountLevel: taxData[2] || "",
+        //             channel: payload.channel
+        //         }) || '';
+        //         logger.info('emailHTMLContent', emailHTMLContent);
+
+        //         emailData.push({
+        //             key: "htmlTemplate",
+        //             value: emailHTMLContent,
+        //         });
+
+        //         logger.info({
+        //             event: 'Email Data',
+        //             emailData
+        //         });
+        //         Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+        //         return { success: true }
+        //     }
+        //     else {
+        //         logger.error(`Email not provided`)
+        //         throw new Error(`Email Not provided`);
+        //     }
+        // } catch (err) {
+        //     console.log('Error', err);
+        //     logger.error({ event: 'Error in pdf Creation' + err });
+        //     logger.error(err)
+        //     return { success: false };
+        // }
     }
 
     async populateDataBase() {

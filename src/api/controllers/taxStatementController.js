@@ -65,6 +65,7 @@ class taxStatementController {
             }
             next();
         }catch(err){
+            console.log('CError', err)
             logger.error('Error', err);
             res.locals.response = false;
             next();
