@@ -44,12 +44,23 @@ const htmlFoot = `<footer>
  * 
  * @param {*} accountData
  */
-const taxStatementTemplate = accountData => {
+const taxStatementConsumerTemplate = accountData => {
 
 	try {
-		logger.debug(`account data ${JSON.stringify(accountData)}`);
 
-		
+		logger.debug(`payload ${JSON.stringify(accountData.payload)}`);
+		// logger.debug(`account data ${JSON.stringify(accountData.data)}`);
+
+		// const WithdrawWhtTax = accountData.data.map(tax => tax[6]).reduce(function (a, b) {
+		// 	return a + b;
+		// }, 0) || 0;
+		// const PostProfitingWhtTax = accountData.data.map(tax => tax[7]).reduce(function (a, b) {
+		// 	return a + b;
+		// }, 0) || 0;
+		// const totalTax = Number.parseFloat(WithdrawWhtTax + PostProfitingWhtTax).toFixed(2);
+		// const taxInWords = numberConverter.toWords(totalTax).charAt(0).toUpperCase() + numberConverter.toWords(totalTax).slice(1);
+		// logger.debug("TAX:  ", taxInWords, totalTax)
+		// const numberInWords = numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).charAt(0).toUpperCase() + numberConverter.toWords(Number.parseFloat(accountData.payload.updatedRunningbalance) || 0).slice(1);
 		const accountDetails = `<div class="headerTable">
 		<div><b>Date: </b>${moment().format('DD-MMM-YYYY')}</div>
 	</div>
@@ -71,7 +82,7 @@ const taxStatementTemplate = accountData => {
 
 	<div class="taxDetails">
 		<div>
-			<div>Account Title </div> Salman Haider</b>
+			<div>Account Title </div>Salman Haider</b>
 		</div>
 		<div>
 			<div>Account Number </div>03335071640</b>
@@ -91,10 +102,10 @@ Account Balance:
 			<div>Balance of Account as of </div>11-03-2021</b>
 		</div>
 		<div>
-			<div>Balance (in figures) </div>Rs 200</b>
+			<div>Balance (in figures) </div>Rs 3000</b>
 		</div>
 		<div>
-			<div>Balance (in words) </div>Two</b>
+			<div>Balance (in words) </div>Three</b>
 		</div>
 
 	</div>
@@ -106,14 +117,14 @@ Withholding Tax Deducted:
 
 	<div class="taxDetails">
 		<div>
-			<div>Time Period of statement</div> 11-03-2023 - 15-03-2023</b>
+			<div>Time Period of statement</div> Test</b>
 		</div>
 		<div>
-			<div>Tax Deposited</div>Rs Text</b>
+			<div>Tax Deposited</div>Rs 500</b>
 		</div>
 	</div>
 </main>${htmlFoot}`;
-
+		logger.info(htmlString);
 		return htmlString;
 	} catch (error) {
 		logger.error(error);
@@ -123,4 +134,4 @@ Withholding Tax Deducted:
 
 };
 
-export default taxStatementTemplate;
+export default taxStatementConsumerTemplate;
