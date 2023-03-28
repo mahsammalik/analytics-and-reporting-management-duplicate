@@ -21,11 +21,14 @@ const createPDF = async(templateDetails) => {
         logger.info({ event: 'Entered function', functionName: 'createPDF', html: templateDetails.template });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
+                logger.info({ event: 'Entered pdf create', functionName: 'createPDF'});
                 if (err) {
                     console.log('PDF Error', err);
+                    logger.info({ event: 'PDF Error', functionName: 'createPDF' , error : err });
                     reject(err);
                 } else {
                     console.log('PDF Buffer', buffer);
+                    logger.info({ event: 'PDF Buffer', functionName: 'createPDF' , buffer : buffer });
                     resolve(buffer);
                 }
             });
