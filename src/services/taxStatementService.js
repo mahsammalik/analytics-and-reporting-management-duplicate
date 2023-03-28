@@ -291,6 +291,7 @@ class taxStatementService {
                     accountLevel: taxData[2] || "",
                     channel: payload.channel
                 }) || '';
+                logger.info('emailHTMLContent', emailHTMLContent);
 
                 emailData.push({
                     key: "htmlTemplate",
