@@ -35,6 +35,7 @@ const createPDF = async(templateDetails) => {
         });
 
     } catch (error) {
+        console.log('Error', error);
         logger.error({ event: 'Error throw', functionName: 'createPDF', error: { message: error.message, stack: error.stack } });
         logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Error("PDF creation error");
