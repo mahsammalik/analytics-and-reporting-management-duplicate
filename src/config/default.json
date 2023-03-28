@@ -189,7 +189,9 @@
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
                 "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
-                "trx_history_reporting": "TRX_HISTORY_REPORTING"
+                "trx_history_reporting": "TRX_HISTORY_REPORTING",
+                "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
+                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING"
             }
         },
         "cache": {
@@ -380,7 +382,9 @@
             "ACCOUNT_UPGRADE": "COMMON_ACCOUNT_UPGRADE",
             "CASHTOGOOD": "CASHTOGOOD",
             "CASHTOGOOD_REDEEM": "CASHTOGOOD_REDEEM",
-            "SPSU": "SPSU_DISBURSEMENTS"
+            "SPSU": "SPSU_DISBURSEMENTS",
+            "L0_TO_L1_REPORT": "L0_TO_L1_REPORT",
+            "DORMANT_TO_ACTIVE_REPORT": "DORMANT_TO_ACTIVE_REPORT"
         }
     }
 }
