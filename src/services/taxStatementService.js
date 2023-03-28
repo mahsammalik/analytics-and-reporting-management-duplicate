@@ -146,12 +146,20 @@ class taxStatementService {
 
 
     async sendTaxStatement(payload, res) {
-        logger.debug("email pdf", payload);
         try {
+            const isConsumer = payload.channel.includes("consumer");
+            logger.info({
+                event: 'Entered Function sendTaxStatement of Service',
+                data: { payload, isConsumer }
+            });
             let data = [];
-            if(payload.channel.includes("consumer")){
-                logger.info('Working here...!')
+            let consumerTaxData = [];
+            if(isConsumer){
                 data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+                if(data.length < 1){
+                    return "No Data"
+                }
+                consumerTaxData = data[0];
             }else{
                 let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
                 data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
@@ -167,10 +175,10 @@ class taxStatementService {
             if (data === 'Database Error') return "Database Error";
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
-                data,
+                data: isConsumer ? consumerTaxData : data,
                 payload
             };
-            const htmlTemplate = taxStatementTemplate(accountData);
+            const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
@@ -179,7 +187,7 @@ class taxStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
-                'value': payload.merchantName
+                'value': isConsumer ? consumerTaxData[0] : payload.merchantName
             },
             {
                 'key': 'accountNumber',
@@ -187,7 +195,7 @@ class taxStatementService {
             },
             {
                 'key': 'statementPeriod',
-                'value': payload.start_date
+                'value': isConsumer ? payload.year : payload.start_date
             }
             ];
             const attachment = [{
@@ -205,7 +213,13 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({
+                    title: 'Tax Statement',
+                    customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
+                    accountNumber: payload.msisdn,
+                    statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
+                    accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
+                }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
@@ -213,7 +227,7 @@ class taxStatementService {
                 });
 
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                logger.info(`Step 04: Sent email `)
+                logger.info(`Step 04: Sending email `)
             }
             else {
                 throw new Error(`Email Not provided`);

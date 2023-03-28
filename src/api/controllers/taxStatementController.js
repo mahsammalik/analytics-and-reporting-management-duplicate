@@ -57,7 +57,13 @@ class taxStatementController {
                 channel:  thirdParty,
                 metadata
             };
-            res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+            const response = await this.taxStatementService.sendTaxStatement(payload, res);
+            if(response === "No Data"){
+                res.locals.response = false
+                res.locals.noData = true
+            }else{
+                res.locals.response = response
+            }   
             next();
         }catch(err){
             console.log('CError', err)
