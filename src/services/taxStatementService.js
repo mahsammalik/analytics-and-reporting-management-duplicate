@@ -283,7 +283,7 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = accountStatementEmailTemplate({
+                let emailHTMLContent = await accountStatementEmailTemplate({
                     title: 'Tax Statement',
                     customerName: taxData[0] || "",
                     accountNumber: payload.msisdn,
