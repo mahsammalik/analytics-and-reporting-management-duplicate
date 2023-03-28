@@ -279,7 +279,7 @@ class taxStatementService {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                 const attachment = [{
                     filename: 'TaxStatement.pdf',
-                    content: pdfFile,
+                    content: '<h1>Hello</h1>',
                     type: 'base64',
                     embedImage: false
                 }];
