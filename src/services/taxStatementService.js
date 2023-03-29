@@ -188,7 +188,7 @@ class taxStatementService {
                 fileName: `Tax Statement`
             }, cb => {
                 console.log('PDF File', cb);
-                pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+                pdfFile = Buffer.from(cb, 'base64').toString('base64');
             });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             const emailData = [{
