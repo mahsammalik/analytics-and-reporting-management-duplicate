@@ -59,7 +59,7 @@
         "file-base64": "^1.0.0",
         "flat": "^5.0.2",
         "gen-uid": "0.0.2",
-        "html-pdf": "^3.0.0",
+        "html-pdf": "^2.2.0",
         "html-pdf-node": "^1.0.8",
         "hummus-recipe": "^2.0.0",
         "ibm_db": "^2.8.0",
