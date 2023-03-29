@@ -19,29 +19,17 @@ const createPDF = async(templateDetails, cb) => {
         // // });
 
 
-        // logger.info({ event: 'Entered function', functionName: 'createPDF' });
-        // logger.info({ event: 'Exited function', functionName: 'createPDF' });
-        // return new Promise((resolve, reject) => {
-        //     pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
-        //         if (err) {
-        //             reject(err);
-        //         } else {
-        //             resolve(buffer);
-        //         }
-        //     });
-        // });
-        logger.info({
-            event: 'Email Template',
-            template: templateDetails.template
-        })
-
-        pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
-            if (!err) {
-                console.log('Buffer Created', buffer);
-                cb(buffer)
-            }
-            throw err;
+        logger.info({ event: 'Entered function', functionName: 'createPDF', data: templateDetails.template });
+        return new Promise((resolve, reject) => {
+            pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(buffer);
+                }
+            });
         });
+        
 
 
     } catch (error) {
