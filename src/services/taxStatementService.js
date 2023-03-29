@@ -156,15 +156,71 @@ class taxStatementService {
             let data = [];
             let consumerTaxData = [];
             if(isConsumer){
-                data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
-                if(data.length < 1){
-                    return "No Data"
+
+                let pdfFile = await createPDF({
+                    template: `<p>Hello JazzCash!</p>`,
+                    fileName: `Tax Statement`
+                });
+                pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+                logger.info(`Step 03: Obtained htmlTemplate for tax`)
+                const emailData = [{
+                    'key': 'customerName',
+                    'value': isConsumer ? consumerTaxData[0] : payload.merchantName
+                },
+                {
+                    'key': 'accountNumber',
+                    'value': payload.msisdn
+                },
+                {
+                    'key': 'statementPeriod',
+                    'value': isConsumer ? payload.year : payload.start_date
                 }
-                consumerTaxData = data[0];
-                logger.info({
-                    event: 'Tax Certificate Data for Consumer',
-                    consumerTaxData
-                })
+                ];
+                const attachment = [{
+                    filename: 'Tax Certificate.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+                logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+                if (payload.email) {
+                    logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                    const attachment = [{
+                        filename: 'TaxStatement.pdf',
+                        content: pdfFile,
+                        type: 'base64',
+                        embedImage: false
+                    }];
+                    let emailHTMLContent = await accountStatementEmailTemplate({
+                        title: 'Tax Statement',
+                        customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
+                        accountNumber: payload.msisdn,
+                        statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
+                        accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
+                    }) || '';
+    
+                    emailData.push({
+                        key: "htmlTemplate",
+                        value: emailHTMLContent,
+                    });
+    
+                    return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                    logger.info(`Step 04: Sending email `)
+                }
+                else {
+                    throw new Error(`Email Not provided`);
+                    logger.error(`Email not provided`)
+                }
+
+                // data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+                // if(data.length < 1){
+                //     return "No Data"
+                // }
+                // consumerTaxData = data[0];
+                // logger.info({
+                //     event: 'Tax Certificate Data for Consumer',
+                //     consumerTaxData
+                // })
             }else{
                 let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
                 data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
@@ -184,62 +240,8 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
-            pdf.create(`<h1>Jazz Cash Tax Certificate</h1>`, { format: 'A4', type: 'pdf' }).toBuffer(async (err, buffer) => {
-                if(!err){
-                    pdfFile = Buffer.from(cb, 'base64').toString('base64');
-                    logger.info(`Step 03: Obtained htmlTemplate for tax`)
-                    const emailData = [{
-                        'key': 'customerName',
-                        'value': isConsumer ? consumerTaxData[0] : payload.merchantName
-                    },
-                    {
-                        'key': 'accountNumber',
-                        'value': payload.msisdn
-                    },
-                    {
-                        'key': 'statementPeriod',
-                        'value': isConsumer ? payload.year : payload.start_date
-                    }
-                    ];
-                    const attachment = [{
-                        filename: 'Tax Certificate.pdf',
-                        content: pdfFile,
-                        type: 'base64',
-                        embedImage: false
-                    }];
-                    logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
-                    if (payload.email) {
-                        logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-                        const attachment = [{
-                            filename: 'TaxStatement.pdf',
-                            content: pdfFile,
-                            type: 'base64',
-                            embedImage: false
-                        }];
-                        let emailHTMLContent = await accountStatementEmailTemplate({
-                            title: 'Tax Statement',
-                            customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
-                            accountNumber: payload.msisdn,
-                            statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                            accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
-                        }) || '';
-
-                        emailData.push({
-                            key: "htmlTemplate",
-                            value: emailHTMLContent,
-                        });
-
-                        return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                        logger.info(`Step 04: Sending email `)
-                    }
-                    else {
-                        throw new Error(`Email Not provided`);
-                        logger.error(`Email not provided`)
-                    }
-                }else{
-                    console.log('PDF Error', err)
-                }
-            });
+            
+            
         } catch (err) {
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
