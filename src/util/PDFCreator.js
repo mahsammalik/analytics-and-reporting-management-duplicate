@@ -30,13 +30,16 @@ const createPDF = async(templateDetails, cb) => {
         //         }
         //     });
         // });
-
+        logger.info({
+            event: 'Email Template',
+            template: templateDetails.template
+        })
 
         pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
             if (!err) {
                 cb(buffer)
             }
-            throw error;
+            throw err;
         });
 
 
