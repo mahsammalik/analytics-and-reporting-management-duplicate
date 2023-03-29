@@ -8,7 +8,7 @@ import {
     taxStatementConsumerTemplate
 } from '../util/';
 import Notification from '../util/notification';
-import pdf from 'html-pdf';
+var html_to_pdf = require('html-pdf-node');
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
@@ -156,61 +156,66 @@ class taxStatementService {
             let data = [];
             let consumerTaxData = [];
             if(isConsumer){
-
-                let pdfFile = await createPDF({
-                    template: `<p>Hello JazzCash!</p>`,
-                    fileName: `Tax Statement`
-                });
-                pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
-                logger.info(`Step 03: Obtained htmlTemplate for tax`)
-                const emailData = [{
-                    'key': 'customerName',
-                    'value': isConsumer ? consumerTaxData[0] : payload.merchantName
-                },
-                {
-                    'key': 'accountNumber',
-                    'value': payload.msisdn
-                },
-                {
-                    'key': 'statementPeriod',
-                    'value': isConsumer ? payload.year : payload.start_date
-                }
-                ];
-                const attachment = [{
-                    filename: 'Tax Certificate.pdf',
-                    content: pdfFile,
-                    type: 'base64',
-                    embedImage: false
-                }];
-                logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
-                if (payload.email) {
-                    logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                let options = { format: 'A4' };
+                let file = { content: "<h1>Welcome to html-pdf-node</h1>" };
+                html_to_pdf.generatePdf(file, options).then( async (pdfBuffer) => {
+                    console.log("PDF Buffer:-", pdfBuffer);
+                    let pdfFile = Buffer.from(pdfBuffer, 'base64').toString('base64');
+                    logger.info(`Step 03: Obtained htmlTemplate for tax`)
+                    const emailData = [{
+                        'key': 'customerName',
+                        'value': isConsumer ? consumerTaxData[0] : payload.merchantName
+                    },
+                    {
+                        'key': 'accountNumber',
+                        'value': payload.msisdn
+                    },
+                    {
+                        'key': 'statementPeriod',
+                        'value': isConsumer ? payload.year : payload.start_date
+                    }
+                    ];
                     const attachment = [{
-                        filename: 'TaxStatement.pdf',
+                        filename: 'Tax Certificate.pdf',
                         content: pdfFile,
                         type: 'base64',
                         embedImage: false
                     }];
-                    let emailHTMLContent = await accountStatementEmailTemplate({
-                        title: 'Tax Statement',
-                        customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
-                        accountNumber: payload.msisdn,
-                        statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                        accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
-                    }) || '';
-    
-                    emailData.push({
-                        key: "htmlTemplate",
-                        value: emailHTMLContent,
-                    });
-    
-                    return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                    logger.info(`Step 04: Sending email `)
-                }
-                else {
-                    throw new Error(`Email Not provided`);
-                    logger.error(`Email not provided`)
-                }
+                    logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+                    if (payload.email) {
+                        logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                        const attachment = [{
+                            filename: 'TaxStatement.pdf',
+                            content: pdfFile,
+                            type: 'base64',
+                            embedImage: false
+                        }];
+                        let emailHTMLContent = await accountStatementEmailTemplate({
+                            title: 'Tax Statement',
+                            customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
+                            accountNumber: payload.msisdn,
+                            statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
+                            accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
+                        }) || '';
+        
+                        emailData.push({
+                            key: "htmlTemplate",
+                            value: emailHTMLContent,
+                        });
+        
+                        return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                        logger.info(`Step 04: Sending email `)
+                    }
+                    else {
+                        throw new Error(`Email Not provided`);
+                        logger.error(`Email not provided`)
+                    }
+                  });
+                // let pdfFile = await createPDF({
+                //     template: `<p>Hello JazzCash!</p>`,
+                //     fileName: `Tax Statement`
+                // });
+                
 
                 // data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
                 // if(data.length < 1){
