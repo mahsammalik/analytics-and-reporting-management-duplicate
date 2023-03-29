@@ -8,6 +8,7 @@ import {
     taxStatementConsumerTemplate
 } from '../util/';
 import Notification from '../util/notification';
+import pdf from 'html-pdf';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
@@ -183,13 +184,20 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
-            let pdfFile = await createPDF({
-                template: htmlTemplate,
-                fileName: `Tax Statement`
-            }, cb => {
-                console.log('PDF File', cb);
-                pdfFile = Buffer.from(cb, 'base64').toString('base64');
+            let pdfFile = '';
+            pdf.create(htmlTemplate, { format: 'A4', type: 'pdf' }).toBuffer((err, buffer) => {
+                if(!err)
+                    pdfFile = Buffer.from(buffer, 'base64').toString('base64');
+                else
+                    throw err;
             });
+            // let pdfFile = await createPDF({
+            //     template: htmlTemplate,
+            //     fileName: `Tax Statement`
+            // }, cb => {
+            //     console.log('PDF File', cb);
+            //     pdfFile = Buffer.from(cb, 'base64').toString('base64');
+            // });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             const emailData = [{
                 'key': 'customerName',
