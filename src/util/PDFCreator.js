@@ -37,6 +37,7 @@ const createPDF = async(templateDetails, cb) => {
 
         pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
             if (!err) {
+                console.log('Buffer Created', buffer);
                 cb(buffer)
             }
             throw err;
