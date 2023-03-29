@@ -104,7 +104,8 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             //config.kafkaBroker.topics.account_login_reporting,
-            config.kafkaBroker.topics.trx_history_reporting
+            config.kafkaBroker.topics.trx_history_reporting,
+            config.kafkaBroker.topics.multi_instrument_reporting
         ]);
 
         //this.setConsumer();
@@ -1252,6 +1253,17 @@ class Subscriber {
                         const payload = JSON.parse(msg.value);
                         logger.debug('TRX REPORTING ' + JSON.stringify(payload));
                          DB2Connection.addTrxReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.multi_instrument_reporting) {
+                    logger.debug('*********** MULTI INSTRUMENT REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('MULTI INSTRUMENT REPORTING ' + JSON.stringify(payload));
+                        DB2Connection.addMultiInstrumentReporting(payload);
                     } catch (error) {
                         logger.debug(error)
                     }
