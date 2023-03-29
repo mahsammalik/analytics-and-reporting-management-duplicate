@@ -186,6 +186,8 @@ class taxStatementService {
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
+            }, cb => {
+                console.log("  PDF GENERATED", cb)
             });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
