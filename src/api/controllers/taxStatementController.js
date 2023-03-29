@@ -18,53 +18,45 @@ class taxStatementController {
     async calculateTaxStatement(req, res, next) {
         try{
             let thirdParty = req.get('X-CHANNEL') || req.get('x-channel');
-            let headersValidationResponse;
-            if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
-                headersValidationResponse = validations.verifySchema("USSD_HEADER_SCHEMA", req.headers);
-            }else{
-                headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
-            }
-            if (!headersValidationResponse.success) {
+        let headersValidationResponse;
+        if(thirdParty === 'consumerUSSD' || thirdParty === 'merchantUSSD'){
+            headersValidationResponse = validations.verifySchema("USSD_HEADER_SCHEMA", req.headers);
+        }else{
+            headersValidationResponse =   validations.verifySchema("REQUEST_HEADER_SCHEMA", req.headers);
+        }
+        if (!headersValidationResponse.success) {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
-            }
-            const queryValidationResponse = thirdParty.includes("consumer") ? validations.verifySchema("Consumer_Tax_Statement_SCHEMA", req.query) : validations.verifySchema("Tax_Statement_SCHEMA", req.query);
-            if (!queryValidationResponse.success) {
+        }
+        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
+        if (!queryValidationResponse.success) {
             const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
             return res.status(422).send(badQueryParam);
-            }
-            let userProfile = {};
-            if(thirdParty.includes("merchant")){
-                userProfile = await getUserProfile(req.headers);
-                logger.debug({ userProfile });
-            }
-            const metadataHeaders = req.headers['x-meta-data'];
-            const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-            logger.debug(metadata," metadata")
-            let payload = {
-                msisdn: req.headers['x-msisdn'],
-                request: req.query.requestType,
-                email: req.query.email || metadata.emailAddress,
-                subject: 'Hello',
-                html: '<html></html>',
-                format: req.query.format,
-                erchantName: userProfile.businessName || '',
-                accountLevel: userProfile.accountLevel || '',
-                start_date: req.query.start_date,
-                end_date: req.query.end_date,
-                year: thirdParty.includes("merchant") ? '' : req.query.year,
-                channel:  thirdParty,
-                metadata
-            };
-            const response = await this.taxStatementService.sendTaxStatement(payload, res);
-            if(response === "No Data"){
-                res.locals.response = false
-                res.locals.noData = true
-            }else{
-                res.locals.response = response
-            }   
-            next();
+        }
+        const metadataHeaders = req.headers['x-meta-data'];
+        const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
+        const userProfile = await getUserProfile(req.headers);
+        logger.debug({ userProfile });
+        logger.debug(metadata," metadata")
+        let payload = {
+            msisdn: req.headers['x-msisdn'],
+            start_date: req.query.start_date,
+            end_date: req.query.end_date,
+            request: req.query.requestType,
+            email: req.query.email || metadata.emailAddress,
+            subject: 'Hello',
+            html: '<html></html>',
+            format: req.query.format,
+            year: req.query.year,
+            metadata,
+            merchantName: userProfile.businessName || '',
+            accountLevel: userProfile.accountLevel || ''
+
+        };
+
+        res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
+        next();
         }catch(err){
             console.log('CError', err)
             logger.error('Error', err);
