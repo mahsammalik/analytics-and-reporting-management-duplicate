@@ -184,75 +184,62 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
-            let pdfFile = '';
-            pdf.create(htmlTemplate, { format: 'A4', type: 'pdf' }).toBuffer((err, buffer) => {
-                if(!err)
-                    pdfFile = Buffer.from(buffer, 'base64').toString('base64');
-                else
-                    throw err;
+            pdf.create(`<h1>Jazz Cash Tax Certificate</h1>`, { format: 'A4', type: 'pdf' }).toBuffer(async (err, buffer) => {
+                if(!err){
+                    pdfFile = Buffer.from(cb, 'base64').toString('base64');
+                    logger.info(`Step 03: Obtained htmlTemplate for tax`)
+                    const emailData = [{
+                        'key': 'customerName',
+                        'value': isConsumer ? consumerTaxData[0] : payload.merchantName
+                    },
+                    {
+                        'key': 'accountNumber',
+                        'value': payload.msisdn
+                    },
+                    {
+                        'key': 'statementPeriod',
+                        'value': isConsumer ? payload.year : payload.start_date
+                    }
+                    ];
+                    const attachment = [{
+                        filename: 'Tax Certificate.pdf',
+                        content: pdfFile,
+                        type: 'base64',
+                        embedImage: false
+                    }];
+                    logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+                    if (payload.email) {
+                        logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                        const attachment = [{
+                            filename: 'TaxStatement.pdf',
+                            content: pdfFile,
+                            type: 'base64',
+                            embedImage: false
+                        }];
+                        let emailHTMLContent = await accountStatementEmailTemplate({
+                            title: 'Tax Statement',
+                            customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
+                            accountNumber: payload.msisdn,
+                            statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
+                            accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
+                        }) || '';
+
+                        emailData.push({
+                            key: "htmlTemplate",
+                            value: emailHTMLContent,
+                        });
+
+                        return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                        logger.info(`Step 04: Sending email `)
+                    }
+                    else {
+                        throw new Error(`Email Not provided`);
+                        logger.error(`Email not provided`)
+                    }
+                }else{
+                    console.log('PDF Error', err)
+                }
             });
-            // let pdfFile = await createPDF({
-            //     template: htmlTemplate,
-            //     fileName: `Tax Statement`
-            // }, cb => {
-            //     console.log('PDF File', cb);
-            //     pdfFile = Buffer.from(cb, 'base64').toString('base64');
-            // });
-            logger.info(`Step 03: Obtained htmlTemplate for tax`)
-            const emailData = [{
-                'key': 'customerName',
-                'value': isConsumer ? consumerTaxData[0] : payload.merchantName
-            },
-            {
-                'key': 'accountNumber',
-                'value': payload.msisdn
-            },
-            {
-                'key': 'statementPeriod',
-                'value': isConsumer ? payload.year : payload.start_date
-            }
-            ];
-            const attachment = [{
-                filename: 'Tax Certificate.pdf',
-                content: pdfFile,
-                type: 'base64',
-                embedImage: false
-            }];
-            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
-            if (payload.email) {
-                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
-                const attachment = [{
-                    filename: 'TaxStatement.pdf',
-                    content: pdfFile,
-                    type: 'base64',
-                    embedImage: false
-                }];
-                let emailHTMLContent = await accountStatementEmailTemplate({
-                    title: 'Tax Statement',
-                    customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
-                    accountNumber: payload.msisdn,
-                    statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                    accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
-                }) || '';
-
-                emailData.push({
-                    key: "htmlTemplate",
-                    value: emailHTMLContent,
-                });
-
-                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                logger.info(`Step 04: Sending email `)
-            }
-            else {
-                throw new Error(`Email Not provided`);
-                logger.error(`Email not provided`)
-            }
-
-            // myDoc.table(table0, {
-            //     prepareHeader: () => myDoc.font('Helvetica-Bold').fontSize(5),
-            //     prepareRow: (row, i) => myDoc.font('Helvetica').fontSize(5)
-            // });
-            // myDoc.end();
         } catch (err) {
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
