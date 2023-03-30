@@ -294,6 +294,14 @@ class taxStatementService {
                     value: emailHTMLContent,
                 });
 
+                logger.info({
+                    event: 'Email Content',
+                    data: {
+                        emailHTMLContent,
+                        emailData
+                    }
+                });
+
                 logger.info(`Email Sending...`)
                 const emailSent = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
                 return emailSent ? { success: true } : { success: false };

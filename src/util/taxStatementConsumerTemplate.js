@@ -34,7 +34,7 @@ const htmlHead = `<!DOCTYPE html>
 				border-right: 2px solid #D9D9D9;
 			}
 			.taxDetails .details-row .details{
-				width: 70%;
+				width: 65%;
 				margin-left: 7px;
 			}
 		</style>
