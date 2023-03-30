@@ -106,7 +106,10 @@ class Subscriber {
             //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.readyCashBaflReporting,
-            config.kafkaBroker.topics.multi_instrument_reporting
+            config.kafkaBroker.topics.multi_instrument_reporting,
+
+            config.kafkaBroker.topics.L0_to_L1_reporting,
+            config.kafkaBroker.topics.dormant_to_active_reporting
         ]);
 
         //this.setConsumer();
@@ -1310,6 +1313,28 @@ class Subscriber {
                 //         logger.debug(error)
                 //     }
                 // }
+                if (msg.topic === config.kafkaBroker.topics.L0_to_L1_reporting) {
+                    logger.debug('*********** LOGIN REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('L0 TO L1 REPORTING ' + JSON.stringify(payload));
+                        DB2Connection.addL0TOL1Reporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                if (msg.topic === config.kafkaBroker.topics.dormant_to_active_reporting) {
+                    logger.debug('*********** LOGIN REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('DORMANT TO ACTIVE REPORTING ' + JSON.stringify(payload));
+                        DB2Connection.addDormantToActiveReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);
