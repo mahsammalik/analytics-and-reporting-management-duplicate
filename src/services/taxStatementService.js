@@ -8,6 +8,7 @@ import {
     taxStatementConsumerTemplate
 } from '../util/';
 import Notification from '../util/notification';
+import pdf from 'html-pdf';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
 import moment from 'moment';
 import MsisdnTransformer from '../util/msisdnTransformer';
@@ -146,43 +147,26 @@ class taxStatementService {
 
 
     async sendTaxStatement(payload, res) {
+            logger.debug("email pdf", payload);
         try {
-            const isConsumer = payload.channel.includes("consumer");
-            logger.info({
-                event: 'Entered Function sendTaxStatement of Service',
-                data: { payload, isConsumer }
-            });
-            let data = [];
-            let consumerTaxData = [];
-            if(isConsumer){
-                data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
-                if(data.length < 1){
-                    return "No Data"
-                }
-                consumerTaxData = data[0];
-                logger.info({
-                    event: 'Tax Certificate Data for Consumer',
-                    consumerTaxData
-                })
-            }else{
-                let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
-                data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
-                const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
-                logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
-                logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
-                payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
-            }
-            logger.info({
-                event: 'Response from DB2',
-                data
-            });
+            let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
+            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year);
+            logger.debug("the output of changing database " + data);
             if (data === 'Database Error') return "Database Error";
+
+            const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
+
+            logger.info(`Step 02: Obtained running balance ${updatedRunningbalance}`)
+
+            logger.debug(`Array Format statement ${JSON.stringify(data)}`, updatedRunningbalance, "updatedRunningbalance ");
+
+            payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
-                data: isConsumer ? consumerTaxData : data,
+                data,
                 payload
             };
-            const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
+            const htmlTemplate = taxStatementTemplate(accountData);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
@@ -191,7 +175,7 @@ class taxStatementService {
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
-                'value': isConsumer ? consumerTaxData[0] : payload.merchantName
+                'value': payload.merchantName
             },
             {
                 'key': 'accountNumber',
@@ -199,7 +183,7 @@ class taxStatementService {
             },
             {
                 'key': 'statementPeriod',
-                'value': isConsumer ? payload.year : payload.start_date
+                'value': payload.start_date
             }
             ];
             const attachment = [{
@@ -217,13 +201,7 @@ class taxStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({
-                    title: 'Tax Statement',
-                    customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
-                    accountNumber: payload.msisdn,
-                    statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                    accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
-                }) || '';
+                let emailHTMLContent = await accountStatementEmailTemplate({ title: 'Tax Statement', customerName: payload.merchantName, accountNumber: payload.msisdn, statementPeriod: `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`, accountLevel: payload.accountLevel }) || '';
 
                 emailData.push({
                     key: "htmlTemplate",
@@ -231,7 +209,7 @@ class taxStatementService {
                 });
 
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                logger.info(`Step 04: Sending email `)
+                logger.info(`Step 04: Sent email `)
             }
             else {
                 throw new Error(`Email Not provided`);

@@ -2,9 +2,9 @@ import fs from "fs";
 import pdf from 'html-pdf';
 import logger from './logger';
 
-const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '10000000'};
+const options = { format: 'A4', orientation: 'portrait', type: 'pdf', timeout: '600000'};
 
-const createPDF = async(templateDetails) => {
+const createPDF = async(templateDetails, cb) => {
     try {
         //Comment	for testing HTML Template
         // const fileName = `${__dirname}/../public/${templateDetails.fileName}`;
@@ -16,26 +16,23 @@ const createPDF = async(templateDetails) => {
         //         logger.debug(res);
         //         return res;
         //     });
-        // });
+        // // });
 
-        logger.info({ event: 'Entered function', functionName: 'createPDF', html: templateDetails.template });
+
+        logger.info({ event: 'Entered function', functionName: 'createPDF', data: templateDetails.template });
         return new Promise((resolve, reject) => {
             pdf.create(templateDetails.template, options).toBuffer((err, buffer) => {
-                logger.info({ event: 'Entered pdf create', functionName: 'createPDF'});
                 if (err) {
-                    console.log('PDF Error', err);
-                    logger.info({ event: 'PDF Error', functionName: 'createPDF' , error : err });
                     reject(err);
                 } else {
-                    console.log('PDF Buffer', buffer);
-                    logger.info({ event: 'PDF Buffer', functionName: 'createPDF' , buffer : buffer });
                     resolve(buffer);
                 }
             });
         });
+        
+
 
     } catch (error) {
-        console.log('Error', error);
         logger.error({ event: 'Error throw', functionName: 'createPDF', error: { message: error.message, stack: error.stack } });
         logger.info({ event: 'Exited function', functionName: 'createPDF' });
         return new Error("PDF creation error");
