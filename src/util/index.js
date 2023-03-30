@@ -6,6 +6,8 @@ export { default as accountStatementTemplateMerchant }
 from './accountStatementTemplateMerchant';
 export { default as taxStatementTemplate }
 from './taxStatementTemplate';
+export { default as taxStatementConsumerTemplate }
+from './taxStatementConsumerTemplate'
 export { default as logger }
 from './logger';
 export { default as DB2Connection }
