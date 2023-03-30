@@ -263,7 +263,7 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "readyCashBaflReporting": "READYCASH_BAFL_REPORTING"
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
 
 
             }
@@ -456,8 +456,7 @@
             "PAYON_LOGIN": "PAYON_LOGIN",
             "CASHTOGOOD" : "CASHTOGOOD",
             "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
-            "CASHBACK_REDEEM" : "CASHBACK_REDEEM",
-            "READYCASH_BAFL_REPORTING":"READYCASH_BAFL_REPORTING"
+            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
         }
     }
 }
