@@ -189,7 +189,7 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "readyCashBaflReporting": "READYCASH_BAFL_REPORTING",
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING,
                 "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING"
             }
         },
