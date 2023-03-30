@@ -190,7 +190,7 @@
                 "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "readyCashBaflReporting": "READYCASH_BAFL_REPORTING"
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
             }
         },
         "cache": {
