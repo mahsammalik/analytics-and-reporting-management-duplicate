@@ -1401,6 +1401,32 @@ class DatabaseConn {
     }
   }
 
+  async getTaxCertificateData(customerMobileNumer, year) {
+    let conn = await getConnection();
+    if (!conn) {
+      conn = await open(cn);
+    }
+    try {
+      const stmt = conn.prepareSync(`Select ACC_TITLE, ACC_NUMBER, ACC_LEVEL, TAX_PERIOD, END_DATE, END_DATE_BALANCE, END_DATE_BALANCE_IN_WORDS, OPENING_PERIOD_BALANCE, ENDING_PERIOD_BALANCE, TIME_PERIOD_OF_CERTIFICATE, TAX_DEDUCTION, TAX_DEDUCTION_IN_WORDS from statements.TAX_CERTIFICATE where ACC_NUMBER = '${customerMobileNumer}' And TAX_YEAR = '${year}' ;`);
+      const result = stmt.executeSync();
+      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      logger.info("Exited getTaxValueArray: ", arrayResult)
+      result.closeSync();
+      stmt.closeSync();
+      return arrayResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return "Database Error";
+    } finally {
+      conn.close(function (err) {
+        if (err) {
+          logger.error(err)
+        }
+      });
+    }
+  }
+
   async getTaxValueArrayWithConn(customerMobileNumer, mappedMsisdn, endDate, startDate, conn) {
     try {
 
