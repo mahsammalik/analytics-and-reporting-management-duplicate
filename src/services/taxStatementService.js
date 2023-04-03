@@ -94,7 +94,7 @@ class taxStatementService {
                 fileName: `Tax Statement`
             });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
-            pdfFile = Buffer.from(cb, 'base64').toString('base64');
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
                 'value': isConsumer ? consumerTaxData[0] : payload.merchantName
@@ -128,7 +128,7 @@ class taxStatementService {
                     customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
                     accountNumber: payload.msisdn,
                     statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                    accountLevel: isConsumer ? consumerTaxData[1] : payload.accountLevel
+                    accountLevel: isConsumer ? consumerTaxData[2] : payload.accountLevel
                 }) || '';
 
                 logger.info({
