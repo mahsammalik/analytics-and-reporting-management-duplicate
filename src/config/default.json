@@ -86,7 +86,7 @@
             }
         },
         "accountStatementScheduler": {
-            "accountStatementQueryInterval": "1 minutes",
+            "accountStatementQueryInterval": "1 seconds",
             "collection": "accntstmtrequests",
             "scheduler": true,
             "failureCount": 3,
@@ -94,7 +94,8 @@
             "requestRetrievelTimeInMinutes": 15,
             "requestsQueryLimit": 1,
             "timedOutRequestsSchedulerInterval": "1 seconds",
-            "outDatedRequestsScheduler": true
+            "outDatedRequestsScheduler": true,
+            "schedulerLockTime": 30000
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
@@ -188,7 +189,8 @@
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
                 "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
-                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
+                "trx_history_reporting": "TRX_HISTORY_REPORTING"
             }
         },
         "cache": {

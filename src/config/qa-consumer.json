@@ -271,7 +271,8 @@
 
                 "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
                 "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
-                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING"
+                "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
+                "trx_history_reporting": "TRX_HISTORY_REPORTING"
             }
         },
         "cache": {

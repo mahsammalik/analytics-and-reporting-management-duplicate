@@ -1582,6 +1582,50 @@ class DatabaseConn {
     }
   }
 
+  async addTrxReporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('payload trx data');
+      logger.debug(payload);
+      payload.CONTEXT_DATA = JSON.stringify(payload.CONTEXT_DATA || {})
+      const stmt = conn.prepareSync(`INSERT INTO STATEMENTS.HISTORY_REVAMPED (TRANS_ID, TRX_DTTM, INITIATOR_NAME, INITIATOR_MSISDN, TRX_CHANNEL, TRX_TYPE, AC_FROM, AC_TO, UTILITY_COMPANY, CONSUMER_NO, FEE, FED, WHT, GROSS_AMT, AMOUNT_DEBITED, AMOUNT_CREDITED, BENEFICIARY_MSISDN, DESCRIPTION, REASON_TYPE, CONTEXT_DATA )
+        VALUES
+        (
+          '${payload.TRANS_ID }',
+          '${payload.TRX_DTTM}',
+          '${payload.INITIATOR_NAME || '' }',
+          '${payload.INITIATOR_MSISDN || '' }',
+          '${payload.TRX_CHANNEL || '' }',
+          '${payload.TRX_TYPE || '' }',
+          '${payload.AC_FROM || '' }',
+          '${payload.AC_TO || '' }',
+          '${payload.UTILITY_COMPANY || '' }',
+          '${payload.CONSUMER_NO || '' }',
+          '${payload.FEE || '' }',
+          '${payload.FED || '' }',
+          '${payload.WHT || '' }',
+          '${payload.GROSS_AMT || '' }',
+          '${payload.AMOUNT_DEBITED || '' }',
+          '${payload.AMOUNT_CREDITED || '' }',
+          '${payload.BENEFICIARY_MSISDN || '' }',
+          '${payload.DESCRIPTION || '' }',
+          '${payload.REASON_TYPE || '' }',
+          '${payload.CONTEXT_DATA}' 
+        );`
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`TRX_REPORT insertion done`);
+      return;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return ;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
   
 }
 
