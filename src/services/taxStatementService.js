@@ -94,7 +94,7 @@ class taxStatementService {
                 fileName: `Tax Statement`
             });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
-            pdfFile = Buffer.from(cb, 'base64').toString('base64');
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
                 'value': isConsumer ? consumerTaxData[0] : payload.merchantName
