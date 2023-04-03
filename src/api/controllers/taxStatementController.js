@@ -27,12 +27,12 @@ class taxStatementController {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
         }
-        // const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
-        // if (!queryValidationResponse.success) {
-        //     const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
-        //     logger.debug(queryValidationResponse);
-        //     return res.status(422).send(badQueryParam);
-        // }
+        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
+        if (!queryValidationResponse.success) {
+            const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
+            logger.debug(queryValidationResponse);
+            return res.status(422).send(badQueryParam);
+        }
         const metadataHeaders = req.headers['x-meta-data'];
         const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
         const userProfile = await getUserProfile(req.headers);
@@ -48,14 +48,12 @@ class taxStatementController {
             html: '<html></html>',
             format: req.query.format,
             metadata,
-            year: req.query.year,
             merchantName: userProfile.businessName || '',
             accountLevel: userProfile.accountLevel || ''
 
         };
 
-        // res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
-        res.locals.response = await this.taxStatementService.sendConsumerTaxStatement(payload, res);
+        res.locals.response = await this.taxStatementService.sendTaxStatement(payload, res);
         next();
 
         //   const responseCodeForTaxStatementQuery = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");;
