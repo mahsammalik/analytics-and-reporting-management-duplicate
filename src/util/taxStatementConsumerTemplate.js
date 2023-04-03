@@ -30,11 +30,11 @@ const htmlHead = `<html>
 				margin: 0;
 			}
 			.taxDetails .details-row .title{
-				width: 25%;
+				width: 30%;
 				border-right: 2px solid #D9D9D9;
 			}
 			.taxDetails .details-row .details{
-				width: 60%;
+				width: 50%;
 				margin-left: 7px;
 			}
 		</style>
