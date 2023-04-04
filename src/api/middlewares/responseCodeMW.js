@@ -9,7 +9,7 @@ import logger  from '../../util/logger';
  */
 const responseCodeMW = async (req, res, next) => {
     try {
-        logger.info({ event: 'Entered function', functionName: 'responseCodeMW' });
+        logger.info({ event: 'Entered function', functionName: 'responseCodeMW', data: res.locals });
         if (res.locals.response) {
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
             res.locals.response = response;
