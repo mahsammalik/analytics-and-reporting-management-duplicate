@@ -62,13 +62,6 @@ class taxStatementService {
             let consumerTaxData = [];
             if(isConsumer){
                 data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
-                logger.info({
-                    event: 'Response from DB2',
-                    data: {
-                        count: data.length,
-                        noData: data.length < 1
-                    }
-                })
                 if(data.length < 1){
                     return "No Data"
                 }

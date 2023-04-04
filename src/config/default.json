@@ -216,6 +216,9 @@
                     "pdf_internal_error": "AR-AS-T06",
                     "duplicate": "AR-AS-T07"
                 },
+                "taxStatement": {
+                    "noData": "AR-TS-T01"
+                },
                 "contactIntegration": {
                     "success": "AM-CI-T01",
                     "invalid": "AM-CI-T02"
