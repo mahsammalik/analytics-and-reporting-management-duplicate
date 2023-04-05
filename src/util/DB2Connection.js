@@ -1606,7 +1606,7 @@ class DatabaseConn {
       const stmt = conn.prepareSync(`INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
         VALUES
         (
-          '${payload.CUSTOMER_MSISDN }',
+          '${payload.CUSTOMER_MSISDN}',
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS}',
           '${payload.CUSTOMER_LEVEL}',
