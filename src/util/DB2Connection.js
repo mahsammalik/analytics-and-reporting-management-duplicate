@@ -1612,8 +1612,8 @@ class DatabaseConn {
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS || '' }',
           '${payload.CUSTOMER_LEVEL || '' }',
-          '${payload.CUSTOMER_CONVERSION_DATE || '' }',
-          '${payload.CUSTOMER_REGISTERATION_DATE || '' }',
+          '${payload.CUSTOMER_CONVERSION_DATE || null }',
+          '${payload.CUSTOMER_REGISTERATION_DATE || null }',
           '${payload.STATUS || '' }'
         );`
       );
@@ -1643,7 +1643,7 @@ class DatabaseConn {
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS || '' }',
           '${payload.CUSTOMER_LEVEL || '' }',
-          '${payload.CUSTOMER_REGISTERATION_DATE || '' }',
+          '${payload.CUSTOMER_REGISTERATION_DATE || null }',
           '${payload.STATUS || '' }'
         );`
       );
