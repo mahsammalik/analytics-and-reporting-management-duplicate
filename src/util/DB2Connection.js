@@ -1629,7 +1629,7 @@ class DatabaseConn {
     try {
       logger.debug('payload L0TOL1 REPORTING data');
       logger.debug(payload);
-      const stmt = conn.prepareSync(`INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, CREATION_DATE, STATUS )
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
         VALUES
         (
           '${payload.CUSTOMER_MSISDN }',
@@ -1638,7 +1638,6 @@ class DatabaseConn {
           '${payload.CUSTOMER_LEVEL || '' }',
           '${payload.CUSTOMER_CONVERSION_DATE || '' }',
           '${payload.CUSTOMER_REGISTERATION_DATE || '' }',
-          '${payload.CREATION_DATE || '' }',
           '${payload.STATUS || '' }'
         );`
       );
@@ -1661,7 +1660,7 @@ class DatabaseConn {
     try {
       logger.debug('payload DORMANTTOACTIVE Reporting data');
       logger.debug(payload);
-      const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, CREATION_DATE, STATUS )
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, STATUS )
         VALUES
         (
           '${payload.CUSTOMER_MSISDN }',
@@ -1669,7 +1668,6 @@ class DatabaseConn {
           '${payload.CUSTOMER_NEW_STATUS || '' }',
           '${payload.CUSTOMER_LEVEL || '' }',
           '${payload.CUSTOMER_REGISTERATION_DATE || '' }',
-          '${payload.CREATION_DATE || '' }',
           '${payload.STATUS || '' }'
         );`
       );
