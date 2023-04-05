@@ -1608,11 +1608,11 @@ class DatabaseConn {
         (
           '${payload.CUSTOMER_MSISDN }',
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
-          '${payload.CUSTOMER_NEW_STATUS || '' }',
-          '${payload.CUSTOMER_LEVEL || '' }',
-          '${payload.CUSTOMER_CONVERSION_DATE || null }',
-          '${payload.CUSTOMER_REGISTERATION_DATE || null }',
-          '${payload.STATUS || '' }'
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.CUSTOMER_CONVERSION_DATE}',
+          '${payload.CUSTOMER_REGISTERATION_DATE}',
+          '${payload.STATUS}'
         );`
       );
       stmt.executeSync();
@@ -1639,10 +1639,10 @@ class DatabaseConn {
         (
           '${payload.CUSTOMER_MSISDN }',
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
-          '${payload.CUSTOMER_NEW_STATUS || '' }',
-          '${payload.CUSTOMER_LEVEL || '' }',
-          '${payload.CUSTOMER_REGISTERATION_DATE || null }',
-          '${payload.STATUS || '' }'
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.CUSTOMER_REGISTERATION_DATE}',
+          '${payload.STATUS}'
         );`
       );
       stmt.executeSync();
