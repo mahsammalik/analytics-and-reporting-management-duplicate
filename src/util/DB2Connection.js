@@ -1631,7 +1631,7 @@ class DatabaseConn {
           throw error;
         }
         try {
-          let query = `INSERT INTO COMMON.LOGIN_AUTH_REPORTING (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
+          let query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
                             VALUES
                             (
                               '${payload.CUSTOMER_MSISDN}',
@@ -1642,6 +1642,12 @@ class DatabaseConn {
                               '${payload.CUSTOMER_REGISTERATION_DATE}',
                               '${payload.STATUS}'
                             );`
+          logger.info({
+            event: '****** Before Query DB2 Insertion  ******',
+            functionName: 'DB2Connection.addL0TOL1Reporting',
+            data: query
+          });
+
           await conn.query(query);
 
           logger.info({
