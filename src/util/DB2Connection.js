@@ -1614,6 +1614,13 @@ class DatabaseConn {
         '${payload.CUSTOMER_REGISTERATION_DATE || ''}',
         '${payload.STATUS}'
       );`
+
+      logger.info({
+        event: '****** Query of L0TOL1 REPORTING  ******',
+        functionName: 'DB2Connection.addLoginReportingV2',
+        data: query
+      });
+
       const stmt = conn.prepareSync(query);
       logger.info({
         event: '******  DB2 Insertion was successful  ******',
