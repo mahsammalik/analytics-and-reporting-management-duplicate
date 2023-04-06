@@ -1599,62 +1599,36 @@ class DatabaseConn {
   }
 
   async addL0TOL1Reporting(payload) {
+    let conn = await getConnection();
     try {
-      pool.open(cn, async (error, conn) => {
-        if (error) {
-          throw error;
-        }
-        try {
-          let query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
-                            VALUES
-                            (
-                              '${payload.CUSTOMER_MSISDN}',
-                              '${payload.CUSTOMER_PREVIOUS_STATUS}',
-                              '${payload.CUSTOMER_NEW_STATUS}',
-                              '${payload.CUSTOMER_LEVEL}',
-                              '${payload.CUSTOMER_CONVERSION_DATE}',
-                              '${payload.CUSTOMER_REGISTERATION_DATE}',
-                              '${payload.STATUS}'
-                            );`
-          logger.info({
-            event: '****** Before Query DB2 Insertion  ******',
-            functionName: 'DB2Connection.addL0TOL1Reporting',
-            data: query
-          });
-
-          await conn.query(query);
-
-          logger.info({
-            event: '******  DB2 Insertion was successful  ******',
-            functionName: 'DB2Connection.addL0TOL1Reporting',
-            data: query
-          });
-        } catch (err) {
-          logger.error({
-            event: `database connection error` + err,
-            functionName: 'DB2Connection.addL0TOL1Reporting',
-          });
-        } finally {
-          conn.close();
-          logger.debug({
-            event: 'Finally block - connection closed',
-            functionName: 'DB2Connection.addL0TOL1Reporting'
-          });
-        }
-
-
-      });
-    }
-    catch (error) {
+      logger.debug('payload L0TOL1 REPORTING data');
+      logger.debug(payload);
+      let query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
+      VALUES
+      (
+        '${payload.CUSTOMER_MSISDN}',
+        '${payload.CUSTOMER_PREVIOUS_STATUS}',
+        '${payload.CUSTOMER_NEW_STATUS}',
+        '${payload.CUSTOMER_LEVEL || null}',
+        '${payload.CUSTOMER_CONVERSION_DATE || null}',
+        '${payload.CUSTOMER_REGISTERATION_DATE || null}',
+        '${payload.STATUS}'
+      );`
+      const stmt = conn.prepareSync(query);
       logger.info({
-        event: '***** Error *****',
-        functionName: 'DB2Connection.report',
-        data,
-        error: {
-          message: error?.message,
-          stack: error?.stack
-        }
+        event: '******  DB2 Insertion was successful  ******',
+        functionName: 'DB2Connection.addLoginReportingV2'
       });
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`L0TOL1Reporting insertion done`);
+      return;
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return;
+    } finally {
+      conn.close(function (err) { });
+      return
     }
   }
 
