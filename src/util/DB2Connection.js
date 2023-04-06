@@ -1635,9 +1635,9 @@ class DatabaseConn {
         '${payload.CUSTOMER_MSISDN}',
         '${payload.CUSTOMER_PREVIOUS_STATUS}',
         '${payload.CUSTOMER_NEW_STATUS}',
-        '${payload.CUSTOMER_LEVEL || null}',
-        '${payload.CUSTOMER_CONVERSION_DATE || null}',
-        '${payload.CUSTOMER_REGISTERATION_DATE || null}',
+        '${payload.CUSTOMER_LEVEL || ''}',
+        '${payload.CUSTOMER_CONVERSION_DATE || ''}',
+        '${payload.CUSTOMER_REGISTERATION_DATE || ''}',
         '${payload.STATUS}'
       );`
       const stmt = conn.prepareSync(query);
