@@ -75,7 +75,7 @@ spec:
           - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
             value: 'true'
           - name: CACHE_SERVER
-            value: datagrid.datagrid-prod
+            value: infinispan.datagrid-op
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -89,7 +89,7 @@ spec:
           - name: CONSUMER
             value: 'true'
           - name: NODE_ENV
-            value: live
+            value: dr
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
