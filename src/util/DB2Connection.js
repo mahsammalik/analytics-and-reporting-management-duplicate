@@ -1635,9 +1635,9 @@ class DatabaseConn {
         '${payload.CUSTOMER_MSISDN}',
         '${payload.CUSTOMER_PREVIOUS_STATUS}',
         '${payload.CUSTOMER_NEW_STATUS}',
-        '${payload.CUSTOMER_LEVEL || ''}',
-        '${payload.CUSTOMER_CONVERSION_DATE || ''}',
-        '${payload.CUSTOMER_REGISTERATION_DATE || ''}',
+        '${payload.CUSTOMER_LEVEL || NULL}',
+        '${payload.CUSTOMER_CONVERSION_DATE || NULL}',
+        '${payload.CUSTOMER_REGISTERATION_DATE || NULL}',
         '${payload.STATUS}'
       );`
 
