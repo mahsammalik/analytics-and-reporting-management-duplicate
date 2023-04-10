@@ -20,11 +20,7 @@ const responseCodeMW = async (req, res, next) => {
                 res.locals.response = response;
                 res.status(422).send(response);    
             }else if(res.locals.noData){
-                logger.info({
-                    event: 'Response Code for No Data Invoked',
-                    code: config?.responseCode?.useCases?.taxStatement?.noData || "NoCode"
-                })
-                const response = await responseCodeHandler.getResponseCode(config?.responseCode?.useCases?.taxStatement?.noData, "");
+                const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.taxStatement.noData, "");
                 res.locals.response = response;
                 res.status(422).send(response);
             }else{
@@ -36,7 +32,6 @@ const responseCodeMW = async (req, res, next) => {
         logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
 
     } catch (error) {
-        console.log('ResponseCodeError', error)
         logger.error({ event: 'Exited function', functionName: 'responseCodeMW', error: { message: error.message, stack: error.stack }, request: req.url, headers: req.headers, response: res.locals.response });
         logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
         throw new Error(error);
