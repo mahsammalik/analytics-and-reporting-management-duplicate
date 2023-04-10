@@ -59,7 +59,11 @@ class Notification {
     //added by kashif abbasi dated 27-Jul-2020
     async sendEmail(To, Subject, HTML, Attachments, Template, Data) {
         try {
-            logger.info({ event: 'Entered function', functionName: 'sendEmail in class Notification' });
+            logger.info({
+                event: 'Entered function',
+                functionName: 'sendEmail in class Notification',
+                data: { NOTIFICATION_SERVICE_URL_EMAIL, To, Subject, HTML, Attachments, Template, Data }
+            });
             //Attachmet should be array
             //1- if file present on disk than having two properties like this Attachments: [{"path": 'ww.googl.com/image.jpg', "embedImage": true}]
             //2- if file is in binary or base64 format than having 4 properties like this Attachments: [{"fileName": "test.png", content: "kjkjjhj", type:"base64", "embedImage": true}]
