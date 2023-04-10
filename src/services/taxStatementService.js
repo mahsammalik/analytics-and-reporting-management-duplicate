@@ -89,12 +89,12 @@ class taxStatementService {
                 payload
             };
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
-            let pdfFile = await createPDF({
-                template: htmlTemplate,
-                fileName: `Tax Statement`
-            });
+            // let pdfFile = await createPDF({
+            //     template: htmlTemplate,
+            //     fileName: `Tax Statement`
+            // });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
-            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            // pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
             const emailData = [{
                 'key': 'customerName',
                 'value': isConsumer ? consumerTaxData[0] : payload.merchantName
@@ -110,7 +110,7 @@ class taxStatementService {
             ];
             const attachment = [{
                 filename: 'Tax Certificate.pdf',
-                content: pdfFile,
+                // content: pdfFile,
                 type: 'base64',
                 embedImage: false
             }];
@@ -119,11 +119,11 @@ class taxStatementService {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                 const attachment = [{
                     filename: 'TaxStatement.pdf',
-                    content: pdfFile,
+                    // content: pdfFile,
                     type: 'base64',
                     embedImage: false
                 }];
-                let emailHTMLContent = await accountStatementEmailTemplate({
+                let emailHTMLContent = accountStatementEmailTemplate({
                     title: 'Tax Statement',
                     customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
                     accountNumber: payload.msisdn,
