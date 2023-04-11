@@ -57,6 +57,7 @@ class taxStatementController {
                 channel:  thirdParty,
                 metadata
             };
+            console.log('Controller Payload', payload);
             const response = await this.taxStatementService.sendTaxStatement(payload, res);
             if(response === "No Data"){
                 res.locals.response = false

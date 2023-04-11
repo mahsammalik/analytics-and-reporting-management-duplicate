@@ -53,6 +53,7 @@ class taxStatementService {
     async sendTaxStatement(payload, res) {
         try {
             const isConsumer = payload.channel.includes("consumer");
+            console.log('isConsumer', isConsumer);
             logger.info({
                 event: 'Entered Function',
                 functionName: 'taxStatementService.sendTaxStatement',
@@ -70,7 +71,9 @@ class taxStatementService {
                     event: 'Tax Certificate Data for Consumer',
                     consumerTaxData
                 })
+                console.log('consumerTaxData', consumerTaxData);
             }else{
+                console.log('Merchant Working');
                 let mappedMSISDN = await MsisdnTransformer.formatNumberSingle(payload.msisdn, payload.msisdn.startsWith('03') ? 'international' : 'local'); //payload.msisdn.substring(2); // remove 923****** to be 03******
                 data = await DB2Connection.getTaxValueArray(payload.msisdn, mappedMSISDN,  payload.end_date, payload.start_date);
                 const updatedRunningbalance = await DB2Connection.getLatestAccountBalanceValue(payload.msisdn, mappedMSISDN, payload.end_date);
@@ -82,19 +85,24 @@ class taxStatementService {
                 event: 'Response from DB2',
                 data
             });
+            console.log('DB Response', data);
             if (data === 'Database Error') return "Database Error";
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
                 data: isConsumer ? consumerTaxData : data,
                 payload
             };
+            console.log('AccountData', accountData);
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
+            console.log('htmlTemplate', htmlTemplate);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
                 fileName: `Tax Statement`
             });
+            console.log('PDF Generated');
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            console.log('PDF Buffered');
             const emailData = [{
                 'key': 'customerName',
                 'value': isConsumer ? consumerTaxData[0] : payload.merchantName
@@ -108,13 +116,15 @@ class taxStatementService {
                 'value': isConsumer ? payload.year : payload.start_date
             }
             ];
+            console.log('EmailData', emailData);
             const attachment = [{
                 filename: 'Tax Certificate.pdf',
                 content: pdfFile,
                 type: 'base64',
                 embedImage: false
             }];
-            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            // logger.info("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            console.log('EMail', payload.email);
             if (payload.email) {
                 logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
                 const attachment = [{
