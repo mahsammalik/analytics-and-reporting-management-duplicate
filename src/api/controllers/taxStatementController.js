@@ -44,15 +44,15 @@ class taxStatementController {
             logger.debug(metadata," metadata")
             let payload = {
                 msisdn: req.headers['x-msisdn'],
-                request: req.query.requestType,
+                request: req.query.requestType || 'Email',
                 email: req.query.email || metadata.emailAddress,
                 subject: 'Hello',
                 html: '<html></html>',
-                format: req.query.format,
+                format: req.query.format || 'PDF',
                 merchantName: userProfile.businessName || '',
                 accountLevel: userProfile.accountLevel || '',
-                start_date: req.query.start_date,
-                end_date: req.query.end_date,
+                start_date: req.query.start_date || '',
+                end_date: req.query.end_date || '',
                 year: thirdParty.includes("merchant") ? '' : req.query.year,
                 channel:  thirdParty,
                 metadata
