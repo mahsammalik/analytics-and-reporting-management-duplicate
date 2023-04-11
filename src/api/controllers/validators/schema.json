@@ -4,7 +4,7 @@
         "title": "Tax Statement",
         "description": "tax statement schema",
         "type": "object",
-        "additionalProperties": false,
+        "additionalProperties": true,
         "required": ["start_date", "end_date", "requestType"],
         "properties": {
             "start_date": {
