@@ -162,7 +162,7 @@ class taxStatementService {
             // payload['updatedRunningbalance'] = updatedRunningbalance || 0.00;
             const accountData = {
                 headers: ['MSISDN', 'Trx ID', 'Trx DateTime', 'Total Tax Deducted', 'Sales Tax', 'Income Tax', 'Withholding Tax', 'Fee', 'Commission'],
-                data,
+                consumerData,
                 payload
             };
             const htmlTemplate = taxStatementConsumerTemplate(accountData);
