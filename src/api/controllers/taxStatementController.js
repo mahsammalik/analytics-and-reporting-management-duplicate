@@ -27,7 +27,7 @@ class taxStatementController {
             const badHeader = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, headersValidationResponse);
             return res.status(422).send(badHeader);
         }
-        const queryValidationResponse   =   validations.verifySchema("Tax_Statement_SCHEMA", req.query);
+        const queryValidationResponse   =   validations.verifySchema("Consumer_Tax_Statement_SCHEMA", req.query);
         if (!queryValidationResponse.success) {
             const badQueryParam = await responseCodeHandler.getResponseCode(accStmtResponseCodes.missing_required_parameters, queryValidationResponse);
             logger.debug(queryValidationResponse);
@@ -35,22 +35,22 @@ class taxStatementController {
         }
         const metadataHeaders = req.headers['x-meta-data'];
         const metadata = mappedMetaData(metadataHeaders ? metadataHeaders : false);
-        const userProfile = await getUserProfile(req.headers);
-        logger.debug({ userProfile });
-        logger.debug(metadata," metadata")
+        // const userProfile = await getUserProfile(req.headers);
+        // logger.debug({ userProfile });
+        // logger.debug(metadata," metadata")
         let payload = {
             msisdn: req.headers['x-msisdn'],
-            start_date: req.query.start_date,
-            end_date: req.query.end_date,
+            // start_date: req.query.start_date,
+            // end_date: req.query.end_date,
             request: req.query.requestType,
             year: req.query.year || "",
             email: req.query.email || metadata.emailAddress,
             subject: 'Hello',
             html: '<html></html>',
-            format: req.query.format,
+            // format: req.query.format,
             metadata,
-            merchantName: userProfile.businessName || '',
-            accountLevel: userProfile.accountLevel || ''
+            // merchantName: userProfile.businessName || '',
+            // accountLevel: userProfile.accountLevel || ''
 
         };
 
