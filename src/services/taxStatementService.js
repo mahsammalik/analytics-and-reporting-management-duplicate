@@ -128,7 +128,8 @@ class taxStatementService {
                     customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
                     accountNumber: payload.msisdn,
                     statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
-                    accountLevel: isConsumer ? consumerTaxData[2] : payload.accountLevel
+                    accountLevel: isConsumer ? consumerTaxData[2] : payload.accountLevel,
+                    channel: payload.channel
                 }) || '';
 
                 logger.info({
