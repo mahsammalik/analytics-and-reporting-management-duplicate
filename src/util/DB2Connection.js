@@ -1618,8 +1618,43 @@ class DatabaseConn {
       return;
 
     } catch (err) {
-      logger.error('Database connection error' + err);
-      return ;
+      logger.error('Database insert error' + err.sqlcode);
+      if (err.sqlcode == -803) {
+        try {
+          logger.info('inside duplicate add');
+          const stmt = conn.prepareSync(`
+                        UPDATE STATEMENTS.HISTORY_REVAMPED 
+                        SET
+                        TRX_DTTM='${payload.TRX_DTTM}',
+                        INITIATOR_NAME='${payload.INITIATOR_NAME || ''}',
+                        INITIATOR_MSISDN='${payload.INITIATOR_MSISDN || ''}',
+                        TRX_CHANNEL='${payload.TRX_CHANNEL || ''}',
+                        TRX_TYPE='${payload.TRX_TYPE || ''}',
+                        AC_FROM='${payload.AC_FROM || ''}',
+                        AC_TO='${payload.AC_TO || ''}',
+                        UTILITY_COMPANY='${payload.UTILITY_COMPANY || ''}',
+                        CONSUMER_NO='${payload.CONSUMER_NO || ''}',
+                        FEE='${payload.FEE || ''}',
+                        FED='${payload.FED || ''}',
+                        WHT='${payload.WHT || ''}',
+                        GROSS_AMT='${payload.GROSS_AMT || ''}',
+                        AMOUNT_DEBITED='${payload.AMOUNT_DEBITED || ''}',
+                        AMOUNT_CREDITED='${payload.AMOUNT_CREDITED || ''}',
+                        BENEFICIARY_MSISDN='${payload.BENEFICIARY_MSISDN || ''}',
+                        DESCRIPTION='${payload.DESCRIPTION || ''}',
+                        REASON_TYPE='${payload.REASON_TYPE || ''}',
+                        CONTEXT_DATA='${payload.CONTEXT_DATA}'
+                        WHERE
+                        TRANS_ID='${payload.TRANS_ID}'
+                        `)
+          stmt.executeSync();
+          stmt.closeSync();
+          return
+        } catch (err) {
+          return;
+        } 
+      }
+      return;
     } finally {
       conn.close(function (err) { });
       return
