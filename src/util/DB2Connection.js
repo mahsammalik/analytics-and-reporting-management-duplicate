@@ -1658,6 +1658,41 @@ class DatabaseConn {
       return
     }
   }
+
+
+  async addMultiInstrumentReporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('Multi Instrument Reporting!');
+      logger.debug(payload);
+      let Response = payload?.Response;
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.MULTI_INSTRUMENT_REPORTING (DATE, CUSTOMER_MSISDN, TID, TRX_TYPE, TRX_AMOUNT, MULTI_INSTRUMENT_SELECTED, MULTI_INSTRUMENT_AMOUNT, TRX_STATUS, REASON )
+        VALUES
+        (
+          '${Response.DATE || ''}',
+          '${Response.CUSTOMER_MSISDN || ''}',
+          '${Response.TID || '' }',
+          '${Response.TRX_TYPE || '' }',
+          '${Response.TRX_AMOUNT || '' }',
+          '${Response.MULTI_INSTRUMENT_SELECTED || '' }',
+          '${Response.MULTI_INSTRUMENT_AMOUNT || '' }',
+          '${Response.TRX_STATUS || '' }',
+          '${Response.REASON || '' }'
+        );`
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`Multi_Instrument insertion done`);
+      return;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return ;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
   
   async addReadyCashBaflReporting(payload){
     let conn = await getConnection();
