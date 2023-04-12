@@ -9,7 +9,7 @@ import logger  from '../../util/logger';
  */
 const responseCodeMW = async (req, res, next) => {
     try {
-        logger.info({ event: 'Entered function', functionName: 'responseCodeMW' });
+        logger.info({ event: 'Entered function', functionName: 'responseCodeMW', data: res.locals });
         if (res.locals.response) {
             const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.success, "");
             res.locals.response = response;
@@ -19,14 +19,15 @@ const responseCodeMW = async (req, res, next) => {
                 const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.duplicate, "");
                 res.locals.response = response;
                 res.status(422).send(response);    
+            }else if(res.locals.noData){
+                const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.taxStatement.noData, "");
+                res.locals.response = response;
+                res.status(422).send(response);
             }else{
                 const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
                 res.locals.response = response;
                 res.status(422).send(response);
             }
-            const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
-            res.locals.response = response;
-            res.status(422).send(response);
         }
         logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
 
