@@ -237,7 +237,8 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING"
+                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
 
             }
         },
