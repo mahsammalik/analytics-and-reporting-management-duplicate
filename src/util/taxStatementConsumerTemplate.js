@@ -155,7 +155,7 @@ Account Balance from ${taxPeriod}
 		</div>
 		<div class="details-row">
 			<div class="title">Balance in Amount </div>
-			<div class="details">Rs ${balance}</div>
+			<div class="details">Rs. ${balance}</div>
 		</div>
 		<div class="details-row">
 			<div class="title">Balance in Words </div>
@@ -163,11 +163,11 @@ Account Balance from ${taxPeriod}
 		</div>
 		<div class="details-row">
 			<div class="title">Opening Balance </div>
-			<div class="details">Rs ${openingBalance}</div>
+			<div class="details">Rs. ${openingBalance}</div>
 		</div>
 		<div class="details-row">
 			<div class="title">Closing Balance </div>
-			<div class="details">Rs ${closingBalance}</div>
+			<div class="details">Rs. ${closingBalance}</div>
 		</div>
 	</div>
 	<div class="taxHeading">
@@ -183,11 +183,11 @@ Withholding Tax Deduction
 		</div>
 		<div class="details-row">
 			<div class="title">Tax Deduction</div>
-			<div class="details">Rs ${taxDeduction}</div>
+			<div class="details">Rs. ${taxDeduction}</div>
 		</div>
 		<div class="details-row">
 			<div class="title">Tax Deduction (in words)</div>
-			<div class="details">Rs ${taxDeductionInWords}</div>
+			<div class="details">${taxDeductionInWords}</div>
 		</div>
 	</div>
 	</div>

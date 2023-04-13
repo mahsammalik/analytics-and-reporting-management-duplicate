@@ -91,7 +91,7 @@ class taxStatementService {
             const htmlTemplate = isConsumer ? taxStatementConsumerTemplate(accountData) : taxStatementTemplate(accountData);
             let pdfFile = await createPDF({
                 template: htmlTemplate,
-                fileName: `Tax Statement`
+                fileName: `TaxStatement.pdf`
             });
             logger.info(`Step 03: Obtained htmlTemplate for tax`)
             pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
@@ -109,7 +109,7 @@ class taxStatementService {
             }
             ];
             const attachment = [{
-                filename: 'Tax Certificate.pdf',
+                filename: 'TaxCertificate.pdf',
                 content: pdfFile,
                 type: 'base64',
                 embedImage: false
@@ -124,10 +124,10 @@ class taxStatementService {
                     embedImage: false
                 }];
                 let emailHTMLContent = await accountStatementEmailTemplate({
-                    title: 'Tax Statement',
+                    title: 'Tax Certificate',
                     customerName: isConsumer ? consumerTaxData[0] : payload.merchantName,
                     accountNumber: payload.msisdn,
-                    statementPeriod: isConsumer ? payload.year : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
+                    statementPeriod: isConsumer ? consumerTaxData[3] : `${(payload.start_date ? formatEnglishDate(payload.start_date) : '-') + ' to ' + (payload.end_date ? formatEnglishDate(payload.end_date) : '-')}`,
                     accountLevel: isConsumer ? consumerTaxData[2] : payload.accountLevel,
                     channel: payload.channel
                 }) || '';
@@ -140,6 +140,11 @@ class taxStatementService {
                 emailData.push({
                     key: "htmlTemplate",
                     value: emailHTMLContent,
+                });
+                const emailSubject = `Tax Certificate for <${payload.msisdn}>, ${consumerTaxData[3]}`;
+                emailData.push({
+                    key: "subject",
+                    value: isConsumer ? emailSubject: 'TAX STATEMENT',
                 });
 
                 return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
