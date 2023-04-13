@@ -190,7 +190,10 @@
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
                 "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
-                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING",
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
             }
         },
         "cache": {
