@@ -264,6 +264,8 @@
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
                 "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING",
 
+                "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
+                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING",
                 "Notification_Push": "NOTIFICATION_PUSH",
                 "Notification_Sms": "NOTIFICATION_SMS",
                 "Notification_Email": "NOTIFICATION_EMAIL"
@@ -457,7 +459,9 @@
             "PAYON_LOGIN": "PAYON_LOGIN",
             "CASHTOGOOD" : "CASHTOGOOD",
             "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
-            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
+            "CASHBACK_REDEEM" : "CASHBACK_REDEEM",
+            "L0_TO_L1_REPORT": "L0_TO_L1_REPORT",
+            "DORMANT_TO_ACTIVE_REPORT": "DORMANT_TO_ACTIVE_REPORT"
         }
     }
 }

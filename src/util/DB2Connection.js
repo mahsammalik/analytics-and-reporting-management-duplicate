@@ -1693,6 +1693,82 @@ class DatabaseConn {
       return
     }
   }
+
+  async addL0TOL1Reporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('payload L0TOL1 REPORTING data');
+      logger.debug(payload);
+      let query;
+      if (!CUSTOMER_CONVERSION_DATE) {
+        query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN}',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.STATUS}'
+        );`
+      } else {
+        query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN}',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_CONVERSION_DATE}',
+          '${payload.CUSTOMER_REGISTERATION_DATE}',
+          '${payload.STATUS}'
+        );`
+      }
+      const stmt = conn.prepareSync(query);
+      logger.info({
+        event: '******  DB2 Insertion was successful  ******',
+        functionName: 'DB2Connection.addLoginReportingV2'
+      });
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`L0TOL1Reporting insertion done`);
+      return;
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
+
+  async addDormantToActiveReporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('payload DORMANTTOACTIVE Reporting data');
+      logger.debug(payload);
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN }',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.CUSTOMER_REGISTERATION_DATE}',
+          '${payload.STATUS}'
+        );`
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`DORMANTTOACTIVE Reporting insertion done`);
+      return;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return ;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
   
   async addReadyCashBaflReporting(payload){
     let conn = await getConnection();

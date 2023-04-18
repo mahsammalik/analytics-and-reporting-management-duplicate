@@ -263,8 +263,11 @@
                 "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
                 "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING",
+
+                "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
+                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING",
+                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
 
                 "Notification_Push": "NOTIFICATION_PUSH",
                 "Notification_Sms": "NOTIFICATION_SMS",
@@ -459,7 +462,9 @@
             "PAYON_LOGIN": "PAYON_LOGIN",
             "CASHTOGOOD" : "CASHTOGOOD",
             "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
-            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
+            "CASHBACK_REDEEM" : "CASHBACK_REDEEM",
+            "L0_TO_L1_REPORT": "L0_TO_L1_REPORT",
+            "DORMANT_TO_ACTIVE_REPORT": "DORMANT_TO_ACTIVE_REPORT"
         }
     }
 }
