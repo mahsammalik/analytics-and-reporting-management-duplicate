@@ -1401,6 +1401,32 @@ class DatabaseConn {
     }
   }
 
+  async getTaxCertificateData(customerMobileNumer, year) {
+    let conn = await getConnection();
+    if (!conn) {
+      conn = await open(cn);
+    }
+    try {
+      const stmt = conn.prepareSync(`Select ACC_TITLE, ACC_NUMBER, ACC_LEVEL, TAX_PERIOD, END_DATE, END_DATE_BALANCE, END_DATE_BALANCE_IN_WORDS, OPENING_PERIOD_BALANCE, ENDING_PERIOD_BALANCE, TIME_PERIOD_OF_CERTIFICATE, TAX_DEDUCTION, TAX_DEDUCTION_IN_WORDS from statements.TAX_CERTIFICATE where ACC_NUMBER = '${customerMobileNumer}' And TAX_YEAR = '${year}' ;`);
+      const result = stmt.executeSync();
+      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      logger.info("Exited getTaxValueArray: ", arrayResult)
+      result.closeSync();
+      stmt.closeSync();
+      return arrayResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return "Database Error";
+    } finally {
+      conn.close(function (err) {
+        if (err) {
+          logger.error(err)
+        }
+      });
+    }
+  }
+
   async getTaxValueArrayWithConn(customerMobileNumer, mappedMsisdn, endDate, startDate, conn) {
     try {
 
@@ -1587,6 +1613,76 @@ class DatabaseConn {
       stmt.executeSync();
       stmt.closeSync();
       logger.debug(`TRX_REPORT insertion done`);
+      return;
+
+    } catch (err) {
+      logger.error('Database insert error' + err.sqlcode);
+      if (err.sqlcode == -803) {
+        try {
+          logger.info('inside duplicate add');
+          const stmt = conn.prepareSync(`
+                        UPDATE STATEMENTS.HISTORY_REVAMPED 
+                        SET
+                        TRX_DTTM='${payload.TRX_DTTM}',
+                        INITIATOR_NAME='${payload.INITIATOR_NAME || ''}',
+                        INITIATOR_MSISDN='${payload.INITIATOR_MSISDN || ''}',
+                        TRX_CHANNEL='${payload.TRX_CHANNEL || ''}',
+                        TRX_TYPE='${payload.TRX_TYPE || ''}',
+                        AC_FROM='${payload.AC_FROM || ''}',
+                        AC_TO='${payload.AC_TO || ''}',
+                        UTILITY_COMPANY='${payload.UTILITY_COMPANY || ''}',
+                        CONSUMER_NO='${payload.CONSUMER_NO || ''}',
+                        FEE='${payload.FEE || ''}',
+                        FED='${payload.FED || ''}',
+                        WHT='${payload.WHT || ''}',
+                        GROSS_AMT='${payload.GROSS_AMT || ''}',
+                        AMOUNT_DEBITED='${payload.AMOUNT_DEBITED || ''}',
+                        AMOUNT_CREDITED='${payload.AMOUNT_CREDITED || ''}',
+                        BENEFICIARY_MSISDN='${payload.BENEFICIARY_MSISDN || ''}',
+                        DESCRIPTION='${payload.DESCRIPTION || ''}',
+                        REASON_TYPE='${payload.REASON_TYPE || ''}',
+                        CONTEXT_DATA='${payload.CONTEXT_DATA}'
+                        WHERE
+                        TRANS_ID='${payload.TRANS_ID}'
+                        `)
+          stmt.executeSync();
+          stmt.closeSync();
+          return
+        } catch (err) {
+          return;
+        } 
+      }
+      return;
+    } finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
+
+
+  async addMultiInstrumentReporting(payload) {
+    let conn = await getConnection();
+    try {
+      logger.debug('Multi Instrument Reporting!');
+      logger.debug(payload);
+      let Response = payload?.Response;
+      const stmt = conn.prepareSync(`INSERT INTO COMMON.MULTI_INSTRUMENT_REPORTING (DATE, CUSTOMER_MSISDN, TID, TRX_TYPE, TRX_AMOUNT, MULTI_INSTRUMENT_SELECTED, MULTI_INSTRUMENT_AMOUNT, TRX_STATUS, REASON )
+        VALUES
+        (
+          '${Response.DATE || ''}',
+          '${Response.CUSTOMER_MSISDN || ''}',
+          '${Response.TID || '' }',
+          '${Response.TRX_TYPE || '' }',
+          '${Response.TRX_AMOUNT || '' }',
+          '${Response.MULTI_INSTRUMENT_SELECTED || '' }',
+          '${Response.MULTI_INSTRUMENT_AMOUNT || '' }',
+          '${Response.TRX_STATUS || '' }',
+          '${Response.REASON || '' }'
+        );`
+      );
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`Multi_Instrument insertion done`);
       return;
 
     } catch (err) {

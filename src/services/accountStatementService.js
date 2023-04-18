@@ -3,7 +3,7 @@ import {
     createPDF,
     accountStatementTemplate,
     accountStatementTemplateMerchant,
-    Notification,
+    Notification
 } from '/util/';
 import AccountStatementRequest from '../model/acntStmtRequest';
 import DB2Connection from '../util/DB2Connection';
@@ -130,7 +130,8 @@ class accountStatementService {
                     key: "htmlTemplate",
                     value: emailHTMLContent,
                 });
-                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                // return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                return await new Notification.sendEmailKafka(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
             }
             else {
                 throw new Error(`Email Not provided`);
@@ -321,7 +322,16 @@ class accountStatementService {
                     type: 'base64',
                     embedImage: false
                 }];
-                return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                // return await new Notification.sendEmail(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                return await new Notification.sendEmailKafka(payload.email, 'Account Statement', '', attachment, 'ACCOUNT_STATEMENT', emailData);
+                //     }
+                //     else {
+                //         throw new Error(`Email Not provided`);
+                //     }
+                // }
+                // else {
+                //     throw new Error(`Error fetching data for account statement:${message}`);
+                // }
             }
             else {
                 throw new Error(`Error fetching data for account statement`);

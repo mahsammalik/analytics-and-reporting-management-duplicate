@@ -191,7 +191,11 @@
                 "trx_history_reporting": "TRX_HISTORY_REPORTING",
                 "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING",
                 "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
-                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING"
+                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING",
+                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
             }
         },
         "cache": {
@@ -215,6 +219,9 @@
                     "email_problem": "AR-AS-T08",
                     "pdf_internal_error": "AR-AS-T06",
                     "duplicate": "AR-AS-T07"
+                },
+                "taxStatement": {
+                    "noData": "AR-TS-T01"
                 },
                 "contactIntegration": {
                     "success": "AM-CI-T01",

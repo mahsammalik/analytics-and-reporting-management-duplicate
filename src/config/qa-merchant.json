@@ -265,7 +265,10 @@
                 "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING",
 
                 "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
-                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING"
+                "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING",
+                "Notification_Push": "NOTIFICATION_PUSH",
+                "Notification_Sms": "NOTIFICATION_SMS",
+                "Notification_Email": "NOTIFICATION_EMAIL"
             }
         },
         "cache": {

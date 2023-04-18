@@ -16,7 +16,7 @@ import {
 } from '/consumers/'
 
 const KAFKA_DRAIN_CHECK = process.env.KAFKA_DRAIN_CHECK || "false";
-//let instance = null;
+let instance = null;
 
 class Subscriber {
 
@@ -103,12 +103,18 @@ class Subscriber {
             config.kafkaBroker.topics.cashback_reward_init_failed,
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
+            //config.kafkaBroker.topics.account_login_reporting,
+            config.kafkaBroker.topics.trx_history_reporting,
+            config.kafkaBroker.topics.multi_instrument_reporting,
             config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.readyCashBaflReporting,
 
             config.kafkaBroker.topics.L0_to_L1_reporting,
-            config.kafkaBroker.topics.dormant_to_active_reporting
+            config.kafkaBroker.topics.dormant_to_active_reporting,
+            config.kafkaBroker.topics.Notification_Sms,
+            config.kafkaBroker.topics.Notification_Push,
+            config.kafkaBroker.topics.Notification_Email
         ]);
 
         //this.setConsumer();
@@ -1260,6 +1266,19 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
+
+                if (msg.topic === config.kafkaBroker.topics.multi_instrument_reporting) {
+                    logger.debug('*********** MULTI INSTRUMENT REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('MULTI INSTRUMENT REPORTING ' + JSON.stringify(payload));
+                        DB2Connection.addMultiInstrumentReporting(payload);
+                    } catch (error) {
+                        logger.debug('Multi instrument reporting catch' + error)
+                    }
+                }
+
                 if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
                     logger.debug('*********** readyCashBaflReporting *****************');
                     try {
@@ -1329,6 +1348,13 @@ class Subscriber {
         });
     }
 
+    static getInstance() {
+        if (!instance) {
+            instance = new Subscriber();
+        }
+
+        return instance;
+    }
 
 }
 

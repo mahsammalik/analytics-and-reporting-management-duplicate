@@ -1,12 +1,11 @@
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: analytics-microservice
-  namespace: qa-consumer
+  name: analytics-consumer
+  namespace: m11s
   labels:
-    app: analytics-microservice
-    app.kubernetes.io/part-of: qa-consumer
-    monitoring.appd: AppD_NodeJS
+    app: analytics-consumer
+    app.kubernetes.io/part-of: m11s
 spec:
   replicas: 1
   strategy:
@@ -25,29 +24,29 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
-          namespace: qa-consumer
-          name: 'analytics-microservice:latest'
+          namespace: m11s
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    app: analytics-consumer
+    deploymentconfig: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deploymentconfig: analytics-microservice
+        app: analytics-consumer
+        deploymentconfig: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/qa-consumer/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -58,7 +57,7 @@ spec:
                 key: mongo-connection-string
                 name: mongo-connection-analytics
           - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
-            value: '30 seconds'
+            value: '1 minutes'
           - name: ACCOUNT_STATEMENT_SCHEDULER
             value: 'true'
           - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
@@ -67,21 +66,16 @@ spec:
             value: '30'
           - name: SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES
             value: '15'
-          - name: SCHEDULER_REQUESTS_QUERY_LIMIT
-            value: '1'
           - name: 'SCHEDULER_LOCK_TIME'
             value: '30000'
+          - name: SCHEDULER_REQUESTS_QUERY_LIMIT
+            value: '1'
           - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
-            value: '30 seconds'
+            value: '1 seconds'
           - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
             value: 'true'
           - name: CACHE_SERVER
-            value: datagrid.datagrid-tests
-          - name: CONSUMER_GROUP_ID
-            valueFrom:
-              configMapKeyRef:
-                name: consumer-groups
-                key: CONSUMER_GROUP_ANALYTICS
+            value: infinispan.datagrid-op
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -92,11 +86,27 @@ spec:
             value: 'false'    
           - name: PRODUCTION_LOG_LEVEL
             value: info
-          - name: NODE_ENV
-            value: qa-consumer
-          - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '500'
           - name: CONSUMER
+            value: 'true'
+          - name: NODE_ENV
+            value: dr
+          - name: CONSUMER_GROUP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS
+          - name: CONSUMER_GROUP_ID_REWARD
+            valueFrom:
+              configMapKeyRef:
+                name: consumer-groups
+                key: CONSUMER_GROUP_ANALYTICS_REWARD
+          - name: KAFKA_TOPICS_CONSUME_INTERVAL
+            value: '550'
+          - name: DB2ConnMaxPoolSize
+            value: '100'
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: Token_Validation
             value: 'true'
           readinessProbe:
             failureThreshold: 12
@@ -117,7 +127,7 @@ spec:
           resources:
             limits:
               memory: 512Mi
-              cpu: '0.3'
+              cpu: '300m'
             requests:
               memory: 56Mi
               cpu: '120m'             
@@ -129,4 +139,3 @@ spec:
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
-
