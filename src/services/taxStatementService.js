@@ -147,8 +147,9 @@ class taxStatementService {
                     value: isConsumer ? emailSubject: 'TAX STATEMENT',
                 });
 
-                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
-                logger.info(`Step 04: Sending email `)
+                // return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                return await new Notification.sendEmailKafka(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                logger.info(`Step 04: Sent email `)
             }
             else {
                 throw new Error(`Email Not provided`);
@@ -225,7 +226,8 @@ class taxStatementService {
                     value: emailHTMLContent,
                 });
 
-                return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                // return await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                return await new Notification.sendEmailKafka(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
                 logger.info(`Step 04: Sent email `)
             }
             else {
