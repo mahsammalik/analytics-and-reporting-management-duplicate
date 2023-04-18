@@ -1603,17 +1603,29 @@ class DatabaseConn {
     try {
       logger.debug('payload L0TOL1 REPORTING data');
       logger.debug(payload);
-      let query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
-      VALUES
-      (
-        '${payload.CUSTOMER_MSISDN}',
-        '${payload.CUSTOMER_PREVIOUS_STATUS}',
-        '${payload.CUSTOMER_NEW_STATUS}',
-        '${payload.CUSTOMER_LEVEL || NULL}',
-        '${payload.CUSTOMER_CONVERSION_DATE || NULL}',
-        '${payload.CUSTOMER_REGISTERATION_DATE || NULL}',
-        '${payload.STATUS}'
-      );`
+      let query;
+      if (!CUSTOMER_CONVERSION_DATE) {
+        query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN}',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.STATUS}'
+        );`
+      } else {
+        query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_CONVERSION_DATE, CUSTOMER_REGISTERATION_DATE, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN}',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_CONVERSION_DATE}',
+          '${payload.CUSTOMER_REGISTERATION_DATE}',
+          '${payload.STATUS}'
+        );`
+      }
       const stmt = conn.prepareSync(query);
       logger.info({
         event: '******  DB2 Insertion was successful  ******',
