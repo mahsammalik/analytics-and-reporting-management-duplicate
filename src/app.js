@@ -7,8 +7,7 @@ import compression from 'compression';
 import responseTime from 'response-time';
 // import Cache from './util/cache';
 import { requestLoggerMW, schemaValidatorMW, auditLoggerMW } from './api/middlewares';
-import { RewardSubscriber } from '/services/';
-import Subscriber from './services/subscriberService';
+import { Subscriber, RewardSubscriber } from '/services/';
 import httpContext from 'express-http-context';
 import axiosInterceptor from './util/axiosUtil';
 import logRequestMW from './api/middlewares/logRequestMW';
@@ -35,8 +34,6 @@ app.use(httpContext.middleware);
 app.use(logRequestMW);
 axiosInterceptor();
 app.use(responseTime());
-
-const subscriber = Subscriber.getInstance(); //producer will be ready
 
 
 // app.use(auditLoggerMW);
