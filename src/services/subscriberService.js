@@ -104,17 +104,7 @@ class Subscriber {
             config.kafkaBroker.topics.initTrans_refundMobileBundle,
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             //config.kafkaBroker.topics.account_login_reporting,
-            config.kafkaBroker.topics.trx_history_reporting,
-            config.kafkaBroker.topics.multi_instrument_reporting,
-            config.kafkaBroker.topics.account_login_reporting,
-            config.kafkaBroker.topics.trx_history_reporting,
-            config.kafkaBroker.topics.readyCashBaflReporting,
-
-            config.kafkaBroker.topics.L0_to_L1_reporting,
-            config.kafkaBroker.topics.dormant_to_active_reporting,
-            config.kafkaBroker.topics.Notification_Sms,
-            config.kafkaBroker.topics.Notification_Push,
-            config.kafkaBroker.topics.Notification_Email
+            config.kafkaBroker.topics.trx_history_reporting
         ]);
 
         //this.setConsumer();
