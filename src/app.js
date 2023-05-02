@@ -35,6 +35,8 @@ app.use(logRequestMW);
 axiosInterceptor();
 app.use(responseTime());
 
+const subscriber = Subscriber.getInstance(); //producer will be ready
+
 
 // app.use(auditLoggerMW);
 
