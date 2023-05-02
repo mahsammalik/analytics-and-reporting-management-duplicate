@@ -13,7 +13,6 @@ const NOTIFICATION_SERVICE_URL_SMS = process.env.NOTIFICATION_SERVICE_URL_SMS ||
 
 class Notification {
     constructor(){
-        this.subscriber = Subscriber.getInstance();
     }
 
     async sendPushNotification(PushID, DeviceType, MessageTitle, MessageBody) {
@@ -139,7 +138,8 @@ class Notification {
                 data: { body: kafkaPayload }
             });
 
-            this.subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Push);
+            const subscriber = new Subscriber();
+            subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Push);
 
         } catch (error) {
             logger.error({
@@ -175,8 +175,8 @@ class Notification {
                 functionName: 'Notification.sendSMSKafka',
                 data: { body: kafkaPayload }
             });
-
-            this.subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Sms);
+            const subscriber = new Subscriber();
+            subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Sms);
 
             return true;
         } catch (error) {
@@ -218,8 +218,8 @@ class Notification {
                 functionName: 'Notification.sendPushNotificationByMSISDNKafka',
                 data: { body: kafkaPayload }
             });
-
-            this.subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Push);
+            const subscriber = new Subscriber();
+            subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Push);
 
 
             return true;
@@ -268,8 +268,8 @@ class Notification {
                 functionName: 'Notification.sendEmailKafka',
                 data: { body: kafkaPayload }
             });
-
-            this.subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Email);
+            const subscriber = new Subscriber();
+            subscriber.event.produceMessage(kafkaPayload, config.kafkaBroker.topics.Notification_Email);
 
             return true;
         } catch (error) {
