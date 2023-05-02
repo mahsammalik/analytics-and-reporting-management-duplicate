@@ -1745,17 +1745,31 @@ class DatabaseConn {
     try {
       logger.debug('payload DORMANTTOACTIVE Reporting data');
       logger.debug(payload);
-      const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, STATUS )
+      if (!payload.CUSTOMER_ACTIVATION_DATE) {
+        const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, STATUS )
         VALUES
         (
-          '${payload.CUSTOMER_MSISDN }',
+          '${payload.CUSTOMER_MSISDN}',
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS}',
           '${payload.CUSTOMER_LEVEL}',
           '${payload.CUSTOMER_REGISTERATION_DATE}',
           '${payload.STATUS}'
         );`
-      );
+        );
+      } else {
+        const stmt = conn.prepareSync(`INSERT INTO COMMON.DORMANT_TO_ACTIVE_REPORT (CUSTOMER_MSISDN, CUSTOMER_ACTIVATION_DATE, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, CUSTOMER_REGISTERATION_DATE, STATUS )
+        VALUES
+        (
+          '${payload.CUSTOMER_MSISDN}',
+          '${payload.CUSTOMER_ACTIVATION_DATE}',
+          '${payload.CUSTOMER_PREVIOUS_STATUS}',
+          '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
+          '${payload.STATUS}'
+        );`
+        );
+      }
       stmt.executeSync();
       stmt.closeSync();
       logger.debug(`DORMANTTOACTIVE Reporting insertion done`);
@@ -1763,7 +1777,7 @@ class DatabaseConn {
 
     } catch (err) {
       logger.error('Database connection error' + err);
-      return ;
+      return;
     } finally {
       conn.close(function (err) { });
       return
