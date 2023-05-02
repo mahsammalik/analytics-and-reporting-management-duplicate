@@ -1266,29 +1266,6 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
-
-                if (msg.topic === config.kafkaBroker.topics.multi_instrument_reporting) {
-                    logger.debug('*********** MULTI INSTRUMENT REPORTING *****************');
-                    try {
-
-                        const payload = JSON.parse(msg.value);
-                        logger.debug('MULTI INSTRUMENT REPORTING ' + JSON.stringify(payload));
-                        DB2Connection.addMultiInstrumentReporting(payload);
-                    } catch (error) {
-                        logger.debug('Multi instrument reporting catch' + error)
-                    }
-                }
-
-                if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
-                    logger.debug('*********** readyCashBaflReporting *****************');
-                    try {
-                        const payload = JSON.parse(msg.value);
-                        logger.debug('readyCashBaflReporting ' + JSON.stringify(payload));
-                         DB2Connection.addReadyCashBaflReporting(payload)
-                    } catch (error) {
-                        logger.debug(error)
-                    }
-                }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
                 //     logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
                 //     try {
@@ -1319,28 +1296,6 @@ class Subscriber {
                 //         logger.debug(error)
                 //     }
                 // }
-                if (msg.topic === config.kafkaBroker.topics.L0_to_L1_reporting) {
-                    logger.debug('*********** LOGIN REPORTING *****************');
-                    try {
-
-                        const payload = JSON.parse(msg.value);
-                        logger.debug('L0 TO L1 REPORTING ' + JSON.stringify(payload));
-                        DB2Connection.addL0TOL1Reporting(payload);
-                    } catch (error) {
-                        logger.debug(error)
-                    }
-                }
-                if (msg.topic === config.kafkaBroker.topics.dormant_to_active_reporting) {
-                    logger.debug('*********** LOGIN REPORTING *****************');
-                    try {
-
-                        const payload = JSON.parse(msg.value);
-                        logger.debug('DORMANT TO ACTIVE REPORTING ' + JSON.stringify(payload));
-                        DB2Connection.addDormantToActiveReporting(payload);
-                    } catch (error) {
-                        logger.debug(error)
-                    }
-                }
             } catch (error) {
                 logger.error({ event: 'Error thrown ', functionName: 'setConsumer in class subscriber', error });
                 throw new Error(error);
