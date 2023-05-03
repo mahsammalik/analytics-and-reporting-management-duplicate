@@ -1700,7 +1700,7 @@ class DatabaseConn {
       logger.debug('payload L0TOL1 REPORTING data');
       logger.debug(payload);
       let query;
-      if (!CUSTOMER_CONVERSION_DATE) {
+      if (!payload.CUSTOMER_CONVERSION_DATE) {
         query = `INSERT INTO COMMON.L0_TO_L1_REPORT (CUSTOMER_MSISDN, CUSTOMER_PREVIOUS_STATUS, CUSTOMER_NEW_STATUS, CUSTOMER_LEVEL, STATUS )
         VALUES
         (
