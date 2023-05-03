@@ -1707,6 +1707,7 @@ class DatabaseConn {
           '${payload.CUSTOMER_MSISDN}',
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS}',
+          '${payload.CUSTOMER_LEVEL}',
           '${payload.STATUS}'
         );`
       } else {
