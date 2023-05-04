@@ -1708,7 +1708,6 @@ class DatabaseConn {
           '${payload.CUSTOMER_PREVIOUS_STATUS}',
           '${payload.CUSTOMER_NEW_STATUS}',
           '${payload.CUSTOMER_LEVEL}',
-          '${payload.CUSTOMER_CONVERSION_DATE}',
           '${payload.STATUS}'
         );`
       } else {
