@@ -84,7 +84,7 @@ const accountStatementEmailTemplate = async ({ title, customerName, accountNumbe
 					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Your ${title} is attached for :</span><br />
 					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Account number : </span><b>${accountNumber}</b><br />
 					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Account Type:</span><b> ${accountLevel}</b><br />
-					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Statement Period: </span><b>${statementPeriod}</b><br />
+					<span style="word-spacing: 0.1em;letter-spacing: 0.05em">Certificate Period: </span><b>${statementPeriod}</b><br />
 				</td>
 			</tr>
 			<tr>
