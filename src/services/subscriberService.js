@@ -106,6 +106,9 @@ class Subscriber {
             // config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             // config.kafkaBroker.topics.GTOP_Init_Passed,
             // config.kafkaBroker.topics.GTOP_Init_Failed,
+            config.kafkaBroker.topics.account_login_reporting,
+            config.kafkaBroker.topics.trx_history_reporting,
+            config.kafkaBroker.topics.readyCashBaflReporting
             //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.multi_instrument_reporting
@@ -1288,6 +1291,17 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
+                if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
+                    logger.debug('*********** readyCashBaflReporting *****************');
+                    try {
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('readyCashBaflReporting ' + JSON.stringify(payload));
+                         DB2Connection.addReadyCashBaflReporting(payload)
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+
                 if (msg.topic === config.kafkaBroker.topics.multi_instrument_reporting) {
                     logger.debug('*********** MULTI INSTRUMENT REPORTING *****************');
                     try {
