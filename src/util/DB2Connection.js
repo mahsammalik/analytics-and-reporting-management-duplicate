@@ -119,7 +119,7 @@ class DatabaseConn {
                 logger.info(`${schemaName}.${tableName}_insert done`);
             }
             else if (data.transactionStatus == 'Completed' && data.typeOfTransaction =='confirm_merchant_to_payment') {
-                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}') WHERE TRANS_ID='${data.TID}';`);
+                const stmt = conn.prepareSync(`UPDATE ${schemaName}.${tableName} SET TRANS_STATUS='${data.transactionStatus}', TOP_NAME='${data.topic}', MSG_OFFSET='${data.msg_offset}', TYPE_OF_TRANS=CONCAT(TYPE_OF_TRANS, ',${data.typeOfTransaction}', SUBSCRIPTION_NOTIFICATION = '${data.reminderEnabled}', VALIDITY = '${data.packageValidity}', BUNDLE_ID = '${data.bundleId}') WHERE TRANS_ID='${data.TID}';`);
                 stmt.executeSync();
                 stmt.closeSync();
                 //conn.close(function (err) { });

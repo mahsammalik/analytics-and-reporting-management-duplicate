@@ -69,6 +69,9 @@ class Processor {
                     initTransData.transactionDate = data?.Result?.ResultParameters?.ResultParameter?.find((param) => { return param.Key == 'TransEndDate'; })?.Value || '';
                     initTransData.responseCode = data?.Result?.ResultCode || '';
                     initTransData.responseDesc = data?.Result?.ResultDesc || '';
+                    initTransData.packageValidity = data?.CustomObject?.packageValidity || 0;
+                    initTransData.bundleId = data?.CustomObject?.bundleId || '';
+                    initTransData.reminderEnabled = data?.CustomObject?.reminderEnabled || false;
                     if (initTransData.transactionDate !== '') {
                         initTransData.transactionDate = moment(initTransData.transactionDate).format('YYYY-MM-DD');
                     }
