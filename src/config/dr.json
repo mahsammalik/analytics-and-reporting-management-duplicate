@@ -11,11 +11,11 @@
         },
         "externalServices": {
             "masterDataAPI": {
-                "responseCodeURL": "http://masterdata-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/masterdata/responseCodes"
+                "responseCodeURL": "http://masterdata-microservice:3000/rest/api/v1/masterdata/responseCodes"
             },
             "accountManagementAPI": {
-                "userProfileURL": "http://account-management-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/account/profile",
-                "usergetProfileidentityinformationURL": "http://account-management-microservice-jk-microservices-test.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/rest/api/v1/account/getprofileidentityinformation"
+                "userProfileURL": "http://account-management-microservice:3000/rest/api/v1/account/profile",
+                "usergetProfileidentityinformationURL": "http://account-management-microservice:3000/rest/api/v1/account/getprofileidentityinformation"
             },
             "NotificationService": {
                 "smsNotificationUrl": "https://console-openshift-console.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud/k8s/ns/jazzcash-microservices-dev/routes/notification-microservice/rest/api/v1/notification/sms",
@@ -27,40 +27,20 @@
             }
         },
         "mongodb": {
-            "connectionString": "mongodb://mongodb:27017/analytics",
             "host": "mongodb",
             "port": 27017,
-            "database": "analytics"
-        },
-        "IBMDB2": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
-            "address": "",
-            "connectionString": "DATABASE=repdb;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
-            "schema": "COMMON",
-            "hostName": "10.50.20.124",
-            "port": 60000,
-            "protocol": "TCPIP"
+            "database": "sampledb"
         },
         "DB2_Jazz": {
-            "username": "jcapprepdb",
-            "password": "repdb@1234",
+            "username": "jcappdb",
+            "password": "abcd@123",
             "address": "",
-            "connectionString": "DATABASE=REPDB;HOSTNAME=10.50.20.124;PORT=60000;PROTOCOL=TCPIP;UID=jcapprepdb;PWD=repdb@1234;",
+            "connectionString": "DATABASE=JAZZCASH;HOSTNAME=10.50.20.212;PORT=60000;PROTOCOL=TCPIP;UID=jcappdb;PWD=abcd@123;",
             "schema": "COMMON",
-            "hostName": "10.50.20.124",
+            "hostName": "10.50.20.212",
             "port": 60000,
-            "protocol": "TCPIP"
-        },
-        "IBMDB2_Dev": {
-            "username": "hqx82030",
-            "password": "mfdv73-dd65gz41p",
-            "address": "",
-            "connectionString": "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=hqx82030;PWD=mfdv73-dd65gz41p;",
-            "schema": "HQX82030",
-            "hostName": "dashdb-txn-sbox-yp-lon02-06.services.eu-gb.bluemix.net",
-            "port": 50000,
-            "protocol": "TCPIP"
+            "protocol": "TCPIP",
+            "maxPoolSize": 30
         },
         "winston": {
             "file": {
@@ -88,45 +68,42 @@
         "accountStatementScheduler": {
             "accountStatementQueryInterval": "1 minutes",
             "collection": "accntstmtrequests",
-            "scheduler": true,
+            "scheduler": "true",
             "failureCount": 3,
-            "failureTimeInMinutes": 30,
-            "requestRetrievelTimeInMinutes": 15,
-            "requestsQueryLimit": 1,
-            "timedOutRequestsSchedulerInterval": "1 seconds",
-            "outDatedRequestsScheduler": true
+            "failureTimeInMinutes": 30
         },
         "kafkaBroker": {
             "brokers": "kafka:9092",
             "topicName": "jazz-topic",
             "pollInterval": 100,
+            "topics_consume_interval": 300,
             "consumerGroupID": "test-consumer",
             "commit-msgs-after": 1,
             "numMessages": 1,
             "consumerAutoCommit": true,
             "consumerConfig": {
                 "debug": "all",
-                "client.id": "kafka-nodejs-console-sample-consumer--dev19",
-                "group.id": "kafka-nodejs-console-sample-group--dev19",
-                "metadata.broker.list": "es-1-ibm-es-proxy-route-bootstrap-eventstreams.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud:443",
-                "security.protocol": "sasl_ssl",
-                "sasl.mechanisms": "PLAIN",
-                "ssl.ca.location": "/project/user-app/dist/util/cert.pem",
-                "sasl.username": "Super Key",
-                "sasl.password": "TuR8UGIVVnxNF6EWp7Q2rb_dubYc5AH1MTgUNfOhWcaU",
-                "enable.ssl.certificate.verification": false,
-                "enable.auto.commit": true,
-                "broker.version.fallback": "0.10.2.1",
-                "log.connection.close": false,
-                "auto.offset.reset": "smallest"
+                "client_id": "analytics-client",
+                "group_id": "analytics-reporting-consumer-group-id",
+                "metadata_broker_list": "kafka-prod-1-kafka-bootstrap-es.apps.isbjcocp.jazzcash.com.pk:443",
+                "security_protocol": "sasl_ssl",
+                "sasl_mechanisms": "SCRAM-SHA-512",
+                "ssl_ca_location": "/project/user-app/dist/util/dr-es-cert.pem",
+                "sasl_username": "m11s-scram",
+                "sasl_password": "xjrnhB9y0Z42",
+                "enable_ssl_certificate_verification": false,
+                "enable_auto_commit": true,
+                "broker_version_fallback": "0.10.2.1",
+                "log_connection_close": false,
+                "auto_offset_reset": "smallest"
             },
             "producerConfig": {
-                "bootstrap.servers": "es-1-ibm-es-proxy-route-bootstrap-eventstreams.jazzcash-fra04-b3c-32x128-32e4d82b5ac35ba812aabbeece8661d9-0000.eu-de.containers.appdomain.cloud:443",
+                "bootstrap.servers": "kafka-prod-1-kafka-bootstrap-es.apps.isbjcocp.jazzcash.com.pk:443",
                 "security.protocol": "sasl_ssl",
-                "sasl.mechanisms": "PLAIN",
-                "ssl.ca.location": "/project/user-app/dist/util/cert.pem",
-                "sasl.username": "Super Key",
-                "sasl.password": "TuR8UGIVVnxNF6EWp7Q2rb_dubYc5AH1MTgUNfOhWcaU",
+                "sasl.mechanisms": "SCRAM-SHA-512",
+                "ssl.ca.location": "/project/user-app/dist/util/dr-es-cert.pem",
+                "sasl.username": "m11s-scram",
+                "sasl.password": "xjrnhB9y0Z42",
                 "enable.ssl.certificate.verification": false,
                 "broker.version.fallback": "0.10.0",
                 "log.connection.close": false
@@ -141,56 +118,121 @@
                 "ConfirmTrans_IBFT_Incoming": "ESB_Inbound_DirectIBFT_Confirm_Passed",
                 "InitTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Init_Failed",
                 "ConfirmTrans_IBFT_Incoming_Fail": "ESB_Inbound_DirectIBFT_Confirm_Failed",
+                
                 "InitTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Init_Passed",
                 "ConfirmTrans_USSD_Outgoing": "ESB_USSD_DirectIBFT_Confirm_Passed",
                 "InitTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Init_Failed",
                 "ConfirmTrans_USSD_Outgoing_Fail": "ESB_USSD_DirectIBFT_Confirm_Failed",
+                
                 "InitTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Init_Passed",
                 "ConfirmTrans_Mobile_USSD_Outgoing": "ESB_Mobile_DirectIBFT_Confirm_Passed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Init_Passed",
                 "ConfirmTrans_Mobile_SOAP_USSD_Outgoing": "ESB_SOAP_Payment_Confirm_Passed",
+                
                 "InitTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Init_Failed",
                 "ConfirmTrans_Mobile_USSD_Outgoing_Fail": "ESB_Mobile_DirectIBFT_Confirm_Failed",
                 "InitTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Init_Failed",
                 "ConfirmTrans_Mobile_SOAP_USSD_Outgoing_Fail": "ESB_SOAP_Payment_Confirm_Failed",
+
                 "initTrans_sendMoney_bank": "ESB_Mobile_IBFT_Init_Passed",
+
                 "initTrans_qr_payment": "ESB_Mobile_QRPayment_Init_Passed",
                 "confirmTrans_qr_payment": "ESB_Mobile_QRPayment_Confirm_Passed",
                 "initTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Init_Passed",
                 "confirmTrans_refund_qr_payment": "ESB_Mobile_RefundQRPayment_Confirm_Passed",
+
                 "initTrans_MobileBundle": "ESB_Mobile_MobileBundle_Init_Passed",
                 "init_refund_Trans_MobileBundle_withoutConfirmB2B":"ESB_App_MoneyTransferPGW_Init_Passed",
                 "confirmTrans_MobileBundle": "ESB_Mobile_MobileBundle_Confirm_Passed",
                 "initTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Init_Passed",
                 "confirmTrans_refundMobileBundle": "ESB_Mobile_RefundMobileBundle_Confirm_Passed",
+
                 "initTrans_BusTicket": "ESB_Mobile_BusTickets_Init_Passed",
                 "confirmTrans_BusTicket": "ESB_Mobile_BusTickets_Confirm_Passed",
-                "initTrans_eVouchers": "ESB_Mobile_eVouchers_Init_Passed",
-                "confirmTrans_eVouchers": "ESB_Mobile_eVouchers_Confirm_Passed",
+
+                "initTrans_eVouchers" : "ESB_Mobile_eVouchers_Init_Passed",
+                "confirmTrans_eVouchers": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
                 "initTrans_eventTickets": "ESB_Mobile_EventTickets_Init_Passed",
                 "confirmTrans_eventTickets": "ESB_Mobile_EventTickets_Confirm_Passed",
+
                 "queryTrans_creemVoucher": "ESB_Mobile_CareemVoucher_Query_Passed",
-                "initTrans_Donation": "ESB_Mobile_Donation_Init_Passed",
+
+                "initTrans_Donation" : "ESB_Mobile_Donation_Init_Passed",
                 "confirmTrans_Donation": "ESB_Mobile_Payment_Confirm_Passed",
+
                 "intTrans_customerDeposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Init_Passed",
                 "confirm_deposit_DVDC": "ESB_Mobile_DepositViaDebitCard_Confirm_Passed",
-                "init_daraz_voucher": "ESB_Mobile_DarazVoucher_Init_Passed",
-                "confirm_daraz_voucher": "ESB_Mobile_DarazVoucher_Confirm_Passed",
+
+                "init_daraz_voucher" : "ESB_Mobile_DarazVoucher_Init_Passed",
+                "confirm_daraz_voucher" : "ESB_Mobile_DarazVoucher_Confirm_Passed",
+
                 "update_account_details": "ESB_Mobile_AccountDetails_Update_Passed",
+
                 "initTrans_mr_payment": "ESB_Mobile_Request2Pay_Init_Passed",
                 "confirmTrans_mr_payment": "ESB_Mobile_Request2Pay_Confirm_Passed",
                 "initTrans_cardOrdering": "ESB_Mobile_CardOrdering_Init_Passed",
                 "confirmTrans_cardOrdering": "ESB_Mobile_CardOrdering_Confirm_Passed",
+
+                "initTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Init_Passed",
+                "confirmTrans_InsuranceSubPayment": "ESB_Mobile_InsuranceSubPayment_Confirm_Passed",
+                
+                "initTrans_signupReward": "ESB_Mobile_SignupReward_Init_Passed",
+                "confirmTrans_signupReward": "ESB_Mobile_SignupReward_Confirm_Passed",
+
+                "initTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Init_Passed",
+                "confirmTrans_foodOrdering": "ESB_Mobile_FoodOrdering_Confirm_Passed",
+
+                "updateTrans_cardManagement": "ESB_Mobile_CardManagement_Update_Passed",
+                "initTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Init_Passed",
+                "confirmTrans_inviteAndEarn": "ESB_Mobile_InviteAndEarn_Confirm_Passed",
+                "SecureCard_CardDelink": "SecureCard_DepositViaDebitCard_CardDelink",
+                "SecureCard_CardLink": "SecureCard_DepositViaDebitCard_CardLink",
+                
+                "initTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Init_Passed",
+                "confirmTrans_moneyTransfer_B2B": "ESB_Mobile_MoneyTransferB2B_Confirm_Passed",
+                "initTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Init_Passed",
+                "confirmTrans_moneyTransfer_C2C": "ESB_Mobile_MoneyTransferC2C_Confirm_Passed",
+                "initTrans_cnicPayment": "ESB_Mobile_CNICPayment_Init_Passed",
+                "confirmTrans_cnicPayment": "ESB_Mobile_CNICPayment_Confirm_Passed",
+                "confirmTrans_scheduledTrans": "ESB_Mobile_Payment_Confirm_Passed",
+
+                "accountUpgrade_success": "AccountManagement_AccountUpgrade_Successful",
+                "accountUpgrade_nadraFailure": "AccountManagement_AccountUpgrade_Nadra_Failure",
+                "accountUpgrade_cpsFailure": "AccountManagement_AccountUpgrade_CPS_Failure",
+
+                "initTrans_movieTickets": "ESB_Mobile_MovieTickets_Init_Passed",
+                "confirmTrans_movieTickets": "ESB_Mobile_MovieTickets_Confirm_Passed",
+
+                "doorstepCashin_failed": "MP_Mobile_CashinDoorstep_Failed",
+                "doorstepCashin_passed": "MP_Mobile_CashinDoorstep_Passed",
+                
+                "intTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Init_Passed",
+                "confirmTrans_voucherPayment": "ESB_Mobile_VoucherPayment_Confirm_Passed",
+
+                "payoneer_transaction": "PM_Mobile_PayoneerTransaction_Success",
+                "payoneer_registration": "PM_Mobile_PayoneerRegistration_Success",
+
+                "display_QR": "AccountManagement_DisplayQR_Success",
+
                 "fallbackFailure": "Consumer_Fallback_Failure",
+                "merchant_onboarding": "Merchant_Onboarding_Success",
+                "consumer_onboarding": "Consumer_Onboarding_Success",
+                "device_authentication": "Device_Registration",
+                "wallet_request": "Consumer_Wallet_Success",
+                "insurance_claim": "claims",
+
                 "cashToGoodConfirm": "ESB_Mobile_cashToGoodConfirm_Confirm_Passed",
                 "cashToGoodConfirmRedeem": "ESB_Mobile_CashToGoodRedeem_Confirm_Passed",
                 "cashToGoodRefund": "ESB_Mobile_CashToGoodRefund_Init_Passed",
                 "multipayment_qr_payment_passed": "MULTIPAYMENT_QR_PAYMENT_PASSED",
-                "GTOP_Init_Passed": "ESB_App_G2P_Init_Passed",
-                "GTOP_Init_Failed": "ESB_App_G2P_Init_Failed",
+
+
+                "cashback_reward_init_passed": "ESB_Mobile_CashbackReward_Init_Passed",
+                "cashback_reward_init_failed": "ESB_Mobile_CashbackReward_Init_Failed",
                 "account_login_reporting": "ACCOUNT_LOGIN_REPORTING",
-                "trx_history_reporting": "TRX_HISTORY_REPORTING",
-                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
+                "trx_history_reporting": "TRX_HISTORY_REPORTING"
+
             }
         },
         "cache": {
@@ -202,7 +244,7 @@
         "responseCode": {
             "default": {
                 "code": "G-01",
-                "message": "Internal Server Error"
+                "message": "Oops! We are facing some temporary issue with your request. "
             },
             "useCases": {
                 "accountStatement": {
@@ -212,11 +254,7 @@
                     "date_invalid": "AR-AS-T04",
                     "database_connection": "AR-AS-T05",
                     "email_problem": "AR-AS-T08",
-                    "pdf_internal_error": "AR-AS-T06",
-                    "duplicate": "AR-AS-T07"
-                },
-                "taxStatement": {
-                    "noData": "AR-TS-T01"
+                    "pdf_internal_error": "AR-AS-T06"
                 },
                 "contactIntegration": {
                     "success": "AM-CI-T01",
@@ -340,51 +378,52 @@
             }
         },
         "reportingDBTables": {
-            "APP_SIGNUP": "CONSUMER_APP_SIGNUP",
-            "BUS_TICKET": "COMMON_BUS_TICKET",
-            "CARD_BLOCK": "COMMON_CARD_BLOCK",
-            "CAREEM_VOUCHER": "COMMON_CAREEM_VOUCHER",
-            "CHANGE_MPIN": "CONSUMER_CHANGE_MPIN",
-            "DARAZ_WALLET": "CONSUMER_DARAZ_WALLET",
-            "DEBIT_CARD_TRACK": "COMMON_DEBIT_CARD_TRACK",
-            "DEPOSIT_VIA_CARD": "COMMON_DEPOSIT_VIA_CARD",
-            "DEPOSIT_WITH_SAVED_CARD": "COMMON_DEPOSIT_WITH_SAVED_CARD",
-            "DEVICE_AUTH": "CONSUMER_DEVICE_AUTH",
-            "DISPLAY_QR": "MERCHANT_DISPLAY_QR",
-            "DONATION": "COMMON_DONATION",
-            "DOORSTEP_CASHIN": "COMMON_DOORSTEP_CASHIN",
-            "EVENT_TICKET": "COMMON_EVENT_TICKET",
-            "EVOUCHER": "COMMON_EVOUCHER",
-            "FALLBACK_FAILURE": "CONSUMER_FALLBACK_FAILURE",
-            "FOOD_DELIVERY": "CONSUMER_FOOD_DELIVERY",
-            "INCOMMING_IBFT": "COMMON_INCOMMING_IBFT",
-            "INSURANCE_CLAIM": "COMMON_INSURANCE_CLAIM",
-            "OUTGOING_IBFT": "COMMON_OUTGOING_IBFT",
-            "INVITEANDEARN": "COMMON_INVITEANDEARN_T",
+            "APP_SIGNUP": "APP_SIGNUP",
+            "BUS_TICKET": "BUS_TICKET",
+            "CARD_BLOCK": "CARD_BLOCK",
+            "CAREEM_VOUCHER": "CAREEM_VOUCHER",
+            "CHANGE_MPIN": "CHANGE_MPIN",
+            "DARAZ_WALLET": "DARAZ_WALLET",
+            "DEBIT_CARD_TRACK": "DEBIT_CARD_TRACK",
+            "DEPOSIT_VIA_CARD": "DEPOSIT_VIA_CARD",
+            "DEPOSIT_WITH_SAVED_CARD": "DEPOSIT_WITH_SAVED_CARD",
+            "DEVICE_AUTH": "DEVICE_AUTH",
+            "DISPLAY_QR": "DISPLAY_QR",
+            "DONATION": "DONATION",
+            "DOORSTEP_CASHIN": "DOORSTEP_CASHIN",
+            "EVENT_TICKET": "EVENT_TICKET",
+            "EVOUCHER": "EVOUCHER",
+            "FALLBACK_FAILURE": "FALLBACK_FAILURE",
+            "FOOD_DELIVERY": "FOOD_DELIVERY",
+            "INCOMMING_IBFT": "INCOMMING_IBFT",
+            "INSURANCE_CLAIM": "INSURANCE_CLAIM",
+            "OUTGOING_IBFT": "OUTGOING_IBFT",
+            "INVITEANDEARN": "INVITEANDEARN_T",
             "MOBILE_BUNDLE": "MOBILE_BUNDLE",
-            "MOVIE_TICKET": "CONSUMER_MOVIE_TICKET",
-            "NEW_SIGNUP_REWARD": "CONSUMER_NEW_SIGNUP_REWARD",
-            "ONBOARDING": "MERCHANT_ONBOARDING",
-            "OUTGOING_IBFT_ORIG": "COMMON_OUTGOING_IBFT_ORIG",
-            "PAYON_REG_LINK": "CONSUMER_PAYON_REG_LINK",
-            "PAYON_TRANSACTIONS": "CONSUMER_PAYON_TRANSACTIONS",
-            "PROFILE_CHANGE": "COMMON_PROFILE_CHANGE",
-            "PROMOCODE_SECTION": "COMMON_PROMOCODE_SECTION",
-            "QR_PAYMENT": "COMMON_QR_PAYMENT",
-            "RATING": "MERCHANT_RATING",
-            "REQUEST_TO_PAY": "MERCHANT_REQUEST_TO_PAY",
-            "RESET_PIN": "CONSUMER_RESET_PIN",
-            "RESET_MPIN": "CONSUMER_RESET_MPIN",
-            "TRANS_DETAILS": "COMMON_TRANS_DETAILS",
-            "WALLET_REQUEST": "CONSUMER_WALLET_REQUEST",
-            "CREATE_CARD_PIN": "CONSUMER_CREATE_CARD_PIN",
-            "CARD_LINKING": "COMMON_CARD_LINKING",
-            "CARD_DELINK": "COMMON_CARD_DELINK",
-            "SCHEDULED_TRANSACTIONS": "COMMON_SCHEDULED_TRANSACTIONS",
-            "ACCOUNT_UPGRADE": "COMMON_ACCOUNT_UPGRADE",
-            "CASHTOGOOD": "CASHTOGOOD",
-            "CASHTOGOOD_REDEEM": "CASHTOGOOD_REDEEM",
-            "SPSU": "SPSU_DISBURSEMENTS"
+            "MOVIE_TICKET": "MOVIE_TICKET",
+            "NEW_SIGNUP_REWARD": "NEW_SIGNUP_REWARD",
+            "ONBOARDING": "ONBOARDING",
+            "OUTGOING_IBFT_ORIG": "OUTGOING_IBFT_ORIG",
+            "PAYON_REG_LINK": "PAYON_REG_LINK",
+            "PAYON_TRANSACTIONS": "PAYON_TRANSACTIONS",
+            "PROFILE_CHANGE": "PROFILE_CHANGE",
+            "PROMOCODE_SECTION": "PROMOCODE_SECTION",
+            "QR_PAYMENT": "QR_PAYMENT",
+            "RATING": "RATING",
+            "REQUEST_TO_PAY": "REQUEST_TO_PAY",
+            "RESET_PIN": "RESET_PIN",
+            "RESET_MPIN": "RESET_MPIN",
+            "TRANS_DETAILS": "TRANS_DETAILS",
+            "WALLET_REQUEST": "WALLET_REQUEST",
+            "CREATE_CARD_PIN": "CREATE_CARD_PIN",
+            "CARD_LINKING": "CARD_LINKING",
+            "CARD_DELINK": "CARD_DELINK",
+            "SCHEDULED_TRANSACTIONS": "SCHEDULED_TRANSACTIONS",
+            "ACCOUNT_UPGRADE": "ACCOUNT_UPGRADE",
+            "PAYON_LOGIN": "PAYON_LOGIN",
+            "CASHTOGOOD" : "CASHTOGOOD",
+            "CASHTOGOOD_REDEEM" : "CASHTOGOOD_REDEEM",
+            "CASHBACK_REDEEM" : "CASHBACK_REDEEM"
         }
     }
 }
