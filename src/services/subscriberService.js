@@ -108,7 +108,7 @@ class Subscriber {
             // config.kafkaBroker.topics.GTOP_Init_Failed,
             config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
-            config.kafkaBroker.topics.readyCashBaflReporting
+            config.kafkaBroker.topics.readyCashBaflReporting,
             //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.multi_instrument_reporting
