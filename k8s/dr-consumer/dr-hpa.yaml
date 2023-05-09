@@ -8,8 +8,8 @@ spec:
     apiVersion: apps/v1 
     kind: Deployment 
     name: analytics-consumer
-  minReplicas: 20
-  maxReplicas: 20
+  minReplicas: 25
+  maxReplicas: 25
   metrics:
     - type: Resource
       resource:
