@@ -106,7 +106,8 @@ class Subscriber {
             //config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
             config.kafkaBroker.topics.L0_to_L1_reporting,
-            config.kafkaBroker.topics.dormant_to_active_reporting
+            config.kafkaBroker.topics.dormant_to_active_reporting,
+            config.kafkaBroker.topics.readyCashBaflReporting
         ]);
 
         //this.setConsumer();

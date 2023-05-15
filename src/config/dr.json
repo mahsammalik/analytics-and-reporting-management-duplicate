@@ -235,7 +235,8 @@
 
                 "L0_to_L1_reporting": "L0_TO_L1_REPORTING",
                 "dormant_to_active_reporting": "DORMANT_TO_ACTIVE_REPORTING",
-                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING"
+                "multi_instrument_reporting": "MULTI_INSTRUMENT_REPORTING",
+                "readyCashBaflReporting": "NANOLOAN_BAFL_REPORTING"
 
             }
         },
