@@ -1258,6 +1258,16 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
+                if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
+                        logger.debug('*********** readyCashBaflReporting *****************');   
+                    try {
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('readyCashBaflReporting ' + JSON.stringify(payload));
+                        DB2Connection.addReadyCashBaflReporting(payload)
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
                 //     logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
                 //     try {
