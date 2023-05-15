@@ -1259,7 +1259,7 @@ class Subscriber {
                     }
                 }
                 if (msg.topic === config.kafkaBroker.topics.readyCashBaflReporting){
-                    logger.debug('*********** readyCashBaflReporting *****************');
+                        logger.debug('*********** readyCashBaflReporting *****************');   
                     try {
                         const payload = JSON.parse(msg.value);
                         logger.debug('readyCashBaflReporting ' + JSON.stringify(payload));
