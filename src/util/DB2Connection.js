@@ -1774,6 +1774,7 @@ class DatabaseConn {
               '${payload.CUSTOMER_PREVIOUS_STATUS}',
               '${payload.CUSTOMER_NEW_STATUS}',
               '${payload.CUSTOMER_LEVEL}',
+              '${payload.CUSTOMER_REGISTERATION_DATE}',
               '${payload.STATUS}'
             );`
           } else {
