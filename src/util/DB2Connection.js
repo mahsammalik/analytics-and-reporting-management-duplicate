@@ -1561,7 +1561,7 @@ class DatabaseConn {
       logger.debug('payload trx data');
       logger.debug(payload);
       payload.CONTEXT_DATA = JSON.stringify(payload.CONTEXT_DATA || {})
-      const stmt = conn.prepareSync(`INSERT INTO STATEMENTS.HISTORY_REVAMPED (TRANS_ID, TRX_DTTM, INITIATOR_NAME, INITIATOR_MSISDN, TRX_CHANNEL, TRX_TYPE, AC_FROM, AC_TO, UTILITY_COMPANY, CONSUMER_NO, FEE, FED, WHT, GROSS_AMT, AMOUNT_DEBITED, AMOUNT_CREDITED, BENEFICIARY_MSISDN, DESCRIPTION, REASON_TYPE, CONTEXT_DATA )
+      const stmt = conn.prepareSync(`INSERT INTO STATEMENTS.HISTORY_REVAMPED (TRANS_ID, TRX_DTTM, INITIATOR_NAME, INITIATOR_MSISDN, TRX_CHANNEL, TRX_TYPE, AC_FROM, AC_TO, UTILITY_COMPANY, CONSUMER_NO, FEE, FED, WHT, GROSS_AMT, AMOUNT_DEBITED, AMOUNT_CREDITED, BENEFICIARY_MSISDN, DESCRIPTION, REASON_TYPE, CONTEXT_DATA, RESERVED_COLUMN_2, RESERVED_COLUMN_3 )
         VALUES
         (
           '${payload.TRANS_ID }',
@@ -1583,7 +1583,10 @@ class DatabaseConn {
           '${payload.BENEFICIARY_MSISDN || '' }',
           '${payload.DESCRIPTION || '' }',
           '${payload.REASON_TYPE || '' }',
-          '${payload.CONTEXT_DATA}' 
+          '${payload.CONTEXT_DATA || {}}',
+          '${payload.PUBLIC_IP || 'NA'}',
+          '${payload.PUBLIC_PORT || 'NA'}'
+
         );`
       );
       stmt.executeSync();
@@ -1617,7 +1620,9 @@ class DatabaseConn {
                         BENEFICIARY_MSISDN='${payload.BENEFICIARY_MSISDN || ''}',
                         DESCRIPTION='${payload.DESCRIPTION || ''}',
                         REASON_TYPE='${payload.REASON_TYPE || ''}',
-                        CONTEXT_DATA='${payload.CONTEXT_DATA}'
+                        CONTEXT_DATA='${payload.CONTEXT_DATA || {}}',
+                        RESERVED_COLUMN_2='${payload.PUBLIC_IP || 'NA'}',
+                        RESERVED_COLUMN_3='${payload.PUBLIC_PORT || 'NA'}'
                         WHERE
                         TRANS_ID='${payload.TRANS_ID}'
                         `)
