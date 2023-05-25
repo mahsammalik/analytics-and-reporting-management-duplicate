@@ -91,7 +91,7 @@ spec:
           - name: NODE_ENV
             value: dr
           - name: LOGIN_REPORT_V2
-            value: 'true'
+            value: 'false'
           - name: CONSUMER
             value: 'true'
           - name: CONSUMER_GROUP_ID
