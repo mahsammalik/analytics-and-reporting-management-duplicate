@@ -150,7 +150,7 @@ Account Balance from ${taxPeriod}
 
 	<div class="taxDetails">
 		<div class="details-row">
-			<div class="title">Balance as of Ending Date </div>
+			<div class="title">Ending date of Certificate </div>
 			<div class="details">${endDate}</div>
 		</div>
 		<div class="details-row">
