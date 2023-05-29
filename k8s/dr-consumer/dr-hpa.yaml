@@ -1,15 +1,15 @@
 apiVersion: autoscaling/v2beta1 
 kind: HorizontalPodAutoscaler
 metadata:
-  name:  analytics-microservice-hpa 
+  name:  analytics-consumer-hpa 
   namespace:  m11s
 spec:
   scaleTargetRef:
     apiVersion: apps/v1 
     kind: Deployment 
-    name: analytics-microservice
-  minReplicas: 5
-  maxReplicas: 15
+    name: analytics-consumer
+  minReplicas: 25
+  maxReplicas: 25
   metrics:
     - type: Resource
       resource:

@@ -1,15 +1,16 @@
-kind: DeploymentConfig
-apiVersion: apps.openshift.io/v1
+kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: analytics-microservice
+  name: analytics-consumer
   namespace: m11s
   labels:
-    app: analytics-microservice
+    app: analytics-consumer
     app.kubernetes.io/part-of: m11s
+    monitoring.appd: AppD_NodeJS
 spec:
   replicas: 1
   strategy:
-    type: Rolling
+    type: RollingUpdate
     rollingParams:
       updatePeriodSeconds: 1
       intervalSeconds: 1
@@ -24,29 +25,30 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
           namespace: m11s
-          name: 'analytics-microservice:latest'
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    matchLabels:
+      app: analytics-consumer
+      deployment: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deploymentconfig: analytics-microservice
+        app: analytics-consumer
+        deployment: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -57,17 +59,25 @@ spec:
                 key: mongo-connection-string
                 name: mongo-connection-analytics
           - name: ACCOUNT_STATEMENT_QUERY_SCHEDULER_INTERVAL
-            value: '1 minutes'
+            value: '1 seconds'
           - name: ACCOUNT_STATEMENT_SCHEDULER
-            value: 'true'
+            value: 'false'
           - name: ACCOUNT_SCHEDULER_FAILURE_COUNT
             value: '3'
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
             value: '30'
+          - name: SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES
+            value: '15'
+          - name: SCHEDULER_REQUESTS_QUERY_LIMIT
+            value: '1'
+          - name: 'SCHEDULER_LOCK_TIME'
+            value: '30000'
+          - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
+            value: '1 seconds'
+          - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
+            value: 'true'
           - name: CACHE_SERVER
-            value: infinispan.datagrid
-          - name: CACHE_URL
-            value: http://infinispan.datagrid:11222/rest/v2/caches/
+            value: datagrid.datagrid-prod
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -80,6 +90,10 @@ spec:
             value: info
           - name: NODE_ENV
             value: dr
+          - name: LOGIN_REPORT_V2
+            value: 'false'
+          - name: CONSUMER
+            value: 'true'
           - name: CONSUMER_GROUP_ID
             valueFrom:
               configMapKeyRef:
@@ -91,15 +105,11 @@ spec:
                 name: consumer-groups
                 key: CONSUMER_GROUP_ANALYTICS_REWARD
           - name: KAFKA_TOPICS_CONSUME_INTERVAL
-            value: '550'
+            value: '200'
           - name: DB2ConnMaxPoolSize
             value: '100'
-          - name: LOGIN_REPORT_V2
-            value: 'false'
           - name: Token_Validation
             value: 'true'
-          - name: ENABLE_CACHE_AUTH
-            value: 'false'
           readinessProbe:
             failureThreshold: 12
             httpGet:
@@ -118,8 +128,8 @@ spec:
             timeoutSeconds: 5                                                                      
           resources:
             limits:
-              memory: 512Mi
-              cpu: '300m'
+              cpu: 600m
+              memory: 1Gi
             requests:
               memory: 56Mi
               cpu: '120m'             

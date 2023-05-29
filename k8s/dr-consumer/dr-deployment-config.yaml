@@ -1,10 +1,10 @@
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: analytics-microservice
+  name: analytics-consumer
   namespace: m11s
   labels:
-    app: analytics-microservice
+    app: analytics-consumer
     app.kubernetes.io/part-of: m11s
 spec:
   replicas: 1
@@ -24,29 +24,29 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - analytics-microservice
+          - analytics-consumer
         from:
           kind: ImageStreamTag
           namespace: m11s
-          name: 'analytics-microservice:latest'
+          name: 'analytics-consumer:latest'
   revisionHistoryLimit: 10
   test: false
   selector:
-    app: analytics-microservice
-    deploymentconfig: analytics-microservice
+    app: analytics-consumer
+    deploymentconfig: analytics-consumer
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: analytics-microservice
-        deploymentconfig: analytics-microservice
+        app: analytics-consumer
+        deploymentconfig: analytics-consumer
       annotations:
         openshift.io/generated-by: jenkins-pipeline
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - name:  analytics-microservice
-          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-microservice:latest
+        - name:  analytics-consumer
+          image: image-registry.openshift-image-registry.svc:5000/m11s/analytics-consumer:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -64,10 +64,18 @@ spec:
             value: '3'
           - name : ACCOUNT_SCHEDULER_FAILURE_TIME_IN_MINUTES
             value: '30'
+          - name: SCHEDULER_REQUEST_RETRIEVEL_TIME_IN_MINUTES
+            value: '15'
+          - name: 'SCHEDULER_LOCK_TIME'
+            value: '30000'
+          - name: SCHEDULER_REQUESTS_QUERY_LIMIT
+            value: '1'
+          - name: ACCOUNT_STATEMENT_TIMED_OUT_SCHEDULER_INTERVAL
+            value: '1 seconds'
+          - name: ACCOUNT_STATEMENT_OUTDATED_SCHEDULER
+            value: 'true'
           - name: CACHE_SERVER
             value: infinispan.datagrid
-          - name: CACHE_URL
-            value: http://infinispan.datagrid:11222/rest/v2/caches/
           - name: ESB_SERVER
             value: http://cps-rest-service-r1-is.ace:7800/rest/requestmgrservice/v1/sync
           - name: MASTER_DATA_API_GET_RESPCODE_URL
@@ -78,6 +86,8 @@ spec:
             value: 'false'    
           - name: PRODUCTION_LOG_LEVEL
             value: info
+          - name: CONSUMER
+            value: 'true'
           - name: NODE_ENV
             value: dr
           - name: CONSUMER_GROUP_ID
@@ -98,8 +108,6 @@ spec:
             value: 'false'
           - name: Token_Validation
             value: 'true'
-          - name: ENABLE_CACHE_AUTH
-            value: 'false'
           readinessProbe:
             failureThreshold: 12
             httpGet:
