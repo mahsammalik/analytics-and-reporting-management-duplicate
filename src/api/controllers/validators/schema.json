@@ -22,6 +22,25 @@
             }
         }
     },
+    "Consumer_Tax_Statement_SCHEMA": {
+        "title": "Tax Statement",
+        "description": "tax statement schema",
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["year", "requestType", "email"],
+        "properties": {
+            "year": {
+                "type": "string"
+            },
+            "requestType": {
+                "type": "string",
+                "enum": ["Download", "Email"]
+            },
+            "email": {
+                "type": "string"
+            }
+        }
+    },
     "Account_Statement_SCHEMA": {
         "title": "Account Statement",
         "description": "account statement schema",
