@@ -4,7 +4,8 @@ const connectionString = config.DB2_Jazz.connectionString
 import {
     createPDF,
     logger,
-    taxStatementTemplate
+    taxStatementTemplate,
+    taxStatementConsumerTemplate
 } from '../util/';
 import Notification from '../util/notification';
 import accountStatementEmailTemplate from '../util/accountStatementEmailTemplate';
@@ -221,6 +222,86 @@ class taxStatementService {
             logger.error({ event: 'Error in pdf Creation' + err });
             logger.error(err)
             return "PDF creation error";
+        }
+    }
+
+    async sendConsumerTaxStatement(payload, res) {
+        try {
+            logger.info({
+                event: 'Entered Funnction',
+                functionName: 'taxStatementService.sendConsumerTaxStatement',
+                payload
+            })
+            const data = await DB2Connection.getTaxCertificateData(payload.msisdn, payload.year) || [];
+            if(data.length < 1){
+                return { success: false, noData: true };
+            }
+            const taxData = data[0];
+            logger.info({
+                event: 'Tax certificate data from DB2',
+                data: taxData
+            });
+            const htmlTemplate = await taxStatementConsumerTemplate({ data: taxData, payload });
+            let pdfFile = await createPDF({
+                template: htmlTemplate,
+                fileName: `Tax Statement`
+            });
+            logger.info(`Obtained htmlTemplate for tax`)
+            pdfFile = Buffer.from(pdfFile, 'base64').toString('base64');
+            const emailData = [{
+                'key': 'customerName',
+                'value': taxData[0] || ""
+            },
+            {
+                'key': 'accountNumber',
+                'value': payload.msisdn
+            },
+            {
+                'key': 'statementPeriod',
+                'value': payload.year
+            }
+            ];
+            const attachment = [{
+                filename: 'Tax Certificate.pdf',
+                content: pdfFile,
+                type: 'base64',
+                embedImage: false
+            }];
+            logger.debug("FINAL RESPONSE OF THE OUTPUT ", attachment, emailData);
+            if (payload.email) {
+                logger.info({ event: 'Exited function', functionName: 'sendEmailPDFFormat' });
+                const attachment = [{
+                    filename: 'TaxStatement.pdf',
+                    content: pdfFile,
+                    type: 'base64',
+                    embedImage: false
+                }];
+                let emailHTMLContent = accountStatementEmailTemplate({
+                    title: 'Tax Statement',
+                    customerName: taxData[0] || "",
+                    accountNumber: payload.msisdn,
+                    statementPeriod: payload.year,
+                    accountLevel: taxData[2] || "",
+                    channel: payload.channel
+                }) || '';
+
+                emailData.push({
+                    key: "htmlTemplate",
+                    value: emailHTMLContent,
+                });
+
+                logger.info(`Email Sending...`)
+                const emailSent = await new Notification.sendEmail(payload.email, 'Tax Certificate', '', attachment, 'TAX_STATEMENT', emailData);
+                return emailSent ? { success: true } : { success: false };
+            }
+            else {
+                logger.error(`Email not provided`)
+                throw new Error(`Email Not provided`);
+            }
+        } catch (err) {
+            logger.error({ event: 'Error in pdf Creation' + err });
+            logger.error(err)
+            return { success: false };
         }
     }
 

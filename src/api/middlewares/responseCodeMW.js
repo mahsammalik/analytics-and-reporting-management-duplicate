@@ -19,14 +19,15 @@ const responseCodeMW = async (req, res, next) => {
                 const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.duplicate, "");
                 res.locals.response = response;
                 res.status(422).send(response);    
+            }else if(res.locals.noData){
+                const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.taxCertificate.noData, "");
+                res.locals.response = response;
+                res.status(422).send(response);
             }else{
                 const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
                 res.locals.response = response;
                 res.status(422).send(response);
             }
-            const response = await responseCodeHandler.getResponseCode(config.responseCode.useCases.accountStatement.email_problem, "");
-            res.locals.response = response;
-            res.status(422).send(response);
         }
         logger.info({ event: 'Exited function', functionName: 'responseCodeMW' });
 

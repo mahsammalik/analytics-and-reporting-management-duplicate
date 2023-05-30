@@ -1112,8 +1112,6 @@ class DatabaseConn {
       }
 
     }
-
-
   }
 
 
@@ -1403,6 +1401,32 @@ class DatabaseConn {
     }
   }
 
+  async getTaxCertificateData(customerMobileNumer, year) {
+    let conn = await getConnection();
+    if (!conn) {
+      conn = await open(cn);
+    }
+    try {
+      const stmt = conn.prepareSync(`Select ACC_TITLE, ACC_NUMBER, ACC_LEVEL, TAX_PERIOD, END_DATE, END_DATE_BALANCE, END_DATE_BALANCE_IN_WORDS, OPENING_PERIOD_BALANCE, ENDING_PERIOD_BALANCE, TIME_PERIOD_OF_CERTIFICATE, TAX_DEDUCTION, TAX_DEDUCTION_IN_WORDS from statements.TAX_CERTIFICATE where ACC_NUMBER = '${customerMobileNumer}' And TAX_YEAR = '${year}' ;`);
+      const result = stmt.executeSync();
+      const arrayResult = result.fetchAllSync({ fetchMode: 3 }); // Fetch data in Array mode.
+      logger.info("Exited getTaxValueArray: ", arrayResult)
+      result.closeSync();
+      stmt.closeSync();
+      return arrayResult;
+
+    } catch (err) {
+      logger.error('Database connection error' + err);
+      return "Database Error";
+    } finally {
+      conn.close(function (err) {
+        if (err) {
+          logger.error(err)
+        }
+      });
+    }
+  }
+
   async getTaxValueArrayWithConn(customerMobileNumer, mappedMsisdn, endDate, startDate, conn) {
     try {
 
@@ -1669,6 +1693,55 @@ class DatabaseConn {
     }
   }
   
+  async addReadyCashBaflReporting(payload){
+    let conn = await getConnection();
+    try {
+      logger.debug('payload addReadyCashBaflReporting data');
+      logger.debug(payload);
+      const stmt = conn.prepareSync(`
+      INSERT INTO COMMON.READYCASH_BAFL_REPORTING (
+        MSISDN,
+        UID,
+        DATE,
+        TIME,
+        STAGE,
+        API_TYPE,
+        API_STATUS,
+        RESPONSE_CODE,
+        RESPONSE_DESCRIPTION,
+        THIRDPARTY_ERROR,
+        THIRDPARTY_CODE,
+        LOAN_AMOUNT,
+        LOAN_ID
+      )
+      VALUES (
+        '${payload.MSISDN || ''}',
+        '${payload.UID || ''}',
+        '${payload.Date || ''}',
+        '${payload.Time || ''}',
+        '${payload.Stage || ''}',
+        '${payload.API_Type || ''}',
+        '${payload.API_status || ''}',
+        '${payload.Response_Code || ''}',
+        '${payload.Response_Description || ''}',
+        '${payload.ThirdParty_Error || ''}',
+        '${payload.ThirdPartyCode || ''}',
+        '${payload.Loan_Amount || '0'}',
+        '${payload.Loan_ID || ''}'
+      )
+    `);
+      stmt.executeSync();
+      stmt.closeSync();
+      logger.debug(`addReadyCashBaflReporting insertion done`);
+      return;
+    } catch (error) {
+      logger.error('Database connection error' + err);
+      return ;
+    }finally {
+      conn.close(function (err) { });
+      return
+    }
+  }
 }
 
 

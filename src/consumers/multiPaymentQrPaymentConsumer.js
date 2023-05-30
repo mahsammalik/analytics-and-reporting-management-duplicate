@@ -1,7 +1,6 @@
 import { logger } from '/util/';
 import DB2Connection from '../util/DB2Connection';
-const SCHEMA = process.env.NODE_ENV === 'live' ? "COMMON" : config.IBMDB2_Dev.schema;
-// const SCHEMA = "COMMON"
+const SCHEMA = config.DB2_Jazz.schema;
 
 class Processor {
 
