@@ -105,7 +105,8 @@ class Subscriber {
             config.kafkaBroker.topics.confirmTrans_refundMobileBundle,
             config.kafkaBroker.topics.account_login_reporting,
             config.kafkaBroker.topics.trx_history_reporting,
-            config.kafkaBroker.topics.readyCashBaflReporting
+            config.kafkaBroker.topics.readyCashBaflReporting,
+            config.kafkaBroker.topics.multi_instrument_reporting
         ]);
 
         //this.setConsumer();
@@ -1267,6 +1268,19 @@ class Subscriber {
                         logger.debug(error)
                     }
                 }
+
+                if (msg.topic === config.kafkaBroker.topics.multi_instrument_reporting) {
+                    logger.debug('*********** MULTI INSTRUMENT REPORTING *****************');
+                    try {
+
+                        const payload = JSON.parse(msg.value);
+                        logger.debug('MULTI INSTRUMENT REPORTING ' + JSON.stringify(payload));
+                        DB2Connection.addMultiInstrumentReporting(payload);
+                    } catch (error) {
+                        logger.debug(error)
+                    }
+                }
+                
                 // if (msg.topic === config.kafkaBroker.topics.cashback_reward_init_soap_passed) {
                 //     logger.debug('*********** REDEEM CASHBACK INIT SOAP PASSED *****************');
                 //     try {
